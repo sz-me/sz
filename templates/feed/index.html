@@ -1,0 +1,1 @@
+﻿{% if feed %}    <ul>    {% for message in feed %}        <div>{{ message.text }}</div>    {% endfor %}    </ul>{% else %}    <p>No messages are available</p>{% endif %}<form action="/clothes/tags" method="post">{% csrf_token %}<textarea name="message"></textarea><p><input type="submit" value="Сказать" /></p></form>
