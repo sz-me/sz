@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response
 from django.template import Context, loader
 from django.http import HttpResponse
-from sz.feed.models import Message
+from sz.core.models import Message
 from django.template import RequestContext
 from django.http import Http404
 from django.db.utils import DatabaseError

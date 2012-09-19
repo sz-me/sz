@@ -7,7 +7,7 @@ Replace this with more appropriate tests for your application.
 
 from django.test import TestCase
 from django.contrib.auth.models import User
-from sz.feed.models import Message
+from sz.core.models import Message
 
 class SimpleTest(TestCase):
     def new_ad_save(self):

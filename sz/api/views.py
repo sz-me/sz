@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
-# Create your views here.
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.utils import simplejson
-from sz.clothes.models import Tag
-from sz.clothes import services
-
-
+from sz.core.models import Tag
+from sz.api import services
 
 def tags(request):
     message = request.POST['message']

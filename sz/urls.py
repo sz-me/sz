@@ -8,7 +8,7 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'sz.feed.views.home', name='home'),
     url(r'^$', 'sz.feed.views.index'),
-    url(r'^clothes/tags$', 'sz.clothes.views.tags'),
+    url(r'^api/tags$', 'sz.api.views.tags'),
     # url(r'^sz/', include('sz.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

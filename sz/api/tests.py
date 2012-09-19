@@ -6,8 +6,8 @@ when you run "manage.py test".
 Replace this with more appropriate tests for your application.
 """
 from django.test import TestCase
-from sz.clothes.models import Tag, Pattern
-from sz.clothes import services
+from sz.core.models import Tag, Pattern
+from sz.api import services
 from sz.core.algorithms import lists
 import string
 

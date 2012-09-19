@@ -1,4 +1,4 @@
-from sz.clothes.models import Tag, Pattern
+﻿from sz.core.models import Tag, Pattern
 from django.contrib import admin
 
 class PatternInline(admin.StackedInline):
@@ -7,5 +7,6 @@ class PatternInline(admin.StackedInline):
 
 class TagAdmin(admin.ModelAdmin):
     inlines = [PatternInline]
-
+    list_per_page = 50
+    ordering = ['name']
 admin.site.register(Tag, TagAdmin)

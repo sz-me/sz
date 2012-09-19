@@ -1,6 +1,5 @@
 ﻿# -*- coding: utf-8 -*-
 import re
-#from sz.core import spellcorrector
 from sz.core.algorithms import lists
 from sz.core.algorithms.tagging import *
 
