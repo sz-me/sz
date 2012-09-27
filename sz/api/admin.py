@@ -1,12 +1,13 @@
-﻿from sz.core.models import Tag, Pattern
+﻿from sz.core.models import DomainTag, DomainPattern
 from django.contrib import admin
 
-class PatternInline(admin.StackedInline):
-    model = Pattern
+class DomainPatternInline(admin.StackedInline):
+    model = DomainPattern
     extra = 1
 
-class TagAdmin(admin.ModelAdmin):
-    inlines = [PatternInline]
+class DomainTagAdmin(admin.ModelAdmin):
+    inlines = [DomainPatternInline]
     list_per_page = 50
     ordering = ['name']
-admin.site.register(Tag, TagAdmin)
+
+admin.site.register(DomainTag, DomainTagAdmin)

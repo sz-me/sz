@@ -1,5 +1,6 @@
 # Django settings for sz project.
 SZ_ROOT = 'd:/projects/sz/'
+#SZ_ROOT = 'c:/projects/sz.me/'
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 

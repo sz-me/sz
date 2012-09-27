@@ -6,7 +6,7 @@ when you run "manage.py test".
 Replace this with more appropriate tests for your application.
 """
 from django.test import TestCase
-from sz.core.models import Tag, Pattern
+from sz.core.models import DomainTag
 from sz.api import services
 from sz.core.algorithms import lists
 import string
@@ -15,9 +15,9 @@ class SimpleTest(TestCase):
     def setUp(self):
         print u'[SETUP]'
         self.tags = [
-            Tag(name = u'майка'),
-            Tag(name = u'обувь'),
-            Tag(name = u'шапка')]
+            DomainTag(name = u'майка'),
+            DomainTag(name = u'обувь'),
+            DomainTag(name = u'шапка')]
         map(lambda tag: tag.save(), self.tags)
         
         self.tags[0].pattern_set.create(value = u'май')
@@ -34,7 +34,7 @@ class SimpleTest(TestCase):
             )
         
     def test_lower_case_char_field(self):
-        tag = Tag(name = u'ФутБолка')
+        tag = DomainTag(name = u'ФутБолка')
         self.assertEqual(tag.name, u'футболка')
         
     def test_tags2dict(self):
