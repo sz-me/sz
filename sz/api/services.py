@@ -1,6 +1,4 @@
 ﻿# -*- coding: utf-8 -*-
-import re
-from sz.core.algorithms import lists
 from sz.core.algorithms.tagging import *
 
 def tags2dict(tags):

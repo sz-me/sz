@@ -31,13 +31,19 @@ class DomainPattern(Pattern):
     class Meta:
         verbose_name = "словоформа предметной области"
         verbose_name_plural = "словоформы предметной области"
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> Тест запросов из venues
 class Message(models.Model):
     text = models.TextField(max_length=1024) #Like a TEXT field
     begin = models.DateField(auto_now_add=True)
     end = models.DateField()
     longitude = models.FloatField()
     latitude = models.FloatField()
+    accuracy = models.FloatField()
+    venue_id = models.TextField()
     pub_date = models.DateTimeField(auto_now_add=True) #Like a DATETIME field
     user = models.ForeignKey(auth.models.User)
     def __unicode__(self): #Tell it to return as a unicode string (The name of the to-do item) rather than just Object.

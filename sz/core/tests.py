@@ -1,4 +1,5 @@
-﻿"""
+﻿# -*- coding: utf-8 -*-
+"""
 This file demonstrates writing tests using the unittest module. These will pass
 when you run "manage.py test".
 
@@ -46,5 +47,21 @@ class TagsServicesTest(TestCase):
         tags = spellcorrector_tagging_algorithm(message, self.tags) 
         print u'Тэги: ' + string.joinfields(tags, ', ')
         self.assertEqual(tags, [u'обувь'])
+
+from sz.core import venue
+class GeoServicesTest(TestCase):
+    def setUp(self):
+        print u'[SETUP]'
+        self.position = {
+            'latitude': 50.2616113,
+            'longitude': 127.5266082,
+            'accuracy': 58
+        }
+    def test_search_venues(self):
+        result = venue.search(self.position)
+        print u'МЕСТА (%s)' % len(result[u'venues'])
+        i = 1
+        print ";\n".join([u"%s, %s" % (v[u'name'], v[u'location'].get(u'address')) for v in result[u'venues']])
+        self.assertTrue(result)
         
         
