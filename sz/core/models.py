@@ -31,11 +31,7 @@ class DomainPattern(Pattern):
     class Meta:
         verbose_name = "словоформа предметной области"
         verbose_name_plural = "словоформы предметной области"
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> Тест запросов из venues
 class Message(models.Model):
     text = models.TextField(max_length=1024) #Like a TEXT field
     begin = models.DateField(auto_now_add=True)
