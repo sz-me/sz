@@ -55,13 +55,19 @@ class GeoServicesTest(TestCase):
         self.position = {
             'latitude': 50.2616113,
             'longitude': 127.5266082,
-            'accuracy': 58
+            'accuracy': 50
         }
     def test_search_venues(self):
-        result = venue.search(self.position)
+        result = venue.search(self.position, None)
         print u'МЕСТА (%s)' % len(result[u'venues'])
         i = 1
-        print ";\n".join([u"%s, %s" % (v[u'name'], v[u'location'].get(u'address')) for v in result[u'venues']])
+        print ";\n".join(["%s, %s (%s, %s)" %
+                          (
+                              v[u'name'],
+                              v[u'location'].get(u'address'),
+                              v[u'location'].get(u'lat'),
+                              v[u'location'].get(u'lng'),
+                           ) for v in result[u'venues']])
         self.assertTrue(result)
         
         

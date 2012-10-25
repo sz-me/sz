@@ -106,7 +106,8 @@ ROOT_URLCONF = 'sz.urls'
 WSGI_APPLICATION = 'sz.wsgi.application'
 
 TEMPLATE_DIRS = (
-    SZ_ROOT + 'templates'
+    SZ_ROOT + 'templates',
+
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -123,6 +124,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'djangorestframework',
     'sz.core',
     'sz.api',
     'sz.feed',
@@ -155,6 +157,12 @@ LOGGING = {
             'propagate': True,
         },
     }
+}
+
+FOURSQUARE_CONFIG = {
+    'client_id':        'BSQGPWXDOZ40ZANNNJAXJUSBGTSIUW0LSNYOPBYEZCV4PSL1',
+    'client_secret':    'CUB01RXAKUXKZ54DW2PADXO30GMOWK5WAX5HA0X05OHL2LM4',
+    'redirect_uri':     'https://sz.me/callback'
 }
 
 import sys

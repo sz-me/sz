@@ -8,10 +8,13 @@ Replace this with more appropriate tests for your application.
 from django.test import TestCase
 from sz.core.models import DomainTag
 from sz.api import services
+from sz.api import views
+from sz.api import forms
 from sz.core.algorithms import lists
 import string
+from djangorestframework.compat import RequestFactory
 
-class SimpleTest(TestCase):
+class DomainTagServicesTest(TestCase):
     def setUp(self):
         print u'[SETUP]'
         self.tags = [
@@ -64,5 +67,21 @@ class SimpleTest(TestCase):
         tags = services.spellcorrector_tagging_service(message, self.tags)
         print u'Тэги: ' + string.joinfields(tags, ', ') 
         self.assertEqual(tags, [u'обувь'])
+
+class LocationTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def test_search_view(self):
+        request = self.factory.post('/', {
+            'longitude': 127.5266082,
+            'latitude': 50.2616113,
+            'accuracy': 0,
+            })
+        view = views.PlaceSearchView.as_view()
+        response = view(request)
+        print u"%s" % response
+        self.assertEqual(response.status_code, 200)
+
 
     
