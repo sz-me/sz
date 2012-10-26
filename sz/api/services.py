@@ -19,8 +19,8 @@ def spellcorrector_tagging_service(message, tags):
     algorithm = lambda m, t: spellcorrector_tagging_algorithm(m, t)
     return tagging_service(message, tags, algorithm)
 
-def venue_location_search_service(position, query):
-    result = venue.search(position, query)
+def venue_location_search_service(position, query = None, radius = None):
+    result = venue.search(position, query, radius)
     return {"places": map(lambda l: {
         "name": l[u'name'].encode('utf8'),
         "address": l[u'location'].get(u'address'),

@@ -1,36 +1,15 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponse
 from django.utils import simplejson
-from sz.core.models import DomainTag
-from sz.api import services
-from djangorestframework.renderers import \
-    JSONPRenderer, DocumentingHTMLRenderer, DocumentingXHTMLRenderer, \
-    DocumentingPlainTextRenderer, XMLRenderer, YAMLRenderer
-from djangorestframework.compat import yaml
 from djangorestframework.views import View
+from sz.api import services
 from sz.api import forms
-from sz.api.renderers import JSONRenderer
-
-
-SZ_API_RENDERERS = (
-    JSONRenderer,
-    JSONPRenderer,
-    DocumentingHTMLRenderer,
-    DocumentingXHTMLRenderer,
-    DocumentingPlainTextRenderer,
-    XMLRenderer
-    )
-
-if yaml:
-    SZ_API_RENDERERS += (YAMLRenderer, )
-else:
-    YAMLRenderer = None
-
-
+from sz.api.renderers import SZ_API_DEFAULT_RENDERERS
+from sz.core.models import DomainTag
 
 class PlaceSearchView(View):
     form = forms.PlaceSearchForm
-    renderers = SZ_API_RENDERERS
+    renderers = SZ_API_DEFAULT_RENDERERS
     def post(self, request):
         print self.renderers
         position = {
