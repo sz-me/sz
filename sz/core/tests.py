@@ -48,17 +48,16 @@ class TagsServicesTest(TestCase):
         print u'Тэги: ' + string.joinfields(tags, ', ')
         self.assertEqual(tags, [u'обувь'])
 
+position = {
+    'latitude': 50.2616113,
+    'longitude': 127.5266082,
+    'accuracy': 50
+}
 from sz.core import venue
+
 class GeoServicesTest(TestCase):
-    def setUp(self):
-        print u'[SETUP]'
-        self.position = {
-            'latitude': 50.2616113,
-            'longitude': 127.5266082,
-            'accuracy': 50
-        }
     def test_search_venues(self):
-        result = venue.search(self.position, None)
+        result = venue.search(position, None)
         print u'МЕСТА (%s)' % len(result[u'venues'])
         i = 1
         print ";\n".join(["%s, %s (%s, %s)" %
@@ -69,5 +68,3 @@ class GeoServicesTest(TestCase):
                               v[u'location'].get(u'lng'),
                            ) for v in result[u'venues']])
         self.assertTrue(result)
-        
-        
