@@ -24,11 +24,11 @@ class MessageRoot(APIView):
     """
     def get(self, request, format=None):
         messages = Message.objects.all()
-        serializer = MessageSerializer(instance=messages)
+        serializer = serializers.MessageSerializer(instance=messages)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = MessageSerializer(request.DATA)
+        serializer = serializers.MessageSerializer(request.DATA)
         if serializer.is_valid():
             comment = serializer.object
             comment.save()
@@ -77,7 +77,7 @@ class UserRoot(APIView):
 class PlaceRoot(APIView):
     """
     List of places near the current location.
-    For example, [places near (50.2616113, 127.5266082)](?latitude=50.2616113&longitude=127.5266082).
+    For example, [places near 50.2616113, 127.5266082](?latitude=50.2616113&longitude=127.5266082).
     """
     def get(self, request, format=None):
         serializer = serializers.PlaceSearchCommandSerializer(request.QUERY_PARAMS)

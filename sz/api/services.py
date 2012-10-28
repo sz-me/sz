@@ -28,4 +28,5 @@ def venue_location_search_service(position, query = None, radius = None):
         "latitude": l[u'location'].get(u'lat'),
         "longitude": l[u'location'].get(u'lng'),
         "venue_id": l[u'id'],
+        "foursquare_details_uri": "https://foursquare.com/v/%s" % l[u'id'],
     }, result["venues"])}
