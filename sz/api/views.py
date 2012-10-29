@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
 from django.http import Http404
+from rest_framework import permissions
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 from sz.api import serializers
 from sz.api import services
+from sz.api.response import Response
 from sz.core.models import Message
 
 class ApiRoot(APIView):
@@ -79,6 +80,7 @@ class PlaceRoot(APIView):
     List of places near the current location.
     For example, [places near 50.2616113, 127.5266082](?latitude=50.2616113&longitude=127.5266082).
     """
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None):
         serializer = serializers.PlaceSearchCommandSerializer(request.QUERY_PARAMS)
         if serializer.is_valid():

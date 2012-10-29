@@ -13,7 +13,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '../data/sz.db3',                      # Or path to database file if using sqlite3.
+        'NAME': 'data/sz.db3',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -169,6 +169,9 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERERS': (
         'sz.api.renderers.UnicodeJSONRenderer',
         'sz.api.renderers.BrowsableAPIRenderer',
+        ),
+    'DEFAULT_PERMISSIONS': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
         )
 }
 
