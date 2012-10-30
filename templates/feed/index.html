@@ -14,7 +14,7 @@ $(document).ready(function () {
 	});
 	
 	function apiUrls(response)
-    {
+	{
 		var html = "";
 		$.each(response, function(key, value) {
 			html = html + '<li><a href="' + value + '">' + key + '</a></li>';
@@ -28,28 +28,24 @@ $(document).ready(function () {
 });
 </script>
 <div style="background-image:url('{{ STATIC_URL }}img/sz-me.png'); width:19.5em;padding:1em 0.8em 1em 1.2em; margin-left:15%; margin-top:1.5em;">
-<div id="say" style="background-color: #f8f8f8; width:16em; padding:1em; opacity:0.9; filter:alpha(opacity=90); -moz-opacity:0.9;">
-<input type="text" id="messageEditor1Tags" readonly="readonly" style="width:18em;"/>
-<form action="/clothes/tags" method="post" >
-{% csrf_token %}
-<textarea name="message" id="messageEditor1" style="width:18em;"></textarea>
-<p>
-<input type="submit" value="Сказать" disabled="disabled"/>
-</p>
-</form>
-</div>
+	<div id="say" style="background-color: #f8f8f8; width:16em; padding:1em; opacity:0.9; filter:alpha(opacity=90); -moz-opacity:0.9;">
+		<input type="text" id="messageEditor1Tags" readonly="readonly" style="width:18em;"/>
+		<form action="/clothes/tags" method="post" >
+			{% csrf_token %}
+			<textarea name="message" id="messageEditor1" style="width:18em;"></textarea>
+			<p><input type="submit" value="Сказать" disabled="disabled"/></p>
+		</form>
+	</div>
 
-<div id="feed" style="background-color: #f8f8f8; width:17em; padding:0.5em; opacity:0.9; filter:alpha(opacity=90); -moz-opacity:0.9; margin-top:1em; overflow-y:scroll;height:17em; ">
-{% if feed %}
-    <ul>
-    {% for message in feed %}
-        <div>{{ message.text }}</div>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No messages are available</p>
-{% endif %}
-</div>
-
-
+	<div id="feed" style="background-color: #f8f8f8; width:17em; padding:0.5em; opacity:0.9; filter:alpha(opacity=90); -moz-opacity:0.9; margin-top:1em; overflow-y:scroll;height:17em; ">
+	{% if feed %}
+		<ul>
+		{% for message in feed %}
+			<div>{{ message.text }}</div>
+		{% endfor %}
+		</ul>
+	{% else %}
+		<p>No messages are available</p>
+	{% endif %}
+	</div>
 </div>
