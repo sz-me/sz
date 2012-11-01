@@ -175,6 +175,8 @@ REST_FRAMEWORK = {
         )
 }
 
+GEONAMES_USER = "sz.me"
+
 import sys
 if 'test' in sys.argv:
     try:

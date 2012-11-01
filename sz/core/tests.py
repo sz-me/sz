@@ -57,7 +57,7 @@ from sz.core import venue
 
 class GeoServicesTest(TestCase):
     def test_search_venues(self):
-        result = venue.search(position, None)
+        result = venue.search(position, None, None)
         print u'МЕСТА (%s)' % len(result[u'venues'])
         i = 1
         print ";\n".join(["%s, %s (%s, %s)" %
@@ -68,3 +68,27 @@ class GeoServicesTest(TestCase):
                               v[u'location'].get(u'lng'),
                            ) for v in result[u'venues']])
         self.assertTrue(result)
+
+
+from sz.core import geonames
+from sz.settings import GEONAMES_USER
+
+class GeoNamesTest(TestCase):
+    def setUp(self):
+        self.geo = geonames.GeoNamesWrapper(GEONAMES_USER)
+
+    def test_uri(self):
+        params = {
+            'lat': position['latitude'],
+            'lng': position['longitude'],
+            'style': 'SHORT'
+        }
+        uri = self.geo.get_uri('findNearbyPlaceName', params)
+        print uri
+        self.assertEquals(uri, 'http://api.geonames.org/findNearbyPlaceNameJSON?lat=50.2616113&username=sz.me&lng=127.5266082&style=SHORT')
+
+    def test_request(self):
+        r = self.geo.find_nearby_place_name_json(position['latitude'], position['longitude'])
+        print r
+        city = r['geonames'][0]['name']
+        self.assertTrue(city, 'Blagoveshchensk')
