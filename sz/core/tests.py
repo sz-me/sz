@@ -71,11 +71,11 @@ class GeoServicesTest(TestCase):
 
 
 from sz.core import geonames
-from sz.settings import GEONAMES_USER
+
 
 class GeoNamesTest(TestCase):
     def setUp(self):
-        self.geo = geonames.GeoNamesWrapper(GEONAMES_USER)
+        self.geo = geonames.GeoNamesWrapper()
 
     def test_uri(self):
         params = {

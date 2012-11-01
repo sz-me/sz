@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 import urllib
 import simplejson as json
+from sz.settings import GEONAMES_CONFIG
 
 class GeoNamesWrapper(object):
     """GeoNames API wrapper"""
-    def __init__(self, user):
-        self.user = user
 
-    geonames_api_uri = "http://api.geonames.org/"
+    geonames_api_uri = GEONAMES_CONFIG['API_URI']
+    username = GEONAMES_CONFIG['USERNAME']
 
     def get_uri(self, resource, get_params = {}, json = True):
         if json:
             json_postfix = "JSON"
         else:
             json_postfix = ""
-        get_params["username"] = self.user
+        get_params["username"] = self.username
         get_params_str = urllib.urlencode(get_params)
         uri = "{API_URI}{RESOURCE}{JSON_POSTFIX}?{GET_PARAMS}".format(
             API_URI = self.geonames_api_uri,

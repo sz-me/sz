@@ -175,7 +175,10 @@ REST_FRAMEWORK = {
         )
 }
 
-GEONAMES_USER = "sz.me"
+GEONAMES_CONFIG = {
+    'API_URI': 'http://api.geonames.org/',
+    'USERNAME': 'sz.me',
+    }
 
 import sys
 if 'test' in sys.argv:
