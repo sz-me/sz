@@ -86,5 +86,34 @@ class PlaceTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+from sz.api import serializers
+class SerializersTest(TestCase):
+    def test_city_search(self):
+        data1 = {
+            'latitude': 50.2616113,
+            'longitude': 127.5266082,
+            'query': None
+        }
+        serializer = serializers.CitySearchSerializer(data1)
+        self.assertTrue(serializer.is_valid())
+
+        data2 = {
+            'latitude': 50.2616113,
+            'longitude': None,
+            'query': 'Blagoveshch'
+        }
+        serializer = serializers.CitySearchSerializer(data2)
+        self.assertFalse(serializer.is_valid())
+        self.assertEquals(serializer.errors, {'non_field_errors': [u'Latitude and longitude or query required']})
+
+        data3 = {
+            'longitude': None,
+            'query': 'Blagoveshch'
+        }
+        serializer = serializers.CitySearchSerializer(data3)
+        self.assertTrue(serializer.is_valid())
+
+
+
 
     
