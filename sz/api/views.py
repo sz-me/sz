@@ -14,8 +14,10 @@ class ApiRoot(APIView):
     def get(self, request, format=None):
         return Response({
             'messages': reverse('message-list', request=request),
+            'cities': reverse('city-list', request=request),
             'places': reverse('place-list', request=request),
             'users': reverse('user-list', request=request),
+
             })
 
 
@@ -75,6 +77,15 @@ class UserRoot(APIView):
         serializer = serializers.UserSerializer(instance=users)
         return Response(serializer.data)
 
+class CityRoot(APIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    def get(self, request, format=None):
+        serializer = serializers.CitySearchSerializer(request.QUERY_PARAMS)
+        if serializer.is_valid():
+            return Response({"error": u"Не реализовано"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class PlaceRoot(APIView):
     """
     List of places near the current location.
@@ -82,7 +93,7 @@ class PlaceRoot(APIView):
     """
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None):
-        serializer = serializers.PlaceSearchCommandSerializer(request.QUERY_PARAMS)
+        serializer = serializers.PlaceSearchSerializer(request.QUERY_PARAMS)
         if serializer.is_valid():
             position = {
                 'latitude': request.QUERY_PARAMS['latitude'],
