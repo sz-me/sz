@@ -95,14 +95,16 @@ class GeoNamesTest(TestCase):
         self.assertTrue(city, 'Blagoveshchensk')
     '''
     def test_search(self):
-        params = { 'name_startsWith': 'NY', 'maxRows': 10}
+        params = { 'name_startsWith': 'Blagoveshchensk', 'maxRows': 10, 'style': 'MEDIUM' }
         r = self.geoNamesApi.search_json(params)
-        print ".\n".join([u"%s,%s,%s (%f,%f) geonameId=%i" % (
+        print r
+        print ".\n".join([u"%s,%s,%s (%f,%f) geonameId=%i, toponymName='%s'" % (
             g['name'],
             g['adminName1'],
             g['countryCode'],
             g['lat'],
             g['lng'],
-            g['geonameId']
+            g['geonameId'],
+            g['toponymName']
             ) for g in r['geonames']])
         self.assertTrue(r)

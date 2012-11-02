@@ -41,3 +41,22 @@ class GeoNamesApi(object):
     def search_json(self, params):
         return self.__get_json_result('search', params)
 
+
+from sz.settings import GEONAMES_API_CONFIG
+
+def search(query):
+    params = { 'name_startsWith': query, 'maxRows': 10, 'style': 'MEDIUM'}
+    geoNamesApi = GeoNamesApi(GEONAMES_API_CONFIG)
+    r = geoNamesApi.search_json(params)
+    return r
+
+def nearby(position):
+    params = {
+        'lat': position['latitude'],
+        'lng': position['longitude'],
+        'style': 'MEDIUM'
+    }
+    geoNamesApi = GeoNamesApi(GEONAMES_API_CONFIG)
+    r = geoNamesApi.find_nearby_place_name_json(params)
+    return r
+
