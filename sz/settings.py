@@ -175,7 +175,7 @@ REST_FRAMEWORK = {
         )
 }
 
-GEONAMES_CONFIG = {
+GEONAMES_API_CONFIG = {
     'API_URI': 'http://api.geonames.org/',
     'USERNAME': 'sz.me',
     }

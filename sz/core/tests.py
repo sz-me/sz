@@ -71,24 +71,38 @@ class GeoServicesTest(TestCase):
 
 
 from sz.core import geonames
-
+from sz.settings import GEONAMES_API_CONFIG
 
 class GeoNamesTest(TestCase):
     def setUp(self):
-        self.geo = geonames.GeoNamesWrapper()
-
-    def test_uri(self):
-        params = {
+        self.geoNamesApi = geonames.GeoNamesApi(GEONAMES_API_CONFIG)
+        self.params = {
             'lat': position['latitude'],
             'lng': position['longitude'],
             'style': 'SHORT'
         }
-        uri = self.geo.get_uri('findNearbyPlaceName', params)
-        print uri
-        self.assertEquals(uri, 'http://api.geonames.org/findNearbyPlaceNameJSON?lat=50.2616113&username=sz.me&lng=127.5266082&style=SHORT')
 
-    def test_request(self):
-        r = self.geo.find_nearby_place_name_json(position['latitude'], position['longitude'])
-        print r
+    def test_uri(self):
+
+        uri = self.geoNamesApi.get_uri('findNearbyPlaceName', self.params)
+        #print uri
+        self.assertEquals(uri, 'http://api.geonames.org/findNearbyPlaceNameJSON?lat=50.2616113&username=sz.me&lng=127.5266082&style=SHORT')
+    '''
+    def test_find_nearby_place_name_json(self):
+        r = self.geoNamesApi.find_nearby_place_name_json(self.params)
+        #print r
         city = r['geonames'][0]['name']
         self.assertTrue(city, 'Blagoveshchensk')
+    '''
+    def test_search(self):
+        params = { 'name_startsWith': 'NY', 'maxRows': 10}
+        r = self.geoNamesApi.search_json(params)
+        print ".\n".join([u"%s,%s,%s (%f,%f) geonameId=%i" % (
+            g['name'],
+            g['adminName1'],
+            g['countryCode'],
+            g['lat'],
+            g['lng'],
+            g['geonameId']
+            ) for g in r['geonames']])
+        self.assertTrue(r)
