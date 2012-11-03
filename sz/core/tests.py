@@ -79,24 +79,24 @@ class GeoNamesTest(TestCase):
         self.params = {
             'lat': position['latitude'],
             'lng': position['longitude'],
-            'style': 'SHORT'
+            'style': 'MEDIUM'
         }
 
     def test_uri(self):
 
         uri = self.geoNamesApi.get_uri('findNearbyPlaceName', self.params)
         #print uri
-        self.assertEquals(uri, 'http://api.geonames.org/findNearbyPlaceNameJSON?lat=50.2616113&username=sz.me&lng=127.5266082&style=SHORT')
-    '''
+        self.assertEquals(uri, 'http://api.geonames.org/findNearbyPlaceNameJSON?lat=50.2616113&username=sz.me&lng=127.5266082&style=MEDIUM')
+
     def test_find_nearby_place_name_json(self):
         r = self.geoNamesApi.find_nearby_place_name_json(self.params)
-        #print r
+        print r
         city = r['geonames'][0]['name']
         self.assertTrue(city, 'Blagoveshchensk')
-    '''
+
     def test_search(self):
         params = { 'name_startsWith': 'Blagoveshchensk', 'maxRows': 10, 'style': 'MEDIUM' }
-        r = self.geoNamesApi.search_json(params)
+        r = geonames.search('Blagoveshchensk')#self.geoNamesApi.search_json(params)
         print r
         print ".\n".join([u"%s,%s,%s (%f,%f) geonameId=%i, toponymName='%s'" % (
             g['name'],

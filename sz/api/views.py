@@ -82,7 +82,12 @@ class CityRoot(APIView):
     def get(self, request, format=None):
         serializer = serializers.CitySearchSerializer(request.QUERY_PARAMS)
         if serializer.is_valid():
-            return Response({"error": u"Не реализовано"}, status=status.HTTP_400_BAD_REQUEST)
+            position = {
+                'latitude': request.QUERY_PARAMS.get('latitude'),
+                'longitude': request.QUERY_PARAMS.get('longitude')
+                }
+            query = request.QUERY_PARAMS.get('query')
+            return Response(services.geonames_city_service(position, query))
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -104,7 +109,7 @@ class PlaceRoot(APIView):
                 query = u"%s" % request.QUERY_PARAMS['query']
             else:
                 query = None
-            places = services.venue_location_search_service(position, query)
+            places = services.venue_place_service(position, query)
             return Response(places)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

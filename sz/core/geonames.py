@@ -45,7 +45,11 @@ class GeoNamesApi(object):
 from sz.settings import GEONAMES_API_CONFIG
 
 def search(query):
-    params = { 'name_startsWith': query, 'maxRows': 10, 'style': 'MEDIUM'}
+    params = {
+        'name_startsWith': query.encode('utf8'),
+        'maxRows': 10,
+        'style': 'MEDIUM'
+    }
     geoNamesApi = GeoNamesApi(GEONAMES_API_CONFIG)
     r = geoNamesApi.search_json(params)
     return r
