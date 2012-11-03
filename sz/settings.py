@@ -166,7 +166,7 @@ FOURSQUARE_CONFIG = {
 }
 
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERERS': (
+    'DEFAULT_RENDERER_CLASSES': (
         'sz.api.renderers.UnicodeJSONRenderer',
         'sz.api.renderers.BrowsableAPIRenderer',
         ),
