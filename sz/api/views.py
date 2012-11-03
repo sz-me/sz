@@ -17,9 +17,7 @@ class ApiRoot(APIView):
             'cities': reverse('city-list', request=request),
             'places': reverse('place-list', request=request),
             'users': reverse('user-list', request=request),
-
             })
-
 
 class MessageRoot(APIView):
     """

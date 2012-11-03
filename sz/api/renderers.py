@@ -1,14 +1,8 @@
-import string
-from django import forms
+# -*- coding: utf-8 -*-
 from django.http.multipartparser import parse_header
-from django.template import RequestContext, loader
 from django.utils import simplejson as json
-from rest_framework import serializers, parsers, VERSION
 from rest_framework import renderers as rest_framework_renderers
-from rest_framework.request import clone_request
-from rest_framework.settings import api_settings
 from rest_framework.utils import encoders
-from rest_framework.utils.breadcrumbs import get_breadcrumbs
 
 class UnicodeJSONRenderer(rest_framework_renderers.BaseRenderer):
     """
