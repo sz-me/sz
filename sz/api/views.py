@@ -10,7 +10,15 @@ from sz.api import services
 from sz.api.response import Response
 from sz.core.models import Message
 
-class ApiRoot(APIView):
+class SzApiView(APIView):
+    """
+        Base class for SZ Web API views
+    """
+    def handle_exception(self, exc):
+        base_response = APIView.handle_exception(self, exc)
+        return Response(base_response.data, status = base_response.status_code)
+
+class ApiRoot(SzApiView):
     def get(self, request, format=None):
         return Response({
             'messages': reverse('message-list', request=request),
@@ -19,7 +27,7 @@ class ApiRoot(APIView):
             'users': reverse('user-list', request=request),
             })
 
-class MessageRoot(APIView):
+class MessageRoot(SzApiView):
     """
     List all messages, or create a new message.
     """
@@ -36,7 +44,7 @@ class MessageRoot(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class MessageInstance(APIView):
+class MessageInstance(SzApiView):
     """
     Retrieve, update or delete a message instance.
     """
@@ -66,7 +74,7 @@ class MessageInstance(APIView):
         message.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class UserRoot(APIView):
+class UserRoot(SzApiView):
     """
     List all users.
     """
@@ -75,7 +83,7 @@ class UserRoot(APIView):
         serializer = serializers.UserSerializer(instance=users)
         return Response(serializer.data)
 
-class CityRoot(APIView):
+class CityRoot(SzApiView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     def get(self, request, format=None):
         serializer = serializers.CitySearchSerializer(request.QUERY_PARAMS)
@@ -89,7 +97,8 @@ class CityRoot(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class PlaceRoot(APIView):
+
+class PlaceRoot(SzApiView):
     """
     List of places near the current location.
     For example, [places near 50.2616113, 127.5266082](?latitude=50.2616113&longitude=127.5266082).
@@ -111,6 +120,8 @@ class PlaceRoot(APIView):
             return Response(places)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 '''
 def tags(request):
