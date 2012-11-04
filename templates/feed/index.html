@@ -8,16 +8,17 @@ $(document).ready(function () {
 	$('#messageEditor1').sz_msg_editor({url: "http://localhost:8000/api/tags"});
 	
 	var api = new sz.Api({
-		uri: 'http://localhost:8000/api/',
+		uri: 'api/',
 		format: 'json',
 		request_func: $.ajax
 	});
 	
 	function placesView(data)
 	{
-
+        var html = '';
         if (data.meta != null)
         {
+
             $.each(data.response.places, function(key, value) {
 			    html = html + '<li><a href="' + value.foursquare_details_uri + '">' + value.name + '</a></li>';
 		    });
