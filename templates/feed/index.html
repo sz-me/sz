@@ -13,22 +13,61 @@ $(document).ready(function () {
 		request_func: $.ajax
 	});
 	
-	function apiUrls(response)
+	function placesView(data)
 	{
-		var html = "";
-		$.each(response, function(key, value) {
-			html = html + '<li><a href="' + value + '">' + key + '</a></li>';
-		});
-		html = '<ul>' + html + '</ul>';
+
+        if (data.meta != null)
+        {
+            $.each(data.response.places, function(key, value) {
+			    html = html + '<li><a href="' + value.foursquare_details_uri + '">' + value.name + '</a></li>';
+		    });
+		    html = '<ul>' + html + '</ul>';
+        }
+        else
+            html = "<em>" + data + "</em>"
+
 		$('#feed').html(html);
+
 	}
-	
-	api.get('', {}, function(r){ apiUrls(r.response); });
+
+    function cityView(data)
+    {
+        if (data.response.cities.length == 1)
+        {
+            $('#location').val(data.response.cities[0].name + ', ' + data.response.cities[0].country_code)
+        }
+
+    }
+
+    navigator.geolocation.getCurrentPosition(function(data) {
+        var latitude = data['coords']['latitude'];
+        var longitude = data['coords']['longitude'];
+        var accuracy = data['coords']['accuracy'];
+
+        api.get(
+            'cities',
+            {
+                latitude: latitude,
+                longitude: longitude
+            },
+            function(r){ cityView(r);
+        });
+
+        api.get(
+            'places',
+            {
+                latitude: latitude,
+                longitude: longitude,
+                accuracy: accuracy
+            },
+            function(r){ placesView(r); });
+        });
 
 });
 </script>
-<div style="background-image:url('{{ STATIC_URL }}img/sz-me.png'); width:19.5em;padding:1em 0.8em 1em 1.2em; margin-left:15%; margin-top:1.5em;">
+<div style="background-image:url('{{ STATIC_URL }}img/sz-me.png'); width:19.5em;padding:1em 0.8em 1em 1.2em; margin-left:4em; margin-top:1.5em;">
 	<div id="say" style="background-color: #f8f8f8; width:16em; padding:1em; opacity:0.9; filter:alpha(opacity=90); -moz-opacity:0.9;">
+        <input type="text" id="location" readonly="readonly">
 		<input type="text" id="messageEditor1Tags" readonly="readonly" style="width:18em;"/>
 		<form action="/clothes/tags" method="post" >
 			{% csrf_token %}
@@ -49,3 +88,4 @@ $(document).ready(function () {
 	{% endif %}
 	</div>
 </div>
+<img src="https://playfoursquare.s3.amazonaws.com/press/logo/poweredByFoursquare_gray.png">
