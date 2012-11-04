@@ -1,20 +1,21 @@
 var sz = {};
 sz.Api = function(options){
     this.uri = options.uri;
-    this.format = options.format;
     this.request_func = options.request_func
     this.request = function(verb, resource, parameters, response_handler){
         var resource_uri = resource;
         if (resource_uri.indexOf('http://') == -1 && resource_uri.indexOf('https://') == -1)
             resource_uri = this.uri + resource_uri;
+        parameters.format = 'json';
+
         this.request_func(
         {
             url: resource_uri,
-            contentType: this.format = options.format,
+            contentType: 'JSON',
             type: verb,
             data: parameters,
             success: response_handler,
-            error: function(jqXHR, textStatus, errorThrown) { response_handler(jqXHR.response); }
+            error: function(jqXHR, textStatus, errorThrown) { response_handler(JSON.parse(jqXHR.responseText)); }
         });
     }
 

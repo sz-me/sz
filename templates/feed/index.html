@@ -9,14 +9,13 @@ $(document).ready(function () {
 	
 	var api = new sz.Api({
 		uri: 'api/',
-		format: 'json',
 		request_func: $.ajax
 	});
 	
 	function placesView(data)
 	{
         var html = '';
-        if (data.meta != null)
+        if (data.meta.code == 200)
         {
 
             $.each(data.response.places, function(key, value) {
@@ -25,10 +24,9 @@ $(document).ready(function () {
 		    html = '<ul>' + html + '</ul>';
         }
         else
-            html = "<em>" + data + "</em>"
+            html = "<strong>" + data.response.detail + "</strong>"
 
 		$('#feed').html(html);
-
 	}
 
     function cityView(data)
