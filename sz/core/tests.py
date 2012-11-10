@@ -15,7 +15,7 @@ class ListsTest(TestCase):
         self.assertFalse(lists.any(lambda x: x < 0, [1, 2, 3]))
         self.assertFalse(lists.any(lambda x: x != None, [None, None, None]))
         self.assertTrue(lists.any(lambda x: x > 1, [0, 1, 2]))
-
+"""
 class TagsServicesTest(TestCase):
     def setUp(self):
         print u'[SETUP]'
@@ -47,6 +47,7 @@ class TagsServicesTest(TestCase):
         tags = spellcorrector_tagging_algorithm(message, self.tags) 
         print u'Тэги: ' + string.joinfields(tags, ', ')
         self.assertEqual(tags, [u'обувь'])
+"""
 
 position = {
     'latitude': 50.2616113,
@@ -108,3 +109,14 @@ class GeoNamesTest(TestCase):
             g['toponymName']
             ) for g in r['geonames']])
         self.assertTrue(r)
+
+from sz.core.algorithms import stemmers
+
+class StemmerTest(TestCase):
+    def test_russian(self):
+        stemmer = stemmers.RussianStemmer()
+        print stemmer.stemWord(u'маечка')
+        print stemmer.stemWord(u'майка')
+        print stemmer.stemWord(u'Майк')
+        print stemmer.stemWord(u'палаточка')
+        self.assertEquals(stemmer.stemWord(u'майка'), u'майк')
