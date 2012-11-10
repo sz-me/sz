@@ -111,12 +111,33 @@ class GeoNamesTest(TestCase):
         self.assertTrue(r)
 
 from sz.core.algorithms import stemmers
+russian_stemmer = stemmers.RussianStemmer()
 
 class StemmerTest(TestCase):
     def test_russian(self):
-        stemmer = stemmers.RussianStemmer()
-        print stemmer.stemWord(u'маечка')
-        print stemmer.stemWord(u'майка')
-        print stemmer.stemWord(u'Майк')
-        print stemmer.stemWord(u'палаточка')
-        self.assertEquals(stemmer.stemWord(u'майка'), u'майк')
+        print russian_stemmer.stemWord(u'маечка')
+        print russian_stemmer.stemWord(u'майка')
+        print russian_stemmer.stemWord(u'Майк')
+        print russian_stemmer.stemWord(u'палаточка')
+        self.assertEquals(russian_stemmer.stemWord(u'майка'), u'майк')
+
+from sz.core import models
+from sz.core import services
+class CatigorizationServiceTest(TestCase):
+    def setUp(self):
+        self.thinks = [
+            models.Thing(
+                tag=u'майка',
+                stem = russian_stemmer.stemWord(u'майка')),
+            models.Thing(
+                tag=u'трусы',
+                stem = russian_stemmer.stemWord(u'трусы')),
+            models.Thing(
+                tag=u'носки',
+                stem = russian_stemmer.stemWord(u'носки')),
+        ]
+        self.categorizationService = services.CategorizationService()
+    def test_detect_thing(self):
+        message = models.Message(id=1, text=u"купил пакет трусов, доволен как лось!")
+        detected_thinks = self.categorizationService.detect_thinks(self.thinks, message)
+        self.assertEquals(len(detected_thinks), 1)
