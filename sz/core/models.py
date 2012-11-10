@@ -1,4 +1,5 @@
-﻿from django.db import models
+﻿# -*- coding: utf-8 -*-
+from django.db import models
 from sz.core.db import LowerCaseCharField
 from django.contrib import auth
 from sz.core.algorithms import stemmers
@@ -48,6 +49,17 @@ class Message(models.Model):
     latitude = models.FloatField(verbose_name=u"широта")
     longitude = models.FloatField(verbose_name=u"долгота")
     accuracy = models.FloatField(verbose_name=u"точность")
+    city_id = models.IntegerField(
+        verbose_name=u"Идентификатор в GeoNames",
+        db_index=True,
+        null=False,
+        blank=False)
+    place_id = models.CharField(
+        max_length=24,
+        verbose_name=u"Идентификатор в Foursquare",
+        db_index=True,
+        null=False,
+        blank=False)
     bargain_date = models.DateTimeField(
         verbose_name=u"дата покупки",
         null=True,
@@ -57,18 +69,13 @@ class Message(models.Model):
         null=False,
         editable=False,
         verbose_name=u"дата добавления")
-    user = models.ForeignKey(
-        auth.models.User,
-        verbose_name=u"пользователь")
-    place_id = models.CharField(
-        max_length=24,
-        db_index=True,
-        null=False,
-        blank=False)
     things = models.ManyToManyField(
         Thing,
         null=True,
         blank=True)
+    user = models.ForeignKey(
+        auth.models.User,
+        verbose_name=u"пользователь")
     class Meta:
         verbose_name = u"сообщение"
         verbose_name_plural = u"сообщения"
