@@ -1,13 +1,22 @@
-﻿from sz.core.models import DomainTag, DomainPattern
+﻿from sz.core.models import Category, Thing, Message
 from django.contrib import admin
 
-class DomainPatternInline(admin.StackedInline):
-    model = DomainPattern
-    extra = 1
-
-class DomainTagAdmin(admin.ModelAdmin):
-    inlines = [DomainPatternInline]
+class CategoryAdmin(admin.ModelAdmin):
     list_per_page = 50
     ordering = ['name']
 
-admin.site.register(DomainTag, DomainTagAdmin)
+admin.site.register(Category, CategoryAdmin)
+
+class ThingAdmin(admin.ModelAdmin):
+    list_display = ('tag', 'stem')
+    list_filter = ('category',)
+    list_per_page = 50
+    ordering = ['tag']
+
+admin.site.register(Thing, ThingAdmin)
+
+class MessageAdmin(admin.ModelAdmin):
+    list_per_page = 50
+    ordering = ['date']
+
+admin.site.register(Message, MessageAdmin)

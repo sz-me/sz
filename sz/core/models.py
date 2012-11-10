@@ -1,55 +1,76 @@
 ﻿from django.db import models
 from sz.core.db import LowerCaseCharField
 from django.contrib import auth
+from sz.core.algorithms import stemmers
 
-class Tag(models.Model):
-    name = LowerCaseCharField(verbose_name=u"тэг", help_text="Без '#'", max_length=64, unique=True, db_index=True)
+class Category(models.Model):
+    name = LowerCaseCharField(
+        verbose_name=u"категория",
+        help_text=u"Например, часть тела, для которой предназначена вещь",
+        max_length=64,
+        primary_key=True,
+        db_index=True)
     def __unicode__(self):
-        return u"#%s" % self.name
+        return u"%s" % self.name
     class Meta:
-        abstract = True
-        verbose_name = u"тэг"
-        verbose_name_plural = u"тэги"
+        verbose_name = u"категория"
+        verbose_name_plural = u"категории"
 
-class Pattern(models.Model):
-    #tag = models.ForeignKey(Tag)
-    value = LowerCaseCharField(verbose_name=u"словоформа или синоним", max_length=32)
+class Thing(models.Model):
+    tag = LowerCaseCharField(
+        verbose_name=u"тэг",
+        help_text=u"Без '#'",
+        max_length=64,
+        primary_key=True,
+        db_index=True)
+    stem = LowerCaseCharField(
+        verbose_name=u"основа",
+        help_text=u"Основа слова для поиска",
+        max_length=64,
+        unique=True,
+        db_index=True,
+        editable=False)
+    category = models.ForeignKey(
+        Category,
+        verbose_name=u"категория")
+    def save(self, *args, **kwargs):
+        stemmer = stemmers.RussianStemmer()
+        self.stem = stemmer.stemWord(self.tag)
+        super(Thing, self).save(*args, **kwargs)
     def __unicode__(self):
-        return u"%s..." % self.value
+        return u"#%s" % self.tag
     class Meta:
-        abstract = True
-        verbose_name = u"словоформа"
-        verbose_name_plural = u"словоформы"
+        verbose_name = u"вещь"
+        verbose_name_plural = u"вещи"
 
-class DomainTag(Tag):
-    class Meta:
-        verbose_name = u"тэг предметной области"
-        verbose_name_plural = u"тэги предметной области"
-
-class DomainPattern(Pattern):
-    tag = models.ForeignKey(DomainTag, related_name='pattern_set')
-    class Meta:
-        verbose_name = u"словоформа предметной области"
-        verbose_name_plural = u"словоформы предметной области"
-"""
-class Place(models.Model):
-    id = models.CharField(primary_key=True, max_length=24, db_index=True)
-    name = models.CharField(verbose_name=u"Название", max_length=64)
-    address = models.CharField(verbose_name=u"Адрес", max_length=256)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    class Meta:
-        verbose_name = u"тэг положения"
-        verbose_name_plural = u"тэги положения"
-"""
 class Message(models.Model):
-    text = models.TextField(max_length=1024) #Like a TEXT field
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    accuracy = models.FloatField()
-    bargain_date = models.DateTimeField()
-    pub_date = models.DateTimeField(auto_now_add=True) #Like a DATETIME field
-    user = models.ForeignKey(auth.models.User)
-    place_id = models.CharField(max_length=24, db_index=True)
-    def __unicode__(self): #Tell it to return as a unicode string (The name of the to-do item) rather than just Object.
+    text = models.TextField(max_length=1024, verbose_name=u"сообщение") #Like a TEXT field
+    latitude = models.FloatField(verbose_name=u"широта")
+    longitude = models.FloatField(verbose_name=u"долгота")
+    accuracy = models.FloatField(verbose_name=u"точность")
+    bargain_date = models.DateTimeField(
+        verbose_name=u"дата покупки",
+        null=True,
+        blank=True)
+    date = models.DateTimeField(
+        auto_now_add=True,
+        null=False,
+        editable=False,
+        verbose_name=u"дата добавления")
+    user = models.ForeignKey(
+        auth.models.User,
+        verbose_name=u"пользователь")
+    place_id = models.CharField(
+        max_length=24,
+        db_index=True,
+        null=False,
+        blank=False)
+    things = models.ManyToManyField(
+        Thing,
+        null=True,
+        blank=True)
+    class Meta:
+        verbose_name = u"сообщение"
+        verbose_name_plural = u"сообщения"
+    def __unicode__(self):
         return self.text
