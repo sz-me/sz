@@ -1,4 +1,5 @@
 django
 foursquare
 markdown
+simplejson
 djangorestframework
