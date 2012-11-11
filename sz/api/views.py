@@ -6,9 +6,10 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 from sz.api import serializers
-from sz.api import services
+from sz.api import services as api_services
 from sz.api.response import Response
-from sz.core.models import Message
+from sz.core import models
+from sz.core import services
 
 class SzApiView(APIView):
     """
@@ -32,15 +33,19 @@ class MessageRoot(SzApiView):
     List all messages, or create a new message.
     """
     def get(self, request, format=None):
-        messages = Message.objects.all()
+        messages = models.Message.objects.all()
         serializer = serializers.MessageSerializer(instance=messages)
         return Response(serializer.data)
 
     def post(self, request, format=None):
         serializer = serializers.MessageSerializer(request.DATA)
         if serializer.is_valid():
-            comment = serializer.object
-            comment.save()
+            message = serializer.object
+            message.user = request.user
+            things = models.Thing.objects.all()
+            categorization_service = services.CategorizationService()
+            categorization_service.detect_thinks(things, message)
+            #message.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -51,8 +56,8 @@ class MessageInstance(SzApiView):
 
     def get_object(self, pk):
         try:
-            return Message.objects.get(pk=pk)
-        except Message.DoesNotExist:
+            return models.Message.objects.get(pk=pk)
+        except models.Message.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
@@ -93,7 +98,7 @@ class CityRoot(SzApiView):
                 'longitude': request.QUERY_PARAMS.get('longitude')
                 }
             query = request.QUERY_PARAMS.get('query')
-            return Response(services.geonames_city_service(position, query))
+            return Response(api_services.geonames_city_service(position, query))
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -116,17 +121,7 @@ class PlaceRoot(SzApiView):
                 query = u"%s" % request.QUERY_PARAMS['query']
             else:
                 query = None
-            places = services.venue_place_service(position, query)
+            places = api_services.venue_place_service(position, query)
             return Response(places)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-'''
-def tags(request):
-    message = request.POST.get('message')
-    tags = DomainTag.objects.all().order_by('-name')
-    tags = services.spellcorrector_tagging_service(message, tags)
-    return HttpResponse(simplejson.dumps({"tags": tags}, ensure_ascii=False), mimetype="application/json")
-'''
