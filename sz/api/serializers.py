@@ -11,7 +11,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class MessageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Message
-        fields = ('text', 'latitude', 'longitude', 'accuracy', 'bargain_date', 'pub_date', 'user', 'place_id')
+        fields = ('text', 'latitude', 'longitude', 'accuracy', 'bargain_date', 'place_id', 'city_id')
 
 class PlaceSearchSerializer(serializers.Serializer):
     latitude = serializers.FloatField(required = True)
