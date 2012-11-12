@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from sz.core.models import Message
+from sz.core import models
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -10,7 +10,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 class MessageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Message
+        model = models.Message
         fields = ('text', 'latitude', 'longitude', 'accuracy', 'bargain_date', 'place_id', 'city_id')
 
 class PlaceSearchSerializer(serializers.Serializer):

@@ -9,7 +9,7 @@ from django.db.utils import DatabaseError
 
 def index(request):
     try:
-        feed = Message.objects.all().order_by('-pub_date')
+        feed = Message.objects.all().order_by('-date')
     except DatabaseError: 
         raise Http404
     return render_to_response(

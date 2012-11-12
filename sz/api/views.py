@@ -26,7 +26,7 @@ class ApiRoot(SzApiView):
             'cities': reverse('city-list', request=request),
             'places': reverse('place-list', request=request),
             'users': reverse('user-list', request=request),
-            })
+        })
 
 class MessageRoot(SzApiView):
     """
@@ -42,10 +42,10 @@ class MessageRoot(SzApiView):
         if serializer.is_valid():
             message = serializer.object
             message.user = request.user
+            message.save()
             things = models.Thing.objects.all()
             categorization_service = services.CategorizationService()
             categorization_service.detect_thinks(things, message)
-            #message.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -79,6 +79,7 @@ class MessageInstance(SzApiView):
         message.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class UserRoot(SzApiView):
     """
     List all users.
@@ -87,6 +88,7 @@ class UserRoot(SzApiView):
         users = User.objects.all()
         serializer = serializers.UserSerializer(instance=users)
         return Response(serializer.data)
+
 
 class CityRoot(SzApiView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)

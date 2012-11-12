@@ -11,5 +11,6 @@ class CategorizationService:
                 words),
             things
         )
-        message.things = detected_things;
+        for thing in detected_things:
+            message.things.add(thing);
         return detected_things

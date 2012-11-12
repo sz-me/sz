@@ -8,5 +8,5 @@ urlpatterns = patterns('',
     url(r'^users/$', views.UserRoot.as_view(), name='user-list'),
     url(r'^places/$', views.PlaceRoot.as_view(), name='place-list'),
     url(r'^cities/$', views.CityRoot.as_view(), name='city-list'),
-    )
+)
 
