@@ -8,10 +8,19 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = ('username', 'email')
 
-class MessageSerializer(serializers.HyperlinkedModelSerializer):
+class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Message
-        fields = ('text', 'latitude', 'longitude', 'accuracy', 'bargain_date', 'place_id', 'city_id')
+
+class ThingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Thing
+        fields = ('tag', 'category')
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Category
+        fields = ('name',)
 
 class PlaceSearchSerializer(serializers.Serializer):
     latitude = serializers.FloatField(required = True)

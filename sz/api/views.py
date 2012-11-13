@@ -26,6 +26,8 @@ class ApiRoot(SzApiView):
             'cities': reverse('city-list', request=request),
             'places': reverse('place-list', request=request),
             'users': reverse('user-list', request=request),
+            'things': reverse('thing-list', request=request),
+            'categories': reverse('category-list', request=request),
         })
 
 class MessageRoot(SzApiView):
@@ -127,3 +129,22 @@ class PlaceRoot(SzApiView):
             return Response(places)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ThingRoot(SzApiView):
+    """
+    List all messages, or create a new message.
+    """
+    def get(self, request, format=None):
+        things = models.Thing.objects.all()
+        serializer = serializers.ThingSerializer(instance=things)
+        return Response(serializer.data)
+
+class CategoryRoot(SzApiView):
+    """
+    List all messages, or create a new message.
+    """
+    def get(self, request, format=None):
+        categories = models.Category.objects.all()
+        serializer = serializers.CategorySerializer(instance=categories)
+        return Response(serializer.data)
