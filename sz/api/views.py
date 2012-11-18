@@ -40,7 +40,7 @@ class MessageRoot(SzApiView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = serializers.MessageSerializer(request.DATA)
+        serializer = serializers.MessageSerializer(data=request.DATA)
         if serializer.is_valid():
             message = serializer.object
             message.user = request.user
@@ -69,7 +69,7 @@ class MessageInstance(SzApiView):
 
     def put(self, request, pk, format=None):
         message = self.get_object(pk)
-        serializer = serializers.MessageSerializer(request.DATA, instance=message)
+        serializer = serializers.MessageSerializer(data=request.DATA, instance=message)
         if serializer.is_valid():
             message = serializer.object
             message.save()
