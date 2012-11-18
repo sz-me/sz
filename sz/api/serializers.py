@@ -39,5 +39,5 @@ class CitySearchSerializer(serializers.Serializer):
         longitude = attrs.get('longitude')
         query = attrs.get('query')
         if  not (latitude and longitude and not query or not latitude and not longitude and query):
-            raise serializers.ValidationError("Latitude and longitude or query required")
+            raise serializers.ValidationError("Only latitude and longitude or only query required")
         return attrs

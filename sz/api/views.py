@@ -95,7 +95,7 @@ class UserRoot(SzApiView):
 class CityRoot(SzApiView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     def get(self, request, format=None):
-        serializer = serializers.CitySearchSerializer(request.QUERY_PARAMS)
+        serializer = serializers.CitySearchSerializer(data=request.QUERY_PARAMS)
         if serializer.is_valid():
             position = {
                 'latitude': request.QUERY_PARAMS.get('latitude'),
@@ -114,7 +114,7 @@ class PlaceRoot(SzApiView):
     """
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None):
-        serializer = serializers.PlaceSearchSerializer(request.QUERY_PARAMS)
+        serializer = serializers.PlaceSearchSerializer(data=request.QUERY_PARAMS)
         if serializer.is_valid():
             position = {
                 'latitude': request.QUERY_PARAMS['latitude'],
