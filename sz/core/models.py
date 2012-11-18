@@ -66,7 +66,8 @@ class Message(models.Model):
         blank=True)
     date = models.DateTimeField(
         auto_now_add=True,
-        null=False,
+        null=True,
+        blank=True,
         editable=False,
         verbose_name=u"дата добавления")
     things = models.ManyToManyField(

@@ -9,8 +9,11 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('username', 'email')
 
 class MessageSerializer(serializers.ModelSerializer):
+    #categories
     class Meta:
         model = models.Message
+        read_only_fields = ('date', )
+        exclude = ('id', 'things', 'user',)
 
 class ThingSerializer(serializers.ModelSerializer):
     class Meta:

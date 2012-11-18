@@ -7,14 +7,13 @@ Replace this with more appropriate tests for your application.
 """
 from django.test import TestCase
 from django.test.client import RequestFactory
-from sz.core.models import DomainTag
 from sz.api import services
 from sz.api import views
 from sz.api import forms
 from sz.core.algorithms import lists
 import string
 
-
+"""
 class DomainTagServicesTest(TestCase):
     def setUp(self):
         print u'[SETUP]'
@@ -68,7 +67,7 @@ class DomainTagServicesTest(TestCase):
         tags = services.spellcorrector_tagging_service(message, self.tags)
         print u'Тэги: ' + string.joinfields(tags, ', ') 
         self.assertEqual(tags, [u'обувь'])
-
+"""
 position = {
     'latitude': 50.2616113,
     'longitude': 127.5266082,
@@ -112,6 +111,18 @@ class SerializersTest(TestCase):
         }
         serializer = serializers.CitySearchSerializer(data3)
         self.assertTrue(serializer.is_valid())
+
+    def test_message_serializer(self):
+        data = {
+            u"text": u"джинсы по цене носков!",
+            u"latitude": 50.261957910406444,
+            u"longitude": 127.53488266715124,
+            u"accuracy": 10.0,
+            u"city_id": 2026609,
+            u"place_id": u"4c636f6f79d1e21e62cbd815",
+        }
+        serializer = serializers.MessageSerializer(data=data)
+        self.assertTrue(serializer.is_valid(), msg = serializer.errors)
 
 
 

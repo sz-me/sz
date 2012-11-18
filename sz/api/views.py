@@ -30,6 +30,7 @@ class ApiRoot(SzApiView):
             'categories': reverse('category-list', request=request),
         })
 
+from rest_framework.parsers import JSONParser
 class MessageRoot(SzApiView):
     """
     List all messages, or create a new message.
@@ -43,8 +44,11 @@ class MessageRoot(SzApiView):
         serializer = serializers.MessageSerializer(data=request.DATA)
         if serializer.is_valid():
             message = serializer.object
+            print message
             message.user = request.user
+            print message.user
             message.save()
+            print "message.save() OK"
             things = models.Thing.objects.all()
             categorization_service = services.CategorizationService()
             categorization_service.detect_thinks(things, message)
