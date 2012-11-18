@@ -1,16 +1,14 @@
-function geoClick(){
+function geoClick(place,place_name,place_id,latitude,longitude,accuracy,city_id){
     var i = ($(window).width()-330)/2;
-        geoValue = [];
-    $.each($(this).find('p'),function(key,val){geoValue.push($(val).text())});
     
-    $("#root").text("Пару слов,пожалуста");
+    $("#root").text("Пару слов,пожалуйста");
     $("#area").empty();
     
     jQuery('<div>',{id:'textArea'}).appendTo("#area");
     jQuery('<textarea>',{rows:"10",cols:"45",id:'text'}).appendTo("#textArea");
     jQuery('<div>',{id:'tagString',text:'Добавить тэги',click:tagSelect}).appendTo("#textArea");
-    jQuery('<div>',{id:'geoString',text:geoValue[0],click:geoSelect}).appendTo("#textArea");
-    jQuery('<input>',{id:'send',value:'Отправить',type:'button'}).appendTo("#textArea");
+    jQuery('<div>',{id:'geoString',text:place_name,click:geoSelect}).appendTo("#textArea");
+    jQuery('<input>',{id:'send',value:'Отправить',type:'button',click:sendForm(place,place_id,latitude,longitude,accuracy,city_id,$("#tagString").text(),$("#text").text())}).appendTo("#textArea");
     
     $("#textArea").children().css({marginLeft:i});
 };
@@ -125,14 +123,21 @@ function geoSelect(){}
 
 function showPlaces(){
     var api = new sz.Api({uri: 'api/',request_func: $.ajax});
-    function placesView(data){
+    function placesView(data,latitude,longitude,accuracy){
         if (data.meta.code == 200){
             $("#root").text('Место');
             $("#area").append($('<div><input type="input" id="searchGeo"/></div>'));
             $("#area").append($('<input type="checkbox" id="closerCheck"/> <label for="closerCheck">Ближайшие</label>'));
             jQuery('<div>',{id:"places"}).appendTo("#area");
             $.each(data.response.places, function(key, value) {
-                var geoBox = jQuery('<div>',{class:'geoBox',id:value.venue_id,click:geoClick}).appendTo("#places");
+                var geoBox = jQuery('<div>',{class:'geoBox',id:value.venue_id,click:(function(){
+            var place_id = $(this).attr('id');
+                place_name = $(this).find(".place_name").text();
+                latitude = latitude;
+                longitude = longitude;
+                accuracy = accuracy;
+            geoClick(place_id,place_name,latitude,longitude,accuracy)
+        })}).appendTo("#places");
                 jQuery('<p>',{text:value.name,css:{fontWeight:'bold'}}).appendTo(geoBox);
                 jQuery('<p>',{text:value.address}).appendTo(geoBox);
             });}
@@ -143,10 +148,27 @@ function showPlaces(){
         var longitude = data['coords']['longitude'];
         var accuracy = data['coords']['accuracy'];
         api.get('places',{latitude: latitude,longitude: longitude,accuracy: accuracy},
-        function(r){placesView(r); });});
+        function(r){placesView(r,latitude,longitude,accuracy); });});
 }
 
-function Add(){
+function sendForm(place,place_id,latitude,longitude,accuracy,city_id,things,text){
+    var api = new sz.Api({uri: 'api/',request_func: $.ajax});
+    
+    api.post('messages',{
+        "text":text,
+        "latitude": latitude,
+        "longitude": longitude,
+        "accuracy": accuracy,
+        "city_id": city_id,
+        "place_id": place_id,
+        "bargain_date": null,
+        "date": "2012-11-12T14:16:51.944Z",
+        "user": 1,
+        "things": []
+    })
+}
+
+function Add(city_id){
     $("#content").empty();
     femaleTag = {'head':['Шапки ','Шляпы ','Ушанки ','Банданы ','Косынки ','Шлемы ','Кепки ','Бейсболки ','Тэниски '],
                      'body':['Платье','Сарафан','Футболка','Топ','Толстовка','Кардиган','Пуловер','Блузка','Туника','Костюм','Водолазка','Комбинизон','Свитер','Свитшот','Логнслив','Худи'],
@@ -160,9 +182,16 @@ function Add(){
     $("#area").append($('<input type="checkbox" id="closerCheck"/> <label for="closerCheck">Ближайшие</label>'));
     jQuery('<div>',{id:"places"}).appendTo("#area");
     $.each([0,1,2,3,4], function(key, value) {
-        var geoBox = jQuery('<div>',{class:'geoBox',click:geoClick}).appendTo("#places");
-        jQuery('<p>',{text:'Салон-магазин МТС',css:{fontWeight:'bold'}}).appendTo(geoBox);
+        var geoBox = jQuery('<div>',{class:'geoBox',id:'4db189220f2c0353f5cb6141',click:(function(){
+            var place_id = $(this).attr('id');
+                place_name = $(this).find(".place_name").text();
+                latitude = 50.263495219396574;
+                longitude = 127.53357833117961;
+                accuracy = 10.0;
+            geoClick(place_id,place_name,latitude,longitude,accuracy,city_id)
+        })}).appendTo("#places");
+        jQuery('<p>',{class:'place_name',text:'Салон-магазин МТС',css:{fontWeight:'bold'}}).appendTo(geoBox);
         jQuery('<p>',{text:'Автовокзал Горького 129,4 этаж каб.62 зеленая дверь'}).appendTo(geoBox);});  
-    showPlaces()
+//     showPlaces()
 }
     

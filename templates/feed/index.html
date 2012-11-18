@@ -1,63 +1,1 @@
-<!DOCTYPE html>
-<html>
- <head>
-  <title>ShZH</title>
-  <meta charset="utf-8" />
-   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
-     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
-    
-    <script type="text/javascript" src="{{ STATIC_URL }}js/sz.add.js"></script>
-    <script type="text/javascript" src="/home/kunla/sz/static/feed/js/sz.add.js"></script>
-    
-    <script type="text/javascript" src="{{ STATIC_URL }}js/sz.api.js"></script>
-    <script type="text/javascript" src="/home/kunla/sz/static/feed/js/sz.api.js"></script>
-    
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css">
-    <link rel="stylesheet" href="/home/kunla/sz/static/feed/css/styles.css">
-
- </head>
-
-
-
- <body> 
-
-
-<!-- Основное меню -->
-
-
-
-    <div class='mainmenu'>
-        <a href='#'>Лента</a>
-        <a href='#' id='addbut'>Добавить</a>
-        <a href='#'>Поиск</a>
-        <span id='city'>nn</span>
-    </div> 
-
-<div id='content'>
-
-</div>
-
-<script type="text/javascript">
-$(document).ready(function () {
-
-    var api = new sz.Api({uri: 'api/',request_func: $.ajax});
-        
-    function cityView(data)
-    {if (data.response.cities.length == 1){$('#city').text(data.response.cities[0].name + ', ' + data.response.cities[0].country_code)}}
-
-    navigator.geolocation.getCurrentPosition(function(data) {
-        var latitude = data['coords']['latitude'];
-        var longitude = data['coords']['longitude'];
-        var accuracy = data['coords']['accuracy'];
-        api.get('cities',
-            {latitude: latitude,longitude: longitude},
-            function(r){ cityView(r);
-        });});
-    $("#addbut").click(function(){Add()});
-});
-
-</script>
-
- </body>
-</html>
+<!DOCTYPE html><html> <head>  <title>ShZH</title>  <meta charset="utf-8" />   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>    <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>    <!--     <script type="text/javascript" src="{{ STATIC_URL }}js/sz.add.js"></script> -->    <script type="text/javascript" src="/home/kunla/sz/static/feed/js/sz.add.js"></script>    <!--     <script type="text/javascript" src="{{ STATIC_URL }}js/sz.api.js"></script> -->    <script type="text/javascript" src="/home/kunla/sz/static/feed/js/sz.api.js"></script>    <!--     <link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css"> -->    <link rel="stylesheet" href="/home/kunla/sz/static/feed/css/styles.css"> </head> <body> <!-- Основное меню -->    <div class='mainmenu'>        <a href='#'>Лента</a>        <a href='#' id='addbut'>Добавить</a>        <a href='#'>Поиск</a>        <span id='city'>nn</span>    </div> <div id='content'></div><script type="text/javascript">$(document).ready(function () {    var api = new sz.Api({uri: 'api/',request_func: $.ajax});            function cityView(data)    {if (data.response.cities.length == 1){$('#city').text(data.response.cities[0].name + ', ' + data.response.cities[0].country_code)}}    navigator.geolocation.getCurrentPosition(function(data) {        var latitude = data['coords']['latitude'];        var longitude = data['coords']['longitude'];        var accuracy = data['coords']['accuracy'];        api.get('cities',            {latitude: latitude,longitude: longitude},            function(r){ cityView(r);        });});    $("#addbut").click(function(){Add(18)});});</script> </body></html>
