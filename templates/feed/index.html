@@ -1,90 +1,63 @@
-<script type="text/javascript" src="{{ STATIC_URL }}admin/js/jquery.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.textchange.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.sz.msg.editor.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/sz.api.js"></script>
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>ShZH</title>
+  <meta charset="utf-8" />
+   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+    
+    <script type="text/javascript" src="{{ STATIC_URL }}js/sz.add.js"></script>
+    <script type="text/javascript" src="/home/kunla/sz/static/feed/js/sz.add.js"></script>
+    
+    <script type="text/javascript" src="{{ STATIC_URL }}js/sz.api.js"></script>
+    <script type="text/javascript" src="/home/kunla/sz/static/feed/js/sz.api.js"></script>
+    
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css">
+    <link rel="stylesheet" href="/home/kunla/sz/static/feed/css/styles.css">
+
+ </head>
+
+
+
+ <body> 
+
+
+<!-- Основное меню -->
+
+
+
+    <div class='mainmenu'>
+        <a href='#'>Лента</a>
+        <a href='#' id='addbut'>Добавить</a>
+        <a href='#'>Поиск</a>
+        <span id='city'>nn</span>
+    </div> 
+
+<div id='content'>
+
+</div>
+
 <script type="text/javascript">
 $(document).ready(function () {
-	
-	$('#messageEditor1').sz_msg_editor({url: "http://localhost:8000/api/tags"});
-	
-	var api = new sz.Api({
-		uri: 'api/',
-		request_func: $.ajax
-	});
-	
-	function placesView(data)
-	{
-        var html = '';
-        if (data.meta.code == 200)
-        {
 
-            $.each(data.response.places, function(key, value) {
-			    html = html + '<li><a href="' + value.foursquare_details_uri + '">' + value.name + '</a></li>';
-		    });
-		    html = '<ul>' + html + '</ul>';
-        }
-        else
-            html = "<strong>" + data.response.detail + "</strong>"
-
-		$('#feed').html(html);
-	}
-
+    var api = new sz.Api({uri: 'api/',request_func: $.ajax});
+        
     function cityView(data)
-    {
-        if (data.response.cities.length == 1)
-        {
-            $('#location').val(data.response.cities[0].name + ', ' + data.response.cities[0].country_code)
-        }
-
-    }
+    {if (data.response.cities.length == 1){$('#city').text(data.response.cities[0].name + ', ' + data.response.cities[0].country_code)}}
 
     navigator.geolocation.getCurrentPosition(function(data) {
         var latitude = data['coords']['latitude'];
         var longitude = data['coords']['longitude'];
         var accuracy = data['coords']['accuracy'];
-
-        api.get(
-            'cities',
-            {
-                latitude: latitude,
-                longitude: longitude
-            },
+        api.get('cities',
+            {latitude: latitude,longitude: longitude},
             function(r){ cityView(r);
-        });
-
-        api.get(
-            'places',
-            {
-                latitude: latitude,
-                longitude: longitude,
-                accuracy: accuracy
-            },
-            function(r){ placesView(r); });
-        });
-
+        });});
+    $("#addbut").click(function(){Add()});
 });
-</script>
-<div style="background-image:url('{{ STATIC_URL }}img/sz-me.png'); width:19.5em;padding:1em 0.8em 1em 1.2em; margin-left:4em; margin-top:1.5em;">
-	<div id="say" style="background-color: #f8f8f8; width:16em; padding:1em; opacity:0.9; filter:alpha(opacity=90); -moz-opacity:0.9;">
-        <input type="text" id="location" readonly="readonly">
-		<input type="text" id="messageEditor1Tags" readonly="readonly" style="width:18em;"/>
-		<form action="/clothes/tags" method="post" >
-			{% csrf_token %}
-			<textarea name="message" id="messageEditor1" style="width:18em;"></textarea>
-			<p><input type="submit" value="Сказать" disabled="disabled"/></p>
-		</form>
-	</div>
 
-	<div id="feed" style="background-color: #f8f8f8; width:17em; padding:0.5em; opacity:0.9; filter:alpha(opacity=90); -moz-opacity:0.9; margin-top:1em; overflow-y:scroll;height:17em; ">
-	{% if feed %}
-		<ul>
-		{% for message in feed %}
-			<div>{{ message.text }}</div>
-		{% endfor %}
-		</ul>
-	{% else %}
-		<p>No messages are available</p>
-	{% endif %}
-	</div>
-</div>
-<img src="https://playfoursquare.s3.amazonaws.com/press/logo/poweredByFoursquare_gray.png">
+</script>
+
+ </body>
+</html>
