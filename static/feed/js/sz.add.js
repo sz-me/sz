@@ -152,20 +152,17 @@ function showPlaces(city_id){
 }
 
 function sendForm(place,place_id,latitude,longitude,accuracy,city_id,things,text){
-//     var api = new sz.Api({uri: 'api/',request_func: $.ajax});
-//     
-//     api.post('messages',{
-//         "text":text,
-//         "latitude": latitude,
-//         "longitude": longitude,
-//         "accuracy": accuracy,
-//         "city_id": city_id,
-//         "place_id": place_id,
-//         "bargain_date": null,
-//         "date": "2012-11-12T14:16:51.944Z",
-//         "user": 1,
-//         "things": []
-//     })
+    var api = new sz.Api({uri: 'api/',request_func: $.ajax});
+    
+    api.post('messages',{
+        "text":text,
+        "latitude": latitude,
+        "longitude": longitude,
+        "accuracy": accuracy,
+        "city_id": city_id,
+        "place_id": place_id,
+        "bargain_date": null
+    })
 }
 
 function Add(city_id){
