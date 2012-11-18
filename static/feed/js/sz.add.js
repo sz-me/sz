@@ -8,7 +8,7 @@ function geoClick(place,place_name,place_id,latitude,longitude,accuracy,city_id)
     jQuery('<textarea>',{rows:"10",cols:"45",id:'text'}).appendTo("#textArea");
     jQuery('<div>',{id:'tagString',text:'Добавить тэги',click:tagSelect}).appendTo("#textArea");
     jQuery('<div>',{id:'geoString',text:place_name,click:geoSelect}).appendTo("#textArea");
-    jQuery('<input>',{id:'send',value:'Отправить',type:'button',click:sendForm(place,place_id,latitude,longitude,accuracy,city_id,$("#tagString").text(),$("#text").text())}).appendTo("#textArea");
+    jQuery('<input>',{id:'send',value:'Отправить',type:'button',click:sendForm(place,place_id,latitude,longitude,accuracy,city_id,$("#tagString").text(),'hjhj')}).appendTo("#textArea");
     
     $("#textArea").children().css({marginLeft:i});
 };
@@ -121,7 +121,7 @@ function tagAdd(){
 
 function geoSelect(){}
 
-function showPlaces(){
+function showPlaces(city_id){
     var api = new sz.Api({uri: 'api/',request_func: $.ajax});
     function placesView(data,latitude,longitude,accuracy){
         if (data.meta.code == 200){
@@ -152,20 +152,20 @@ function showPlaces(){
 }
 
 function sendForm(place,place_id,latitude,longitude,accuracy,city_id,things,text){
-    var api = new sz.Api({uri: 'api/',request_func: $.ajax});
-    
-    api.post('messages',{
-        "text":text,
-        "latitude": latitude,
-        "longitude": longitude,
-        "accuracy": accuracy,
-        "city_id": city_id,
-        "place_id": place_id,
-        "bargain_date": null,
-        "date": "2012-11-12T14:16:51.944Z",
-        "user": 1,
-        "things": []
-    })
+//     var api = new sz.Api({uri: 'api/',request_func: $.ajax});
+//     
+//     api.post('messages',{
+//         "text":text,
+//         "latitude": latitude,
+//         "longitude": longitude,
+//         "accuracy": accuracy,
+//         "city_id": city_id,
+//         "place_id": place_id,
+//         "bargain_date": null,
+//         "date": "2012-11-12T14:16:51.944Z",
+//         "user": 1,
+//         "things": []
+//     })
 }
 
 function Add(city_id){
@@ -177,21 +177,21 @@ function Add(city_id){
     jQuery('<div>',{id:"root"}).appendTo("#content");
     jQuery('<div>' ,{id:"area"}).appendTo("#content");
     
-    $("#root").text('Место');
-    $("#area").append($('<div><input type="input" id="searchGeo"/></div>'));
-    $("#area").append($('<input type="checkbox" id="closerCheck"/> <label for="closerCheck">Ближайшие</label>'));
-    jQuery('<div>',{id:"places"}).appendTo("#area");
-    $.each([0,1,2,3,4], function(key, value) {
-        var geoBox = jQuery('<div>',{class:'geoBox',id:'4db189220f2c0353f5cb6141',click:(function(){
-            var place_id = $(this).attr('id');
-                place_name = $(this).find(".place_name").text();
-                latitude = 50.263495219396574;
-                longitude = 127.53357833117961;
-                accuracy = 10.0;
-            geoClick(place_id,place_name,latitude,longitude,accuracy,city_id)
-        })}).appendTo("#places");
-        jQuery('<p>',{class:'place_name',text:'Салон-магазин МТС',css:{fontWeight:'bold'}}).appendTo(geoBox);
-        jQuery('<p>',{text:'Автовокзал Горького 129,4 этаж каб.62 зеленая дверь'}).appendTo(geoBox);});  
-//     showPlaces()
+//     $("#root").text('Место');
+//     $("#area").append($('<div><input type="input" id="searchGeo"/></div>'));
+//     $("#area").append($('<input type="checkbox" id="closerCheck"/> <label for="closerCheck">Ближайшие</label>'));
+//     jQuery('<div>',{id:"places"}).appendTo("#area");
+//     $.each([0,1,2,3,4], function(key, value) {
+//         var geoBox = jQuery('<div>',{class:'geoBox',id:'4db189220f2c0353f5cb6141',click:(function(){
+//             var place_id = $(this).attr('id');
+//                 place_name = $(this).find(".place_name").text();
+//                 latitude = 50.263495219396574;
+//                 longitude = 127.53357833117961;
+//                 accuracy = 10.0;
+//             geoClick(place_id,place_name,latitude,longitude,accuracy,city_id)
+//         })}).appendTo("#places");
+//         jQuery('<p>',{class:'place_name',text:'Салон-магазин МТС',css:{fontWeight:'bold'}}).appendTo(geoBox);
+//         jQuery('<p>',{text:'Автовокзал Горького 129,4 этаж каб.62 зеленая дверь'}).appendTo(geoBox);});  
+     showPlaces(city_id)
 }
     
