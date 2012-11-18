@@ -131,14 +131,14 @@ function showPlaces(city_id){
             jQuery('<div>',{id:"places"}).appendTo("#area");
             $.each(data.response.places, function(key, value) {
                 var geoBox = jQuery('<div>',{class:'geoBox',id:value.venue_id,click:(function(){
-            var place_id = $(this).attr('id');
-                place_name = $(this).find(".place_name").text();
-                latitude = latitude;
-                longitude = longitude;
-                accuracy = accuracy;
-            geoClick(place_id,place_name,latitude,longitude,accuracy)
+                var place_id = $(this).attr('id');
+                    place_name = $(this).find(".place_name").text();
+                    latitude = latitude;
+                    longitude = longitude;
+                    accuracy = accuracy;
+                geoClick(place_id,place_name,latitude,longitude,accuracy)
         })}).appendTo("#places");
-                jQuery('<p>',{text:value.name,css:{fontWeight:'bold'}}).appendTo(geoBox);
+                jQuery('<p>',{text:value.name,class:'place_name',css:{fontWeight:'bold'}}).appendTo(geoBox);
                 jQuery('<p>',{text:value.address}).appendTo(geoBox);
             });}
         else { $("#root").text(data.response.detail);}}
