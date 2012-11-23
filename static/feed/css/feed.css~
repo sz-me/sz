@@ -36,7 +36,7 @@
     overflow: hidden;
 }
 
-/* .messagebottom>div{margin:4px;} */
+.messagebottom>img{margin-right:40px;}
 
 .moreMessage{
     margin-top:-75px;
@@ -134,6 +134,7 @@
 }
 
 #newmessage_textAdd{
+    display:none;
     width:10em;
 }
 

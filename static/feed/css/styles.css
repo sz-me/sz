@@ -10,16 +10,14 @@ body{font-family: Arial, Helvetica, sans-serif;}
 }
 
 #menu{
-   
     width:100%;
-    height:auto;
     background:orange;
     color:white;
 }
     
 
 #category{
-      margin-left:110px;
+    margin-left:110px;
     display:block;
     width:auto;
     height:50px;

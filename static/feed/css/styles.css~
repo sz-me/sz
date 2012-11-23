@@ -2,8 +2,6 @@ body{font-family: Arial, Helvetica, sans-serif;}
 
 #mainmenu{
     background:orange;
-    margin-left:-10px;
-    margin-top:-10px;
     height:auto;
     top:0px;
     right:0px;
@@ -12,16 +10,15 @@ body{font-family: Arial, Helvetica, sans-serif;}
 }
 
 #menu{
-   
+    height:75px;
     width:100%;
-    height:auto;
     background:orange;
     color:white;
 }
     
 
 #category{
-      margin-left:110px;
+    margin-left:110px;
     display:block;
     width:auto;
     height:50px;
@@ -128,7 +125,6 @@ body{font-family: Arial, Helvetica, sans-serif;}
 
 
 #feed{
-    border:2px solid red;
     text-align:center;
     width:90%;
     margin-left:5%;
