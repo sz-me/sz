@@ -36,8 +36,6 @@
     overflow: hidden;
 }
 
-.messagebottom>img{margin-right:40px;}
-
 .moreMessage{
     margin-top:-75px;
     margin-right:5px;
