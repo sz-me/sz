@@ -1,0 +1,172 @@
+#tagSearch{padding-top:10px;color:white;
+}
+
+
+#gender{
+    width:4%;
+    height:230px;
+    float:right;
+    margin-right:1%;
+    margin-top:-255px;
+ 
+}
+
+
+
+#nosex,#female,#male,#kind{
+    cursor:pointer;
+    width:60%;
+    height:17%;
+    border-radius:30px;
+    
+}
+
+#nosex{border:2px solid #444;background:white;}
+
+#female{border:2px solid #444;background:orange;margin-top:20%;margin-bottom:20%;}
+
+#male{border:2px solid #444;background:#0066FF;margin-bottom:17%;}
+
+#kind{border:2px solid #444;background:green;}
+
+
+#dollyPlace{
+    float:left;
+    height:230px;
+    width:5%;
+    margin-left:1%;
+    
+        
+}
+
+.dollyHead{
+    cursor:pointer;
+    border-radius:2px;
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;
+    background-image:url(../img/headLtl.png);
+   margin-top:1%;
+    height:18%;
+    background-size:100%;
+}
+.dollyBody{
+    cursor:pointer;
+    border-radius:2px;
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;
+    margin-top:13%;
+    background-image:url(../img/bodyLtl.png);
+    
+    height:18%;
+    background-size:100%;
+}
+
+.dollyLegs{
+    cursor:pointer;
+    border-radius:2px;
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;
+    margin-top:13%;
+    background-image:url(../img/legLtl.png);
+   
+    height:28%;
+    background-size:100%;
+}
+.dollyFoot{
+    cursor:pointer;
+    border-radius:2px;
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;
+    margin-top:13%;
+    background-image:url(../img/footLtl.png);
+   
+    height:15%;
+    background-size: 100%;
+}
+
+#tagsPlace{
+    background:gray;
+/*    border:1px solid white; */
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;
+    margin-left:7%;
+    margin-right:7%;
+    width:86%;
+    height:230px;
+    
+}
+
+#lessTags{
+    width:100%;
+    height:15px;
+    box-shadow: 2px 2px 3px #444;
+    -moz-box-shadow: 2px 2px 3px #444;
+    -webkit-box-shadow: 2px 2px 3px #444;
+    margin-bottom:5px;
+    padding-top:3px;
+    padding-bottom:3px;
+    background:gray;
+    color:white;
+    border-bottom:1px solid #444;
+    
+}
+
+#moreTags{
+    width:100%;
+    height:15px;
+     box-shadow: 2px -2px 3px #444;
+    -moz-box-shadow: 2px -2px 3px #444;
+    -webkit-box-shadow: 2px -2px 3px #444;
+    margin-top:5px;
+    margin-bottom:5px;
+    padding-top:3px;
+    padding-bottom:3px;
+    background:gray;
+    color:white;
+    border-top:1px solid #444;
+    
+}
+
+.tagBox{
+    cursor:pointer;
+    border-radius:5px;
+    background:silver;
+    margin:5px;
+    text-align: center;
+    border:1px solid;
+    font-size:10px;
+    float:left;
+    width:65px;
+    height:65px}
+    
+.tagTopBox{
+    cursor:pointer;
+    background:gray;
+    padding:5px;
+    border-radius:5px;
+     box-shadow: 2px -2px 3px #333;
+    -moz-box-shadow: 2px -2px 3px #333;
+    -webkit-box-shadow: 2px -2px 3px #333;
+    border:1px solid white;
+    color:white;
+    width:75px;
+    float:left;
+    margin:3px;
+    font-size:12px;
+}
+
+.topClose{
+    cursor:pointer;
+    float:left;
+    margin-right:5px;
+    color:orange;
+}

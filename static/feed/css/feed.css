@@ -1,0 +1,140 @@
+#feed{margin-top:10px;}
+
+.boxMesTag{
+    border-radius:5px;
+    background:silver;
+    margin:5px;
+    text-align: center;
+    border:1px solid;
+    font-size:10px;
+    float:left;
+    width:65px;
+    height:65px}
+    
+.message{
+    font-size:1em;
+    margin-top:15px;
+    border:2px solid black;
+    border-radius: 5px 5px 5px 5px;
+    padding:5px;
+}
+
+
+
+.messagetop{
+
+}
+
+.messagebottom{
+    text-align: justify ;
+    margin-top:5px;
+    padding:5px;
+    height:15px;
+    border:2px solid gray;
+    border-radius:5px;
+    text-overflow:clip;
+    overflow: hidden;
+}
+
+/* .messagebottom>div{margin:4px;} */
+
+.moreMessage{
+    margin-top:-75px;
+    margin-right:5px;
+    margin-left:10px;
+    border:1px solid gray;
+    width:20px;
+    float:right;
+    padding-top:43px;
+    padding-bottom:43px;
+    background:gray;
+    color:white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.lessMessage{
+    display:none;
+    text-align: center;
+    margin-top:5px;
+    border:1px solid gray;
+    height:15px;
+    width:100%;
+    background:gray;
+    color:white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.user{
+    background:gray;
+    margin:4px;
+    margin-top:1px;
+    text-align: center;
+    float:left;
+    border:1px solid black;
+    width:90px;
+    height:90px;
+}
+
+.location{
+    font-size:10px;
+    
+    color:white;
+    width:91%;
+    height:15px;
+    margin-top:5px;
+    margin-bottom:8px;
+    margin-left:100px;
+}
+  
+
+.mestagsArea{
+    margin-left:100px;
+    margin-right:40px;
+    height:75px;
+    text-overflow:clip;
+    overflow: hidden;
+}
+
+#newmessageBox{
+    margin-left:15%;
+    width:70%;
+    color:white;
+}
+
+#newmessage_textValue{
+    font-size:1.2em;
+    margin-top:0.3em;
+    width:100%;
+    overflow: hidden;
+    resize: none;
+    outline: none;
+    -moz-appearance: none;
+    padding-top:0.1em;
+    padding-bottom:0.15em;
+    padding-right:0.3em;
+    padding-left:0.3em;
+    border: 2px solid green;
+    border-radius:5px;
+}
+
+#newmessage_locationValue{
+    height:1.8em;
+    display:none;
+    padding-bottom:5px;
+}
+
+#newmessage_placeValue,.place{float:left;background:green;padding:0.3em;}
+
+#newmessage_cityValue,.city{float:right;background:green;padding:0.3em;}
+
+#newmessage_tagsValue{
+    display:none;
+}
+
+#newmessage_textAdd{
+    display:none;
+    width:10em;
+}
+

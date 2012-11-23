@@ -1,180 +1,139 @@
-input{color:black;}
+body{font-family: Arial, Helvetica, sans-serif;}
 
-body{font-family: Verdana, Helvetica, sans-serif;font-size:10px;}
-
-#geoTab,#geoTab ul,#geoTab li{
-    background:white;
-    border:1px white;
-}
-
-.mainmenu{
-    padding:5px;
-    text-align: center;
-    width:100%;
-    height:20px;
-    background:silver;
-    border:2px solid gray;
-    position:fixed;
+#mainmenu{
+    background:orange;
+    margin-left:-10px;
+    margin-top:-10px;
+    height:auto;
     top:0px;
     right:0px;
-    left:0px;
-}
-    
-.mainmenu a{
-    font-size:18px;
+    text-align:center;
     font-weight: bold;
-    color:black;
-    text-decoration: none;
-    margin-left:2px;
-    margin-right:2px;
-    margin-bottom:5px;
 }
 
-#city{
-    font-size:12px;
-    color:black;
-    left:0px;
-}
-
-#addbut{
-    padding-left:4px;
-    padding-right:4px;
-    border-left:1px solid;
-    border-right:1px solid;
-}
-
-#root{
-    width:100%;
-    height:20px;
-    margin-top:40px;
-    margin-bottom:5px;
-    font-size:16px;
-    font-weight: bold;
-    text-align: center;
-    background:green;
-    color:white;}
-
-
-
-#area{margin-bottom:15px;}
-    
-.geoBox {
-    margin:4px;
-    text-align: center;
-    border:1px solid;
-    font-size:10px;
-    float:left;
-    width:180px;
-    height:80px;
-}
-
-#geoString,#tagString{
-    margin-bottom:5px;
-    text-align: center;
-    height:22px;
-    width:330px;
-    border:1px solid black;
-    background:orange;
-}
-
-.boxMulty{
-    margin:4px;
-    text-align: center;
-    border:1px solid;
-    font-size:10px;
-    float:left;
-    width:65px;
-    height:65px}
-    
-.boxSelect{
-    font-size:10px;
-    float:left;
-    margin:1px;
-    text-align: center;
-    background:orange;
-    width:68px;
-    height:68px;
-    border:2px solid;}
-
-#gender{
-    text-align: center;
-    width:100%;
+#menu{
    
+    width:100%;
+    height:auto;
+    background:orange;
+    color:white;
 }
+    
 
-#gender a{
-    font-size:20px;
-    width:20px;
-    height:20px;
-    text-decoration: none;
-    margin-left:10px;
-    margin-right:10px;    
+#category{
+      margin-left:110px;
+    display:block;
+    width:auto;
+    height:50px;
+}
+    
+
+#city,#place,#tags{
+    
+    margin-top:-1px;
+    text-align:center;
+    float:left;
+    width:auto;
+    height:35px;
     padding-right:15px;
+    padding-left:15px;
+    padding-top:1em;
+    background:gray;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size:1em;
+    border:1px solid white;
+    border-bottom:1px solid gray;
+    cursor: pointer;
+    box-shadow: -2px 2px 2px #333;
+    -moz-box-shadow: -2px 2px 2px #333;
+    -webkit-box-shadow: -2px 2px 2px #333;
 }
 
-#male{background:blue;color:blue;}
-#female{background:red;color:red}
-#kind{background:gray;color:gray;}
-#unisex{background:green;color:green}
+#city{border-radius:20px 0px 0px 0px;
 
-#femaleArea .headCat{
-    border:1px solid;
-    margin-top:5px;
-    width:100px;
-    height:38px;
-    background-image:url(/home/kunla/sz/static/feed/img/headLtl.png);
+    box-shadow: 0px 2px 2px #333;
+    -moz-box-shadow: 0px 2px 2px #333;
+    -webkit-box-shadow: 0px 2px 2px #333;
 }
 
-#femaleArea .bodyCat{
-    border:1px solid;
-    margin-top:2px;
-    width:100px;
-    height:50px;
-    background-image:url(/home/kunla/sz/static/feed/img/bodyLtl.png);
+#tags{border-radius:0px 20px 0px 0px;}
+
+
+
+
+#tagsTopArea{
+    float:right;
 }
 
-#femaleArea .legsCat{
-    border:1px solid;
-    margin-top:2px;
-    width:100px;
-    height:135px;    
-    background-image:url(/home/kunla/sz/static/feed/img/legLtl.png);
-}
-#femaleArea .footCat{
-    border:1px solid;
-    margin-top:2px;
-    width:100px;
-    height:30px;
-    background-image:url(/home/kunla/sz/static/feed/img/footLtl.png);
-}
-
-#maleArea .headCat{
-    border:1px solid;
-    margin-top:5px;
-    width:100px;
-    height:38px;
-    background:blue;
+#myuser{
+    margin-bottom:-50px;
+    text-align:center;
+   width:100px;
+   padding-top:5px;
+   padding-bottom:3px;
+    /*font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    font-size:12px;
+    border:1px solid white;
+    border-bottom:1px solid gray;
+    border-radius:20px 20px 0px 0px;
+    cursor: pointer;
+    box-shadow: -2px 0px 0px #333;
+    -moz-box-shadow: -2px 0px 0px #333;
+    -webkit-box-shadow: -2px 0px 0px #333;*/
+    
 }
 
-#maleArea .bodyCat{
-    border:1px solid;
-    margin-top:2px;
-    width:100px;
-    height:50px;
-    background:blue;
+#myface{
+    border-radius:5px;
+    border:2px solid #DDD;
+        cursor: pointer;
+    box-shadow: 0px 0px 4px #666;
+    -moz-box-shadow: 0px 0px 4px #666;
+    -webkit-box-shadow: 0px 0px 4px #666;
 }
 
-#maleArea .legsCat{
-    border:1px solid;
-    margin-top:2px;
-    width:100px;
-    height:135px;    
-    background:blue;
+.close{margin-right:8px;margin-left:-2px;}
+
+
+
+#sepString{
+    box-shadow: 0px 0px 2px #333;
+    border-top:1px solid white;
+    border-bottom:1px solid white;
+    width:100%;
+    height:10px;
+    background:gray;
 }
-#maleArea .footCat{
-    border:1px solid;
-    margin-top:2px;
-    width:100px;
-    height:30px;
-    background:blue;
+
+#area{
+    box-shadow: 0px 0px 2px #333;
+    border-top:1px solid white;
+    border-bottom:1px solid white;
+    width:100%;
+    background:gray;
 }
+
+.addMessage{
+    padding:1em;
+    cursor:pointer;
+    background:green;
+    border:3px solid white;
+    border-radius:18px;
+      box-shadow: 0px 0px 4px #666;
+    -moz-box-shadow: 0px 0px 4px #666;
+    -webkit-box-shadow: 0px 0px 4px #666;
+}
+
+
+#feed{
+    text-align:center;
+    width:90%;
+    margin-left:5%;
+}
+
+
+
+
+

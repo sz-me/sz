@@ -1,0 +1,167 @@
+function placeClick(){
+    var gBlen = $(".geoBox").length;
+    if (gBlen==0)
+        {
+        $("#place").animate({backgroundColor:'#ffa500'},1500);
+        $("#placeArea").show()
+        $("#placeClose").css({color:'green'})
+        //Make auto
+        $.each([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36], function(index, val) {
+//         $.each([0,1,2,3,4,5,6,7,8,9,10,11,12], function(index, val) {
+            var geoBox = jQuery('<div>',{class:'geoBox',id:'4db189220f2c0353f5cb6141',click:function(){
+                        var place_name = $(this).find(".place_name").text()
+                        $(".placeValue").text(place_name);
+                        $(".placeValue").attr('id',$(this).attr('id'));
+                        $("#placeClose").text('[X]')
+                        }
+                        }).appendTo("#placeTag");
+            jQuery('<p>',{class:'place_name',text:'Салон-магазин МТС',css:{fontWeight:'bold'}}).appendTo(geoBox);
+            jQuery('<p>',{text:'Автовокзал Горького 129,4 этаж каб.62 зеленая дверь'}).appendTo(geoBox);}); 
+        ////
+        
+        
+        geoWidth = $(window).width()/185;
+        geoValShow = 10
+        geoVal = $(".geoBox").length;
+        geoHgh = Math.ceil(geoValShow/geoWidth)*90+15;
+        $.each($(".geoBox"),function(index,val){if(index>(geoValShow-1)){$(val).hide()}});
+        if(geoVal>geoValShow){$("#morePlace").text('>>10').css({cursor:'pointer'})}
+        $("#placeTag").height(geoHgh);
+        $("#placeArea").animate({marginTop:'0px'},500);
+        $("#area").animate({opacity:1},1000);
+        var j = $("#category").height()+$("#placeArea").height()+55;
+        $("#feed").animate({marginTop:j},500);
+        }
+    else{
+        
+        $("#area").animate({opacity:0},500);
+        $("#placeArea").animate({marginTop:'-300px'},1000);
+        $(".geoBox").remove();
+        $("#placeTag").height('auto');
+        $("#feed").animate({marginTop:85},500);
+        $("#place").animate({backgroundColor:'#808080'},1500);
+        $("#placeClose").animate({color:'#ffa500'},1500);
+        }
+};
+
+function morePlace(){
+        n = (Math.ceil(geoVal/geoValShow)-1)*geoValShow
+        maxShowIndex = $(".geoBox:visible:last").index();
+    if(maxShowIndex<n){
+        newMax = maxShowIndex+geoValShow;
+        newMin = maxShowIndex+1;
+        $("#morePlace").animate({backgroundColor:'#ffa500'},500);
+        $("#lessPlace").text('<<10').css({cursor:'pointer'});
+        $.each($(".geoBox:visible"),function(index,val){$(val).css({float:'right'}).animate({marginRight:'-200px'},500)})
+        $.each($(".geoBox"),function(index,val){
+            if(newMin<=index&&index<=newMax){
+                $(val).css({float:'left',marginLeft:'-200px'}).show().stop().animate({marginLeft:'4px'},500);
+            }});
+        $.each($(".geoBox:visible"),function(index,val){var float=$(val).css('float');if(float=='right'){$(val).hide()}});
+        $("#morePlace").animate({backgroundColor:'#808080'},500);
+        if(newMax>n){$("#morePlace").text('').css({cursor:'default'})}
+    }
+};
+
+function lessPlace(){
+    n = geoValShow-1
+    var minShowIndex = $(".geoBox:visible:first").index();
+    if(minShowIndex>n){
+        newMin = minShowIndex-geoValShow;
+        newMax = minShowIndex-1;
+        $("#lessPlace").animate({backgroundColor:'#ffa500'},500);
+        $("#morePlace").text('>>10').css({cursor:'pointer'});
+        $.each($(".geoBox:visible"),function(index,val){$(val).css({float:'left'}).animate({marginLeft:'-200px'},500)})
+        $.each($(".geoBox"),function(index,val){
+            if(newMin<=index&&index<=newMax){
+                $(val).css({float:'right',marginRight:'-200px'}).show().stop().animate({marginRight:'4px'},500);
+            }});
+        $("#lessPlace").animate({backgroundColor:'#808080'},500);
+        $.each($(".geoBox:visible"),function(index,val){var float=$(val).css('float');if(float=='left'){$(val).hide()}});
+        if(newMin<n){$("#lessPlace").text('').css({cursor:'default'})}
+    }
+        
+};
+
+
+function tagsClick(){
+    var n = $("#tagsArea:visible").length;
+    if (n==0){
+        $("#tags").animate({backgroundColor:'#ffa500'},1500);
+        $("#tagsArea").show()
+        $("#tagsClose").css({color:'green'})
+        
+        var TagArray = {'dollyPopular':['Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель','Штаны','Носки','Трусы','Галоши','Кепка','Валенки','Шинель'],'dollyHead':['Шапки ','Шляпы ','Ушанки ','Банданы ','Косынки ','Шлемы ','Кепки ','Бейсболки ','Тэниски '],'dollyBody':['Платье','Сарафан','Футболка','Топ','Толстовка','Кардиган','Пуловер','Блузка','Туника','Костюм','Водолазка','Комбинизон','Свитер','Свитшот','Логнслив','Худи'],'dollyLegs':['Штаны','Трусы','Джинсы','Леггинсы','Треники','Панталоны','Шорты'],'dollyFoot':['Носки','Чулки','Макасины','Туфли','Сандали','Кроссовки','Кеды']};
+        
+        $.each(TagArray['dollyPopular'],function(index,val){
+            var tagBox = jQuery('<div>',{class:"tagBox",text:val,backgroundColor:'white'}).appendTo("#dollyPopularPlace");
+            $(tagBox).hide()
+        });
+        
+        $.each(TagArray['dollyHead'],function(index,val){
+            var tagBox = jQuery('<div>',{class:"tagBox",text:val,backgroundColor:'green'}).appendTo("#dollyHeadPlace");
+            $(tagBox).hide()
+        });
+        
+        $.each(TagArray['dollyBody'],function(index,val){
+            var tagBox = jQuery('<div>',{class:"tagBox",text:val,backgroundColor:'red'}).appendTo("#dollyBodyPlace");
+            $(tagBox).hide()
+        });
+        
+        $.each(TagArray['dollyLegs'],function(index,val){
+            var tagBox = jQuery('<div>',{class:"tagBox",text:val,backgroundColor:'blue'}).appendTo("#dollyLegsPlace");
+            $(tagBox).hide()
+        });
+        
+        $.each(TagArray['dollyFoot'],function(index,val){
+            var tagBox = jQuery('<div>',{class:"tagBox",text:val}).appendTo("#dollyFootPlace");
+            $(tagBox).hide()
+        });
+        $.each($(".tagBox"),function(index,val){$(val).text(index)});
+        tagWidth = Math.ceil($("#tagsPlace").width()/80);
+        tagHgh = Math.ceil($("#tagsPlace").height()/85)-1;
+        tagVal = tagWidth*tagHgh;
+        $.each($("#dollyPopularPlace").find(".tagBox"),function(index,val){if(index<tagVal){$(val).show()}});
+        maxShowIndex = $("#dollyPopularPlace").find(".tagBox:visible:last").index();
+        var maxIndex = $("#dollyPopularPlace").find(".tagBox:last").index();
+        
+        if (maxShowIndex<maxIndex){$("#moreTags").text('>>'+tagVal)} 
+        
+        $("#tagsArea").animate({marginTop:'0px'},500);
+        $("#area").animate({opacity:1},1000);
+        var j = $("#category").height()+$("#tagsArea").height()+55;
+        $("#feed").animate({marginTop:j},500);
+        $("#myuser").text(maxShowIndex+':'+tagVal+':'+maxIndex);
+        }
+};
+
+function moreTags(){
+    $("#tagsValueTop").text(tagVal);
+   /* var $parent = $(".tagBox:visible").closest(".dollyPlace");
+        maxShowIndex = $($parent).find(".tagBox:visible:last").index();
+        minShowIndex = $($parent).find(".tagBox:visible:first").index();
+        tagVal = maxShowIndex-minShowIndex;
+        maxIndex = $($parent).find(".tagBox").length;
+        n = maxIndex-tagVal
+        $("#tagsValueTop").text(maxShowIndex+':'+tagVal+':'+maxIndex);
+        if (maxShowIndex<n){
+            newMax = maxShowIndex+tagVal;
+            newMin = maxShowIndex+1;
+            $tagBoxVisible = $($parent).find(".tagBox:visible");
+            $("#moreTags").animate({backgroundColor:'#ffa500'},500);
+            $("#lessTags").text('<<'+tagVal).css({cursor:'pointer'});
+            $.each($($tagBoxVisible),function(index,val){$(val).css({float:'right'}).animate({marginRight:'-200px'},500)})
+            $.each($($parent).find(".tagBox"),function(index,val){
+                if(newMin<=index&&index<=newMax){
+                    $(val).css({float:'left',marginLeft:'-200px'}).show().stop().animate({marginLeft:'5px'},500);
+                }});
+            $.each($($tagBoxVisible),function(index,val){var float=$(val).css('float');if(float=='right'){$(val).hide()}});
+            $("#morePlace").animate({backgroundColor:'#808080'},500);
+//             if(newMax>n){$("#moreTags").text('').css({cursor:'default'})}
+        }*/
+        
+        
+        
+};
+
+function lessTags(){};
