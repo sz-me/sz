@@ -41,4 +41,9 @@
     float:left;
     width:180px;
     height:80px;
+    border-radius:5px;
 }
+
+#placeTag{
+ text-overflow:clip;
+    overflow: hidden;}

@@ -43,3 +43,8 @@
     height:80px;
     border-radius:5px;
 }
+
+#placeTag{
+    height:100px;
+ text-overflow:clip;
+    overflow: hidden;}

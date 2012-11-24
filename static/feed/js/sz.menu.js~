@@ -71,24 +71,32 @@ function placeRollDown(){
     $("#place").animate({backgroundColor:'#ffa500'},500);
 //Иконку закрыть меняем на зеленую
     $("#placeClose").css({color:'#008000'});
-    //Создание геотегов -- переделать 
-//     $.each([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43], function(index, val) {
-//         var geoBox = jQuery('<div>',{class:'geoBox',id:'4db189220f2c0353f5cb6141',click:function(){
-//                     var place_name = $(this).find(".place_name").text();
-//                     $(".placeValue").text(place_name);
-//                     $(".placeValue").attr('id',$(this).attr('id'));
-//                     $("#placeClose").text('[X]')
-//                     topAreaWidth();
-//                     }
-//                     }).appendTo("#placeTag");
-//         jQuery('<p>',{class:'place_name',text:'Салон-магазин МТС',css:{fontWeight:'bold'}}).appendTo(geoBox);
-//         jQuery('<p>',{text:'Автовокзал Горького 129,4 этаж каб.62 зеленая дверь'}).appendTo(geoBox);}); 
-        ////
-    showPlaces();
+    //Создание геотегов
+    var api = new sz.Api({uri: 'api/',request_func: $.ajax});
+    function placesView(data,latitude,longitude,accuracy){
+        if (data.meta.code == 200){
+            $.each(data.response.places, function(key, value) {
+                var geoBox = jQuery('<div>',{class:'geoBox',id:value.venue_id,click:function(){
+                                            var place_name = $(this).find(".place_name").text();
+                                            $(".placeValue").text(place_name);
+                                            $(".placeValue").attr('id',$(this).attr('id'));
+                                            $("#placeClose").text('[X]')
+                                            topAreaWidth();
+                                            }
+                            }).appendTo("#placeTag");
+                jQuery('<p>',{class:'place_name',text:value.name,css:{fontWeight:'bold'}}).appendTo(geoBox);
+                jQuery('<p>',{class:'place_address',text:value.address}).appendTo(geoBox);}); }
+        else {$(".placeValue").text(data.response.detail);}}
+        
+    navigator.geolocation.getCurrentPosition(function(data) {
+        var latitude = data['coords']['latitude'];
+        var longitude = data['coords']['longitude'];
+        var accuracy = data['coords']['accuracy'];
+        api.get('places',{latitude: latitude,longitude: longitude,accuracy: accuracy},
+        function(r){placesView(r,latitude,longitude,accuracy); });});
     //Количество гео тегов в одном ряду
-    var geoWidth = $(window).width()/185;
    //Количество отображаемых за раз геотегов
-   geoVal = Math.floor(geoWidth);
+   geoVal = Math.floor($(window).width()/185);
    //Количество геотегов всего
    geoLenght = $(".geoBox").length-1;
    //Высота,необходимая для отображения geoValShow геотегов
@@ -235,32 +243,6 @@ function lessTags(){
         if(newMin<n){$("#lessTags").text('').css({cursor:'default'})}
     }
 };
-
-
-function showPlaces(city_id){
-    var api = new sz.Api({uri: 'api/',request_func: $.ajax});
-    function placesView(data,latitude,longitude,accuracy){
-        if (data.meta.code == 200){
-            $.each(data.response.places, function(key, value) {
-                var geoBox = jQuery('<div>',{class:'geoBox',id:value.venue_id,click:function(){
-                                            var place_name = $(this).find(".place_name").text();
-                                            $(".placeValue").text(place_name);
-                                            $(".placeValue").attr('id',$(this).attr('id'));
-                                            $("#placeClose").text('[X]')
-                                            topAreaWidth();
-                                            }
-                            }).appendTo("#placeTag");
-                jQuery('<p>',{class:'place_name',text:value.name,css:{fontWeight:'bold'}}).appendTo(geoBox);
-                jQuery('<p>',{class:'place_address',text:value.address}).appendTo(geoBox);}); }
-        else {$(".placeValue").text(data.response.detail);}}
-        
-    navigator.geolocation.getCurrentPosition(function(data) {
-        var latitude = data['coords']['latitude'];
-        var longitude = data['coords']['longitude'];
-        var accuracy = data['coords']['accuracy'];
-        api.get('places',{latitude: latitude,longitude: longitude,accuracy: accuracy},
-        function(r){placesView(r,latitude,longitude,accuracy); });});
-}
 
 
 function cloneTags(){
