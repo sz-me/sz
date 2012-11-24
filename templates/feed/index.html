@@ -202,6 +202,7 @@ $(document).ready(function () {
     //var api = new sz.Api({uri: 'api/',request_func: $.ajax});
     $("#newmessage_textAdd").click(function(){   
             var fulltext = $("#newmessage_textValue").value;
+            var api = new sz.Api({uri: 'api/',request_func: $.ajax});
             api.post('messages/',{"text": fulltext,
                 "latitude": 50.261957910406444,
                 "longitude": 127.53488266715124,
