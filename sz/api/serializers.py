@@ -15,15 +15,20 @@ class MessageSerializer(serializers.ModelSerializer):
         read_only_fields = ('date', )
         exclude = ('id', 'things', 'user',)
 
-class ThingSerializer(serializers.ModelSerializer):
+class ThingSerializer(serializers.HyperlinkedModelSerializer):
+    tag = serializers.CharField(source='tag')
+    messages = serializers.HyperlinkedIdentityField(view_name='thing-messages')
     class Meta:
         model = models.Thing
-        fields = ('tag', 'category')
+        read_only_fields = ('url', 'tag',)
+        fields = ('url', 'tag', 'messages')
 
 class CategorySerializer(serializers.ModelSerializer):
+    messages = serializers.HyperlinkedIdentityField(view_name='category-messages')
     class Meta:
         model = models.Category
-        fields = ('name',)
+        read_only_fields = ('name', 'messages')
+        fields = ('name', 'messages')
 
 class PlaceSearchSerializer(serializers.Serializer):
     latitude = serializers.FloatField(required = True)

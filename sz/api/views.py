@@ -144,6 +144,28 @@ class ThingRoot(SzApiView):
         serializer = serializers.ThingSerializer(instance=things)
         return Response(serializer.data)
 
+class ThingInstance(SzApiView):
+    def get_object(self, pk):
+        try:
+            return models.Thing.objects.get(pk=pk)
+        except models.Thing.DoesNotExist:
+            raise Http404
+    def get(self, request, pk, format=None):
+        thing = self.get_object(pk)
+        serializer = serializers.ThingSerializer(instance=thing)
+        return Response(serializer.data)
+
+class ThingMessages(SzApiView):
+    def get_object(self, pk):
+        try:
+            return models.Thing.objects.get(pk=pk)
+        except models.Thing.DoesNotExist:
+            raise Http404
+    def get(self, request, pk, format=None):
+        messages = self.get_object(pk).message_set.all()
+        serializer = serializers.MessageSerializer(instance=messages)
+        return Response(serializer.data)
+
 class CategoryRoot(SzApiView):
     """
     List all messages, or create a new message.
