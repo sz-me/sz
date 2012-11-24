@@ -26,7 +26,8 @@ function getMessage(){
 };
     
 function messagesView(r){
-    var username = 'Vasya';
+    if (data.response.cities.length == 1){
+    var  username = 'Vasya';
     var    place_name = 'Кожа-Да-Кости,Секс-Шоп ';
     var    place_address = 'ул Амурская 17';
     var    city = 'Blagoveschensk, RU';
@@ -51,10 +52,10 @@ function messagesView(r){
     //В месте под геотэги создаем див с названием города
     jQuery('<div>',{class:"city",text:city}).appendTo($loc);
     //Создаем место под тэги
-    var $messageTags = jQuery('<div>',{class:"mestagsArea"}).appendTo($messagetop);
+    var $mestagsArea = jQuery('<div>',{class:"mestagsArea"}).appendTo($messagetop);
     //Для каждого из элемента полученного массива тэгов, создаем иконку тэга
     $.each(tagsKey,function(index,val){
-        var $tagBox = jQuery('<div>',{class:"boxMesTag"}).appendTo($messageTags);
+        var $tagBox = jQuery('<div>',{class:"boxMesTag"}).appendTo($mestagsArea);
         //В ней размещаем название тэга
         jQuery('<p>',{marginTop:'1px',text:val}).appendTo($tagBox);
         //И его рейтинг в контексте данного сообщения
@@ -73,7 +74,7 @@ function messagesView(r){
     jQuery('<div>',{class:"lessMessage",text:'<<',click:RollUpMessage}).appendTo($message);
     //Количество тэгов в одном ряду - уменьшенная на 100(ширина юзерпика) ширина самого сообщения,деленная на 80(ширина одно тэга), и все это окгругляем вниз
 
-    messageTagWidth = ($messageTags.width())/80;
+    messageTagWidth = ($mestagsArea.width())/80;}
 };
 
 (function($){
