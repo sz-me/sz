@@ -20,6 +20,12 @@ function RollDownMessage(){
 };
 
 function getMessage(){
+    var api = new sz.Api({uri: 'api/',request_func: $.ajax});
+    api.get('messages',{},
+            function(r){messagesView(r);})
+};
+    
+function messagesView(r){
     var username = 'Vasya';
     var    place_name = 'Кожа-Да-Кости,Секс-Шоп ';
     var    place_address = 'ул Амурская 17';
