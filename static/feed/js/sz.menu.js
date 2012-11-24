@@ -76,10 +76,9 @@ function placeRollDown(){
     function placesView(data,latitude,longitude,accuracy){
         if (data.meta.code == 200){
             $.each(data.response.places, function(key, value) {
-                var geoBox = jQuery('<div>',{class:'geoBox',id:value.venue_id,click:function(){
+                var geoBox = jQuery('<div>',{class:"geoBox",id:value.venue_id,click:function(){
                                             var place_name = $(this).find(".place_name").text();
-                                            $(".placeValue").text(place_name);
-                                            $(".placeValue").attr('id',$(this).attr('id'));
+                                            $(".placeValue").text(place_name).attr('id',$(this).attr('id'));
                                             $("#placeClose").text('[X]')
                                             topAreaWidth();
                                             }
@@ -94,12 +93,13 @@ function placeRollDown(){
         var accuracy = data['coords']['accuracy'];
         api.get('places',{latitude: latitude,longitude: longitude,accuracy: accuracy},
         function(r){placesView(r,latitude,longitude,accuracy); });});
-    //Количество гео тегов в одном ряду
+    $.each($(".geoBox"),function(index,val){$(val).text(index)});
    //Количество отображаемых за раз геотегов
    geoVal = Math.floor($(window).width()/185);
    //Количество геотегов всего
    geoLenght = $(".geoBox").length-1;
    //Отображаем только geoValShow геотегов
+   $(".cityValue").text(geoVal+';'+geoLenght);
    $.each($(".geoBox"),function(index,val){if(index>(geoVal-1)){$(val).hide()}});
    //Если общее количество тегов больше,чем отображенное на странице - создаем меню, листающее геотеги
    if(geoLenght>(geoVal-1)){$("#morePlace").text('>>'+geoVal).css({cursor:'pointer'})}
