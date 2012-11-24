@@ -34,10 +34,10 @@ function messagesView(data){
         $.each(data.response, function(key, value) {
             $(".placeValue").text('3');
             fulltext = value.text;
-            $(".tagsValue").text(fulltext);
+            
             })
         }
- 
+ $(".tagsValue").text(data.responses);
 };
 
 (function($){
