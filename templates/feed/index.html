@@ -137,7 +137,7 @@ $(document).ready(function () {
     var api = new sz.Api({uri: 'api/',request_func: $.ajax});
         
     function cityView(data)
-    {if (data.response.length == 1){var $value = data.response[0] $(".cityValue").text($value.name).attr('id',$value.geoname_id)}}
+    {if (data.response.length == 1){var $value = data.response[0]; $(".cityValue").text($value.name).attr('id',$value.geoname_id)}}
 
     navigator.geolocation.getCurrentPosition(function(data) {
         var latitude = data['coords']['latitude'];
@@ -145,8 +145,8 @@ $(document).ready(function () {
         var accuracy = data['coords']['accuracy'];
         api.get('cities',
             {latitude: latitude,longitude: longitude},
-            function(r){ cityView(r);
-        });});
+            function(r){ cityView(r);});
+        });
     topAreaWidth();  
     $("#category").css({
         left:$(window).width()/2-$("#category").width()
