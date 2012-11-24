@@ -20,24 +20,64 @@ function RollDownMessage(){
 };
 
 function getMessage(){
-    $(".placeValue").text('b');
     var api = new sz.Api({uri: 'api/',request_func: $.ajax});
     api.get('messages',{},
             function(r){messagesView(r);})
-    $(".placeValue").text('0');
 };
     
 function messagesView(data){
-    $(".placeValue").text('1');
-    if (data.response.length == 1){
-        $(".placeValue").text('2');
+    if ($.isArray(data.response)){
         $.each(data.response, function(key, value) {
-            $(".placeValue").text('3');
-            fulltext = value.text;
-            
+            var username = 'Vasya';
+            var place_name = value.place_id;
+            var place_address = 'ул Амурская 17';
+            var city = value.city_id;
+            var tagsKey = ['Трусы','Бондаж','Корсет','Плетка','Носки','Чулки','Шарфик','Шапочка','Пипетка','Макосины','Валенки','Джинсы','Шорты','Одеяло','Подушка','Сандали','Кроссовки','Свитер','Борода','Майка','Колготы','Кеды','Бандана','Комбинизон','Сорочка','Лыжи','Боди','Платье','Каска','Респиратор','Очки','Бюстье']
+            var fulltext = value.text;
+            var photoSource = "../img/photo.jpg"
+            //Создаем див самого сообщения
+            var $message = jQuery('<div class="message">').appendTo("#feed");
+            //В нем создаем див для отображаемой части сообщения
+            var $messagetop = jQuery('<div>',{class:"messagetop"}).appendTo($message);
+            //В нем создаем место для юзерпика
+            jQuery('<div>',{class:"user",text:username}).appendTo($messagetop);
+            //В нем же создаем место для геотэгов
+            var $loc = jQuery('<div>',{class:"location"}).appendTo($messagetop);
+            //В месте для геотэгов создаем место под магазин
+            var $place = jQuery('<div>',{class:"place"}).appendTo($loc);
+            //В место под магазин добавляем название магазина
+            jQuery('<span>',{class:"place_name",text:place_name}).appendTo($place);
+            //и его адрес
+            jQuery('<span>',{class:"place_address",text:place_address}).appendTo($place);
+            //В месте под геотэги создаем див с названием города
+            jQuery('<div>',{class:"city",text:city}).appendTo($loc);
+            //Создаем место под тэги
+            var $mestagsArea = jQuery('<div>',{class:"mestagsArea"}).appendTo($messagetop);
+            //Для каждого из элемента полученного массива тэгов, создаем иконку тэга
+            $.each(tagsKey,function(index,val){
+                var $tagBox = jQuery('<div>',{class:"boxMesTag"}).appendTo($mestagsArea);
+                //В ней размещаем название тэга
+                jQuery('<p>',{marginTop:'1px',text:val}).appendTo($tagBox);
+                //И его рейтинг в контексте данного сообщения
+                jQuery('<p>',{fontWeight:'bold',marginTop:'32px',text:'+15-'}).appendTo($tagBox);
+            });
+            //Создаем иконку развертки сообщения
+            jQuery('<div>',{class:"moreMessage",text:'>>',click:RollDownMessage}).appendTo($messagetop); 
+            //Создаем див для скрытых элементов сообщения
+            var $messagebottom = jQuery('<div>',{class:"messagebottom"}).appendTo($message);
+            //В него помещаем фотографию
+            jQuery('<img>',{class:"photo",src:photoSource,align:'left',width:'150',alt:'PHOTO',css:{border:'1px solid #444',borderRadius:'5px',marginRight:'15px',marginBottom:'5px'},click:(function(){
+                                    jQuery(($(this).clone())).animate({width:'+=400px',height:'+=400px'},200).dialog({modal:'true',width:'auto',show:'slideDown',click:(function(event,ui){$(this).remove()})})})}).appendTo($messagebottom).hide();
+            //Text
+            jQuery('<div>',{text:fulltext}).appendTo($messagebottom);
+            //Иконка свертки сообщения
+            jQuery('<div>',{class:"lessMessage",text:'<<',click:RollUpMessage}).appendTo($message);
+            //Количество тэгов в одном ряду - уменьшенная на 100(ширина юзерпика) ширина самого сообщения,деленная на 80(ширина одно тэга), и все это окгругляем вниз
+
+            messageTagWidth = ($mestagsArea.width())/80
             })
         }
- $(".tagsValue").text(data.responses);
+ 
 };
 
 (function($){
