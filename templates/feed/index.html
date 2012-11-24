@@ -202,7 +202,7 @@ $(document).ready(function () {
     //var api = new sz.Api({uri: 'api/',request_func: $.ajax});
     $("#newmessage_textAdd").click(function(){   
             var fulltext = $("#newmessage_textValue").value
-            api.post('messages/',{"text": value,
+            api.post('messages/',{"text": fulltext,
                 "latitude": 50.261957910406444,
                 "longitude": 127.53488266715124,
                 "accuracy": 10.0,
@@ -210,6 +210,7 @@ $(document).ready(function () {
                 "place_id": "4c636f6f79d1e21e62cbd815",
                 "bargain_date": null,
                 "csrfmiddlewaretoken": $('input[name="csrfmiddlewaretoken"]').val()
+            $(this).css({backgroundColor:'orange'})
     });
     
     })
