@@ -32,11 +32,10 @@ function messagesView(data){
     if (data.response.length == 1){
         $(".placeValue").text('2');
         $.each(data.response, function(key, value) {
-        $(".placeValue").text('3');
-        fulltext = value.text;
-        $(".tagsValue").text(fulltext);
-        
-        }
+            $(".placeValue").text('3');
+            fulltext = value.text;
+            $(".tagsValue").text(fulltext);
+            })
         }
  
 };
