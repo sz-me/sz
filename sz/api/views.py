@@ -41,6 +41,7 @@ class MessageRoot(SzApiView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
+        print request.DATA
         serializer = serializers.MessageSerializer(data=request.DATA)
         if serializer.is_valid():
             message = serializer.object

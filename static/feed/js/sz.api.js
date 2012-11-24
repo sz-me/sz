@@ -11,7 +11,7 @@ sz.Api = function(options){
         this.request_func(
         {
             url: resource_uri,
-            contentType: 'JSON',
+            //contentType: 'JSON',
             type: verb,
             data: parameters,
             success: response_handler,
