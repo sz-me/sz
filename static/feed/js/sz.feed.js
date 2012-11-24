@@ -81,7 +81,7 @@ function messagesView(data){
     jQuery('<div>',{class:"lessMessage",text:'<<',click:RollUpMessage}).appendTo($message);
     //Количество тэгов в одном ряду - уменьшенная на 100(ширина юзерпика) ширина самого сообщения,деленная на 80(ширина одно тэга), и все это окгругляем вниз
 
-    messageTagWidth = ($mestagsArea.width())/80;}
+    messageTagWidth = ($mestagsArea.width())/80;}}
 };
 
 (function($){
