@@ -76,7 +76,7 @@ function placeRollDown(){
     function placesView(data,latitude,longitude,accuracy){
         if (data.meta.code == 200){
             $.each(data.response.places, function(key, value) {
-                var geoBox = jQuery('<div>',{class:"geoBox",id:value.venue_id,click:function(){
+                var geoBox = jQuery('<div>',{class:"geoBox",click:function(){
                                             var place_name = $(this).find(".place_name").text();
                                             $(".placeValue").text(place_name).attr('id',$(this).attr('id'));
                                             $("#placeClose").text('[X]')
@@ -93,7 +93,8 @@ function placeRollDown(){
         var accuracy = data['coords']['accuracy'];
         api.get('places',{latitude: latitude,longitude: longitude,accuracy: accuracy},
         function(r){placesView(r,latitude,longitude,accuracy); });});
-    $.each($(".geoBox"),function(index,val){$(val).text(index)});
+    
+    $.each($(".geoBox"),function(index,val){$(val).find(".place_name").text(index)});
    //Количество отображаемых за раз геотегов
    geoVal = Math.floor($(window).width()/185);
    //Количество геотегов всего
