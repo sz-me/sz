@@ -20,14 +20,13 @@ class ThingSerializer(serializers.HyperlinkedModelSerializer):
     messages = serializers.HyperlinkedIdentityField(view_name='thing-messages')
     class Meta:
         model = models.Thing
-        read_only_fields = ('url', 'tag',)
         fields = ('url', 'tag', 'messages')
 
 class CategorySerializer(serializers.ModelSerializer):
     messages = serializers.HyperlinkedIdentityField(view_name='category-messages')
     class Meta:
         model = models.Category
-        read_only_fields = ('name', 'messages')
+        read_only_fields = ('name',)
         fields = ('name', 'messages')
 
 class PlaceSearchSerializer(serializers.Serializer):
