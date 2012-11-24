@@ -75,14 +75,13 @@ function placeRollDown(){
     var api = new sz.Api({uri: 'api/',request_func: $.ajax});
     function placesView(data,latitude,longitude,accuracy){
         if (data.meta.code == 200){
-            $.each(data.response, function(key, value) {
-                var geoBox = jQuery('<div>',{class:"geoBox",click:function(){
+            $.each(data.response, function(key, value){
+                var geoBox = jQuery('<div>',{class:"geoBox",id:value.venue_id,click:function(){
                                             var place_name = $(this).find(".place_name").text();
                                             $(".placeValue").text(place_name).attr('id',$(this).attr('id'));
                                             $("#placeClose").text('[X]')
                                             topAreaWidth();
-                                            }
-                            }).appendTo("#placeTag");
+                                            }}).appendTo("#placeTag");
                 jQuery('<p>',{class:'place_name',text:value.name,css:{fontWeight:'bold'}}).appendTo(geoBox);
                 jQuery('<p>',{class:'place_address',text:value.address}).appendTo(geoBox);}); }
         else {$(".placeValue").text(data.response.detail);}}
