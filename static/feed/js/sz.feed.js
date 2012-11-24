@@ -25,8 +25,8 @@ function getMessage(){
             function(r){messagesView(r);})
 };
     
-function messagesView(r){
-    if (data.response.cities.length == 1){
+function messagesView(data){
+    if (data.response.length == 1){
     var  username = 'Vasya';
     var    place_name = 'Кожа-Да-Кости,Секс-Шоп ';
     var    place_address = 'ул Амурская 17';

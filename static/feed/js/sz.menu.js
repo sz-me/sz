@@ -75,7 +75,7 @@ function placeRollDown(){
     var api = new sz.Api({uri: 'api/',request_func: $.ajax});
     function placesView(data,latitude,longitude,accuracy){
         if (data.meta.code == 200){
-            $.each(data.response.places, function(key, value) {
+            $.each(data.response, function(key, value) {
                 var geoBox = jQuery('<div>',{class:"geoBox",click:function(){
                                             var place_name = $(this).find(".place_name").text();
                                             $(".placeValue").text(place_name).attr('id',$(this).attr('id'));
