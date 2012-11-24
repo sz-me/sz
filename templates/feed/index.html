@@ -198,7 +198,15 @@ $(document).ready(function () {
             $("#newmessage_textAdd").hide()
         }
     });
+    var api = new sz.Api({uri: 'api/',request_func: $.ajax});
     
+    api.post('messages',{"text": "ОГРОМНЫЕ ТРУСЕЛИЩИ",
+            "latitude": 50.261957910406444,
+            "longitude": 127.53488266715124,
+            "accuracy": 10.0,
+            "city_id": 2026609,
+            "place_id": "4c636f6f79d1e21e62cbd815",
+            "bargain_date": null})
     
 });
 
