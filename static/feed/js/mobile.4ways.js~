@@ -1,5 +1,5 @@
 function searchMenuClick(){
-    $("#mainmenu").hide();
+//     $("#mainmenu").hide();
 
     var elHeight = $("#screen").height()-103;
     var winWidth = $("#screen").width();
