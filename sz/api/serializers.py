@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
+from rest_framework import pagination
 from rest_framework import serializers
 from sz.core import models
 
@@ -14,6 +15,13 @@ class MessageSerializer(serializers.ModelSerializer):
         model = models.Message
         read_only_fields = ('date', )
         exclude = ('id', 'things', 'user',)
+
+class PaginatedMessageSerializer(pagination.PaginationSerializer):
+    """
+    Serializes page objects of message querysets.
+    """
+    class Meta:
+        object_serializer_class = MessageSerializer
 
 class ThingSerializer(serializers.HyperlinkedModelSerializer):
     tag = serializers.CharField(source='tag')

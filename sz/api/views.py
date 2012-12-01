@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
+from django.core import paginator as django_paginator
 from django.http import Http404
+from rest_framework import pagination
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.reverse import reverse
@@ -15,9 +17,22 @@ class SzApiView(APIView):
     """
         Base class for SZ Web API views
     """
+
     def handle_exception(self, exc):
         base_response = APIView.handle_exception(self, exc)
         return Response(base_response.data, status = base_response.status_code)
+
+    paginate_by = 2
+
+    def _paginated_content(self, queryset, page):
+        paginator = django_paginator.Paginator(queryset, self.paginate_by)
+        try:
+            messages = paginator.page(page)
+        except django_paginator.PageNotAnInteger:
+            messages = paginator.page(1)
+        except django_paginator.EmptyPage:
+            messages = paginator.page(paginator.num_pages)
+        return messages
 
 class ApiRoot(SzApiView):
     def get(self, request, format=None):
@@ -30,14 +45,18 @@ class ApiRoot(SzApiView):
             'categories': reverse('category-list', request=request),
         })
 
-from rest_framework.parsers import JSONParser
 class MessageRoot(SzApiView):
     """
     List all messages, or create a new message.
     """
     def get(self, request, format=None):
-        messages = models.Message.objects.all()
-        serializer = serializers.MessageSerializer(instance=messages)
+        page = request.QUERY_PARAMS.get('page')
+        queryset = models.Message.objects.order_by('date').all()
+        messages = self._paginated_content(queryset, page)
+        serializer_context = {'request': request}
+        serializer = serializers.PaginatedMessageSerializer(
+            messages,
+            context=serializer_context)
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -55,6 +74,7 @@ class MessageRoot(SzApiView):
             categorization_service.detect_thinks(things, message)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class MessageInstance(SzApiView):
     """
