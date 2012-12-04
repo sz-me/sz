@@ -11,7 +11,7 @@ sz.Api = function(options){
         this.request_func(
         {
             url: resource_uri,
-            //contentType: 'JSON',
+            contentType: 'JSON',
             type: verb,
             data: parameters,
             success: response_handler,
@@ -24,3 +24,4 @@ sz.Api = function(options){
     this.put = function(resource, parameters, success) { return this.request('PUT', resource, parameters, success); };
     this.del = function(resource, parameters, success) { return this.request('DELETE', resource, parameters, success); };
 }
+

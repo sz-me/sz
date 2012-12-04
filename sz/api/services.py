@@ -1,6 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 from sz.core.algorithms.tagging import *
 from sz.core import venue
+from sz.core import models
 import urllib
 
 def tags2dict(tags):
@@ -21,15 +22,20 @@ def spellcorrector_tagging_service(message, tags):
 
 def venue_place_service(position, query = None, radius = None):
     result = venue.search(position, query, radius)
-    return {"places": map(lambda l: {
-        "name": l[u'name'].encode('utf8'),
-        "address": l[u'location'].get(u'address'),
-        "distance": l[u'location'].get(u'distance'),
-        "latitude": l[u'location'].get(u'lat'),
-        "longitude": l[u'location'].get(u'lng'),
-        "venue_id": l[u'id'],
-        "foursquare_details_uri": "https://foursquare.com/v/%s" % l[u'id'],
-    }, result["venues"])}
+    place_and_distance_list = map(
+        lambda l: {
+            'place': models.Place(
+                id = l[u'id'],
+                name = l[u'name'].encode('utf8'),
+                contact = u"%s" % l.get(u'contact'),
+                address = u"%s" % l[u'location'].get(u'address'),
+                crossStreet = u"%s" % l[u'location'].get(u'crossStreet'),
+                latitude = l[u'location'].get(u'lat'),
+                longitude = l[u'location'].get(u'lng')),
+            'distance': l[u'location'].get(u'distance'),
+        },
+        result["venues"])
+    return place_and_distance_list
 
 from sz.core import geonames
 def geonames_city_service(position, query):
@@ -47,11 +53,8 @@ def geonames_city_service(position, query):
 
     if query:
         request = geonames.search(query)
-        return {
-            "cities": [ response(g) for g in request['geonames']]
-        }
+        return [ response(g) for g in request['geonames']]
     else:
         request = geonames.nearby(position)
-        return {
-            "cities": [ response(g) for g in request['geonames']]
-        }
+        return [ response(g) for g in request['geonames']]
+

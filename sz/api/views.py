@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
+from django.core import paginator as django_paginator
 from django.http import Http404
 from rest_framework import permissions
 from rest_framework import status
@@ -19,15 +20,34 @@ class SzApiView(APIView):
         base_response = APIView.handle_exception(self, exc)
         return Response(base_response.data, status = base_response.status_code)
 
+    paginate_by = 2
+    def _paginated_content(self, queryset, page):
+        paginator = django_paginator.Paginator(queryset, self.paginate_by)
+        try:
+            messages = paginator.page(page)
+        except django_paginator.PageNotAnInteger:
+            messages = paginator.page(1)
+        except django_paginator.EmptyPage:
+            messages = paginator.page(paginator.num_pages)
+        return messages
+
+    def _get_list(self, queryset, request, list_serializer):
+        page = request.QUERY_PARAMS.get('page')
+        data = self._paginated_content(queryset, page)
+        serializer_context = {'request': request}
+        serializer = list_serializer(data, context=serializer_context)
+        list = serializer.data
+        return list
+
 class ApiRoot(SzApiView):
     def get(self, request, format=None):
         return Response({
-            'messages': reverse('message-list', request=request),
-            'cities': reverse('city-list', request=request),
-            'places': reverse('place-list', request=request),
-            'users': reverse('user-list', request=request),
-            'things': reverse('thing-list', request=request),
-            'categories': reverse('category-list', request=request),
+            'messages': reverse('message-list'),
+            'cities': reverse('city-list'),
+            'places': reverse('place-list'),
+            'users': reverse('user-list'),
+            #'things': reverse('thing-list'),
+            'categories': reverse('category-list'),
         })
 
 class MessageRoot(SzApiView):
@@ -35,21 +55,27 @@ class MessageRoot(SzApiView):
     List all messages, or create a new message.
     """
     def get(self, request, format=None):
-        messages = models.Message.objects.all()
-        serializer = serializers.MessageSerializer(instance=messages)
-        return Response(serializer.data)
+        queryset = models.Message.objects.order_by('date').all()
+        list_serializer = serializers.PaginatedMessageSerializer
+        list = self._get_list(queryset, request, list_serializer)
+        return Response(list)
 
     def post(self, request, format=None):
-        serializer = serializers.MessageSerializer(request.DATA)
+        print request.DATA
+        serializer = serializers.MessageSerializer(data=request.DATA)
         if serializer.is_valid():
             message = serializer.object
+            print message
             message.user = request.user
+            print message.user
             message.save()
+            print "message.save() OK"
             things = models.Thing.objects.all()
             categorization_service = services.CategorizationService()
             categorization_service.detect_thinks(things, message)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class MessageInstance(SzApiView):
     """
@@ -69,7 +95,7 @@ class MessageInstance(SzApiView):
 
     def put(self, request, pk, format=None):
         message = self.get_object(pk)
-        serializer = serializers.MessageSerializer(request.DATA, instance=message)
+        serializer = serializers.MessageSerializer(data=request.DATA, instance=message)
         if serializer.is_valid():
             message = serializer.object
             message.save()
@@ -95,7 +121,7 @@ class UserRoot(SzApiView):
 class CityRoot(SzApiView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     def get(self, request, format=None):
-        serializer = serializers.CitySearchSerializer(request.QUERY_PARAMS)
+        serializer = serializers.CitySearchSerializer(data=request.QUERY_PARAMS)
         if serializer.is_valid():
             position = {
                 'latitude': request.QUERY_PARAMS.get('latitude'),
@@ -114,7 +140,7 @@ class PlaceRoot(SzApiView):
     """
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None):
-        serializer = serializers.PlaceSearchSerializer(request.QUERY_PARAMS)
+        serializer = serializers.PlaceSearchSerializer(data=request.QUERY_PARAMS)
         if serializer.is_valid():
             position = {
                 'latitude': request.QUERY_PARAMS['latitude'],
@@ -126,7 +152,9 @@ class PlaceRoot(SzApiView):
             else:
                 query = None
             places = api_services.venue_place_service(position, query)
-            return Response(places)
+            serializer = serializers.PlaceSerializer(instance
+                = map(lambda x : x['place'], places))
+            return Response(serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -140,11 +168,35 @@ class ThingRoot(SzApiView):
         serializer = serializers.ThingSerializer(instance=things)
         return Response(serializer.data)
 
+class ThingInstance(SzApiView):
+    def get_object(self, pk):
+        try:
+            return models.Thing.objects.get(pk=pk)
+        except models.Thing.DoesNotExist:
+            raise Http404
+    def get(self, request, pk, format=None):
+        thing = self.get_object(pk)
+        serializer = serializers.ThingSerializer(instance=thing)
+        return Response(serializer.data)
+
+class ThingMessages(SzApiView):
+    def get_object(self, pk):
+        try:
+            return models.Thing.objects.get(pk=pk)
+        except models.Thing.DoesNotExist:
+            raise Http404
+    def get(self, request, pk, format=None):
+        messages = self.get_object(pk).message_set.all()
+        serializer = serializers.MessageSerializer(instance=messages)
+        return Response(serializer.data)
+
 class CategoryRoot(SzApiView):
     """
     List all messages, or create a new message.
     """
+    paginate_by = 4
     def get(self, request, format=None):
-        categories = models.Category.objects.all()
-        serializer = serializers.CategorySerializer(instance=categories)
-        return Response(serializer.data)
+        queryset = models.Category.objects.all()
+        list_serializer = serializers.PaginatedCategorySerializer
+        list = self._get_list(queryset, request, list_serializer)
+        return Response(list)

@@ -7,8 +7,8 @@
    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
      <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
     <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/mobile.4ways.js"></script>
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/mobile.4ways.css">
+    <script type="text/javascript" src="{{ STATIC_URL }}js/mobil.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/mobil.css">
     
     <script type="text/javascript" src="/home/kunla/sz/static/feed/js/mobile.4ways.js"></script>
     <link rel="stylesheet" href="/home/kunla/sz/static/feed/css/mobile.4ways.css">

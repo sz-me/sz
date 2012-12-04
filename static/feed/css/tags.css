@@ -1,0 +1,163 @@
+
+
+#gender{
+    float:right;
+    margin-right:15px;
+    margin-top:-333px;
+ 
+}
+
+
+
+#nosex,#female,#male,#kind{
+    cursor:pointer;
+    width:40px;
+    height:54px;
+    border-radius:30px;
+    
+}
+
+#nosex{ 
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;background:white;}
+
+#female{ 
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;background:orange;margin-top:15px;margin-bottom:15px;}
+
+#male{
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;background:#0066FF;margin-bottom:15px;}
+
+#kind{
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;background:green;}
+
+
+#dollyPlace{
+    float:left;
+    width:100px;
+    margin-left:15px;
+        
+}
+
+.dollyHead{
+    cursor:pointer;
+    border-radius:2px;
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;
+    background-image:url(../img/fionnaHead.png);
+    height:54px;
+    background-size:100% ;
+}
+.dollyBody{
+    cursor:pointer;
+    border-radius:2px;
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;
+    margin-top:8px;
+    background-image:url(../img/fionnaBody.png);
+    
+    height:54px;
+    background-size:100%;
+}
+
+.dollyLegs{
+    cursor:pointer;
+    border-radius:2px;
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;
+    margin-top:8px;
+    background-image:url(../img/fionnaLegs.png);
+    height:84px;
+    background-size:100%;
+}
+.dollyFoot{
+    cursor:pointer;
+    border-radius:2px;
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;
+    margin-top:8px;
+    background-image:url(../img/fionnaFoot.png);
+   
+    height:45px;
+    background-size: 100%;
+}
+
+#tagsPlace{
+    background:white;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;
+    height:270px;
+    text-overflow:clip;
+    overflow: hidden;
+}
+
+
+
+
+.tagBox{
+    cursor:pointer;
+    border-radius:5px;
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;
+    color:#444;
+    margin:4px;
+    text-align: center;
+    font-size:10px;
+    float:left;
+    width:75px;
+    height:75px;
+}
+
+.tagBoxImage{
+margin-left:7px;
+    width:60px;
+    height:60px;
+    background-image:url(../img/shirt.png);
+    background-size: 100%;
+}
+
+.tagBoxSelect{
+    cursor:pointer;
+    border-radius:5px;
+    border:3px solid #FF9900;
+    box-shadow: 0px 0px 4px orange;
+    -moz-box-shadow: 0px 0px 4px orange;
+    -webkit-box-shadow: 0px 0px 4px orange;
+    color:#444;
+    margin:1px;
+    text-align: center;
+    font-size:10px;
+    float:left;
+    width:77px;
+height:77px;
+}
+    
+
+
+.topClose{
+    cursor:pointer;
+    float:left;
+    margin-right:5px;
+    color:orange;
+}

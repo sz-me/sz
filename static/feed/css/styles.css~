@@ -1,0 +1,135 @@
+body{font-family: Arial, Helvetica, sans-serif;}
+
+#mainmenu{
+    background:orange;
+    height:auto;
+    top:0px;
+    right:0px;
+    text-align:center;
+    font-weight: bold;
+}
+
+#menu{
+    width:100%;
+    background:orange;
+    color:white;
+}
+    
+
+#category{
+    margin-left:110px;
+    display:block;
+    width:auto;
+    height:50px;
+}
+    
+
+#city,#place,#tags{
+    
+    margin-top:-1px;
+    text-align:center;
+    float:left;
+    width:auto;
+    height:35px;
+    padding-right:15px;
+    padding-left:15px;
+    padding-top:1em;
+    background:gray;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size:1em;
+    border:1px solid white;
+    border-bottom:1px solid gray;
+    cursor: pointer;
+    box-shadow: -2px 2px 2px #333;
+    -moz-box-shadow: -2px 2px 2px #333;
+    -webkit-box-shadow: -2px 2px 2px #333;
+}
+
+#city{border-radius:20px 0px 0px 0px;
+
+    box-shadow: 0px 2px 2px #333;
+    -moz-box-shadow: 0px 2px 2px #333;
+    -webkit-box-shadow: 0px 2px 2px #333;
+}
+
+#tags{border-radius:0px 20px 0px 0px;}
+
+
+
+
+#tagsTopArea{
+    float:right;
+}
+
+#myuser{
+    margin-bottom:-50px;
+    text-align:center;
+   width:100px;
+   padding-top:5px;
+   padding-bottom:3px;
+    /*font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    font-size:12px;
+    border:1px solid white;
+    border-bottom:1px solid gray;
+    border-radius:20px 20px 0px 0px;
+    cursor: pointer;
+    box-shadow: -2px 0px 0px #333;
+    -moz-box-shadow: -2px 0px 0px #333;
+    -webkit-box-shadow: -2px 0px 0px #333;*/
+    
+}
+
+#myface{
+    border-radius:5px;
+    border:2px solid #DDD;
+        cursor: pointer;
+    box-shadow: 0px 0px 4px #666;
+    -moz-box-shadow: 0px 0px 4px #666;
+    -webkit-box-shadow: 0px 0px 4px #666;
+}
+
+.close{margin-right:8px;margin-left:-2px;}
+
+
+
+#sepString{
+    box-shadow: 0px 0px 2px #333;
+    border-top:1px solid white;
+    border-bottom:1px solid white;
+    width:100%;
+    height:10px;
+    background:gray;
+}
+
+#area{
+    box-shadow: 0px 0px 2px #333;
+    border-top:1px solid white;
+    border-bottom:1px solid white;
+    width:100%;
+    background:gray;
+}
+
+.addMessage{
+    padding:1em;
+    cursor:pointer;
+    background:green;
+    border:3px solid white;
+    border-radius:18px;
+      box-shadow: 0px 0px 4px #666;
+    -moz-box-shadow: 0px 0px 4px #666;
+    -webkit-box-shadow: 0px 0px 4px #666;
+}
+
+
+#feed{
+    text-align:center;
+    width:90%;
+    margin-left:5%;
+}
+
+
+
+
+
