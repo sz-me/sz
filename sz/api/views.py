@@ -152,7 +152,9 @@ class PlaceRoot(SzApiView):
             else:
                 query = None
             places = api_services.venue_place_service(position, query)
-            return Response(places)
+            serializer = serializers.PlaceSerializer(instance
+                = map(lambda x : x['place'], places))
+            return Response(serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

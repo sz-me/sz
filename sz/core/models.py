@@ -64,6 +64,10 @@ class Place(models.Model):
         auto_now=True,
         editable=False,
         verbose_name=u"дата синхронизации")
+    def foursquare_details_url(self):
+        return "https://foursquare.com/v/%s" % self.id
+    def __unicode__(self):
+        return u"%s" % self.name
 
 class Message(models.Model):
     date = models.DateTimeField(
@@ -92,4 +96,4 @@ class Message(models.Model):
         verbose_name_plural = u"сообщения"
         ordering = ["-date"]
     def __unicode__(self):
-        return self.text
+        return u"%s" % self.text

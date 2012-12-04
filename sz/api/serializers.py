@@ -26,11 +26,11 @@ class ThingSerializer(serializers.HyperlinkedModelSerializer):
         model = models.Thing
         fields = ('url', 'tag', 'messages')
 
-class CategorySerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.HyperlinkedModelSerializer):
+    name = serializers.CharField(source='name')
     messages = serializers.HyperlinkedIdentityField(view_name='category-messages')
     class Meta:
         model = models.Category
-        read_only_fields = ('name',)
         fields = ('name', 'messages')
 class PaginatedCategorySerializer(pagination.PaginationSerializer):
     class Meta:
@@ -41,6 +41,11 @@ class PlaceSearchSerializer(serializers.Serializer):
     longitude = serializers.FloatField(required = True)
     accuracy = serializers.FloatField(required = False)
     query = serializers.CharField(required = False)
+class PlaceSerializer(serializers.HyperlinkedModelSerializer):
+    #distance = serializers.Field(source='*')
+    foursquare_details_url = serializers.Field()
+    class Meta:
+        model = models.Place
 
 class CitySearchSerializer(serializers.Serializer):
     latitude = serializers.FloatField(required = False)
