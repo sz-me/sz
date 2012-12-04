@@ -44,41 +44,52 @@ class Thing(models.Model):
         verbose_name = u"вещь"
         verbose_name_plural = u"вещи"
 
-class Message(models.Model):
-    text = models.TextField(max_length=1024, verbose_name=u"сообщение") #Like a TEXT field
+class Place(models.Model):
+    id = models.CharField(
+        primary_key=True,
+        max_length=24,
+        verbose_name=u"идентификатор в Foursquare")
+    name = models.CharField(max_length=128, verbose_name=u"название")
+    address = models.CharField(max_length=128, verbose_name=u"адрес")
+    crossStreet = models.CharField(max_length=128, verbose_name=u"пересечение улиц")
+    contact = models.CharField(max_length=512, verbose_name=u"контакты")
     latitude = models.FloatField(verbose_name=u"широта")
     longitude = models.FloatField(verbose_name=u"долгота")
-    accuracy = models.FloatField(verbose_name=u"точность")
     city_id = models.IntegerField(
-        verbose_name=u"Идентификатор в GeoNames",
+        verbose_name=u"идентификатор в GeoNames",
         db_index=True,
         null=False,
         blank=False)
-    place_id = models.CharField(
-        max_length=24,
-        verbose_name=u"Идентификатор в Foursquare",
-        db_index=True,
-        null=False,
-        blank=False)
-    bargain_date = models.DateTimeField(
-        verbose_name=u"дата покупки",
-        null=True,
-        blank=True)
+    date = models.DateTimeField(
+        auto_now=True,
+        editable=False,
+        verbose_name=u"дата синхронизации")
+
+class Message(models.Model):
     date = models.DateTimeField(
         auto_now_add=True,
         null=True,
         blank=True,
         editable=False,
         verbose_name=u"дата добавления")
+    text = models.TextField(
+        max_length=1024,
+        null=False,
+        blank=False,
+        verbose_name=u"сообщение")
+    user = models.ForeignKey(
+        auth.models.User,
+        verbose_name=u"пользователь")
+    place = models.ForeignKey(
+        Place,
+        verbose_name=u"место")
     things = models.ManyToManyField(
         Thing,
         null=True,
         blank=True)
-    user = models.ForeignKey(
-        auth.models.User,
-        verbose_name=u"пользователь")
     class Meta:
         verbose_name = u"сообщение"
         verbose_name_plural = u"сообщения"
+        ordering = ["-date"]
     def __unicode__(self):
         return self.text
