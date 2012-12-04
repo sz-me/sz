@@ -2,7 +2,6 @@
 from django.contrib.auth.models import User
 from django.core import paginator as django_paginator
 from django.http import Http404
-from rest_framework import pagination
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.reverse import reverse
@@ -17,13 +16,11 @@ class SzApiView(APIView):
     """
         Base class for SZ Web API views
     """
-
     def handle_exception(self, exc):
         base_response = APIView.handle_exception(self, exc)
         return Response(base_response.data, status = base_response.status_code)
 
     paginate_by = 2
-
     def _paginated_content(self, queryset, page):
         paginator = django_paginator.Paginator(queryset, self.paginate_by)
         try:
@@ -34,15 +31,23 @@ class SzApiView(APIView):
             messages = paginator.page(paginator.num_pages)
         return messages
 
+    def _get_list(self, queryset, request, list_serializer):
+        page = request.QUERY_PARAMS.get('page')
+        data = self._paginated_content(queryset, page)
+        serializer_context = {'request': request}
+        serializer = list_serializer(data, context=serializer_context)
+        list = serializer.data
+        return list
+
 class ApiRoot(SzApiView):
     def get(self, request, format=None):
         return Response({
-            'messages': reverse('message-list', request=request),
-            'cities': reverse('city-list', request=request),
-            'places': reverse('place-list', request=request),
-            'users': reverse('user-list', request=request),
-            'things': reverse('thing-list', request=request),
-            'categories': reverse('category-list', request=request),
+            'messages': reverse('message-list'),
+            'cities': reverse('city-list'),
+            'places': reverse('place-list'),
+            'users': reverse('user-list'),
+            #'things': reverse('thing-list'),
+            'categories': reverse('category-list'),
         })
 
 class MessageRoot(SzApiView):
@@ -50,14 +55,10 @@ class MessageRoot(SzApiView):
     List all messages, or create a new message.
     """
     def get(self, request, format=None):
-        page = request.QUERY_PARAMS.get('page')
         queryset = models.Message.objects.order_by('date').all()
-        messages = self._paginated_content(queryset, page)
-        serializer_context = {'request': request}
-        serializer = serializers.PaginatedMessageSerializer(
-            messages,
-            context=serializer_context)
-        return Response(serializer.data)
+        list_serializer = serializers.PaginatedMessageSerializer
+        list = self._get_list(queryset, request, list_serializer)
+        return Response(list)
 
     def post(self, request, format=None):
         print request.DATA
@@ -191,7 +192,9 @@ class CategoryRoot(SzApiView):
     """
     List all messages, or create a new message.
     """
+    paginate_by = 4
     def get(self, request, format=None):
-        categories = models.Category.objects.all()
-        serializer = serializers.CategorySerializer(instance=categories)
-        return Response(serializer.data)
+        queryset = models.Category.objects.all()
+        list_serializer = serializers.PaginatedCategorySerializer
+        list = self._get_list(queryset, request, list_serializer)
+        return Response(list)
