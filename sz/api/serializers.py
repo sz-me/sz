@@ -12,15 +12,19 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Message
 
-class ThingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Thing
-        fields = ('tag', 'category')
-
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Category
         fields = ('name',)
+
+from sz.api import fields as sz_api_fields
+class ThingSerializer(serializers.ModelSerializer):
+    category = sz_api_fields.NestedField(source='category', serializer=CategorySerializer)
+    class Meta:
+        model = models.Thing
+        fields = ('tag', 'category')
+
+
 
 class PlaceSearchSerializer(serializers.Serializer):
     latitude = serializers.FloatField(required = True)
