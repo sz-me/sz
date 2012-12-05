@@ -149,6 +149,21 @@ class PlaceRoot(SzApiView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class PlaceInstance(SzApiView):
+    """
+    Retrieve a place instance.
+    """
+
+    def get_object(self, pk):
+        try:
+            return models.Place.objects.get(pk=pk)
+        except models.Message.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        place = self.get_object(pk)
+        serializer = serializers.PlaceSerializer(instance=place)
+        return Response(serializer.data)
 
 class ThingRoot(SzApiView):
     """
