@@ -69,6 +69,9 @@ class Place(models.Model):
     def __unicode__(self):
         return u"%s" % self.name
 
+    def all_messages(self):
+        return self.message_set.order_by('-date').all()
+
 class Message(models.Model):
     date = models.DateTimeField(
         auto_now_add=True,
