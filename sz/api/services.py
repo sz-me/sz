@@ -30,27 +30,11 @@ def spellcorrector_tagging_service(message, tags):
     algorithm = lambda m, t: spellcorrector_tagging_algorithm(m, t)
     return tagging_service(message, tags, algorithm)
 
-def venue_place_service(position, query = None, radius = None):
-    result = venue.search(position, query, radius)
-    place_and_distance_list = map(
-        lambda l: {
-            'place': models.Place(
-                id = l[u'id'],
-                name = l[u'name'].encode('utf8'),
-                contact = l.get(u'contact'),
-                address = u"%s" % l[u'location'].get(u'address'),
-                crossStreet = u"%s" % l[u'location'].get(u'crossStreet'),
-                latitude = l[u'location'].get(u'lat'),
-                longitude = l[u'location'].get(u'lng')),
-            'distance': l[u'location'].get(u'distance'),
-        },
-        result["venues"])
-    return place_and_distance_list
-
 from sz.core import geonames
-def geonames_city_service(position, query):
+def geonames_city_service(position, query=None):
 
     response = lambda g : {
+        "id": g['geonameId'],
         "name": g['name'],
         "region": g['adminName1'],
         "country": g['countryName'],
@@ -67,4 +51,24 @@ def geonames_city_service(position, query):
     else:
         request = geonames.nearby(position)
         return [ response(g) for g in request['geonames']]
+
+def venue_place_service(position, query = None, radius = None):
+    city = geonames_city_service(position)[0]
+    result = venue.search(position, query, radius)
+    place_and_distance_list = map(
+        lambda l: {
+            'place': models.Place(
+                id = l[u'id'],
+                name = l[u'name'].encode('utf8'),
+                contact = l.get(u'contact'),
+                address = u"%s" % l[u'location'].get(u'address'),
+                crossStreet = u"%s" % l[u'location'].get(u'crossStreet'),
+                latitude = l[u'location'].get(u'lat'),
+                longitude = l[u'location'].get(u'lng'),
+                city_id = city['id']
+            ),
+            'distance': l[u'location'].get(u'distance'),
+        },
+        result["venues"])
+    return place_and_distance_list
 
