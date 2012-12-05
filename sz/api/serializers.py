@@ -19,24 +19,23 @@ class PaginatedMessageSerializer(pagination.PaginationSerializer):
     class Meta:
         object_serializer_class = MessageSerializer
 
-from sz.api import fields as sz_api_fields
-class ThingSerializer(serializers.HyperlinkedModelSerializer):
-    tag = serializers.CharField(source='tag')
-    messages = serializers.HyperlinkedIdentityField(view_name='thing-messages')
-    category = sz_api_fields.NestedField(source='category', serializer=CategorySerializer)
-    class Meta:
-        model = models.Thing
-        fields = ('url', 'tag', 'category', 'messages')
-
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
     name = serializers.CharField(source='name')
     messages = serializers.HyperlinkedIdentityField(view_name='category-messages')
     class Meta:
         model = models.Category
-        fields = ('name', 'messages')
 class PaginatedCategorySerializer(pagination.PaginationSerializer):
     class Meta:
         object_serializer_class = CategorySerializer
+
+from sz.api import fields as sz_api_fields
+class ThingSerializer(serializers.HyperlinkedModelSerializer):
+    tag = serializers.CharField(source='tag')
+    messages = sz_api_fields.ResourceField(view_name='thing-messages')
+    category = sz_api_fields.NestedField(source='category', serializer=CategorySerializer)
+    class Meta:
+        model = models.Thing
+        fields = ('url', 'tag', 'category', 'messages')
 
 class PlaceSearchSerializer(serializers.Serializer):
     latitude = serializers.FloatField(required = True)
@@ -46,8 +45,10 @@ class PlaceSearchSerializer(serializers.Serializer):
 class PlaceSerializer(serializers.HyperlinkedModelSerializer):
     #distance = serializers.Field(source='*')
     foursquare_details_url = serializers.Field()
+    messages = sz_api_fields.NestedField(source='all_messages', serializer=PaginatedMessageSerializer)
     class Meta:
         model = models.Place
+        exclude = ('date',)
 
 class CitySearchSerializer(serializers.Serializer):
     latitude = serializers.FloatField(required = False)
