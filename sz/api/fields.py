@@ -14,3 +14,8 @@ class NestedField(fields.Field):
             value = value()
         serializer = self.serializer(instance=value)
         return serializer.data
+
+class ResourceField (fields.HyperlinkedIdentityField):
+    def field_to_native(self, obj, field_name):
+        url = super(ResourceField, self).field_to_native(obj, field_name)
+        return { 'url': url, }
