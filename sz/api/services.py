@@ -1,8 +1,18 @@
 ﻿# -*- coding: utf-8 -*-
+from django.core import paginator as django_paginator
 from sz.core.algorithms.tagging import *
 from sz.core import venue
 from sz.core import models
-import urllib
+
+def paginated_content(queryset, page=None, paginate_by=5):
+    paginator = django_paginator.Paginator(queryset, paginate_by)
+    try:
+        messages = paginator.page(page)
+    except django_paginator.PageNotAnInteger:
+        messages = paginator.page(1)
+    except django_paginator.EmptyPage:
+        messages = paginator.page(paginator.num_pages)
+    return messages
 
 def tags2dict(tags):
     d = dict((tag.name, [p.value for p in tag.pattern_set.all()]) for tag in tags)
@@ -27,7 +37,7 @@ def venue_place_service(position, query = None, radius = None):
             'place': models.Place(
                 id = l[u'id'],
                 name = l[u'name'].encode('utf8'),
-                contact = u"%s" % l.get(u'contact'),
+                contact = l.get(u'contact'),
                 address = u"%s" % l[u'location'].get(u'address'),
                 crossStreet = u"%s" % l[u'location'].get(u'crossStreet'),
                 latitude = l[u'location'].get(u'lat'),

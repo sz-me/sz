@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
-from django.core import paginator as django_paginator
 from django.http import Http404
 from rest_framework import permissions
 from rest_framework import status
@@ -21,21 +20,12 @@ class SzApiView(APIView):
         return Response(base_response.data, status = base_response.status_code)
 
     paginate_by = 2
-    def _paginated_content(self, queryset, page):
-        paginator = django_paginator.Paginator(queryset, self.paginate_by)
-        try:
-            messages = paginator.page(page)
-        except django_paginator.PageNotAnInteger:
-            messages = paginator.page(1)
-        except django_paginator.EmptyPage:
-            messages = paginator.page(paginator.num_pages)
-        return messages
 
-    def _get_list(self, queryset, request, list_serializer):
+    def _get_list(self, queryset, request, paginated_serializer):
         page = request.QUERY_PARAMS.get('page')
-        data = self._paginated_content(queryset, page)
+        data = api_services.paginated_content(queryset, page, self.paginate_by)
         serializer_context = {'request': request}
-        serializer = list_serializer(data, context=serializer_context)
+        serializer = paginated_serializer(data, context=serializer_context)
         list = serializer.data
         return list
 
