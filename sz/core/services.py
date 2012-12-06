@@ -17,6 +17,8 @@ class CategorizationService:
 
 from django.utils import timezone
 class ModelCachingService:
+    stored = []
+    cached = []
     for_insert = []
     for_update = []
     def __init__(self, data, date, delta):
@@ -28,15 +30,15 @@ class ModelCachingService:
             model_class = type(lists.first(data))
             assert lists.all(lambda e: type(e) == model_class , data), \
                 'data contain items of different types'
-            db = map(lambda e: dict(pk=e.id, date=date(e)),
-                model_class.objects.filter(pk__in=[e.id for e in data]))
+            self.stored = model_class.objects.filter(pk__in=[e.id for e in data])
+            db = map(lambda e: dict(pk=e.id, date=date(e)), self.stored)
             no_cached_entities = set(filter(lambda e:
                 e.pk not in [x['pk'] for x in db], data))
-            cached_entities = data - no_cached_entities
+            self.cached = data - no_cached_entities
             last_update_date = lambda e: \
                 filter(lambda x: x['pk'] == e.pk, db)[0]['date']
             expired_places = filter(lambda e:
-                timezone.now() - last_update_date(e) > delta, cached_entities)
+                timezone.now() - last_update_date(e) > delta, self.cached)
 
             self.for_insert = no_cached_entities
             self.for_update = expired_places
