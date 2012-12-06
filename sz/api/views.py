@@ -123,7 +123,6 @@ class CityRoot(SzApiView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 import datetime
-from django.utils import timezone
 class PlaceRoot(SzApiView):
     """
     List of places near the current location.
@@ -142,28 +141,13 @@ class PlaceRoot(SzApiView):
                 query = u"%s" % request.QUERY_PARAMS['query']
             else:
                 query = None
-
             places_from_venue = api_services.venue_place_service(position, query)
-
-            places = set([r['place'] for r in places_from_venue])
-            db = map(lambda e: dict(id=e.id, date=e.date),
-                models.Place.objects.filter(id__in=[e.id for e in places]))
-            no_cached_places = set(filter(lambda e:
-                e.id not in [x['id'] for x in db], places))
-            cached_places = places - no_cached_places
-
-            last_update_date = lambda e: filter(lambda x: x['id'] == e.id, db)[0]['date']
-
-            print 'NoCached: ' + ', '.join([u'%s' % e for e in no_cached_places])
-
-            caching_timedelta = datetime.timedelta(seconds=60*60*24*7)
-            expired_places = filter(lambda e:
-                timezone.now() - last_update_date(e) > caching_timedelta, cached_places)
-            print 'Expired: ' + ', '.join([u'%s' % e for e in expired_places])
-
-            #map(lambda e: e.save(force_insert=True), no_cached_places)
-            #map(lambda e: e.save(force_update=True), expired_places)
-
+            places = [r['place'] for r in places_from_venue]
+            caching_service = services.ModelCachingService(
+                places, lambda e: e.date, datetime.timedelta(seconds=60*60*24*7))
+            #print 'INSERT: ' + ', '.join([u'%s' % e for e in caching_service.for_insert])
+            #print 'UPDATE: ' + ', '.join([u'%s' % e for e in caching_service.for_update])
+            caching_service.save()
             serializer = serializers.PlaceSerializer(instance=places)
             return Response(serializer.data)
         else:
