@@ -59,7 +59,7 @@ def venue_place_service(position, query = None, radius = None):
         lambda l: {
             'place': models.Place(
                 id = l[u'id'],
-                name = l[u'name'].encode('utf8'),
+                name = l[u'name'],
                 contact = l.get(u'contact'),
                 address = u"%s" % l[u'location'].get(u'address'),
                 crossStreet = u"%s" % l[u'location'].get(u'crossStreet'),
