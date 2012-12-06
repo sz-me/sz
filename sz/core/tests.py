@@ -24,6 +24,12 @@ class ListsTest(TestCase):
         self.assertEquals(lists.first(set([4, 5, 3, 'a', 18])), 'a')
     def test_last(self):
         self.assertEquals(lists.last([4, 2, 3]), 3)
+    def test_first_match(self):
+        self.assertEquals(lists.first_match(lambda x: x < 4, [4, 2, 3, 5]), 2)
+        self.assertEquals(lists.first_match(lambda x: x < 1, [4, 2, 3, 5]), None)
+    def test_last_match(self):
+        self.assertEquals(lists.last_match(lambda x: x < 4, [4, 2, 3, 5]), 3)
+        self.assertEquals(lists.last_match(lambda x: x > 7, [4, 2, 3, 5]), None)
 """
 class TagsServicesTest(TestCase):
     def setUp(self):
