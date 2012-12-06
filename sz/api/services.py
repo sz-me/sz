@@ -53,7 +53,6 @@ def geonames_city_service(position, query=None):
         return [ response(g) for g in request['geonames']]
 
 def venue_place_service(position, query = None, radius = None):
-    city = geonames_city_service(position)[0]
     result = venue.search(position, query, radius)
     place_and_distance_list = map(
         lambda l: {
@@ -65,7 +64,7 @@ def venue_place_service(position, query = None, radius = None):
                 crossStreet = u"%s" % l[u'location'].get(u'crossStreet'),
                 latitude = l[u'location'].get(u'lat'),
                 longitude = l[u'location'].get(u'lng'),
-                city_id = city['id']
+                city_id = None
             ),
             'distance': l[u'location'].get(u'distance'),
         },

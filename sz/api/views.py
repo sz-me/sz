@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 from django.contrib.auth.models import User
 from django.http import Http404
 from rest_framework import permissions
@@ -10,6 +11,7 @@ from sz.api import services as api_services
 from sz.api.response import Response
 from sz.core import models
 from sz.core import services
+from sz.core.algorithms import lists
 
 class SzApiView(APIView):
     """
@@ -66,7 +68,6 @@ class MessageRoot(SzApiView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class MessageInstance(SzApiView):
     """
     Retrieve, update or delete a message instance.
@@ -97,7 +98,6 @@ class MessageInstance(SzApiView):
         message.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
 class UserRoot(SzApiView):
     """
     List all users.
@@ -106,7 +106,6 @@ class UserRoot(SzApiView):
         users = User.objects.all()
         serializer = serializers.UserSerializer(instance=users)
         return Response(serializer.data)
-
 
 class CityRoot(SzApiView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
@@ -122,7 +121,6 @@ class CityRoot(SzApiView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-import datetime
 class PlaceRoot(SzApiView):
     """
     List of places near the current location.
@@ -147,6 +145,16 @@ class PlaceRoot(SzApiView):
                 places, lambda e: e.date, datetime.timedelta(seconds=60*60*24*7))
             #print 'INSERT: ' + ', '.join([u'%s' % e for e in caching_service.for_insert])
             #print 'UPDATE: ' + ', '.join([u'%s' % e for e in caching_service.for_update])
+            if len(caching_service.for_insert):
+                city_id = api_services.geonames_city_service(position)[0]['id']
+                for e in caching_service.for_insert:
+                    e.city_id = city_id
+            if len(caching_service.cached) > 0:
+                for e in caching_service.cached:
+                    stored_city = lists.first_match(
+                        lambda x: x.id == e.id,
+                        caching_service.stored)
+                    e.city_id = stored_city.city_id
             caching_service.save()
             serializer = serializers.PlaceSerializer(instance=places)
             return Response(serializer.data)
