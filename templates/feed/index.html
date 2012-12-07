@@ -7,39 +7,49 @@
    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
      <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
     <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/sz.api.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/mobile.4ways.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/mobile.4ways.css">
     
-    <script type="text/javascript" src="/home/kunla/sz/static/feed/js/mobile.4ways.js"></script>
-    <link rel="stylesheet" href="/home/kunla/sz/static/feed/css/mobile.4ways.css">
  </head>
  <body>
+ {% csrf_token %}
 <div id='screen'> 
     <div id='topArea'>
         <div id='logo'>ShmotZhmot</div>
         <div id='recomedation'><span>12 рек</span></div>
-        <div id='city'>Благовещенск</div>
+        <div id='city'>Город не определен</div>
         
     </div>
-    <div id='topEdge'></div>
     <div id='mainmenu'>
         <div id='feedMenu' class='mainmenu'>Что покупают другие</div>
         <div id='searchMenu' class='mainmenu'>Найти вещь</div>
         <div id='sendMenu' class='mainmenu'>Поделиться покупкой</div>
     </div> 
     
-    <div id='area'>
+    <div id='feedArea' class='area'>
+    </div>
+    
+    <div id='search_send_area'>
         <div id='searchArea' class='area'>
+            <div id='placeArea'>
+                 <div id='lessPlace' class='lessmore_active'><<</div>
+                 <div id='morePlace' class='lessmore_active'>>></div>
+                 <div id='staticPlace'>
+                     <div id='movePlace'></div>
+                 </div>
+                 
+            </div>
             <div id='tagsArea' >
                 <div id='tagsLeft'>
-                    <div class='changeGender' id='prevGender'>M</div>
+                    <div class='changeGender' id='prevGender'></div>
                     <div id='dollyPlace'>
                         <div class='dollyHead'></div>
                         <div class='dollyBody'></div>
                         <div class='dollyLegs'></div>
                         <div class='dollyFoot'></div>
                     </div>
-                    <div class='changeGender' id='nextGender'>K</div>
+                    
                 </div>
                 <div id='tagsRight'>
                     <div id='searchString'>
@@ -53,25 +63,34 @@
                         <div id='dollyLegsPlace' class='dollyPlace'><div id='dollyLegsMove' class='moveArea'></div></div>
                         <div id='dollyFootPlace' class='dollyPlace'><div id='dollyFootMove' class='moveArea'></div></div>
                     </div>
-                    <div class='botArea'>
-                        <div id='lessTags' class='lessmore_active'><<</div>
-                        <div id='moreTags' class='lessmore_active'>>></div>
-                    </div>
+                    
                 </div>
-                <div id='searchBot'>
-                    <textarea id='searchText' rows='1' autocomplete="off">Спроси о ништяках</textarea>
-                    <div id='searchTextBut'>Спросить</div>
+                    <div class='botArea'>
+                        <div class='changeGender' id='nextGender'></div>
+                        <div id='lessmoreTags'>
+                            <div id='moreTags' class='lessmore_active'>>></div>
+                            <div id='lessTags' class='lessmore_active'><<</div>
+                            
+                        </div>
+                    </div>
+                <div class='newMessage'>
+                    <div id='geoMessage'></div>
+                    <div id='tagsMessage'></div>
+		 <!--   <div class='myusername'>Сиреневый Ежик</div>
+                    <div class='myuserpic'></div>-->
+                    <textarea class='messageText' rows='2' autocomplete="off">Спроси о ништяках</textarea>
+                    <span class='sendmessage'>Спросить</span>
                 </div>
             </div>
         </div>
     </div>
   
 </div>
-   
+   <!--
 <div>Ширина: <input type="input" id='screenWidth'  value='' style='width:50px;'/></div>
 <div>Высота: <input type="input" id='screenHeight' value='' style='width:50px;'/></div>
 <input type="button" id='setScreen' value='Установить'/>
-    
+    -->
     
     
 <script type="text/javascript">
@@ -82,32 +101,58 @@ $(document).ready(function () {
         });
     var winWidth = $("#screen").width();
     var winHeight = $("#screen").height();
+    
+    api = new sz.Api({uri: 'api/',request_func: $.ajax});
+        
+    function cityView(data){
+        if (data.data.length == 1){var $value = data.data[0]; $("#city").text($value.name).attr('class',$value.geoname_id)}
+        else{$("#city").text('Нипонятная ошибка')}}
+    
+    navigator.geolocation.getCurrentPosition(function(data) {
+    var latitude = data['coords']['latitude'];
+    var longitude = data['coords']['longitude'];
+    var accuracy = data['coords']['accuracy'];
+    api.get('cities',
+        {latitude: latitude,longitude: longitude},
+        function(r){ cityView(r);});
+    });
+    
+    var unitX = winWidth*0.05;
+    var unitY = winHeight*0.05;
+    
+    $("#topArea").height(unitY);
+    $("#logo").css({fontSize:unitY*0.5+'px',paddingTop:unitY*0.25+'px'});
+    $("#city,#recomedation").css({fontSize:unitY*0.36+'px',paddingTop:unitY*0.32+'px'});
+    
+    $("#mainmenu div").css({fontSize:unitY*0.5+'px',width:unitX*5+'px',marginLeft:unitX*7+'px',paddingTop:unitY*0.5+'px',paddingBottom:unitY*0.5+'px',marginBottom:unitY});
+    $("#mainmenu").css({marginTop:((winHeight-$("#topArea").height())/2-$("#mainmenu").height()/2)+'px'});
     $(".area").hide();
-//     $("#mainmenu").css({marginLeft:(winWidth/2-$("#mainmenu").width()/2)+'px',marginTop:((winHeight-$("#topArea").height())/2-$("#mainmenu").height()/2)+'px'});
-    var marginLeft = (winWidth-($("#feedMenu").width()+15+$("#searchMenu").width()+15+$("#sendMenu").width()+15))/4+'px'
-    $("#feedMenu, #searchMenu,#sendMenu").css({marginLeft:marginLeft});
-//     $("#sendMenu").css({marginRight:marginLeft});
-    $("#searchMenu").click(searchMenuClick);
-    $("#searchTextBut").css({marginLeft:(winWidth/2-$("#searchTextBut").width()/2)+'px'});
-    $("#searchText")
-        .data('originalText', $("#searchText").text())
-        .css('color', '#999')
-        .focus(function() {
-            var $el = $(this);
-            if (this.value == $el.data('originalText')) {
-                this.value = '';
-                $(this).attr('rows','2').animate({color:'#444'},200);
-                jQuery($(this)).autoResize();
-                $("#searchTextBut").show();
-            }
-        })
-        .blur(function() {
-            if (this.value == '') {
-                this.value = $(this).data('originalText');
-                $(this).attr('rows','1').animate({color: '#999'},200);
-                $("#searchTextBut").hide();
-            }
+
+    $("#logo").click(function(){
+        $(".area").hide();
+        $(".tagBox,.tagBoxSelect,.tagMessageBox,.geoBox,.geoBoxSelect,.geoMessageBox").remove();
+        $("#mainmenu").show();
         });
+    $("#searchMenu").click(searchMenuClick);
+    $("#sendMenu").click(sendMenuClick);
+    
+    $(".sendmessage").click(function(){   
+        var fulltext = $(".messageText").val();
+        alert(fulltext);
+        api.post('messages/',{"text": "fulltext",
+            "latitude": 50.261957910406444,
+            "longitude": 127.53488266715124,
+            "accuracy": 10.0,
+            "city_id": 2026609,
+            "place_id": "4c636f6f79d1e21e62cbd815",
+            "bargain_date": null,
+            "csrfmiddlewaretoken": $('input[name="csrfmiddlewaretoken"]').val()
+        });
+        $(".messageText").text('Расскажи мне о ништяках');
+       
+    });
+    
+    $("#feedMenu").click(feedMenuClick);
 });
 
 </script>

@@ -1,31 +1,25 @@
-body{font-family: Arial, Helvetica, sans-serif;}
+body{font-family: Arial, Helvetica, sans-serif;} 
 #screen{
     position:absolute;
-    left:25%;
-    top:15px;
+    left:0px;
+    top:0px;
+    width:100%;
+    height:100%;
 /*    width:240px;
     height:320px;*/
-    width:500px;
-    height:500px;
+    /*width:500px;
+    height:500px;*/
     border:3px solid black;
-}
+}*/
 
 #mainmenu{
-    width:70%;
-    height:50%;
-    border:1px solid red;
 }
 
 #feedMenu,#searchMenu,#sendMenu{
-    margin-top:5%;
-    margin-bottom:5%;
     cursor:pointer;
     text-align:center;
     background:white;
-    padding-top:5%;
-    height:15%;
     cursor:pointer;
-    font-size:120%;
     color:#666;
     border:1px solid #FF9933;
     border-radius:5px;
@@ -34,38 +28,34 @@ body{font-family: Arial, Helvetica, sans-serif;}
 #tagsArea{}    
 
 #topArea{
-    height:32px;
+    border-bottom:1px solid #999;
 }
 
 #logo{
+    cursor:pointer;
     font-weight: bold;
     float:left;
-    margin-left:5px;
+    margin-left:2%;
     text-align:center;
-    color:#666;
-    font-size:14px;
-    padding-top:6px;
-    padding-bottom:6px;
-    
+     color:#666;
 }
 
+
 #city{
-    padding-top:8px;
-    padding-bottom:8px;
-    padding-left:5px;
-    padding-right:7px;
+    cursor:pointer;
+    padding-left:2%;
     color:#666;
-    font-size:12px;
     float:right;
 }
 
 #recomedation{
-    padding-left:5px;
-    padding-right:5px;
-    padding-top:8px;
-    padding-bottom:8px;
+    cursor:pointer;
+    padding-left:2%;
+    padding-right:2%;
+    padding-top:2%;
+    padding-bottom:2%;
     color:#666;
-    font-size:12px;
+    font-size:73%;
     float:right;
 }
 
@@ -76,77 +66,95 @@ body{font-family: Arial, Helvetica, sans-serif;}
     border-radius:10px;
 }
 
-#topEdge{
-    width:100%;
-    height:1px;
-    background:#DDD;
-}
+
 
 #searchArea{
-    margin-top:15px;
 }
 
-#searchString{
-    background:white;
-    width:100px;
-    height:20px;
-    border:1px solid ; 
-    border:1px solid gray;
-    box-shadow: 0px 0px 2px #444;
-    border-radius:5px;
-    margin-top:-10px;
-    margin-bottom:3px;
-}
-    
-#searcStringIcn{
-    float:left;
-    width:10px;
-    height:10px;
-    background-image:url(../img/searchGr.png);
-    background-size:100% ;
-    margin-top:-3px;
-    margin-left:3px;
-}
-    
-#tagsSearchString{
-    color:#999;
-    font-size:12px;
-    width:48px;
-    margin-left:16px;
-    margin-top:-5px;
-    border:1px none;
-}
-
-
-#tagsLeft{
+#placeArea{
     border-radius:5px;
     border:1px solid #DDD;
-    float:left;
 }
 
-.changeGender{
+.lessmore_active{
+    position:relative;
     color:#444;
-    background:white;
-    width:30px;
+    /*background-image:url(../img/finn.png);
+    background-size:100% ;*/
     text-align:center;
-    font-size:12px;
     cursor:pointer;
     border-radius:5px;
     border:1px solid gray;
     box-shadow: 0px 0px 2px #444;
     -moz-box-shadow: 0px 0px 2px #444;
     -webkit-box-shadow: 0px 0px 2px #444;
-    padding-top:5px;
-    height:15px;
+    background: #50a627;
+ }
+
+#lessPlace{
+    float:left;
+}
+
+#morePlace{
+    float:left;
+    
+}
+
+#staticPlace{
+   
+    background:white;
+    text-overflow:clip;
+    overflow: hidden;
+}
+
+#movePlace{background:gray;}
+
+#searchString{
+    background:white;
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    border-radius:5px;
+}
+    
+#searcStringIcn{
+    float:left;
+    background-image:url(../img/searchGr.png);
+    background-size:100% ;
+}
+    
+#tagsSearchString{
+    outline:none;
+    border:none;
+    float:left;
+    color:#999;
+}
+
+
+#tagsLeft{
+    position:relative;
+    border-radius:5px;
+    border:1px solid #DDD;
+    float:left;
+}
+
+.changeGender{
+    background: #50a627;
+    color:#444;
+    background-image:url(../img/finn.png);
+    background-size:100% ;
+    text-align:center;
+    cursor:pointer;
+    border-radius:5px;
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;
 }
 
 #prevGender{
-    margin-top:-10px;
-    margin-bottom:7px;
 }
 
 #nextGender{
-    margin-top:10px;
 }
 
 #dollyPlace{}
@@ -202,11 +210,13 @@ body{font-family: Arial, Helvetica, sans-serif;}
 }
 
 #tagsRight{
+    position:relative;
     border-radius:5px;
     border:1px solid #DDD;
 }
 
 #tagsPlace{
+    
     background:white;
     text-overflow:clip;
     overflow: hidden;
@@ -236,43 +246,22 @@ body{font-family: Arial, Helvetica, sans-serif;}
 
 #dollyFootMove{}
 
-.botArea{
-    height:27px;
-    padding-top:3px;
+.botArea{}
+
+#lessmoreTags{
+    float:right;
 }
 
-#lessTags{float:left;}
+#lessTags{float:right;}
 
 #moreTags{float:right;}
 
 .lessmore_noactive{
-    
-    width:150px;
-    height:40px;
-    margin-bottom:10px;
-    border-radius:5px;
 }
 
-.lessmore_active{
-    margin-top:3px;
-    float:left;
-    width:33px;
-    font-size:12px;
-    text-align:center;
-    margin-bottom:10px;
-    padding-top:3px;
-    padding-bottom:3px;
-    color:white;
-    background:green;
-    border-radius:5px;
-    border:1px solid; 
-    box-shadow: 0px 0px 2px #888;
-    -moz-box-shadow: 0px 0px 2px #888;
-    -webkit-box-shadow: 0px 0px 2px #888;
-    cursor:pointer;
-}
 
-.tagBox{
+
+.tagBox,.geoBox,.geoBoxSelect{
     cursor:pointer;
     border-radius:5px;
     border:1px solid gray;
@@ -280,45 +269,56 @@ body{font-family: Arial, Helvetica, sans-serif;}
     -moz-box-shadow: 0px 0px 2px #444;
     -webkit-box-shadow: 0px 0px 2px #444;
     color:#444;
-    margin:4px;
     text-align: center;
-    font-size:10px;
     float:left;
-    width:66px;
-    height:66px;
+}
+
+.tagBoxSelect,.geoBoxSelect{
+    cursor:pointer;
+    border-radius:5px;
+    border:1px solid #FF6600;
+    box-shadow: 0px 0px 2px #FF9933;
+    -moz-box-shadow: 0px 0px 2px #FF9933;
+    -webkit-box-shadow: 0px 0px 2px #FF9933;
+    color:#444;
+    text-align: center;
+    float:left;
 }
 
 .tagBoxImage{
-margin-left:7px;
-    width:51px;
-    height:51px;
-    background-image:url(../img/shirt.png);
+    background-image:url(../img/pants.jpg);
     background-size: 100%;
 }
 
-.tagBoxSelect{
+
+.tagMessageBox{
     cursor:pointer;
+    background:#959595;
+    padding:5px;
     border-radius:5px;
-    border:3px solid #FF9900;
-    box-shadow: 0px 0px 4px orange;
-    -moz-box-shadow: 0px 0px 4px orange;
-    -webkit-box-shadow: 0px 0px 4px orange;
-    color:#444;
-    margin:1px;
-    text-align: center;
-    font-size:10px;
+     box-shadow: 0px 0px 4px #888;
+    -moz-box-shadow: 0px 0px 4px #888;
+    -webkit-box-shadow: 0px 0px 4px #888;
+    border:1px solid white;
+    color:white;
     float:left;
-    width:68px;
-    height:68px;
+    margin:3px;
 }
 
-#searchBot{
-    text-align:center;
+.newMessage{
+    color:#666;
 }
 
-#searchText{
-    font-size:12px;
-    width:80%;
+.myusername{
+}
+
+.myuserpic{
+    float:left;
+    background-image:url(../img/userpic.jpg);
+    background-size: 100%;
+}
+
+.messageText{
     overflow: hidden;
     resize: none;
     outline: none;
@@ -328,24 +328,59 @@ margin-left:7px;
     padding-right:0.6em;
     padding-left:0.6em;
     box-shadow: 0px 0px 1px #CCC;
-    border-radius: 5px;
+    border-radius:0px 0px  5px 5px;
     border:1px solid #CCC;
 }
 
-#searchTextBut{
+.sendmessage{
     display:none;
-    margin-top:5px;
-    width:70px;
-    text-align:center;
-    height:20px;
-    padding-top:5px;
-    font-size:12px;
-    background:green;
+    background: #50a627;
     border:2px solid white;
-    color:white;
-    border-radius:5px;
-    box-shadow: 0px 0px 2px #888;
+    color:#444;
+     border-radius:5px;
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;
     
 }
 
 
+.message{
+    position:relative;
+    border-radius:5px;
+    border:1px solid gray;
+    box-shadow: 0px 0px 2px #444;
+    -moz-box-shadow: 0px 0px 2px #444;
+    -webkit-box-shadow: 0px 0px 2px #444;
+    color:#444;
+}
+
+.messageLeft{
+    background: red;
+    float:left;
+}
+
+.shop{
+    text-align:center;
+    background:#50a627;
+    color:white;
+    background: green;
+}
+
+.user{
+    float:right;
+    background-image:url(../img/userpic.jpg);
+    background-size: 100%;
+}
+
+.messageTag{
+    float:left;
+    background: blue;
+}
+
+.messageText{
+    text-overflow:clip;
+    overflow: hidden;
+    background:olive;
+}
