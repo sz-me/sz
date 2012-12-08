@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from sz.core import utilities, lists
+from sz.core import lists, morphology
 
 class CategorizationService:
     def detect_thinks(self, things, message):
-        words = set(utilities.words(message.text))
+        words = set(morphology.extract_words(message.text))
         detected_things = filter(
             lambda think: lists.any(
                 lambda word: word.startswith(think.stem),

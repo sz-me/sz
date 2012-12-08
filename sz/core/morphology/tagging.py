@@ -1,5 +1,5 @@
 ﻿# -*- coding: utf-8 -*- 
-from sz.core import utilities, lists
+from sz.core import lists, morphology
 from sz.core.morphology import spellcorrector
 import re
 import functools
@@ -22,7 +22,7 @@ def spellcorrector_tagging_algorithm(message, tags):
         [[tag] + patterns for (tag, patterns) in tags.items()],
         [])
     corrector = spellcorrector.Corrector(dict)
-    words = utilities.words(message)
+    words = morphology.extract_words(message)
     values = set(filter(lambda c: c, map(lambda w: corrector.correct(w), words)))
     tag_names = map(
         lambda (k, v): k,
