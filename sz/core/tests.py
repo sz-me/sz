@@ -5,10 +5,7 @@ when you run "manage.py test".
 
 Replace this with more appropriate tests for your application.
 """
-import string
 from django.test import TestCase
-from sz.core.algorithms import lists
-from sz.core.algorithms.tagging import *
 
 class ListsTest(TestCase):
     def test_any(self):
@@ -69,7 +66,7 @@ position = {
     'longitude': 127.5266082,
     'accuracy': 50
 }
-from sz.core import venue
+from sz.core import venue, lists
 
 class GeoServicesTest(TestCase):
     def test_search_venues(self):
@@ -125,7 +122,7 @@ class GeoNamesTest(TestCase):
             ) for g in r['geonames']])
         self.assertTrue(r)
 
-from sz.core.algorithms import stemmers
+from sz.core.morphology import stemmers
 russian_stemmer = stemmers.RussianStemmer()
 
 class StemmerTest(TestCase):

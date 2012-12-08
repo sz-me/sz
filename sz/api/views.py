@@ -9,9 +9,8 @@ from rest_framework.views import APIView
 from sz.api import serializers
 from sz.api import services as api_services
 from sz.api.response import Response
-from sz.core import models
+from sz.core import models, lists
 from sz.core import services
-from sz.core.algorithms import lists
 
 class SzApiView(APIView):
     """

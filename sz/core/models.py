@@ -2,7 +2,7 @@
 from django.db import models
 from sz.core.db import LowerCaseCharField
 from django.contrib import auth
-from sz.core.algorithms import stemmers
+from sz.core.morphology import stemmers
 
 class Category(models.Model):
     name = LowerCaseCharField(

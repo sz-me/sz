@@ -7,11 +7,7 @@ Replace this with more appropriate tests for your application.
 """
 from django.test import TestCase
 from django.test.client import RequestFactory
-from sz.api import services
 from sz.api import views
-from sz.api import forms
-from sz.core.algorithms import lists
-import string
 
 """
 class DomainTagServicesTest(TestCase):

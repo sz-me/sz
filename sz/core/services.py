@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from sz.core import utilities
-from sz.core.algorithms import lists
+from sz.core import utilities, lists
 
 class CategorizationService:
     def detect_thinks(self, things, message):

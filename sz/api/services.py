@@ -1,6 +1,6 @@
 ﻿# -*- coding: utf-8 -*-
 from django.core import paginator as django_paginator
-from sz.core.algorithms.tagging import *
+from sz.core.morphology.tagging import *
 from sz.core import venue
 from sz.core import models
 
