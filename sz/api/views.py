@@ -63,7 +63,7 @@ class MessageRoot(SzApiView):
             print "message.save() OK"
             things = models.Thing.objects.all()
             categorization_service = services.CategorizationService()
-            categorization_service.detect_thinks(things, message)
+            categorization_service.detect_things(things, message)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

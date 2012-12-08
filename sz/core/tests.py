@@ -151,5 +151,5 @@ class CatigorizationServiceTest(TestCase):
         self.categorizationService = services.CategorizationService()
     def test_detect_thing(self):
         message = models.Message(id=1, text=u"купил пакет трусов, доволен как лось!")
-        detected_thinks = self.categorizationService.detect_thinks(self.thinks, message)
-        self.assertEquals(len(detected_thinks), 1)
+        detected_things = self.categorizationService.detect_things(self.thinks, message)
+        self.assertEquals(len(detected_things), 1)

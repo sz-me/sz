@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import re, collections
+import collections
 
 class Corrector:
 	def __init__(self, data):

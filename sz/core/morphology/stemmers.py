@@ -9,7 +9,7 @@ class RussianStemmer:
     cacheLevel = 1
     cache = {}
 
-    vowel = morphology.vowel_ru
+    vowel = morphology.VOWEL_RU
     perfectiveground = u"((ив|ивши|ившись|ыв|ывши|ывшись)|((?<=[ая])(в|вши|вшись)))$"
     reflexive = u"(с[яь])$"
     adjective = u'(ее|ие|ые|ое|ими|ыми|ей|ий|ый|ой|ем|им|ым|ом|его|ого|ему|ому|их|ых|ую|юю|ая|яя|ою|ею)$';

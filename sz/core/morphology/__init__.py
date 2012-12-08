@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-vowel_ru = set(u"аеиоуыэюя")
-consonant_ru = set(u"бвгджзйклмнпрстфхцчшщ")
-hushing_ru = set(u"жчшщ")
-alphabet_ru = vowel_ru | consonant_ru | set(u"ъь")
+VOWEL_RU = set(u"аеиоуыэюя")
+CONSONANT_RU = set(u"бвгджзйклмнпрстфхцчшщ")
+HUSHING_RU = set(u"жчшщ")
+ALPHABET_RU = VOWEL_RU | CONSONANT_RU | set(u"ъь")
 
 
 import re
+
 SPACE_REGEX = re.compile('[^\w_-]|[+]', re.U)
 
 def extract_words(text):

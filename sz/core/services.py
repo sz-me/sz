@@ -2,7 +2,7 @@
 from sz.core import lists, morphology
 
 class CategorizationService:
-    def detect_thinks(self, things, message):
+    def detect_things(self, things, message):
         words = set(morphology.extract_words(message.text))
         detected_things = filter(
             lambda think: lists.any(
@@ -11,7 +11,7 @@ class CategorizationService:
             things
         )
         for thing in detected_things:
-            message.things.add(thing);
+            message.things.add(thing)
         return detected_things
 
 from django.utils import timezone
