@@ -32,15 +32,15 @@ class ModelCachingService:
                 'data contain items of different types'
             self.stored = model_class.objects.filter(pk__in=[e.id for e in data])
             db = map(lambda e: dict(pk=e.id, date=date(e)), self.stored)
-            no_cached_entities = set(filter(lambda e:
+            non_cached_entities = set(filter(lambda e:
                 e.pk not in [x['pk'] for x in db], data))
-            self.cached = data - no_cached_entities
+            self.cached = data - non_cached_entities
             last_update_date = lambda e: \
                 filter(lambda x: x['pk'] == e.pk, db)[0]['date']
             expired_places = filter(lambda e:
                 timezone.now() - last_update_date(e) > delta, self.cached)
 
-            self.for_insert = no_cached_entities
+            self.for_insert = non_cached_entities
             self.for_update = expired_places
 
     def save(self):
