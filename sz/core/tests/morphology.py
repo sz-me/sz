@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
 from sz.core.morphology import stemmers
-from sz.core import models, services
+from sz.core import models, morphology, services
+
+class MorphUtilsTest(TestCase):
+    def test_replace_last(self):
+        top = u'майк'
+        self.assertEquals(morphology.replace_last(top, 2, u'ечк'), u'маечк')
+        shirt = u'футболк'
+        self.assertEquals(morphology.replace_last(shirt, 1, u'очк'), u'футболочк')
 
 russian_stemmer = stemmers.RussianStemmer()
 

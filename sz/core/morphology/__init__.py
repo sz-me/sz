@@ -29,3 +29,6 @@ def extract_words(text):
             continue
         word = word.strip('-')
         yield word
+
+def replace_last(term, count, str):
+    return term[:len(term)-count] + str
