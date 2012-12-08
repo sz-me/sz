@@ -1,7 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 from django.core import paginator as django_paginator
+from sz.core.gis import geonames, venue
 from sz.core.morphology.tagging import *
-from sz.core import venue
 from sz.core import models
 
 def paginated_content(queryset, page=None, paginate_by=5):
@@ -30,7 +30,7 @@ def spellcorrector_tagging_service(message, tags):
     algorithm = lambda m, t: spellcorrector_tagging_algorithm(m, t)
     return tagging_service(message, tags, algorithm)
 
-from sz.core import geonames
+
 def geonames_city_service(position, query=None):
 
     response = lambda g : {

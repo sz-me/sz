@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
-from sz.core import geonames, venue
+from sz.core.gis import geonames, venue
 from sz.settings import GEONAMES_API_CONFIG
 
 position = {
