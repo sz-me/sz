@@ -6,7 +6,10 @@ class CategorizationService:
         words = set(morphology.extract_words(message.text))
         detected_things = filter(
             lambda think: lists.any(
-                lambda word: word.startswith(think.stem),
+                lambda word:
+                    word.startswith(think.stem)
+                    or word.startswith(
+                        morphology.addition_for_ended_in_k(think.stem)),
                 words),
             things
         )

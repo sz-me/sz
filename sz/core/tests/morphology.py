@@ -9,6 +9,13 @@ class MorphUtilsTest(TestCase):
         self.assertEquals(morphology.replace_last(top, 2, u'ечк'), u'маечк')
         shirt = u'футболк'
         self.assertEquals(morphology.replace_last(shirt, 1, u'очк'), u'футболочк')
+    def test_addition_for_ended_in_k(self):
+        self.assertEquals(morphology.addition_for_ended_in_k(
+            u'майк'), u'маечк')
+        self.assertEquals(morphology.addition_for_ended_in_k(
+            u'рубашк'), u'рубашечк')
+        self.assertEquals(morphology.addition_for_ended_in_k(
+            u'футболк'), u'футболочк')
 
 russian_stemmer = stemmers.RussianStemmer()
 
@@ -36,6 +43,6 @@ class CatigorizationServiceTest(TestCase):
             ]
         self.categorizationService = services.CategorizationService()
     def test_detect_thing(self):
-        message = models.Message(id=1, text=u"купил пакет трусов, доволен как лось!")
+        message = models.Message(id=1, text=u"купил маечку, носочки и пакет трусов, доволен как лось!")
         detected_things = self.categorizationService.detect_things(self.thinks, message)
-        self.assertEquals(len(detected_things), 1)
+        self.assertEquals(len(detected_things), 3)
