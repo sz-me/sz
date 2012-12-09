@@ -1,5 +1,5 @@
 ﻿# -*- coding: utf-8 -*-
-from django.db import models
+from django.contrib.gis.db import models
 from sz.core.db import LowerCaseCharField
 from django.contrib import auth
 from sz.core.morphology import stemmers
@@ -57,8 +57,9 @@ class Place(models.Model):
         null=True,
         blank=True,)
     contact = models.CharField(max_length=512, verbose_name=u"контакты")
-    latitude = models.FloatField(verbose_name=u"широта")
-    longitude = models.FloatField(verbose_name=u"долгота")
+    #latitude = models.FloatField(verbose_name=u"широта")
+    #longitude = models.FloatField(verbose_name=u"долгота")
+    position = models.PointField(verbose_name=u"координаты")
     city_id = models.IntegerField(
         verbose_name=u"идентификатор в GeoNames",
         db_index=True,
@@ -68,6 +69,7 @@ class Place(models.Model):
         auto_now=True,
         editable=False,
         verbose_name=u"дата синхронизации")
+    objects = models.GeoManager()
     def foursquare_details_url(self):
         return "https://foursquare.com/v/%s" % self.id
     def __unicode__(self):

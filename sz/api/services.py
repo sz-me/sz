@@ -52,6 +52,7 @@ def geonames_city_service(position, query=None):
         request = geonames.nearby(position)
         return [ response(g) for g in request['geonames']]
 
+from django.contrib.gis.geos import fromstr
 def venue_place_service(position, query = None, radius = None):
     result = venue.search(position, query, radius)
     place_and_distance_list = map(
@@ -64,8 +65,11 @@ def venue_place_service(position, query = None, radius = None):
                     and (u"%s" % l[u'location'].get(u'address')) or None,
                 crossStreet = l[u'location'].get(u'crossStreet')
                     and (u"%s" % l[u'location'].get(u'crossStreet')) or None,
-                latitude = l[u'location'].get(u'lat'),
-                longitude = l[u'location'].get(u'lng'),
+                #latitude = l[u'location'].get(u'lat'),
+                #longitude = l[u'location'].get(u'lng'),
+                position = fromstr('POINT(%s %s)'
+                    % (l[u'location'].get(u'lng'), l[u'location'].get(u'lat')),
+                    srid=4326),
                 city_id = None
             ),
             'distance': l[u'location'].get(u'distance'),

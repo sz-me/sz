@@ -1,5 +1,6 @@
-﻿from sz.core.models import Category, Thing, Message
+﻿from sz.core.models import Category, Thing, Message, Place
 from django.contrib import admin
+from django.contrib.gis import admin as gis_admin
 
 class CategoryAdmin(admin.ModelAdmin):
     list_per_page = 50
@@ -31,6 +32,14 @@ class MessageAdmin(admin.ModelAdmin):
     list_per_page = 25
     ordering = ['-date']
     actions = [detect_things]
-    exclude= ['things']
+    readonly_fields= ['things']
 
 admin.site.register(Message, MessageAdmin)
+
+class PlaceAdmin(gis_admin.OSMGeoAdmin):
+    search_fields = ['name', 'address']
+    list_display = ['name', 'address', 'position',]
+    ordering = ['name']
+    readonly_fields= ['id', 'date']
+
+admin.site.register(Place, PlaceAdmin)
