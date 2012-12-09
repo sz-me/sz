@@ -134,27 +134,35 @@ class PlaceRoot(SzApiView):
                 'longitude': request.QUERY_PARAMS['longitude'],
                 'accuracy': request.QUERY_PARAMS.get('accuracy'),
                 }
-            if request.QUERY_PARAMS.get('query'):
-                query = u"%s" % request.QUERY_PARAMS['query']
+            query = request.QUERY_PARAMS.get('place') and \
+                     u"%s" % request.QUERY_PARAMS['place'] or None
+            message = request.QUERY_PARAMS.get('message')
+            places = []
+            if message is None:
+                places_from_venue = api_services.venue_place_service(position, query)
+                places = [r['place'] for r in places_from_venue]
+                if places:
+                    if len(places) > 0:
+                        caching_service = services.ModelCachingService(
+                            places, lambda e: e.date, datetime.timedelta(seconds=60*60*24*7))
+                        #print 'INSERT: ' + ', '.join([u'%s' % e for e in caching_service.for_insert])
+                        #print 'UPDATE: ' + ', '.join([u'%s' % e for e in caching_service.for_update])
+                        if len(caching_service.for_insert):
+                            city_id = api_services.geonames_city_service(position)[0]['id']
+                            for e in caching_service.for_insert:
+                                e.city_id = city_id
+                        if len(caching_service.cached) > 0:
+                            for e in caching_service.cached:
+                                stored_city = lists.first_match(
+                                    lambda x: x.id == e.id,
+                                    caching_service.stored)
+                                e.city_id = stored_city.city_id
+                        caching_service.save()
             else:
-                query = None
-            places_from_venue = api_services.venue_place_service(position, query)
-            places = [r['place'] for r in places_from_venue]
-            caching_service = services.ModelCachingService(
-                places, lambda e: e.date, datetime.timedelta(seconds=60*60*24*7))
-            #print 'INSERT: ' + ', '.join([u'%s' % e for e in caching_service.for_insert])
-            #print 'UPDATE: ' + ', '.join([u'%s' % e for e in caching_service.for_update])
-            if len(caching_service.for_insert):
                 city_id = api_services.geonames_city_service(position)[0]['id']
-                for e in caching_service.for_insert:
-                    e.city_id = city_id
-            if len(caching_service.cached) > 0:
-                for e in caching_service.cached:
-                    stored_city = lists.first_match(
-                        lambda x: x.id == e.id,
-                        caching_service.stored)
-                    e.city_id = stored_city.city_id
-            caching_service.save()
+                last_messages = models.Message.objects \
+                    .filter(place__city_id=city_id).order_by('-date')[:15]#.distinct('place__id')
+                places = map(lambda m: m.place, last_messages)
             serializer = serializers.PlaceSerializer(instance=places)
             return Response(serializer.data)
         else:
