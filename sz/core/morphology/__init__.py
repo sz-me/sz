@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
+import re
+
+def maketransU(s1, s2, todel=""):
+    trans_tab = dict( zip( map(ord, s1), map(ord, s2) ) )
+    trans_tab.update( (ord(c),None) for c in todel )
+    return trans_tab
+
+TRANSLATE_TABLE_RU = maketransU(u"ё", u"е")
 VOWEL_RU = set(u"аеиоуыэюя")
 CONSONANT_RU = set(u"бвгджзйклмнпрстфхцчшщ")
 HUSHING_RU = set(u"жчшщ")
 J_RU = set(u"й")
 ALPHABET_RU = VOWEL_RU | CONSONANT_RU | set(u"ъь")
-
-
-import re
 
 SPACE_REGEX = re.compile('[^\w_-]|[+]', re.U)
 
@@ -29,7 +34,7 @@ def extract_words(text):
         if not test_word or test_word.isspace() or test_word.isdigit():
             continue
         word = word.strip('-')
-        yield word
+        yield word.lower().translate(TRANSLATE_TABLE_RU)
 
 def replace_last(stem, count, str):
     return stem[:len(stem)-count] + str

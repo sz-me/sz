@@ -43,6 +43,6 @@ class CatigorizationServiceTest(TestCase):
             ]
         self.categorizationService = services.CategorizationService()
     def test_detect_thing(self):
-        message = models.Message(id=1, text=u"купил маечку, носочки и пакет трусов, доволен как лось!")
+        message = models.Message(id=1, text=u"купил маЁчку, носочки и пакет трусов, доволен как лось!")
         detected_things = self.categorizationService.detect_things(self.thinks, message)
         self.assertEquals(len(detected_things), 3)
