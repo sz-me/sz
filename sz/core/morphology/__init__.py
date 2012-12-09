@@ -49,4 +49,6 @@ def addition_for_ended_in_k(stem):
                 return replace_last(stem, 1, u'ечк')
             elif (stem[stem_length-2] in CONSONANT_RU):
                 return replace_last(stem, 1, u'очк')
+            elif (stem[stem_length-2] in VOWEL_RU):
+                return replace_last(stem, 1, u'ч')
     return u''
