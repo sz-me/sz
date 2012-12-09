@@ -15,6 +15,13 @@ class ThingAdmin(admin.ModelAdmin):
 
 admin.site.register(Thing, ThingAdmin)
 
+from sz.core import services
+def detect_things(modeladmin, request, queryset):
+    things = Thing.objects.all()
+    categorization = services.CategorizationService()
+    [categorization.detect_things(things, message) for message in queryset]
+detect_things.short_description = u"Определить вещи"
+
 class MessageAdmin(admin.ModelAdmin):
     def things_to_str(self, obj):
         return ', '.join(map(lambda x: u'%s' % x, obj.things.all()))
@@ -23,5 +30,7 @@ class MessageAdmin(admin.ModelAdmin):
     list_display_links = ('text',)
     list_per_page = 50
     ordering = ['-date']
+    actions = [detect_things]
+    exclude= ['things']
 
 admin.site.register(Message, MessageAdmin)
