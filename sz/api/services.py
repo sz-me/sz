@@ -60,8 +60,10 @@ def venue_place_service(position, query = None, radius = None):
                 id = l[u'id'],
                 name = l[u'name'],
                 contact = l.get(u'contact'),
-                address = u"%s" % l[u'location'].get(u'address'),
-                crossStreet = u"%s" % l[u'location'].get(u'crossStreet'),
+                address = l[u'location'].get(u'address')
+                    and (u"%s" % l[u'location'].get(u'address')) or None,
+                crossStreet = l[u'location'].get(u'crossStreet')
+                    and (u"%s" % l[u'location'].get(u'crossStreet')) or None,
                 latitude = l[u'location'].get(u'lat'),
                 longitude = l[u'location'].get(u'lng'),
                 city_id = None

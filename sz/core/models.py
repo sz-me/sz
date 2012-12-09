@@ -50,8 +50,12 @@ class Place(models.Model):
         max_length=24,
         verbose_name=u"идентификатор в Foursquare")
     name = models.CharField(max_length=128, verbose_name=u"название")
-    address = models.CharField(max_length=128, verbose_name=u"адрес")
-    crossStreet = models.CharField(max_length=128, verbose_name=u"пересечение улиц")
+    address = models.CharField(max_length=128, verbose_name=u"адрес",
+        null=True,
+        blank=True,)
+    crossStreet = models.CharField(max_length=128, verbose_name=u"пересечение улиц",
+        null=True,
+        blank=True,)
     contact = models.CharField(max_length=512, verbose_name=u"контакты")
     latitude = models.FloatField(verbose_name=u"широта")
     longitude = models.FloatField(verbose_name=u"долгота")
@@ -67,10 +71,14 @@ class Place(models.Model):
     def foursquare_details_url(self):
         return "https://foursquare.com/v/%s" % self.id
     def __unicode__(self):
-        return u"%s" % self.name
-
+        return u"%s" % self.name + (self.address and (u", %s" % self.address) or u"")
+    class Meta:
+        verbose_name = u"место"
+        verbose_name_plural = u"места"
+        ordering = ["name"]
     def all_messages(self):
         return self.message_set.order_by('-date').all()
+
 
 class Message(models.Model):
     date = models.DateTimeField(
