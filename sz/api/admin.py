@@ -26,9 +26,9 @@ class MessageAdmin(admin.ModelAdmin):
     def things_to_str(self, obj):
         return ', '.join(map(lambda x: u'%s' % x, obj.things.all()))
     things_to_str.short_description = u'Вещи'
-    list_display = ('date', 'user', 'text', 'things_to_str')
+    list_display = ('date', 'user', 'text', 'place', 'things_to_str')
     list_display_links = ('text',)
-    list_per_page = 50
+    list_per_page = 25
     ordering = ['-date']
     actions = [detect_things]
     exclude= ['things']
