@@ -2,17 +2,22 @@
 from sz.core import lists, morphology
 
 class CategorizationService:
-    def detect_things(self, things, message):
-        words = set(morphology.extract_words(message.text))
+    def detect_things_in_text(self, things, text):
+        words = set(morphology.extract_words(text))
         detected_things = filter(
             lambda think: lists.any(
                 lambda word:
-                    word.startswith(think.stem)
-                    or word.startswith(
-                        morphology.addition_for_ended_in_k(think.stem)),
-                words),
+                word.startswith(think.stem)
+                or morphology.addition_for_ended_in_k(think.stem) and
+                word.startswith(
+                    morphology.addition_for_ended_in_k(think.stem)),
+                filter(lambda word: len(word) > 2, words)),
             things
         )
+        return detected_things
+    def detect_things(self, things, message):
+        detected_things = self.detect_things_in_text(things, message.text)
+        message.things.clear()
         for thing in detected_things:
             message.things.add(thing)
         return detected_things
