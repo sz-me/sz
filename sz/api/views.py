@@ -137,7 +137,6 @@ class PlaceRoot(SzApiView):
             query = request.QUERY_PARAMS.get('place') and \
                      u"%s" % request.QUERY_PARAMS['place'] or None
             message = request.QUERY_PARAMS.get('message')
-            places = []
             if message is None:
                 places_from_venue = api_services.venue_place_service(position, query)
                 places = [r['place'] for r in places_from_venue]
@@ -160,9 +159,15 @@ class PlaceRoot(SzApiView):
                         caching_service.save()
             else:
                 city_id = api_services.geonames_city_service(position)[0]['id']
-                last_messages = models.Message.objects \
-                    .filter(place__city_id=city_id).order_by('-date')[:15]#.distinct('place__id')
-                places = map(lambda m: m.place, last_messages)
+                places = models.Place.objects \
+                    .raw('SELECT * FROM \
+                            (SELECT place.id, max(message.id) as max_message_id FROM core_place place \
+                            INNER JOIN core_message message ON message.place_id = place.id \
+                            WHERE place.city_id = %s \
+                            GROUP BY place.id, place.name \
+                            ORDER BY max(message.id) DESC LIMIT 7) place_sub  \
+                            LEFT JOIN core_place place ON place.id = place_sub.id \
+                            ORDER BY place_sub.max_message_id DESC' % city_id)
             serializer = serializers.PlaceSerializer(instance=places)
             return Response(serializer.data)
         else:
