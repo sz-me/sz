@@ -16,3 +16,13 @@ def index(request):
         'feed/index.html', 
         {'feed': feed}, 
         context_instance = RequestContext(request))
+
+def light(request):
+    try:
+        pass
+    except DatabaseError:
+        raise Http404
+    return render_to_response(
+        'feed/light.html',
+        {},
+        context_instance = RequestContext(request))
