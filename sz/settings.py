@@ -180,6 +180,8 @@ GEONAMES_API_CONFIG = {
     'USERNAME': 'sz.me',
     }
 
+DEFAULT_DISTANCE = 300
+
 import sys
 if 'test' in sys.argv:
     try:
