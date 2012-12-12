@@ -119,7 +119,7 @@ class CityRoot(SzApiView):
             return Response(api_services.geonames_city_service(position, query))
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+from django.db import models as dj_models
 class PlaceRoot(SzApiView):
     """
     List of places near the current location.
@@ -160,14 +160,10 @@ class PlaceRoot(SzApiView):
             else:
                 city_id = api_services.geonames_city_service(position)[0]['id']
                 places = models.Place.objects \
-                    .raw('SELECT * FROM \
-                            (SELECT place.id, max(message.id) as max_message_id FROM core_place place \
-                            INNER JOIN core_message message ON message.place_id = place.id \
-                            WHERE place.city_id = %s \
-                            GROUP BY place.id, place.name \
-                            ORDER BY max(message.id) DESC LIMIT 7) place_sub  \
-                            LEFT JOIN core_place place ON place.id = place_sub.id \
-                            ORDER BY place_sub.max_message_id DESC' % city_id)
+                    .filter(city_id=city_id).exclude(message__id__isnull=True) \
+                    .annotate(last_message=dj_models.Max('message__id'))\
+                    .order_by('-last_message')[:7]
+
             serializer = serializers.PlaceSerializer(instance=places)
             return Response(serializer.data)
         else:
