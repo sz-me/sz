@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
-import datetime
+import datetime, exceptions
 from django.contrib.auth.models import User
 from django.http import Http404
-from rest_framework import permissions
-from rest_framework import status
+from rest_framework import permissions, status
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
-from sz.api import serializers
-from sz.api import services as api_services
+from sz.api import serializers, services as api_services
 from sz.api.response import Response
-from sz.core import models, lists
-from sz.core import services
+from sz.core import lists, models, services, queries, utilities
 
 class SzApiView(APIView):
     """
@@ -119,7 +116,7 @@ class CityRoot(SzApiView):
             return Response(api_services.geonames_city_service(position, query))
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-from django.db import models as dj_models
+
 class PlaceRoot(SzApiView):
     """
     List of places near the current location.
@@ -137,8 +134,10 @@ class PlaceRoot(SzApiView):
             query = request.QUERY_PARAMS.get('place') and \
                      u"%s" % request.QUERY_PARAMS['place'] or None
             message = request.QUERY_PARAMS.get('message')
+            nearby = request.QUERY_PARAMS.get('nearby')
+            nearby = utilities.safe_cast(nearby, int, nearby)
             if message is None:
-                places_from_venue = api_services.venue_place_service(position, query)
+                places_from_venue = api_services.venue_place_service(position, query, nearby)
                 places = [r['place'] for r in places_from_venue]
                 if places:
                     if len(places) > 0:
@@ -159,11 +158,10 @@ class PlaceRoot(SzApiView):
                         caching_service.save()
             else:
                 city_id = api_services.geonames_city_service(position)[0]['id']
-                places = models.Place.objects \
-                    .filter(city_id=city_id).exclude(message__id__isnull=True) \
-                    .annotate(last_message=dj_models.Max('message__id'))\
-                    .order_by('-last_message')[:7]
-
+                places = queries.feed( \
+                    latitude=position['latitude'],\
+                    longitude=position['longitude'],\
+                    city_id=city_id, nearer=nearby)
             serializer = serializers.PlaceSerializer(instance=places)
             return Response(serializer.data)
         else:
