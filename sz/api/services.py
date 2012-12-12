@@ -1,8 +1,10 @@
 ﻿# -*- coding: utf-8 -*-
 from django.core import paginator as django_paginator
+from django.contrib.gis.geos import fromstr
+from sz import settings
+from sz.core import models, utilities
 from sz.core.gis import geonames, venue
 from sz.core.morphology.tagging import *
-from sz.core import models
 
 def paginated_content(queryset, page=None, paginate_by=5):
     paginator = django_paginator.Paginator(queryset, paginate_by)
@@ -52,9 +54,12 @@ def geonames_city_service(position, query=None):
         request = geonames.nearby(position)
         return [ response(g) for g in request['geonames']]
 
-from django.contrib.gis.geos import fromstr
-def venue_place_service(position, query = None, radius = None):
-    result = venue.search(position, query, radius)
+
+
+def venue_place_service(position, query = None, distance = None):
+    if not(distance is None):
+        distance = utilities.safe_cast(distance, int, settings.DEFAULT_DISTANCE)
+    result = venue.search(position, query, distance)
     place_and_distance_list = map(
         lambda l: {
             'place': models.Place(
