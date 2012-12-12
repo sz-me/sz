@@ -43,6 +43,7 @@ class PlaceSearchSerializer(serializers.Serializer):
     accuracy = serializers.FloatField(required = False)
     place = serializers.CharField(required = False)
     message = serializers.CharField(required = False)
+    nearby = serializers.IntegerField(required = False)
 class PlaceSerializer(serializers.HyperlinkedModelSerializer):
     #distance = serializers.Field(source='*')
     foursquare_details_url = serializers.Field()
