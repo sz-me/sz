@@ -161,7 +161,7 @@ class PlaceRoot(SzApiView):
                 places = queries.feed( \
                     latitude=position['latitude'],\
                     longitude=position['longitude'],\
-                    city_id=city_id, nearer=nearby)
+                    city_id=city_id, nearby=nearby)
             serializer = serializers.PlaceSerializer(instance=places)
             return Response(serializer.data)
         else:
