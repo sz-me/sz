@@ -157,11 +157,16 @@ class PlaceRoot(SzApiView):
                                 e.city_id = stored_city.city_id
                         caching_service.save()
             else:
+                things = None
+                if len(message) > 1:
+                    all_things = list(models.Thing.objects.all())
+                    categorizationService = services.CategorizationService()
+                    things = categorizationService.detect_things_in_text(all_things, message)
                 city_id = api_services.geonames_city_service(position)[0]['id']
                 places = queries.feed( \
                     latitude=position['latitude'],\
                     longitude=position['longitude'],\
-                    city_id=city_id, nearby=nearby)
+                    city_id=city_id, nearby=nearby, things=things)
             serializer = serializers.PlaceSerializer(instance=places)
             return Response(serializer.data)
         else:
@@ -182,6 +187,10 @@ class PlaceInstance(SzApiView):
         place = self.get_object(pk)
         serializer = serializers.PlaceSerializer(instance=place)
         return Response(serializer.data)
+
+class PlaceMessages(SzApiView):
+    def post(self, request, pk, format=None):
+        pass
 
 class ThingRoot(SzApiView):
     """
