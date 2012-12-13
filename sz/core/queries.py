@@ -23,9 +23,10 @@ def feed(**kwargs):
     paginate_by = kwargs.pop('paginate_by', DEFAULT_PAGINATE_BY)
     place = kwargs.pop('place', None)
     nearby = kwargs.pop('nearby', None)
-
+    things = kwargs.pop('things', None)
     filtered_places = models.Place.objects.exclude(message__id__isnull=True)
-
+    if not(things is None):
+        filtered_places = filtered_places.filter(message__things__in=things)
     if nearby is None:
         # TODO: определять город по координатам
         city_id = kwargs.pop('city_id', None)
