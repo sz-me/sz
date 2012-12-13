@@ -9,7 +9,8 @@
     <script type="text/javascript" src={% static "js/sz.api.js"%}></script>
     <script type="text/javascript">
         var szApi = new sz.Api({uri: '../api/',request_func: $.ajax});
-        function getFeed(api, nearby, viewFeedFunc)
+        var oldQuery = null;
+        function getFeed(api, query, isMessage, nearby, viewFeedFunc)
         {
             navigator.geolocation.getCurrentPosition(function(data) {
                 var latitude = data.coords.latitude;
@@ -19,10 +20,13 @@
                 params =
                 {
                     latitude: latitude,
-                    longitude: longitude,
-                    message: ''
+                    longitude: longitude
                 }
-                if (nearby.is(':checked'))
+                if (isMessage)
+                    params.message = query;
+                else
+                    params.place = query;
+                if (nearby)
                     params.nearby = '';
                 api.get('places/',
                         params,
@@ -39,8 +43,7 @@
             html += '</ul>';
             return html;
         }
-        function viewFeed(response)
-        {
+        function viewFeed(response){
             if(response.meta.code == 200)
             {
                 var html = '';
@@ -62,17 +65,58 @@
         }
         function refreshFeed(){
             $('#feed').html('Loading...');
-            getFeed(szApi, $('#nearby'), viewFeed);
+            var nearby = $('#nearby').is(':checked');
+            var isMessage = $('#message').is(':checked');
+            var query = $('#query').val();
+            getFeed(szApi, query, isMessage, nearby, viewFeed);
+        }
+        function detectQueryChange(){
+            var query = $('#query').val();
+            if (oldQuery != query){
+                refreshFeed();
+                oldQuery = query;
+            }
+            setTimeout(detectQueryChange, 3000);
         }
         $(document).ready(function () {
+            oldQuery = $('#query').val();
             refreshFeed();
+            setTimeout(detectQueryChange, 5000);
         });
+
+        function queryOnKeyPressHandler(obj, e){
+            var keycode = null;
+            if (window.event) keycode = window.event.keyCode;
+            else if (e)
+                keycode = e.which;
+            else return;
+            if (keycode == 13)
+            {
+                refreshFeed();
+            }
+        }
     </script>
 </head>
 <body>
 <div id="parameters">
-    <label for="search">Search SZ</label>
-    <input type="search" id="search"/>
+    <label for="query">Search</label>
+    <input type="search" id="query" onKeyPress="return queryOnKeyPressHandler(this,event)"/>
+    <br/>
+    <label for = "message">things</label>
+    <input type = "radio"
+           name = "what"
+           id = "message"
+           value = "message"
+           checked = "checked"
+           onchange="refreshFeed();" />
+    or
+    <label for = "place">places</label>
+    <input type = "radio"
+           name = "what"
+           id = "place"
+           value = "place"
+           onchange="refreshFeed();" />
+
     <label for="nearby">nearby</label>
     <input id="nearby" type="checkbox" title="nearby" onchange="refreshFeed();"/>
 </div>
