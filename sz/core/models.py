@@ -60,6 +60,10 @@ class Place(models.Model):
     #latitude = models.FloatField(verbose_name=u"широта")
     #longitude = models.FloatField(verbose_name=u"долгота")
     position = models.PointField(verbose_name=u"координаты")
+    def longitude(self):
+        return self.position.x
+    def latitude(self):
+        return self.position.y
     city_id = models.IntegerField(
         verbose_name=u"идентификатор в GeoNames",
         db_index=True,
