@@ -8,14 +8,25 @@
     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
     <script type="text/javascript" src={% static "js/sz.api.js"%}></script>
     <script type="text/javascript">
+        function distance(lng1, lng2, lat1, lat2){
+            var latlen = 40000000/360;
+            var k = Math.cos(Math.PI/180 * (lat1 + lat2)/2);
+            var lnglen = k * latlen
+            return Math.sqrt((lng1 - lng2)*lnglen*(lng1 - lng2)*lnglen
+                    + (lat1 - lat2)*latlen*(lat1 - lat2)*latlen);
+        }
         var szApi = new sz.Api({uri: '../api/',request_func: $.ajax});
         var oldQuery = null;
+        var position = {};
         function getFeed(api, query, isMessage, nearby, viewFeedFunc)
         {
             navigator.geolocation.getCurrentPosition(function(data) {
                 var latitude = data.coords.latitude;
                 var longitude = data.coords.longitude;
                 var accuracy = data.coords.accuracy;
+
+                position.longitude = longitude;
+                position.latitude = latitude;
 
                 params =
                 {
@@ -52,6 +63,9 @@
                     html += '<li>' + place.name;
                     if (place.address != null)
                         html += ', ' + place.address;
+                    dist = Math.floor(distance(position.longitude, place.longitude,
+                            position.latitude, place.latitude));
+                    html += ', ' + dist + 'm';
                     html += viewMessages(place.messages.results);
                     html += '</li>';
                 });
