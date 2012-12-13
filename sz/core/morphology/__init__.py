@@ -13,12 +13,11 @@ HUSHING_RU = set(u"жчшщ")
 J_RU = set(u"й")
 ALPHABET_RU = VOWEL_RU | CONSONANT_RU | set(u"ъь")
 
-SPACE_REGEX = re.compile('[^\w_-]|[+]', re.U)
+SPACE_REGEX = re.compile('[^\w]|[+]', re.U)
 
 def extract_words(text):
     """
     Разбивает текст на слова. Пунктуация игнорируется.
-    Слова, пишущиеся через дефис, считаются 1 словом.
     Пример использования::
 
         from pymorphy.contrib import tokenizers
