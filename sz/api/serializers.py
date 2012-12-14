@@ -2,7 +2,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from sz.api import pagination
-from sz.core import models
+from sz.core import models, gis
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -32,7 +32,7 @@ from sz.api import fields as sz_api_fields
 class ThingSerializer(serializers.HyperlinkedModelSerializer):
     tag = serializers.CharField(source='tag')
     messages = sz_api_fields.ResourceField(view_name='thing-messages')
-    category = sz_api_fields.NestedField(source='category', serializer=CategorySerializer)
+    #category = sz_api_fields.NestedField(source='category', serializer=CategorySerializer)
     class Meta:
         model = models.Thing
         fields = ('url', 'tag', 'category', 'messages')
@@ -44,12 +44,36 @@ class PlaceSearchSerializer(serializers.Serializer):
     place = serializers.CharField(required = False)
     message = serializers.CharField(required = False)
     nearby = serializers.IntegerField(required = False)
-class PlaceSerializer(serializers.HyperlinkedModelSerializer):
-    #distance = serializers.Field(source='*')
-    latitude = serializers.FloatField()
-    longitude = serializers.FloatField()
+
+class PlaceSerializer(serializers.Serializer):
+    """
+    Формирует ответ на запрос ленты событий
+    """
+    def __init__(self, *args, **kwargs):
+        self.url = serializers.HyperlinkedIdentityField(view_name='place-detail')
+        longitude = self.serializer = kwargs.pop('longitude', None)
+        latitude = self.serializer = kwargs.pop('latitude', None)
+        assert longitude and latitude, 'longitude and latitude are required'
+        position = gis.ll_to_point (longitude, latitude)
+        messages = kwargs.pop('messages', None)
+        things = kwargs.pop('things', None)
+        self.trans_args = {'position' : position, 'messages': messages, 'things': things}
+        super(PlaceSerializer, self).__init__(*args, **kwargs)
+
+    name = serializers.CharField(max_length=128)
+    address = serializers.CharField(max_length=128)
+    crossStreet = serializers.CharField(max_length=128)
+    contact = serializers.CharField(max_length=512)
+    position = serializers.Field()
+    city_id = serializers.IntegerField()
     foursquare_details_url = serializers.Field()
-    messages = sz_api_fields.NestedField(source='all_messages', serializer=PaginatedMessageSerializer)
+
+    distance = sz_api_fields.NestedField(transform=lambda p, a:
+        gis.calculate_distance_p(p.position, a['position']))
+    messages = sz_api_fields.NestedField(
+        transform=lambda p, a: a['messages'] and a['messages'](p, a['things']) or p.message_set.all(),
+        serializer=PaginatedMessageSerializer)
+
     class Meta:
         model = models.Place
         exclude = ('date',)

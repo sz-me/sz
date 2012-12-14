@@ -7,7 +7,7 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 from sz.api import serializers, services as api_services
 from sz.api.response import Response
-from sz.core import lists, models, services, queries, utilities
+from sz.core import lists, models, services, queries, utils
 
 class SzApiView(APIView):
     """
@@ -135,7 +135,8 @@ class PlaceRoot(SzApiView):
                      u"%s" % request.QUERY_PARAMS['place'] or None
             message = request.QUERY_PARAMS.get('message')
             nearby = request.QUERY_PARAMS.get('nearby')
-            nearby = utilities.safe_cast(nearby, int, nearby)
+            nearby = utils.safe_cast(nearby, int, nearby)
+            things = None
             if message is None:
                 places_from_venue = api_services.venue_place_service(position, query, nearby)
                 places = [r['place'] for r in places_from_venue]
@@ -143,8 +144,6 @@ class PlaceRoot(SzApiView):
                     if len(places) > 0:
                         caching_service = services.ModelCachingService(
                             places, lambda e: e.date, datetime.timedelta(seconds=60*60*24*7))
-                        #print 'INSERT: ' + ', '.join([u'%s' % e for e in caching_service.for_insert])
-                        #print 'UPDATE: ' + ', '.join([u'%s' % e for e in caching_service.for_update])
                         if len(caching_service.for_insert):
                             city_id = api_services.geonames_city_service(position)[0]['id']
                             for e in caching_service.for_insert:
@@ -167,7 +166,15 @@ class PlaceRoot(SzApiView):
                     latitude=position['latitude'],\
                     longitude=position['longitude'],\
                     city_id=city_id, nearby=nearby, things=things)
-            serializer = serializers.PlaceSerializer(instance=places)
+
+            messages_queryset = \
+                lambda p_place, p_things:\
+                p_things and p_place.message_set.filter(things__in=p_things) \
+                    or p_place.message_set.all()
+            serializer = serializers.PlaceSerializer(instance=places,
+                latitude=position['latitude'], longitude=position['longitude'],
+                messages=messages_queryset, things=things
+            )
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
