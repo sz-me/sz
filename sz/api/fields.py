@@ -6,22 +6,26 @@ class NestedField(fields.Field):
     def __init__(self, *args, **kwargs):
         self.serializer = kwargs.pop('serializer', None)
         self.paginate_by = kwargs.pop('paginate_by', None)
-        assert self.serializer, 'serializer is required'
+        self.transform = kwargs.pop('transform', None)
+        assert self.transform, 'transform is required'
+        kwargs['source']='*'
         super(NestedField, self).__init__(*args, **kwargs)
 
-    def to_native(self, value):
+    def to_native(self, obj):
         """
         Converts the field's value into it's simple representation.
         """
-        if fields.is_simple_callable(value):
-            value = value()
-        if issubclass(self.serializer, pagination.PaginationSerializer):
-            if self.paginate_by:
-                value = services.paginated_content(value, paginate_by=self.paginate_by)
-            else:
-                value = services.paginated_content(value)
-        serializer = self.serializer(instance=value)
-        return serializer.data
+        args = self.parent.trans_args
+        value = self.transform(obj, args)
+        if self.serializer:
+            if issubclass(self.serializer, pagination.PaginationSerializer):
+                if self.paginate_by:
+                    value = services.paginated_content(value, paginate_by=self.paginate_by)
+                else:
+                    value = services.paginated_content(value)
+            serializer = self.serializer(instance=value)
+            value = serializer.data
+        return value
 
 class ResourceField (fields.HyperlinkedIdentityField):
     def field_to_native(self, obj, field_name):
