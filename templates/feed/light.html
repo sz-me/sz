@@ -63,8 +63,7 @@
                     html += '<li>' + place.name;
                     if (place.address != null)
                         html += ', ' + place.address;
-                    dist = Math.floor(distance(position.longitude, place.longitude,
-                            position.latitude, place.latitude));
+                    dist = Math.floor(place.distance);
                     html += ', ' + dist + 'm';
                     html += viewMessages(place.messages.results);
                     html += '</li>';
@@ -112,7 +111,7 @@
     </script>
 </head>
 <body>
-<div id="parameters">
+<div id="args">
     <label for="query">Search</label>
     <input type="search" id="query" onKeyPress="return queryOnKeyPressHandler(this,event)"/>
     <br/>
