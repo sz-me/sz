@@ -57,8 +57,6 @@ class Place(models.Model):
         null=True,
         blank=True,)
     contact = models.CharField(max_length=512, verbose_name=u"контакты")
-    #latitude = models.FloatField(verbose_name=u"широта")
-    #longitude = models.FloatField(verbose_name=u"долгота")
     position = models.PointField(verbose_name=u"координаты")
     def longitude(self):
         return self.position.x
@@ -82,9 +80,6 @@ class Place(models.Model):
         verbose_name = u"место"
         verbose_name_plural = u"места"
         ordering = ["name"]
-    def all_messages(self):
-        return self.message_set.order_by('-date').all()
-
 
 class Message(models.Model):
     date = models.DateTimeField(
