@@ -3,7 +3,7 @@ import exceptions
 from django.db import models as dj_models
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.measure import D
-from sz.core import models, utilities
+from sz.core import models, utils
 from sz import settings
 
 DEFAULT_DISTANCE = settings.DEFAULT_DISTANCE
@@ -33,7 +33,7 @@ def feed(**kwargs):
         assert city_id, 'city_id is required'
         filtered_places = filtered_places.filter(city_id=city_id)
     else:
-        distance = utilities.safe_cast(nearby, int, DEFAULT_DISTANCE)
+        distance = utils.safe_cast(nearby, int, DEFAULT_DISTANCE)
         distance_kwargs = {'m':'%i' % distance}
         filtered_places = filtered_places\
         .filter(position__distance_lte=(current_position, D(**distance_kwargs) ))\

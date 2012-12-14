@@ -1,8 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 from django.core import paginator as django_paginator
-from django.contrib.gis.geos import fromstr
 from sz import settings
-from sz.core import models, utilities
+from sz.core import models, utils, gis
 from sz.core.gis import geonames, venue
 from sz.core.morphology.tagging import *
 
@@ -58,7 +57,7 @@ def geonames_city_service(position, query=None):
 
 def venue_place_service(position, query = None, distance = None):
     if not(distance is None):
-        distance = utilities.safe_cast(distance, int, settings.DEFAULT_DISTANCE)
+        distance = utils.safe_cast(distance, int, settings.DEFAULT_DISTANCE)
     result = venue.search(position, query, distance)
     place_and_distance_list = map(
         lambda l: {
@@ -70,11 +69,7 @@ def venue_place_service(position, query = None, distance = None):
                     and (u"%s" % l[u'location'].get(u'address')) or None,
                 crossStreet = l[u'location'].get(u'crossStreet')
                     and (u"%s" % l[u'location'].get(u'crossStreet')) or None,
-                #latitude = l[u'location'].get(u'lat'),
-                #longitude = l[u'location'].get(u'lng'),
-                position = fromstr('POINT(%s %s)'
-                    % (l[u'location'].get(u'lng'), l[u'location'].get(u'lat')),
-                    srid=4326),
+                position = gis.ll_to_point(l[u'location'].get(u'lng'), l[u'location'].get(u'lat')),
                 city_id = None
             ),
             'distance': l[u'location'].get(u'distance'),
