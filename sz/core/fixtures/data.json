@@ -250,6 +250,14 @@
         }
     },
     {
+        "pk": "\u0442\u0435\u043b\u044c\u043d\u044f\u0448\u043a\u0430",
+        "model": "core.thing",
+        "fields": {
+            "category": "top",
+            "stem": "\u0442\u0435\u043b\u044c\u043d\u044f\u0448\u043a"
+        }
+    },
+    {
         "pk": "50c0291ee4b05a389c1d4b91",
         "model": "core.place",
         "fields": {
@@ -276,6 +284,45 @@
         }
     },
     {
+        "pk": "4f35d2b5e4b0d408a2bba812",
+        "model": "core.place",
+        "fields": {
+            "name": "adidas (\u043b\u0435\u043d\u0438\u043d\u0430)",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-15T02:31:49.740Z",
+            "position": "POINT (127.5337684900000000 50.2583349107000000)"
+        }
+    },
+    {
+        "pk": "5003c692e4b0946792cb335e",
+        "model": "core.place",
+        "fields": {
+            "name": "Art Fitness",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": "\u041f\u0438\u043e\u043d\u0435\u0440\u0441\u043a\u0430\u044f 26/\u04101",
+            "date": "2012-12-12T12:22:54.497Z",
+            "position": "POINT (127.5303020000000100 50.2630160000000000)"
+        }
+    },
+    {
+        "pk": "4f2219efe4b0acaff5d3d4bb",
+        "model": "core.place",
+        "fields": {
+            "name": "Benetton",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": "\u041f\u0438\u043e\u043d\u0435\u0440\u0441\u043a\u0430\u044f 32",
+            "date": "2012-12-12T11:49:49.163Z",
+            "position": "POINT (127.5317845250000100 50.2633259142999980)"
+        }
+    },
+    {
         "pk": "4f289f72e4b01c87678b9fa7",
         "model": "core.place",
         "fields": {
@@ -286,6 +333,58 @@
             "address": "\u0410\u043c\u0443\u0440\u0441\u043a\u0430\u044f \u042f\u0440\u043c\u0430\u0440\u043a\u0430",
             "date": "2012-12-09T17:36:32.549Z",
             "position": "POINT (127.5347958120000000 50.2620584801000020)"
+        }
+    },
+    {
+        "pk": "4fdc103ee4b0d263e75c1fb4",
+        "model": "core.place",
+        "fields": {
+            "name": "Glance",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": "\u0417\u0435\u0439\u0441\u043a\u0430\u044f",
+            "address": "50 \u041b\u0435\u0442 \u041e\u043a\u0442\u044f\u0431\u0440\u044f",
+            "date": "2012-12-12T12:24:14.365Z",
+            "position": "POINT (127.5278240000000000 50.2602160000000000)"
+        }
+    },
+    {
+        "pk": "4f9a2149e4b0a039aec7ad98",
+        "model": "core.place",
+        "fields": {
+            "name": "Gloria jeans",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-15T02:31:49.731Z",
+            "position": "POINT (127.5404528200000000 50.2573725597000020)"
+        }
+    },
+    {
+        "pk": "501882dee4b03ebb823a4d08",
+        "model": "core.place",
+        "fields": {
+            "name": "GST \u041d\u0430 \u0422\u0440\u0443\u0434\u043e\u0432\u043e\u0439",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-15T02:31:49.652Z",
+            "position": "POINT (127.5445050000000000 50.2592080000000010)"
+        }
+    },
+    {
+        "pk": "4ff41066e4b0484031d99bd7",
+        "model": "core.place",
+        "fields": {
+            "name": "i\u041c\u0430\u0433",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-12T11:49:49.187Z",
+            "position": "POINT (127.5326366519999900 50.2633729319000010)"
         }
     },
     {
@@ -315,6 +414,45 @@
         }
     },
     {
+        "pk": "4f92665ce4b0532d5cfdac3f",
+        "model": "core.place",
+        "fields": {
+            "name": "ModerNails",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-15T02:31:49.685Z",
+            "position": "POINT (127.5468106440000000 50.2567974867999960)"
+        }
+    },
+    {
+        "pk": "502f3799e4b08345ccb92cc3",
+        "model": "core.place",
+        "fields": {
+            "name": "New look",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": "\u0428\u0435\u0432\u0447\u0435\u043d\u043a\u043e-\u0410\u043c\u0443\u0440\u0441\u043a\u0430\u044f",
+            "address": null,
+            "date": "2012-12-12T12:24:14.376Z",
+            "position": "POINT (127.5270690920000000 50.2626228333000000)"
+        }
+    },
+    {
+        "pk": "4f3764e1e4b08f00997b660a",
+        "model": "core.place",
+        "fields": {
+            "name": "Solar, \u0421\u0430\u043b\u043e\u043d \u041a\u0440\u0430\u0441\u043e\u0442\u044b, \u041b\u0435\u043d\u0438\u043d\u0430 113",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-15T02:31:49.642Z",
+            "position": "POINT (127.5444428580000000 50.2568253127000020)"
+        }
+    },
+    {
         "pk": "501600ade4b06bc0be894e4b",
         "model": "core.place",
         "fields": {
@@ -328,6 +466,58 @@
         }
     },
     {
+        "pk": "4f62a7afe4b02cbb7d650e72",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0410\u0437\u0438\u0430\u0442\u0441\u043a\u043e-\u0422\u0438\u0445\u043e\u043e\u043a\u0435\u0430\u043d\u0441\u043a\u0438\u0439 \u0411\u0430\u043d\u043a",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": "\u043c\u0435\u0436\u0434\u0443 \u0443\u043b. \u0410\u043c\u0443\u0440\u0441\u043a\u0430\u044f \u0438 \u0443\u043b. \u0428\u0435\u0432\u0447\u0435\u043d\u043a\u043e",
+            "address": "\u0443\u043b. \u0410\u043c\u0443\u0440\u0441\u043a\u0430\u044f, 225",
+            "date": "2012-12-12T11:49:49.167Z",
+            "position": "POINT (127.5265872280000000 50.2642421187999990)"
+        }
+    },
+    {
+        "pk": "5035be36e4b042270e9f46ac",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0410\u0437\u0438\u0430\u0442\u0441\u043a\u043e-\u0422\u0438\u0445\u043e\u043e\u043a\u0435\u0430\u043d\u0441\u043a\u0438\u0439 \u0411\u0430\u043d\u043a",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": "\u043c\u0435\u0436\u0434\u0443 \u0443\u043b. \u041b\u0435\u043d\u0438\u043d\u0430 \u0438 \u0443\u043b. \u041a\u0443\u0437\u043d\u0435\u0447\u043d\u0430\u044f",
+            "address": "\u0443\u043b. \u041a\u0443\u0437\u043d\u0435\u0447\u043d\u0430\u044f, 17",
+            "date": "2012-12-15T02:31:49.674Z",
+            "position": "POINT (127.5471389290000000 50.2568502641999970)"
+        }
+    },
+    {
+        "pk": "50190e1de4b0a36603068665",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0430\u043c\u0440\u0441\u043a\u0430\u044f \u043f\u0438\u043e\u043d\u0435\u0440\u0441\u043a\u0430\u044f \u041a\u0415\u041d\u0413\u0423\u0420\u0423",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-12T12:22:54.508Z",
+            "position": "POINT (127.5281022530000000 50.2618372395999980)"
+        }
+    },
+    {
+        "pk": "4f87f01ce4b0cec3a9cd4dbb",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0410\u043c\u0443\u0440\u0441\u043a\u0430\u044f 229",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-12T11:49:49.191Z",
+            "position": "POINT (127.5249014290000000 50.2641424270000030)"
+        }
+    },
+    {
         "pk": "4c636f6f79d1e21e62cbd815",
         "model": "core.place",
         "fields": {
@@ -338,6 +528,19 @@
             "address": null,
             "date": "2012-12-09T17:36:32.622Z",
             "position": "POINT (127.5348826670000100 50.2619579104000000)"
+        }
+    },
+    {
+        "pk": "4dca5ecffa7684db08fed493",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0410\u043f\u0442\u0435\u043a\u0430 \u0424\u0430\u0440\u043c\u0430\u043a\u043e\u043c (drugstore)",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": "Shevchenko vs Amurskaya",
+            "address": "\u0428\u0435\u0432\u0447\u0435\u043d\u043a\u043e, 35 (Shevchenko, 35)",
+            "date": "2012-12-12T12:22:54.486Z",
+            "position": "POINT (127.5286420000000000 50.2634150000000020)"
         }
     },
     {
@@ -406,6 +609,32 @@
         }
     },
     {
+        "pk": "4fa62b15e4b028d55a958fa0",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0411\u0435\u043b\u0430\u044f \u041b\u043e\u0448\u0430\u0434\u044c, \u0431\u0430\u0433\u0435\u0442\u043d\u0430\u044f \u043c\u0430\u0441\u0442\u0435\u0440\u0441\u043a\u0430\u044f",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-13T06:41:29.200Z",
+            "position": "POINT (127.5355148320000000 50.2627792357999970)"
+        }
+    },
+    {
+        "pk": "4f7ed493e4b08fc039af5276",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0411\u0438\u0440\u0445\u0430\u0443\u0441",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-14T05:39:48.223Z",
+            "position": "POINT (127.5276314460000000 50.2582947296000030)"
+        }
+    },
+    {
         "pk": "4ed5bf12722eff15bfa0418d",
         "model": "core.place",
         "fields": {
@@ -429,6 +658,19 @@
             "address": null,
             "date": "2012-12-11T14:55:07.074Z",
             "position": "POINT (127.5283859209999900 50.2474420057000020)"
+        }
+    },
+    {
+        "pk": "50345e28e4b0cb2df7581a64",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0411\u0443\u043a\u0432\u0438\u0446\u0430",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-12T12:22:54.189Z",
+            "position": "POINT (127.5227929999999900 50.2616659999999980)"
         }
     },
     {
@@ -614,6 +856,32 @@
         }
     },
     {
+        "pk": "4fa39a15e4b0cea0ee1681fc",
+        "model": "core.place",
+        "fields": {
+            "name": "\u043a\u0430\u043b\u0438\u043d\u0430",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-15T02:31:49.735Z",
+            "position": "POINT (127.5443287320000000 50.2567102328999980)"
+        }
+    },
+    {
+        "pk": "4f86df15e4b09a251e28b646",
+        "model": "core.place",
+        "fields": {
+            "name": "\u041a\u0435\u043d\u0433\u0443\u0440\u0443",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-12T11:50:20.262Z",
+            "position": "POINT (127.5274085650000000 50.2614537142000020)"
+        }
+    },
+    {
         "pk": "50419f14e4b0b174481f6e5c",
         "model": "core.place",
         "fields": {
@@ -705,6 +973,19 @@
         }
     },
     {
+        "pk": "4ff6189ae4b01d081fe0ecd9",
+        "model": "core.place",
+        "fields": {
+            "name": "\u041a\u043e\u043f\u0435\u0435\u0447\u043a\u0430",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": "\u041b\u0430\u0437\u043e 64",
+            "date": "2012-12-11T14:59:07.771Z",
+            "position": "POINT (127.5660268080000000 50.2605981895000010)"
+        }
+    },
+    {
         "pk": "50375c51e4b021b33bb7b3dc",
         "model": "core.place",
         "fields": {
@@ -728,19 +1009,6 @@
             "address": null,
             "date": "2012-12-11T14:59:07.963Z",
             "position": "POINT (127.5307213800000000 50.2757228480000010)"
-        }
-    },
-    {
-        "pk": "4ff6189ae4b01d081fe0ecd9",
-        "model": "core.place",
-        "fields": {
-            "name": "\u041a\u043e\u043f\u0435\u0435\u0447\u043a\u0430",
-            "city_id": 2026609,
-            "contact": "{}",
-            "crossStreet": null,
-            "address": "\u041b\u0430\u0437\u043e 64",
-            "date": "2012-12-11T14:59:07.771Z",
-            "position": "POINT (127.5660268080000000 50.2605981895000010)"
         }
     },
     {
@@ -783,6 +1051,19 @@
         }
     },
     {
+        "pk": "4f729b14e4b030aac6642126",
+        "model": "core.place",
+        "fields": {
+            "name": "\u041b'\u044d\u0442\u0443\u0430\u043b\u044c",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-12T11:49:49.196Z",
+            "position": "POINT (127.5282997479999900 50.2584017123000000)"
+        }
+    },
+    {
         "pk": "4f925daee4b0532d5cf89a9b",
         "model": "core.place",
         "fields": {
@@ -793,6 +1074,19 @@
             "address": "50 \u043b\u0435\u0442 \u041e\u043a\u0442\u044f\u0431\u0440\u044f 61",
             "date": "2012-12-11T14:54:32.549Z",
             "position": "POINT (127.5361854340000000 50.2668081440000020)"
+        }
+    },
+    {
+        "pk": "4fdec20ee4b06c9271436725",
+        "model": "core.place",
+        "fields": {
+            "name": "\u041b\u044e\u0431\u0438\u043c\u044b\u0439",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-12T12:22:54.458Z",
+            "position": "POINT (127.5356700470000000 50.2632359851000030)"
         }
     },
     {
@@ -871,6 +1165,19 @@
             "address": null,
             "date": "2012-12-11T14:46:22.167Z",
             "position": "POINT (127.5036697390000000 50.2647705078000020)"
+        }
+    },
+    {
+        "pk": "4f8a528de4b0ab0c1be58364",
+        "model": "core.place",
+        "fields": {
+            "name": "\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u0441\u0435\u0440\u044b\u0448\u0435\u0432\u0441\u043a\u0438\u0439",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-15T02:31:49.725Z",
+            "position": "POINT (127.5470657350000000 50.2586364746000030)"
         }
     },
     {
@@ -1030,6 +1337,19 @@
         }
     },
     {
+        "pk": "50922ed8e4b054e68390f425",
+        "model": "core.place",
+        "fields": {
+            "name": "\u041d\u0430\u0433\u0432\u0430\u043b\u044c",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-12T11:49:48.427Z",
+            "position": "POINT (127.5233312610000000 50.2607971015999980)"
+        }
+    },
+    {
         "pk": "50307946e4b05159d5ab6c7b",
         "model": "core.place",
         "fields": {
@@ -1040,6 +1360,19 @@
             "address": "\u0428\u0435\u0432\u0447\u0435\u043d\u043a\u043e",
             "date": "2012-12-11T14:46:22.173Z",
             "position": "POINT (127.5270000000000000 50.2590000000000000)"
+        }
+    },
+    {
+        "pk": "4fcf3468e4b07997d2fca42d",
+        "model": "core.place",
+        "fields": {
+            "name": "\u041e\u0440\u0430\u043d\u0436",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-15T02:31:49.663Z",
+            "position": "POINT (127.5470710000000000 50.2567469999999970)"
         }
     },
     {
@@ -1056,6 +1389,19 @@
         }
     },
     {
+        "pk": "4dca5d73d16495ca5ae7c7ba",
+        "model": "core.place",
+        "fields": {
+            "name": "\u041e\u0442\u0434\u0435\u043b\u0435\u043d\u0438\u0435 \u0431\u0430\u043d\u043a\u0430 \u0412\u0422\u041124 (VTB24 Bank)",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": "Shevchenko vs Amurskaya",
+            "address": "\u0428\u0435\u0432\u0447\u0435\u043d\u043a\u043e, 36 (Shevchenko, 36)",
+            "date": "2012-12-12T12:22:54.463Z",
+            "position": "POINT (127.5284309610000000 50.2638539048000010)"
+        }
+    },
+    {
         "pk": "4fdc23b7e4b0dce4fff18438",
         "model": "core.place",
         "fields": {
@@ -1066,6 +1412,19 @@
             "address": null,
             "date": "2012-12-11T14:44:38.353Z",
             "position": "POINT (127.5335080000000000 50.2678149999999990)"
+        }
+    },
+    {
+        "pk": "4f0fba30e4b09e589f46151f",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0420\u0430\u0439\u0444\u0444\u0430\u0439\u0437\u0435\u043d",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-12T11:49:49.171Z",
+            "position": "POINT (127.5309506579999900 50.2628507199000010)"
         }
     },
     {
@@ -1082,19 +1441,6 @@
         }
     },
     {
-        "pk": "4db189d60f2c0353f5cb691b",
-        "model": "core.place",
-        "fields": {
-            "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
-            "city_id": 2026609,
-            "contact": "{}",
-            "crossStreet": null,
-            "address": "50 \u043b\u0435\u0442 \u041e\u043a\u0442\u044f\u0431\u0440\u044f \u0443\u043b, 61",
-            "date": "2012-12-11T15:02:10.270Z",
-            "position": "POINT (127.5362323380000000 50.2677201690000000)"
-        }
-    },
-    {
         "pk": "506c9d2f3d7c5efc538c0fbd",
         "model": "core.place",
         "fields": {
@@ -1108,81 +1454,29 @@
         }
     },
     {
-        "pk": "506c9d3a3d7c5efc538c1890",
-        "model": "core.place",
-        "fields": {
-            "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
-            "city_id": 2026609,
-            "contact": "{u'phone': u'+78002500890', u'formattedPhone': u'+7 800 250-08-90'}",
-            "crossStreet": null,
-            "address": "\u0443\u043b\u0438\u0446\u0430 \u041e\u0441\u0442\u0440\u043e\u0432\u0441\u043a\u043e\u0433\u043e 14",
-            "date": "2012-12-11T15:02:10.402Z",
-            "position": "POINT (127.5365829999999900 50.2596410000000020)"
-        }
-    },
-    {
-        "pk": "506c9d3a3d7c5efc538c1892",
-        "model": "core.place",
-        "fields": {
-            "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
-            "city_id": 2026609,
-            "contact": "{u'phone': u'+78002500890', u'formattedPhone': u'+7 800 250-08-90'}",
-            "crossStreet": null,
-            "address": "\u0443\u043b\u0438\u0446\u0430 \u041b\u0435\u043d\u0438\u043d\u0430 191",
-            "date": "2012-12-11T15:02:10.396Z",
-            "position": "POINT (127.5132890000000000 50.2601790000000010)"
-        }
-    },
-    {
-        "pk": "4db189ba0f2c0353f5cb67df",
-        "model": "core.place",
-        "fields": {
-            "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
-            "city_id": 2026609,
-            "contact": "{u'phone': u'+78002500890', u'formattedPhone': u'+7 800 250-08-90'}",
-            "crossStreet": null,
-            "address": "\u0422\u0435\u0430\u0442\u0440\u0430\u043b\u044c\u043d\u0430\u044f \u0443\u043b. 55",
-            "date": "2012-12-11T15:02:10.388Z",
-            "position": "POINT (127.5331971360000000 50.2688020081999980)"
-        }
-    },
-    {
-        "pk": "4db189d20f2c0353f5cb68eb",
+        "pk": "4db189d30f2c0353f5cb6901",
         "model": "core.place",
         "fields": {
             "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
             "city_id": 2026609,
             "contact": "{}",
             "crossStreet": null,
-            "address": "\u041b\u0435\u043d\u0438\u043d\u0430 \u0443\u043b, 115",
-            "date": "2012-12-11T15:02:10.367Z",
-            "position": "POINT (127.5422895739999900 50.2569430616999990)"
+            "address": "\u0418\u043d\u0441\u0442\u0438\u0442\u0443\u0442\u0441\u043a\u0430\u044f \u0443\u043b, 1",
+            "date": "2012-12-09T17:36:32.589Z",
+            "position": "POINT (127.5279972090000100 50.2989521619999990)"
         }
     },
     {
-        "pk": "4db189220f2c0353f5cb6141",
+        "pk": "4db189ae0f2c0353f5cb6758",
         "model": "core.place",
         "fields": {
             "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
             "city_id": 2026609,
             "contact": "{}",
             "crossStreet": null,
-            "address": "\u0410\u043c\u0443\u0440\u0441\u043a\u0430\u044f \u0443\u043b, 201, \u043a\u043e\u0440\u043f\u0443\u0441 1",
-            "date": "2012-12-09T17:36:32.632Z",
-            "position": "POINT (127.5332206440000000 50.2634202488000030)"
-        }
-    },
-    {
-        "pk": "4da7fa8b90a016e0d5f27583",
-        "model": "core.place",
-        "fields": {
-            "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
-            "city_id": 2026609,
-            "contact": "{}",
-            "crossStreet": null,
-            "address": "\u0422\u0435\u0430\u0442\u0440\u0430\u043b\u044c\u043d\u0430\u044f \u0443\u043b, 55",
-            "date": "2012-12-09T17:36:32.627Z",
-            "position": "POINT (127.5515370840000000 50.2622740902000020)"
+            "address": "\u0421\u0435\u0434\u043e\u0432\u0430 \u0443\u043b, 111",
+            "date": "2012-12-11T15:02:10.356Z",
+            "position": "POINT (127.5333300000000100 50.2666699999999980)"
         }
     },
     {
@@ -1199,6 +1493,58 @@
         }
     },
     {
+        "pk": "4db189d20f2c0353f5cb68eb",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": "\u041b\u0435\u043d\u0438\u043d\u0430 \u0443\u043b, 115",
+            "date": "2012-12-11T15:02:10.367Z",
+            "position": "POINT (127.5422895739999900 50.2569430616999990)"
+        }
+    },
+    {
+        "pk": "4db189ba0f2c0353f5cb67df",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
+            "city_id": 2026609,
+            "contact": "{u'phone': u'+78002500890', u'formattedPhone': u'+7 800 250-08-90'}",
+            "crossStreet": null,
+            "address": "\u0422\u0435\u0430\u0442\u0440\u0430\u043b\u044c\u043d\u0430\u044f \u0443\u043b. 55",
+            "date": "2012-12-11T15:02:10.388Z",
+            "position": "POINT (127.5331971360000000 50.2688020081999980)"
+        }
+    },
+    {
+        "pk": "506c9d3a3d7c5efc538c1892",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
+            "city_id": 2026609,
+            "contact": "{u'phone': u'+78002500890', u'formattedPhone': u'+7 800 250-08-90'}",
+            "crossStreet": null,
+            "address": "\u0443\u043b\u0438\u0446\u0430 \u041b\u0435\u043d\u0438\u043d\u0430 191",
+            "date": "2012-12-11T15:02:10.396Z",
+            "position": "POINT (127.5132890000000000 50.2601790000000010)"
+        }
+    },
+    {
+        "pk": "506c9d3a3d7c5efc538c1890",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
+            "city_id": 2026609,
+            "contact": "{u'phone': u'+78002500890', u'formattedPhone': u'+7 800 250-08-90'}",
+            "crossStreet": null,
+            "address": "\u0443\u043b\u0438\u0446\u0430 \u041e\u0441\u0442\u0440\u043e\u0432\u0441\u043a\u043e\u0433\u043e 14",
+            "date": "2012-12-11T15:02:10.402Z",
+            "position": "POINT (127.5365829999999900 50.2596410000000020)"
+        }
+    },
+    {
         "pk": "506c9d3a3d7c5efc538c1880",
         "model": "core.place",
         "fields": {
@@ -1209,19 +1555,6 @@
             "address": "\u0443\u043b\u0438\u0446\u0430 \u0417\u0435\u0439\u0441\u043a\u0430\u044f 181",
             "date": "2012-12-11T15:02:10.332Z",
             "position": "POINT (127.5349980000000000 50.2607679999999990)"
-        }
-    },
-    {
-        "pk": "4db189d30f2c0353f5cb6901",
-        "model": "core.place",
-        "fields": {
-            "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
-            "city_id": 2026609,
-            "contact": "{}",
-            "crossStreet": null,
-            "address": "\u0418\u043d\u0441\u0442\u0438\u0442\u0443\u0442\u0441\u043a\u0430\u044f \u0443\u043b, 1",
-            "date": "2012-12-09T17:36:32.589Z",
-            "position": "POINT (127.5279972090000100 50.2989521619999990)"
         }
     },
     {
@@ -1251,16 +1584,42 @@
         }
     },
     {
-        "pk": "4db189ae0f2c0353f5cb6758",
+        "pk": "4da7fa8b90a016e0d5f27583",
         "model": "core.place",
         "fields": {
             "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
             "city_id": 2026609,
             "contact": "{}",
             "crossStreet": null,
-            "address": "\u0421\u0435\u0434\u043e\u0432\u0430 \u0443\u043b, 111",
-            "date": "2012-12-11T15:02:10.356Z",
-            "position": "POINT (127.5333300000000100 50.2666699999999980)"
+            "address": "\u0422\u0435\u0430\u0442\u0440\u0430\u043b\u044c\u043d\u0430\u044f \u0443\u043b, 55",
+            "date": "2012-12-09T17:36:32.627Z",
+            "position": "POINT (127.5515370840000000 50.2622740902000020)"
+        }
+    },
+    {
+        "pk": "4db189d60f2c0353f5cb691b",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": "50 \u043b\u0435\u0442 \u041e\u043a\u0442\u044f\u0431\u0440\u044f \u0443\u043b, 61",
+            "date": "2012-12-11T15:02:10.270Z",
+            "position": "POINT (127.5362323380000000 50.2677201690000000)"
+        }
+    },
+    {
+        "pk": "4db189220f2c0353f5cb6141",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0421\u0430\u043b\u043e\u043d-\u043c\u0430\u0433\u0430\u0437\u0438\u043d \u041c\u0422\u0421",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": "\u0410\u043c\u0443\u0440\u0441\u043a\u0430\u044f \u0443\u043b, 201, \u043a\u043e\u0440\u043f\u0443\u0441 1",
+            "date": "2012-12-09T17:36:32.632Z",
+            "position": "POINT (127.5332206440000000 50.2634202488000030)"
         }
     },
     {
@@ -1287,6 +1646,45 @@
             "address": null,
             "date": "2012-12-11T14:59:07.974Z",
             "position": "POINT (127.5469970000000000 50.2574800000000010)"
+        }
+    },
+    {
+        "pk": "4f2a4260e4b0d07754954dfd",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0421\u0430\u043b\u043e\u043d \u041c\u0430\u043a\u0441\u0438\u043c\u0430 \u0413\u0440\u0443\u0434\u0438\u043d\u043e\u0432\u0430",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": "\u0422\u0440\u0443\u0434\u043e\u0432\u0430\u044f",
+            "address": "\u0417\u0435\u0439\u0441\u043a\u0430\u044f, 136",
+            "date": "2012-12-15T02:31:49.697Z",
+            "position": "POINT (127.5429787690000000 50.2593572074000010)"
+        }
+    },
+    {
+        "pk": "4f7ad2a3e4b0118787a3eba8",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0421\u0430\u0443\u043d\u0430 \"\u041b\u043e\u0442\u043e\u0441\"",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": "\u0420\u0430\u0439\u043e\u043d \u043f\u043b\u043e\u0434\u043e\u043f\u0438\u0442\u043e\u043c\u043d\u0438\u043a",
+            "address": "\u0413\u0430\u0440\u0430\u0436\u043d\u0430\u044f 2/2",
+            "date": "2012-12-13T06:41:28.762Z",
+            "position": "POINT (127.4883020000000000 50.3099199999999980)"
+        }
+    },
+    {
+        "pk": "5078d712e4b00760ca90febd",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0441\u0431\u0435\u0440\u0431\u0430\u043d\u043a",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-15T02:31:49.707Z",
+            "position": "POINT (127.5463268960000000 50.2570274989000010)"
         }
     },
     {
@@ -1407,6 +1805,19 @@
         }
     },
     {
+        "pk": "4f5edb55e4b0c540a0f456e7",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0421\u0442\u0440\u043e\u0439\u043c\u043e\u0434\u0430",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": "\u0423\u043b. \u041b\u0435\u043d\u0438\u043d\u0430",
+            "date": "2012-12-12T11:49:49.182Z",
+            "position": "POINT (127.5206248790000000 50.2592616028000020)"
+        }
+    },
+    {
         "pk": "4f92326de4b06dd09b02a074",
         "model": "core.place",
         "fields": {
@@ -1456,6 +1867,19 @@
             "address": null,
             "date": "2012-12-11T14:53:45.167Z",
             "position": "POINT (127.5131876779999900 50.2600564911000020)"
+        }
+    },
+    {
+        "pk": "4fb0bfb5e4b0ec8289ea5db6",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0422\u0443\u0440\u0438\u0441\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u0430\u0433\u0435\u043d\u0442\u0441\u0442\u0432\u043e \"4 \u0421\u0435\u0437\u043e\u043d\u0430\"",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-15T02:31:49.448Z",
+            "position": "POINT (127.5474003310000100 50.2577000273999990)"
         }
     },
     {
@@ -1524,6 +1948,32 @@
         }
     },
     {
+        "pk": "4f5adfc4e4b00747d9fbfafa",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0423\u043d\u0438\u0432\u0435\u0440\u043c\u0430\u0433",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": "\u0410\u043c\u0443\u0440\u0441\u043a\u0430\u044f",
+            "address": "50-\u043b\u0435\u0442\u0438\u044f \u043e\u043a\u0442\u044f\u0431\u0440\u044f",
+            "date": "2012-12-12T11:49:49.200Z",
+            "position": "POINT (127.5345464820000000 50.2628790503000000)"
+        }
+    },
+    {
+        "pk": "4f093d39e4b0e624d7ff4baa",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0426\u0438\u0444\u0440\u043e\u0432\u043e\u0439 \u0441\u0443\u043f\u0435\u0440\u043c\u0430\u0440\u043a\u0435\u0442 DNS",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-12T11:49:49.176Z",
+            "position": "POINT (127.5350909910000000 50.2604166691000030)"
+        }
+    },
+    {
         "pk": "4fefed70e4b02acbce14811b",
         "model": "core.place",
         "fields": {
@@ -1537,14 +1987,200 @@
         }
     },
     {
+        "pk": "4fc5e525e4b0b383d5443009",
+        "model": "core.place",
+        "fields": {
+            "name": "\u0428\u0432\u0435\u0439\u043a \u0412\u0435\u0440\u0430\u043d\u0434\u0430",
+            "city_id": 2026609,
+            "contact": "{}",
+            "crossStreet": null,
+            "address": null,
+            "date": "2012-12-12T12:22:54.469Z",
+            "position": "POINT (127.5279557140000000 50.2591447953000030)"
+        }
+    },
+    {
+        "pk": 38,
+        "model": "core.message",
+        "fields": {
+            "date": "2012-12-15T02:39:53.677Z",
+            "text": "\u0441\u043a\u0438\u0434\u043a\u0430 \u043d\u0430 \u0431\u0443\u043c\u0430\u0433\u0443 \u0421\u043d\u0435\u0433\u0443\u0440\u043e\u0447\u043a\u0430!",
+            "place": "50345e28e4b0cb2df7581a64",
+            "user": 2,
+            "things": []
+        }
+    },
+    {
+        "pk": 37,
+        "model": "core.message",
+        "fields": {
+            "date": "2012-12-15T02:37:17.717Z",
+            "text": "\u0414\u0436\u0438\u043d\u0441\u043e\u0432\u0430\u044f \u0440\u0430\u0441\u043f\u0440\u043e\u0434\u0430\u0436\u0430. \u0422\u043e\u0440\u043e\u043f\u0438\u0441\u044c!",
+            "place": "4f9a2149e4b0a039aec7ad98",
+            "user": 2,
+            "things": [
+                "\u0434\u0436\u0438\u043d\u0441\u044b"
+            ]
+        }
+    },
+    {
+        "pk": 36,
+        "model": "core.message",
+        "fields": {
+            "date": "2012-12-14T17:24:58.496Z",
+            "text": "\u0441\u043a\u0438\u0434\u043a\u0430 \u043d\u0430 \u0430\u0431\u043e\u043d\u0435\u043c\u0435\u043d\u0442",
+            "place": "50922ed8e4b054e68390f425",
+            "user": 2,
+            "things": []
+        }
+    },
+    {
+        "pk": 35,
+        "model": "core.message",
+        "fields": {
+            "date": "2012-12-14T17:23:03.231Z",
+            "text": "\u043d\u0430 \u0434\u0436\u0438\u043d\u0441\u044b \u0442\u043e\u0436\u0435 \u0441\u043a\u0438\u0434\u043a\u0430!",
+            "place": "4f2219efe4b0acaff5d3d4bb",
+            "user": 2,
+            "things": [
+                "\u0434\u0436\u0438\u043d\u0441\u044b"
+            ]
+        }
+    },
+    {
+        "pk": 34,
+        "model": "core.message",
+        "fields": {
+            "date": "2012-12-14T17:20:39.951Z",
+            "text": "\u0441\u043a\u0438\u0434\u043a\u0430 \u043d\u0430 \u0448\u043e\u0440\u0442\u044b \u0438 \u0433\u0443\u0431\u043d\u044b\u0435 \u0433\u0430\u0440\u043c\u043e\u0448\u043a\u0438 \u0432 \u042d\u043a\u0441\u043f\u0435\u0434\u0438\u0446\u0438\u0438",
+            "place": "4ddbb4b245ddf752bfc70ca6",
+            "user": 2,
+            "things": [
+                "\u0448\u043e\u0440\u0442\u044b"
+            ]
+        }
+    },
+    {
+        "pk": 33,
+        "model": "core.message",
+        "fields": {
+            "date": "2012-12-14T17:16:23.939Z",
+            "text": "\u043c\u0430\u0439\u043a\u0438 \u043f\u043e \u0441\u043e\u0442\u043e\u0447\u043a\u0435",
+            "place": "4f2219efe4b0acaff5d3d4bb",
+            "user": 2,
+            "things": [
+                "\u043c\u0430\u0439\u043a\u0430"
+            ]
+        }
+    },
+    {
+        "pk": 32,
+        "model": "core.message",
+        "fields": {
+            "date": "2012-12-13T09:15:48.959Z",
+            "text": "\u043c\u043e\u043b\u043e\u0447\u043d\u044b\u0439 \u0439\u043e\u0433\u0443\u0440\u0442 22 \u0440\u0443\u0431. \u041d\u0435 \u0441\u0430\u043c\u0430\u044f \u043d\u0438\u0437\u043a\u0430\u044f \u0446\u0435\u043d\u0430",
+            "place": "4f86df15e4b09a251e28b646",
+            "user": 2,
+            "things": []
+        }
+    },
+    {
+        "pk": 31,
+        "model": "core.message",
+        "fields": {
+            "date": "2012-12-13T07:30:07.033Z",
+            "text": "\u0441\u043a\u0438\u0434\u043a\u0430 \u043d\u0430 \u0439\u043e\u0433\u0443. \u043f\u0440\u0438\u0445\u043e\u0434\u0438 \u0439\u043e\u0433\u0438\u0442\u044c\u0441\u044f",
+            "place": "50922ed8e4b054e68390f425",
+            "user": 2,
+            "things": []
+        }
+    },
+    {
+        "pk": 30,
+        "model": "core.message",
+        "fields": {
+            "date": "2012-12-13T07:28:58.619Z",
+            "text": "\u0441\u043f\u043e\u0440\u0442. \u0448\u0442\u0430\u043d\u044b \u0441 \u043b\u0430\u043c\u043f\u0430\u0441\u0430\u043c\u0438 \u043f\u043e \u0434\u0435\u0448\u043c\u0430\u043d\u0443 ",
+            "place": "504ec4b4e4b061de6e571a1d",
+            "user": 2,
+            "things": [
+                "\u0448\u0442\u0430\u043d\u044b"
+            ]
+        }
+    },
+    {
+        "pk": 29,
+        "model": "core.message",
+        "fields": {
+            "date": "2012-12-13T07:28:01.326Z",
+            "text": "\u041f\u044f\u0442\u044b\u0439 \u0430\u0439\u0444\u043e\u043d \u0437\u0430 \u043f\u043e\u043b\u0442\u0438\u043d\u043d\u0438\u043a. \u0417\u0430\u043c\u0435\u0447\u0430\u0442\u0435\u043b\u044c\u043d\u0430\u044f \u0446\u0435\u043d\u0430",
+            "place": "4ff41066e4b0484031d99bd7",
+            "user": 2,
+            "things": []
+        }
+    },
+    {
+        "pk": 28,
+        "model": "core.message",
+        "fields": {
+            "date": "2012-12-13T07:26:13.221Z",
+            "text": "\u0444\u0443\u0442\u0431\u043e\u043b\u043a\u0438 \u043a\u0435\u043b\u044c\u0432\u0438\u043d \u043a\u043b\u044f\u0439\u043d \u0438 \u0435\u0433\u043e \u0436\u0435 \u0448\u0442\u0430\u043d\u0446\u044b \u043f\u043e $99.9. \u0421\u0435\u043a\u0446\u0438\u044f 39. \u0421\u043f\u0435\u0448\u0438!",
+            "place": "4ddbb4b245ddf752bfc70ca6",
+            "user": 2,
+            "things": [
+                "\u0444\u0443\u0442\u0431\u043e\u043b\u043a\u0430",
+                "\u0448\u0442\u0430\u043d\u044b"
+            ]
+        }
+    },
+    {
+        "pk": 27,
+        "model": "core.message",
+        "fields": {
+            "date": "2012-12-13T07:17:43.207Z",
+            "text": "\u043d\u044f\u0448\u043a\u0430-\u0442\u0435\u043b\u044c\u043d\u044f\u0448\u043a\u0430 \u0438 \u0443\u0448\u0430\u043d\u043a\u0430 \u0441\u043e \u0441\u0442\u0440\u0430\u0437\u0438\u043a\u0430\u043c\u0438. \u042f \u0441\u0447\u0430\u0441\u0442\u043b\u0438\u0432. \u0426\u0435\u043d\u0430 \u0432\u043e\u043f\u0440\u043e\u0441\u0430 \u0432\u0441\u0435\u0433\u043e 87 \u0438 95 \u0440\u0443\u0431.",
+            "place": "4fdc23b7e4b0dce4fff18438",
+            "user": 2,
+            "things": [
+                "\u0442\u0435\u043b\u044c\u043d\u044f\u0448\u043a\u0430"
+            ]
+        }
+    },
+    {
+        "pk": 26,
+        "model": "core.message",
+        "fields": {
+            "date": "2012-12-12T17:55:20.325Z",
+            "text": "\u0413\u043e\u043b\u044c\u0444\u044b \u043f\u043e 15 \u043a\u043e\u043f. \u041d\u0435\u0432\u0438\u0434\u0430\u043d\u043d\u0430\u044f \u0449\u0435\u0434\u0440\u043e\u0441\u0442\u044c",
+            "place": "504ec4b4e4b061de6e571a1d",
+            "user": 2,
+            "things": []
+        }
+    },
+    {
+        "pk": 25,
+        "model": "core.message",
+        "fields": {
+            "date": "2012-12-11T17:21:38.935Z",
+            "text": "\u0440\u0430\u0441\u043f\u0440\u043e\u0434\u0430\u0436\u0430 \u0432 \u0431\u0438\u0442\u0438\u0431\u043e\u0435. \u0432\u043f\u0435\u0440\u0451\u0434 \u0437\u0430 \u0434\u0436\u0438\u043d\u0441\u0430\u043c\u0438!",
+            "place": "4ddbb4b245ddf752bfc70ca6",
+            "user": 2,
+            "things": [
+                "\u0434\u0436\u0438\u043d\u0441\u044b"
+            ]
+        }
+    },
+    {
         "pk": 24,
         "model": "core.message",
         "fields": {
             "date": "2012-12-09T12:45:30.955Z",
             "text": "\u0437\u0430\u043c\u0435\u0447\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0440\u043e\u0437\u043e\u0432\u044b\u0435 \u043c\u0430\u0439\u043a\u0438 \u043f\u043e 350 \u0440\u0443\u0431",
             "place": "507d1ba3e4b0f2e0888151d1",
-            "user": 1,
-            "things": []
+            "user": 2,
+            "things": [
+                "\u043c\u0430\u0439\u043a\u0430"
+            ]
         }
     },
     {
@@ -1554,7 +2190,7 @@
             "date": "2012-12-09T12:44:15.155Z",
             "text": "\u041e\u0442\u043b\u0438\u0447\u043d\u044b\u0435 \u0434\u0443\u0431\u043e\u0432\u044b\u0435 \u0432\u0435\u043d\u0438\u043a\u0438 \u043f\u043e \u0441\u043e\u0442\u043e\u0447\u043a\u0435. \u0425\u043e\u0440\u043e\u0448\u0430 \u0431\u0430\u043d\u044c\u043a\u0430 \u043f\u043e\u0441\u043b\u0435 \u0442\u044e\u0440\u044c\u043c\u044b!",
             "place": "4fdc23b7e4b0dce4fff18438",
-            "user": 1,
+            "user": 2,
             "things": []
         }
     },
@@ -1565,7 +2201,7 @@
             "date": "2012-12-09T12:42:38.535Z",
             "text": "\u0431\u0443\u0442\u044b\u043b\u043a\u0430 \u043a\u0435\u0444\u0438\u0440\u0430 \u043f\u043e\u043b\u0431\u0430\u0442\u043e\u043d\u0430",
             "place": "4f828903e4b0c7b8571651b3",
-            "user": 1,
+            "user": 2,
             "things": []
         }
     },
@@ -1576,7 +2212,7 @@
             "date": "2012-12-09T12:40:03.215Z",
             "text": "\u0421\u043a\u0438\u0434\u043a\u0430 \u043d\u0430 \u0432\u0441\u0435 \u0442\u043e\u0432\u0430\u0440\u044b 50% \u0434\u043e 15 \u044f\u043d\u0432\u0430\u0440\u044f. \u0422\u043e\u0440\u043e\u043f\u0438\u0441\u044c!",
             "place": "4ed5bf12722eff15bfa0418d",
-            "user": 1,
+            "user": 2,
             "things": []
         }
     },
@@ -1587,7 +2223,7 @@
             "date": "2012-12-09T12:38:33.149Z",
             "text": "\u041e\u0442\u043b\u0438\u0447\u043d\u043e\u0435 \u043a\u043b\u0435\u0442\u0447\u0430\u0442\u043e\u0435 \u043f\u0430\u043b\u044c\u0442\u043e \u0441\u043e \u0441\u043a\u0438\u0434\u043a\u043e\u0439 \u043e\u0431\u043e\u0448\u043b\u043e\u0441\u044c \u0432\u0441\u0435\u0433\u043e \u0432 2 \u0442.\u0440.",
             "place": "4f1a3aa9e4b0817d3b7876a1",
-            "user": 1,
+            "user": 2,
             "things": [
                 "\u043f\u0430\u043b\u044c\u0442\u043e"
             ]
@@ -1600,7 +2236,7 @@
             "date": "2012-12-09T12:37:17.775Z",
             "text": "\u041c\u043e\u0434\u043d\u0430\u044f \u043a\u043e\u0441\u043e\u0432\u043e\u0440\u043e\u0442\u043a\u0430 \u0430\u0434\u0438\u0434\u0430\u0441 \u0437\u0430 18 \u0440\u0443\u0431. \u0414\u0435\u0440\u0435\u0432\u0435\u043d\u0441\u043a\u0438\u0435 \u043e\u0431\u0437\u0430\u0432\u0438\u0434\u0443\u044e\u0442\u0441\u044f!",
             "place": "504ec4b4e4b061de6e571a1d",
-            "user": 1,
+            "user": 2,
             "things": [
                 "\u043a\u043e\u0441\u043e\u0432\u043e\u0440\u043e\u0442\u043a\u0430"
             ]
@@ -1613,7 +2249,7 @@
             "date": "2012-12-09T12:33:41.054Z",
             "text": "\u0421\u0440\u0430\u0437\u0443 \u043f\u043e \u0432\u044b\u0445\u043e\u0434\u0443 \u0438\u0437 \u0442\u044e\u0440\u044c\u043c\u044b \u0434\u0435\u043d\u0435\u0433 \u0441\u043e\u0432\u0441\u0435\u043c \u043d\u0435\u043c\u043d\u043e\u0433\u043e, \u0430 \u0442\u0443\u0442 \u0442\u0435\u0431\u0435 \u0438 \u0432\u0430\u0442\u043d\u0438\u043a\u0438, \u0438 \u043a\u0430\u043b\u044c\u0441\u043e\u043d\u044b \u043f\u043e \u0441\u043c\u0435\u0448\u043d\u044b\u043c \u0446\u0435\u043d\u0430\u043c \u0438 \u0432\u0441\u0451 \u043a\u0430\u0447\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u043e\u0435. \u041e\u0447\u0435\u043d\u044c \u0440\u0430\u0434. \u0411\u0443\u0434\u0443 \u0441\u043e\u0432\u0435\u0442\u043e\u0432\u0430\u0442\u044c \u043a\u043e\u0440\u0435\u0448\u043a\u0430\u043c.",
             "place": "4fdc23b7e4b0dce4fff18438",
-            "user": 1,
+            "user": 2,
             "things": [
                 "\u043a\u0430\u043b\u044c\u0441\u043e\u043d\u044b",
                 "\u0432\u0430\u0442\u043d\u0438\u043a"
@@ -1627,7 +2263,7 @@
             "date": "2012-12-09T12:28:16.750Z",
             "text": "\u0433\u043e\u043b\u0443\u0431\u0430\u044f \u0441\u0432\u0438\u043d\u043a\u0430 \u043f\u043e \u0446\u0435\u043d\u0435 \u043e\u0431\u044b\u0447\u043d\u043e\u0439!",
             "place": "4f52cf16e4b0d9ab7ae734ec",
-            "user": 1,
+            "user": 2,
             "things": []
         }
     },
@@ -1638,7 +2274,7 @@
             "date": "2012-12-09T12:26:51.140Z",
             "text": "\u0420\u044b\u0431\u0430\u0446\u043a\u0438\u0439 \u0441\u0442\u0443\u043b\u044c\u0447\u0438\u043a \u043d\u043e\u0432\u043e\u0433\u043e \u043f\u043e\u043a\u043e\u043b\u0435\u043d\u0438\u044f. \u0417\u0430\u0431\u0443\u0434\u044c\u0442\u0435 \u043e \u0437\u0430\u0442\u0451\u043a\u0448\u0438\u0445 \u043d\u043e\u0433\u0430\u0445 \u0438 \u0431\u043e\u043b\u044f\u0445 \u0432 \u043f\u043e\u044f\u0441\u043d\u0438\u0446\u0435!",
             "place": "4fdc23b7e4b0dce4fff18438",
-            "user": 1,
+            "user": 2,
             "things": []
         }
     },
@@ -1649,7 +2285,7 @@
             "date": "2012-12-09T12:23:15.666Z",
             "text": "\u0420\u0430\u0431\u043e\u0447\u0430\u044f \u0431\u043b\u0443\u0437\u0430 \u0434\u043b\u044f \u0441\u0442\u0438\u043b\u044c\u043d\u044b\u0445 \u043f\u0440\u043e\u043b\u0435\u0442\u0430\u0440\u0438\u0435\u0432. \u0422\u0435\u043f\u0435\u0440\u044c \u043d\u0430 36 \u0440\u0443\u0431 72 \u043a\u043e\u043f \u0434\u0435\u0448\u0435\u0432\u043b\u0435!",
             "place": "4fdc23b7e4b0dce4fff18438",
-            "user": 1,
+            "user": 2,
             "things": [
                 "\u0431\u043b\u0443\u0437\u0430"
             ]
@@ -1662,7 +2298,7 @@
             "date": "2012-12-09T12:19:28.183Z",
             "text": "\u0421\u043a\u0438\u0434\u043a\u0430 \u043d\u0430 \u0442\u0440\u0451\u0445\u043a\u043e\u043b\u0451\u0441\u043d\u044b\u0445 \u0434\u0440\u0443\u0437\u0435\u0439!",
             "place": "4fefed70e4b02acbce14811b",
-            "user": 1,
+            "user": 2,
             "things": []
         }
     },
@@ -1673,7 +2309,7 @@
             "date": "2012-12-09T12:17:15.975Z",
             "text": "\u043f\u0430\u0440\u0430\u043b\u043e\u043d\u043e\u0432\u044b\u0439 \u0441\u0442\u0443\u043b\u044c\u0447\u0438\u043a \u043f\u043e \u0441\u0445\u043e\u0434\u043d\u043e\u0439 \u0446\u0435\u043d\u0435",
             "place": "4f9cc553e4b0e9595b5b6b3b",
-            "user": 1,
+            "user": 2,
             "things": []
         }
     },
@@ -1684,7 +2320,7 @@
             "date": "2012-12-09T12:11:16.922Z",
             "text": "\u0421\u043a\u0438\u0434\u043a\u0430 \u043d\u0430 \u0442\u0430\u0431\u0430\u0447\u043e\u043a! \u0427\u043e, \u043f\u043e\u043a\u0443\u0440\u0438\u043c-\u043a\u0430?",
             "place": "4f8e7cebe4b0bdaf06738588",
-            "user": 1,
+            "user": 2,
             "things": []
         }
     },
@@ -1695,7 +2331,7 @@
             "date": "2012-12-09T12:09:16.291Z",
             "text": "\u0441\u043a\u0438\u0434\u043a\u0430 \u043d\u0430 \u043f\u043b\u0430\u0449-\u043f\u0430\u043b\u0430\u0442\u043a\u0438",
             "place": "4fdc23b7e4b0dce4fff18438",
-            "user": 1,
+            "user": 2,
             "things": [
                 "\u043f\u043b\u0430\u0449"
             ]
@@ -1708,7 +2344,7 @@
             "date": "2012-12-09T11:38:13.915Z",
             "text": "\u041e\u0442\u043b\u0438\u0447\u043d\u044b\u0435 \u043a\u0430\u043b\u044c\u0441\u043e\u043d\u044b \u0441 \u043d\u0430\u0447\u0451\u0441\u043e\u043c \u0438 \u0432\u0441\u0435\u0433\u043e \u0437\u0430 300 \u0440\u0443\u0431",
             "place": "4ed5832161afeefb7bcdc1ae",
-            "user": 1,
+            "user": 2,
             "things": []
         }
     },
@@ -1719,7 +2355,7 @@
             "date": "2012-12-09T09:22:40.362Z",
             "text": "\u041f\u0440\u0438\u043e\u0431\u0440\u0451\u043b \u0432 \u0431\u0443\u0442\u0438\u043a\u0435 \"\u0420\u0415\u0422\u0420\u041e\" \u043c\u0430\u043b\u0438\u043d\u043e\u0432\u044b\u0439 \u043f\u0438\u0434\u0436\u0430\u0447\u043e\u043a. \u0422\u0435\u043f\u0435\u0440\u044c \u044f \u0445\u0438\u043f\u0441\u0442\u0435\u0440!",
             "place": "4ddbb4b245ddf752bfc70ca6",
-            "user": 1,
+            "user": 2,
             "things": [
                 "\u043f\u0438\u0434\u0436\u0430\u043a"
             ]
@@ -1732,7 +2368,7 @@
             "date": "2012-12-09T09:19:54.170Z",
             "text": "\u0431\u0430\u043d\u043d\u044b\u0435 \u0445\u0430\u043b\u0430\u0442\u044b \u043f\u043e 150 \u0440\u0443\u0431",
             "place": "509db088e4b0d1661b96882a",
-            "user": 1,
+            "user": 2,
             "things": [
                 "\u0445\u0430\u043b\u0430\u0442"
             ]
@@ -1745,7 +2381,7 @@
             "date": "2012-12-09T09:18:27.632Z",
             "text": "\u0432\u043e\u0434\u043a\u0430 \u043f\u043e\u0441\u043b\u0435 23:00!",
             "place": "502ca9a4e4b0d68f366c7005",
-            "user": 1,
+            "user": 2,
             "things": []
         }
     },
@@ -1756,7 +2392,7 @@
             "date": "2012-12-09T09:15:54.700Z",
             "text": "\u0441\u043a\u0438\u0434\u043a\u0430 \u043d\u0430 \u043c\u043e\u0434\u043d\u044b\u0435 \u0431\u0440\u044e\u0447\u043a\u0438 15%",
             "place": "4f1a3aa9e4b0817d3b7876a1",
-            "user": 1,
+            "user": 2,
             "things": [
                 "\u0431\u0440\u044e\u043a\u0438"
             ]
@@ -1769,7 +2405,7 @@
             "date": "2012-12-09T09:07:05.167Z",
             "text": "\u043a\u043b\u0451\u0432\u044b\u0439 \u043a\u0430\u0440\u0434\u0438\u0433\u0430\u043d \u0437\u0430 700 \u0440\u0443\u0431!",
             "place": "4ed5832161afeefb7bcdc1ae",
-            "user": 1,
+            "user": 2,
             "things": [
                 "\u043a\u0430\u0440\u0434\u0438\u0433\u0430\u043d"
             ]
@@ -1782,7 +2418,7 @@
             "date": "2012-12-09T09:04:11.717Z",
             "text": "\u0441\u043a\u0438\u0434\u043a\u0430 30% \u043d\u0430 \u0442\u0435\u043b\u0435\u0444\u043e\u043d \u043a\u0430\u043a \u0443 \u041e\u0445\u043b\u043e\u0431\u044b\u0441\u0442\u0438\u043d\u0430 ",
             "place": "4db189220f2c0353f5cb6141",
-            "user": 1,
+            "user": 2,
             "things": []
         }
     },
@@ -1793,7 +2429,7 @@
             "date": "2012-12-09T09:03:02.893Z",
             "text": "\u0428\u043e\u0440\u0442\u0438\u043a\u0438 \u0438 \u0444\u0443\u0442\u0431\u043e\u043b\u043e\u0447\u043a\u0438 \u0432 \u043f\u043e\u043b\u0446\u0435\u043d\u044b! \u0421\u0435\u043a\u0446\u0438\u044f 25",
             "place": "4c636f6f79d1e21e62cbd815",
-            "user": 1,
+            "user": 2,
             "things": [
                 "\u0448\u043e\u0440\u0442\u044b",
                 "\u0444\u0443\u0442\u0431\u043e\u043b\u043a\u0430"
@@ -1807,7 +2443,7 @@
             "date": "2012-12-09T08:52:51.481Z",
             "text": "\u041c\u0435\u043d\u0442\u043e\u0432\u0441\u043a\u0438\u0439 \u0434\u043e\u0436\u0434\u0435\u0432\u0438\u0447\u043e\u043a \u0432 \u043f\u043e\u043b\u0446\u0435\u043d\u044b! \u0422\u0435\u043f\u0435\u0440\u044c \u0432 \u0433\u0440\u043e\u0437\u0443 \u044f \u0436\u043c\u043e\u0442-\u043f\u043e\u043b\u0438\u0446\u0430\u0439. ",
             "place": "4c636f6f79d1e21e62cbd815",
-            "user": 1,
+            "user": 2,
             "things": [
                 "\u0434\u043e\u0436\u0434\u0435\u0432\u0438\u043a"
             ]
@@ -1820,7 +2456,7 @@
             "date": "2012-12-09T07:32:12.988Z",
             "text": "\u043c\u0430\u0435\u0447\u043a\u0438 \u0432 \u043f\u043e\u043b\u043e\u0441\u043e\u0447\u043a\u0443 \u043d\u0430 \u0432\u0442\u043e\u0440\u043e\u043c \u044d\u0442\u0430\u0436\u0435. \u0430\u0445\u0430\u0445. \u0430 \u043a\u0430\u043a\u043e\u0435 \u043f\u0430\u043b\u044c\u0442\u0438\u0448\u043a\u043e \u043c\u0438\u043c\u0438",
             "place": "4ddbb4b245ddf752bfc70ca6",
-            "user": 1,
+            "user": 2,
             "things": [
                 "\u043f\u0430\u043b\u044c\u0442\u043e",
                 "\u043c\u0430\u0439\u043a\u0430"
