@@ -35,7 +35,7 @@ class MessageAdmin(admin.ModelAdmin):
     readonly_fields= ['things']
 
 admin.site.register(Message, MessageAdmin)
-
+'''
 class PlaceAdmin(gis_admin.OSMGeoAdmin):
     search_fields = ['name', 'address']
     list_display = ['name', 'address', 'position',]
@@ -43,3 +43,4 @@ class PlaceAdmin(gis_admin.OSMGeoAdmin):
     readonly_fields= ['id', 'date']
 
 admin.site.register(Place, PlaceAdmin)
+'''
