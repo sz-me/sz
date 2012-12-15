@@ -8,18 +8,10 @@
     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
     <script type="text/javascript" src={% static "js/sz.api.js"%}></script>
     <script type="text/javascript">
-        function distance(lng1, lng2, lat1, lat2){
-            var latlen = 40000000/360;
-            var k = Math.cos(Math.PI/180 * (lat1 + lat2)/2);
-            var lnglen = k * latlen
-            return Math.sqrt((lng1 - lng2)*lnglen*(lng1 - lng2)*lnglen
-                    + (lat1 - lat2)*latlen*(lat1 - lat2)*latlen);
-        }
         var szApi = new sz.Api({uri: '../api/',request_func: $.ajax});
         var oldQuery = null;
         var position = {};
-        function getFeed(api, query, isMessage, nearby, viewFeedFunc)
-        {
+        function getFeed(api, query, isMessage, nearby, viewFeedFunc){
             navigator.geolocation.getCurrentPosition(function(data) {
                 var latitude = data.coords.latitude;
                 var longitude = data.coords.longitude;
@@ -45,8 +37,7 @@
             });
         }
 
-        function viewMessages(messages)
-        {
+        function viewMessages(messages){
             var html = '<ul>';
             $.each(messages, function(i, message) {
                 html += '<li> <em>' + new Date(message.date).toDateString() + '</em> ' + message.text + '</li>'
@@ -60,7 +51,7 @@
                 var html = '';
                 html += '<ul>';
                 $.each(response.data, function(i, place){
-                    html += '<li>' + place.name;
+                    html += '<li id="' + place.id + '"' + '>' + place.name;
                     if (place.address != null)
                         html += ', ' + place.address;
                     dist = Math.floor(place.distance);
@@ -76,6 +67,7 @@
                 document.location = '/api-auth/login/?next=/light/'
             }
         }
+
         function refreshFeed(){
             $('#feed').html('Loading...');
             var nearby = $('#nearby').is(':checked');
@@ -83,6 +75,7 @@
             var query = $('#query').val();
             getFeed(szApi, query, isMessage, nearby, viewFeed);
         }
+
         function detectQueryChange(){
             var query = $('#query').val();
             if (oldQuery != query){
@@ -91,7 +84,9 @@
             }
             setTimeout(detectQueryChange, 3000);
         }
+
         $(document).ready(function () {
+            $('#editor').hide();
             oldQuery = $('#query').val();
             refreshFeed();
             setTimeout(detectQueryChange, 5000);
@@ -134,6 +129,9 @@
     <input id="nearby" type="checkbox" title="nearby" onchange="refreshFeed();"/>
 </div>
 <div id="feed">
+</div>
+<div hidden id="editor">
+    <textarea></textarea>
 </div>
 </body>
 </html>
