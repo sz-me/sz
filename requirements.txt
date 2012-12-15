@@ -3,3 +3,4 @@ foursquare
 markdown
 simplejson
 djangorestframework
+psycopg2
