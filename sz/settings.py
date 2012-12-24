@@ -181,10 +181,11 @@ GEONAMES_API_CONFIG = {
     }
 
 DEFAULT_DISTANCE = 300
-
+'''
 import sys
 if 'test' in sys.argv:
     try:
         from settings_for_test import *
     except ImportError:
         pass
+'''
