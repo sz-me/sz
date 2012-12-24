@@ -6,11 +6,44 @@ from sz.core.morphology import stemmers
 
 class Category(models.Model):
     name = LowerCaseCharField(
-        verbose_name=u"категория",
-        help_text=u"Например, часть тела, для которой предназначена вещь",
+        verbose_name=u"наименование",
         max_length=64,
         primary_key=True,
         db_index=True)
+    BODY_PART_CHOICES = (
+        ('head', 'Head'),
+        ('top', 'Top'),
+        ('palms', 'Palms'),
+        ('bottom', 'Bottom'),
+        ('feed', 'Feed'),
+    )
+    body_part = models.CharField(
+        max_length=8,
+        choices=BODY_PART_CHOICES,
+        verbose_name=u"часть тела",
+    )
+    GENDER_CHOICES = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('kid', 'Kid'),
+    )
+    gender = models.CharField(
+        max_length=8,
+        choices=GENDER_CHOICES,
+        null=True,
+        blank=True,
+        verbose_name=u"пол",
+    )
+    LAYER_CHOICES = (
+        ('under', 'Under'),
+        ('middle', 'Middle'),
+        ('outer', 'Outer'),
+        )
+    layer = models.CharField(
+        max_length=8,
+        choices=LAYER_CHOICES,
+        verbose_name=u"слой",
+    )
     def __unicode__(self):
         return u"%s" % self.name
     class Meta:
@@ -18,15 +51,15 @@ class Category(models.Model):
         verbose_name_plural = u"категории"
 
 class Thing(models.Model):
-    tag = LowerCaseCharField(
-        verbose_name=u"тэг",
-        help_text=u"Без '#'",
+    name = LowerCaseCharField(
+        verbose_name=u"наименование",
+        help_text=u"Определяет принадлежность сообщения к категории",
         max_length=64,
         primary_key=True,
         db_index=True)
     stem = LowerCaseCharField(
         verbose_name=u"основа",
-        help_text=u"Основа слова для поиска",
+        help_text=u"Строка, проверяемая на вхождение",
         max_length=64,
         unique=True,
         db_index=True,
@@ -36,10 +69,10 @@ class Thing(models.Model):
         verbose_name=u"категория")
     def save(self, *args, **kwargs):
         stemmer = stemmers.RussianStemmer()
-        self.stem = stemmer.stemWord(self.tag)
+        self.stem = stemmer.stemWord(self.name)
         super(Thing, self).save(*args, **kwargs)
     def __unicode__(self):
-        return u"#%s" % self.tag
+        return u"%s" % self.name
     class Meta:
         verbose_name = u"вещь"
         verbose_name_plural = u"вещи"
