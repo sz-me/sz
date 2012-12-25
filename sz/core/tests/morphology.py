@@ -32,17 +32,17 @@ class CatigorizationServiceTest(TestCase):
     def setUp(self):
         self.thinks = [
             models.Thing(
-                tag=u'майка',
+                name=u'майка',
                 stem = russian_stemmer.stemWord(u'майка')),
             models.Thing(
-                tag=u'трусы',
+                name=u'трусы',
                 stem = russian_stemmer.stemWord(u'трусы')),
             models.Thing(
-                tag=u'носки',
+                name=u'носки',
                 stem = russian_stemmer.stemWord(u'носки')),
             ]
         self.categorizationService = services.CategorizationService()
     def test_detect_thing(self):
-        message = models.Message(id=1, text=u"купил маЁчку, носочки и пакет трусов, доволен как лось!")
+        message = models.Message(id=1, text=u"купил маЁчку, носок и пакет трусов, доволен как лось!")
         detected_things = self.categorizationService.detect_things(self.thinks, message)
         self.assertEquals(len(detected_things), 3)
