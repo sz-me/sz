@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from sz.api import pagination
-from sz.core import models, gis
+from sz.api import pagination, fields as sz_api_fields
+from sz.core import models, gis, queries
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -10,32 +10,19 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('username', 'email')
 
 class MessageSerializer(serializers.HyperlinkedModelSerializer):
-    #categories
     class Meta:
         model = models.Message
         read_only_fields = ('date', )
-        exclude = ('things', 'user',)
+        exclude = ('things', 'user', 'place')
 class PaginatedMessageSerializer(pagination.PaginationSerializer):
     class Meta:
         object_serializer_class = MessageSerializer
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
-    name = serializers.CharField(source='name')
-    messages = serializers.HyperlinkedIdentityField(view_name='category-messages')
-    class Meta:
-        model = models.Category
-class PaginatedCategorySerializer(pagination.PaginationSerializer):
-    class Meta:
-        object_serializer_class = CategorySerializer
-
-from sz.api import fields as sz_api_fields
-class ThingSerializer(serializers.HyperlinkedModelSerializer):
-    tag = serializers.CharField(source='tag')
-    messages = sz_api_fields.ResourceField(view_name='thing-messages')
-    #category = sz_api_fields.NestedField(source='category', serializer=CategorySerializer)
-    class Meta:
-        model = models.Thing
-        fields = ('url', 'tag', 'category', 'messages')
+class CategorySerializer(serializers.Serializer):
+    name = sz_api_fields.NestedField(transform=lambda obj, args: obj['name'])
+    count = sz_api_fields.NestedField(transform=lambda obj, args: obj['count'])
+    last = sz_api_fields.NestedField(transform=lambda obj, args: obj['last'])
+    #messages = sz_api_fields.NestedField(serializer=MessageSerializer)
 
 class PlaceSearchSerializer(serializers.Serializer):
     latitude = serializers.FloatField(required = True)
@@ -50,7 +37,6 @@ class PlaceSerializer(serializers.Serializer):
     Формирует ответ на запрос ленты событий
     """
     def __init__(self, *args, **kwargs):
-        self.url = serializers.HyperlinkedIdentityField(view_name='place-detail')
         longitude = self.serializer = kwargs.pop('longitude', None)
         latitude = self.serializer = kwargs.pop('latitude', None)
         assert longitude and latitude, 'longitude and latitude are required'
@@ -59,7 +45,7 @@ class PlaceSerializer(serializers.Serializer):
         things = kwargs.pop('things', None)
         self.trans_args = {'position' : position, 'messages': messages, 'things': things}
         super(PlaceSerializer, self).__init__(*args, **kwargs)
-
+    url = serializers.HyperlinkedIdentityField(view_name='place-detail')
     name = serializers.CharField(max_length=128)
     address = serializers.CharField(max_length=128)
     crossStreet = serializers.CharField(max_length=128)
@@ -73,6 +59,9 @@ class PlaceSerializer(serializers.Serializer):
     messages = sz_api_fields.NestedField(
         transform=lambda p, a: a['messages'] and a['messages'](p, a['things']) or p.message_set.all(),
         serializer=PaginatedMessageSerializer)
+
+    categories = sz_api_fields.NestedField(
+        transform=lambda obj, args: queries.categories(obj), serializer=CategorySerializer)
 
     class Meta:
         model = models.Place
