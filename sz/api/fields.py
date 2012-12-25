@@ -15,7 +15,7 @@ class NestedField(fields.Field):
         """
         Converts the field's value into it's simple representation.
         """
-        args = self.parent.trans_args
+        args = hasattr(self.parent, 'trans_args') and self.parent.trans_args or None
         value = self.transform(obj, args)
         if self.serializer:
             if issubclass(self.serializer, pagination.PaginationSerializer):
