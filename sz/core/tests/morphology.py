@@ -11,11 +11,11 @@ class MorphUtilsTest(TestCase):
         self.assertEquals(morphology.replace_last(shirt, 1, u'очк'), u'футболочк')
     def test_addition_for_ended_in_k(self):
         self.assertEquals(morphology.addition_for_ended_in_k(
-            u'майк'), u'маечк')
+            u'майк'), set([u'маечк', u'маек']))
         self.assertEquals(morphology.addition_for_ended_in_k(
-            u'рубашк'), u'рубашечк')
+            u'рубашк'), set([u'рубашечк', u'рубашек']))
         self.assertEquals(morphology.addition_for_ended_in_k(
-            u'футболк'), u'футболочк')
+            u'футболк'), set([u'футболочк', u'футболок']))
 
 russian_stemmer = stemmers.RussianStemmer()
 
