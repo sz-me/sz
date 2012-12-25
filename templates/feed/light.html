@@ -45,6 +45,15 @@
             html += '</ul>';
             return html;
         }
+
+        function viewCategories(categories){
+            var html = '<ul>';
+            $.each(categories, function(i, category) {
+                html += '<code>#' + category.name + '(' + category.count + ')' + '</code> '
+            });
+            html += '</ul>';
+            return html;
+        }
         function viewFeed(response){
             if(response.meta.code == 200)
             {
@@ -56,7 +65,9 @@
                         html += ', ' + place.address;
                     dist = Math.floor(place.distance);
                     html += ', ' + dist + 'm';
+                    html += viewCategories(place.categories)
                     html += viewMessages(place.messages.results);
+
                     html += '</li>';
                 });
                 html += '</ul>';
