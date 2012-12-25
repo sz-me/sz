@@ -43,11 +43,11 @@ def addition_for_ended_in_k(stem):
     if (stem_length > 2):
         if (stem[stem_length-1] == u'к'):
             if (stem[stem_length-2] in J_RU):
-                return replace_last(stem, 2, u'ечк')
+                return set([replace_last(stem, 2, u'ечк'), replace_last(stem, 2, u'ек')])
             elif (stem[stem_length-2] in HUSHING_RU):
-                return replace_last(stem, 1, u'ечк')
+                return set([replace_last(stem, 1, u'ечк'), replace_last(stem, 1, u'ек')])
             elif (stem[stem_length-2] in CONSONANT_RU):
-                return replace_last(stem, 1, u'очк')
+                return set([replace_last(stem, 1, u'очк'), replace_last(stem, 1, u'ок')])
             elif (stem[stem_length-2] in VOWEL_RU):
-                return replace_last(stem, 1, u'ч')
+                return set([replace_last(stem, 1, u'ч'),])
     return u''
