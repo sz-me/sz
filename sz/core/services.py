@@ -7,10 +7,10 @@ class CategorizationService:
         detected_things = filter(
             lambda think: lists.any(
                 lambda word:
-                word.startswith(think.stem)
-                or morphology.addition_for_ended_in_k(think.stem) and
-                word.startswith(
-                    morphology.addition_for_ended_in_k(think.stem)),
+                    word.startswith(think.stem) or
+                    morphology.addition_for_ended_in_k(think.stem) and lists.any(
+                        lambda form: word.startswith(form),
+                        morphology.addition_for_ended_in_k(think.stem)),
                 filter(lambda word: len(word) > 2, words)),
             things
         )
