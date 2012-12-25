@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import exceptions
+import datetime
 from django.db import models as dj_models
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.measure import D
@@ -46,4 +46,14 @@ def feed(**kwargs):
             .annotate(last_message=dj_models.Max('message__id'))\
             .order_by('-last_message')[:paginate_by]
 
+    return query
+
+def categories(place):
+    last_day = datetime.datetime.today() - datetime.timedelta(days=56)
+    query = models.Category.objects\
+    .filter(thing__message__place_id=place.id, thing__message__date__gte=last_day)\
+    .values('name').annotate(
+        count = dj_models.Count('thing__message'),
+        last = dj_models.Max('thing__message__date'))\
+    .order_by('-count', '-last')
     return query
