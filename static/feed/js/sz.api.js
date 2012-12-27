@@ -1,4 +1,4 @@
-var sz = {};
+var sz = sz || {};
 sz.Api = function(options){
     this.uri = options.uri;
     this.request_func = options.request_func
@@ -7,9 +7,7 @@ sz.Api = function(options){
         if (resource_uri.indexOf('http://') == -1 && resource_uri.indexOf('https://') == -1)
             resource_uri = this.uri + resource_uri;
         parameters.format = 'json';
-
-        this.request_func(
-        {
+        this.request_func({
             url: resource_uri,
             //contentType: 'JSON',
             type: verb,
