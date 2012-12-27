@@ -7,100 +7,33 @@
     <title>SZ Light</title>
     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
     <script type="text/javascript" src={% static "js/sz.api.js"%}></script>
+    <script type="text/javascript" src={% static "js/sz.light.js"%}></script>
     <script type="text/javascript">
-        var szApi = new sz.Api({uri: '../api/',request_func: $.ajax});
-        var oldQuery = null;
-        var position = {};
-        function getFeed(api, query, isMessage, nearby, viewFeedFunc){
+        var lightController = null;
+        function detectChange()
+        {
+            lightController.detectControlTextChange(lightController);
+        }
+        function initializeController(controller){
             navigator.geolocation.getCurrentPosition(function(data) {
+
                 var latitude = data.coords.latitude;
                 var longitude = data.coords.longitude;
-                var accuracy = data.coords.accuracy;
-
-                position.longitude = longitude;
-                position.latitude = latitude;
-
-                params =
-                {
-                    latitude: latitude,
-                    longitude: longitude
-                }
-                if (isMessage)
-                    params.message = query;
-                else
-                    params.place = query;
-                if (nearby)
-                    params.nearby = '';
-                api.get('places/',
-                        params,
-                        function(response){ viewFeedFunc(response);});
+                var position = {
+                    longitude: longitude,
+                    latitude: latitude
+                };
+                controller.position = position;
+                controller.feedAction();
             });
-        }
-
-        function viewMessages(messages){
-            var html = '<ul>';
-            $.each(messages, function(i, message) {
-                html += '<li> <em>' + new Date(message.date).toDateString() + '</em> ' + message.text + '</li>'
-            });
-            html += '</ul>';
-            return html;
-        }
-
-        function viewCategories(categories){
-            var html = '<ul>';
-            $.each(categories, function(i, category) {
-                html += '<code>#' + category.name + '(' + category.count + ')' + '</code> '
-            });
-            html += '</ul>';
-            return html;
-        }
-        function viewFeed(response){
-            if(response.meta.code == 200)
-            {
-                var html = '';
-                html += '<ul>';
-                $.each(response.data, function(i, place){
-                    html += '<li id="' + place.id + '"' + '>' + place.name;
-                    if (place.address != null)
-                        html += ', ' + place.address;
-                    dist = Math.floor(place.distance);
-                    html += ', ' + dist + 'm';
-                    html += viewCategories(place.categories)
-                    html += viewMessages(place.messages.results);
-
-                    html += '</li>';
-                });
-                html += '</ul>';
-                $('#feed').html(html);
-            }
-            if (response.meta.code == 403)
-            {
-                document.location = '/api-auth/login/?next=/light/'
-            }
-        }
-
-        function refreshFeed(){
-            $('#feed').html('Loading...');
-            var nearby = $('#nearby').is(':checked');
-            var isMessage = $('#message').is(':checked');
-            var query = $('#query').val();
-            getFeed(szApi, query, isMessage, nearby, viewFeed);
-        }
-
-        function detectQueryChange(){
-            var query = $('#query').val();
-            if (oldQuery != query){
-                refreshFeed();
-                oldQuery = query;
-            }
-            setTimeout(detectQueryChange, 3000);
+            setInterval('detectChange()', 3000);
         }
 
         $(document).ready(function () {
-            $('#editor').hide();
-            oldQuery = $('#query').val();
-            refreshFeed();
-            setTimeout(detectQueryChange, 5000);
+            var api = new sz.Api({uri: '..',request_func: $.ajax});
+            lightController = new sz.light.Controller(api, $('#feed'), $('#control'));
+            initializeController(lightController);
+
         });
 
         function queryOnKeyPressHandler(obj, e){
@@ -114,35 +47,21 @@
                 refreshFeed();
             }
         }
+
+
     </script>
 </head>
-<body>
-<div id="args">
-    <label for="query">Search</label>
-    <input type="search" id="query" onKeyPress="return queryOnKeyPressHandler(this,event)"/>
-    <br/>
-    <label for = "message">things</label>
-    <input type = "radio"
-           name = "what"
-           id = "message"
-           value = "message"
-           checked = "checked"
-           onchange="refreshFeed();" />
-    or
-    <label for = "place">places</label>
-    <input type = "radio"
-           name = "what"
-           id = "place"
-           value = "place"
-           onchange="refreshFeed();" />
-
-    <label for="nearby">nearby</label>
-    <input id="nearby" type="checkbox" title="nearby" onchange="refreshFeed();"/>
-</div>
-<div id="feed">
-</div>
-<div hidden id="editor">
-    <textarea></textarea>
-</div>
+<body style="max-width:640px;">
+    <header style="height:32px; background: url({% static "img/logo.png"%}) no-repeat left bottom;">
+    </header>
+    <section id="feed-section" style="padding-bottom:80px;">
+        <hr/>
+        <article id="feed"></article>
+    </section>
+    <footer style="background-color:white;position:fixed;bottom:0;width:100%;max-width:640px;">
+        <hr/>
+        <section id="control">
+        </section>
+    </footer>
 </body>
 </html>
