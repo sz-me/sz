@@ -3,6 +3,7 @@ import datetime
 from django.db import models as dj_models
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.measure import D
+from django.utils import timezone
 from sz.core import models, utils
 from sz import settings
 
@@ -49,7 +50,7 @@ def feed(**kwargs):
     return query
 
 def categories(place):
-    last_day = datetime.datetime.today() - datetime.timedelta(days=56)
+    last_day = timezone.now() - datetime.timedelta(days=56)
     query = models.Category.objects\
     .filter(thing__message__place_id=place.id, thing__message__date__gte=last_day)\
     .values('name').annotate(
