@@ -38,7 +38,7 @@ sz.light.ControlView = function(){
             '</menu>';
     };
     this.getHtml = function(model){
-        return  '<label for="'+ this.textId +'">Search</label>' +
+        return  '<label for="'+ this.textId +'">Search</label> ' +
                 '<input type="search" id="' + this.textId + '" class="input-search-text" />' +
                 this.getHtmlSearchMenu(model) +
                 this.getHtmlPostingMenu(model)
@@ -72,24 +72,24 @@ sz.light.ControlView = function(){
     };
 };
 
+sz.light.viewMessages = function(messages){
+    var html = '<ul>';
+    $.each(messages, function(i, message) {
+        html += '<li> <time>' + new Date(message.date).toDateString() + '</time> ' + message.text + '</li>'
+    });
+    html += '</ul>';
+    return html;
+}
+sz.light.viewCategories = function(categories){
+    var html = '<ul class="place-summary">';
+    $.each(categories, function(i, category) {
+        html += '<code>#' + category.name + '(' + category.count + ')' + '</code> '
+    });
+    html += '</ul>';
+    return html;
+}
 sz.light.FeedView = function(){
     this.messageAdditionButtonCssClass = 'message-addition-button';
-    function viewMessages(messages){
-        var html = '<ul>';
-        $.each(messages, function(i, message) {
-            html += '<li> <em>' + new Date(message.date).toDateString() + '</em> ' + message.text + '</li>'
-        });
-        html += '</ul>';
-        return html;
-    }
-    function viewCategories(categories){
-        var html = '<ul class="place-summary">';
-        $.each(categories, function(i, category) {
-            html += '<code>#' + category.name + '(' + category.count + ')' + '</code> '
-        });
-        html += '</ul>';
-        return html;
-    }
     function viewFeed(model, messageAdditionButtonCssClass){
             var html = '';
             html += '<ul>';
@@ -103,8 +103,8 @@ sz.light.FeedView = function(){
                     html += place.address + ', ';
                 dist = Math.floor(place.distance);
                 html += dist + 'm';
-                html += (viewCategories(place.categories))
-                html += viewMessages(place.messages.results);
+                html += (sz.light.viewCategories(place.categories))
+                html += sz.light.viewMessages(place.messages.results);
 
                 html += '</li>';
             });
@@ -117,12 +117,31 @@ sz.light.FeedView = function(){
 };
 
 sz.light.DetailsView = function(){
-
     this.getHtml = function(model){
-        return 'Details';
+        messages = sz.light.viewMessages(model.messages.results);
+        var html = '<h1>' + model.name + '</h1>';
+
+        if (model.address != null && model.crossStreet != null)
+            html += '<p>' + model.address + ' (' + model.crossStreet + ')' + '</p>';
+        else
+        {
+            if (model.address != null)
+                html += '<p>' + model.address + '</p>';
+            if (model.crossStreet != null)
+                html += '<p>' + model.crossStreet + '</p>';
+        }
+
+        if (model.contact != '{}')
+            html += '<p>' + model.contact + '</p>';
+        html += '<p><a href="' + model.foursquare_details_url +'">' + model.foursquare_details_url + '</a></p>'
+        html += sz.light.viewCategories(model.categories)
+        html += messages;
+
+        return html;
+
+
+
     };
-
-
 };
 
 sz.light.LoadingView = function(){
@@ -134,9 +153,120 @@ sz.light.LoadingView = function(){
     };
 };
 
+sz.light.showMap = function(model){
+    var myLatlng = new google.maps.LatLng(model.position[1], model.position[0]);
+    var myOptions = {
+        zoom: 16,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    if ($("#map_canvas").is(':hidden'))
+    {
+        $("#map_canvas").show();
+        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: model.name
+        });
+        marker.setMap(map);
+    }
+}
+
+sz.light.controllers = {};
+sz.light.controllers.static = {};
+sz.light.controllers.static.responseHandler = function(controller, response, success, forbidden, error){
+    if (response.meta.code == 403){
+        if (forbidden == null){
+            if (controller.forbiddenHandler != null )
+                controller.forbiddenHandler();
+            else
+                document.location = '/api-auth/login/?next=/light/';
+        }
+        else
+            forbidden(controller, response.data || response.meta)
+    }
+    else if(response.meta.code == 200)
+        success(controller, response.data);
+    else{
+        if (error == null)
+            alert(response.meta.code);
+        else
+            error(controller, response.data || response.meta)
+    }
+}
+
 sz.light.Controller = function(api, feedContainer, controlContainer){
+
+    this.defaultUrl = '/api/places/';
+    this.currentUrl = this.defaultUrl;
+    this.currentAction = null;
     this.api = api;
     this.position = null;
+
+    //actions
+    this.action = function(action, params, verb, success, forbidden, error){
+        this.currentAction = action;
+        var url = this.currentUrl;
+        var p = params();
+        p.longitude = this.position.longitude;
+        p.latitude = this.position.latitude;
+        var controller = this;
+        verb.call(this.api, url, p,
+            function(response){
+                sz.light.controllers.static.responseHandler(controller, response, success, forbidden, error);
+            });
+    };
+
+    this.loadingAction = function(message){
+        this.containers.feed.html(this.views.loading.getHtml(message));
+    };
+
+    this.detailsAction = function(){
+        this.loadingAction(null);
+        var controller = this;
+        var success = function(controller, model){
+            controller.views.control.showPosting();
+            sz.light.showMap(model);
+            var html = controller.views.details.getHtml(model);
+            controller.containers.feed.html(html);
+
+
+
+        }
+        var params = function(){
+            var text = controller.views.control.getText.call(controller.views.control);
+            if (text != null)
+                if (!(!text.length || /^\s*$/.test(text)))
+                    return {message: text};
+            return {};
+        };
+        this.action(this.detailsAction, params,
+            this.api.get, success, null, null);
+    };
+
+    this.feedAction = function(){
+        $('#map_canvas').hide()
+        this.loadingAction(null);
+        var controller = this;
+        controller.currentUrl = controller.defaultUrl;
+        var success = function(controller, model){
+            controller.views.control.showSearch();
+            var html = controller.views.feed.getHtml(model);
+            controller.containers.feed.html(html);
+            $("." + controller.views.feed.messageAdditionButtonCssClass)
+                .click({controller: controller}, function(e){
+                    e.data.controller.currentUrl = $(this).val();
+                    e.data.controller.detailsAction();
+                });
+
+        }
+        var params = function(){
+            return controller.views.control.getSearchParams.call(controller.views.control);
+        };
+        this.action(this.feedAction, params,
+            this.api.get, success, null, null);
+    };
 
     this.views = {};
     this.views.feed = new sz.light.FeedView();
@@ -148,52 +278,15 @@ sz.light.Controller = function(api, feedContainer, controlContainer){
         feed: feedContainer,
         control: controlContainer
     };
-    this.loadingAction = function(message){
-        this.containers.feed.html(this.views.loading.getHtml(message));
-    };
+
     this.loadingAction('Position location...');
     var controlHtml = this.views.control.getHtml(null);
     controlContainer.html(controlHtml);
     this.oldControlText = this.views.control.getText();
 
-    this.error403Handler = null;
+    this.forbiddenHandler = null;
 
-    this.detailsAction = function(url, params){
-        this.loadingAction(null);
-        this.views.control.showPosting();
-        var html = this.views.details.getHtml(null);
-        this.containers.feed.html(html);
-    };
-    this.feedAction = function(){
-        this.loadingAction(null);
-        var params = this.views.control.getSearchParams();
-        params.longitude = this.position.longitude;
-        params.latitude = this.position.latitude;
-        var controller = this;
-        this.api.get('/api/places/',
-            params,
-            function(response){
-                if (response.meta.code == 403){
-                    if (controller.error403Handler != null )
-                        controller.error403Handler();
-                    else
-                        document.location = '/api-auth/login/?next=/light/'
-                }
-                else if(response.meta.code == 200)
-                {
-                    controller.views.control.showSearch();
-                    var html = controller.views.feed.getHtml(response.data);
-                    controller.containers.feed.html(html);
-                    $("." + controller.views.feed.messageAdditionButtonCssClass)
-                        .click({controller: controller}, function(e){
-                            e.data.controller.detailsAction($(this).val(), null);
-                        });
-                }
-                else
-                    alert(response.meta.code);
-            });
 
-    };
 
 
 
@@ -206,16 +299,16 @@ sz.light.Controller = function(api, feedContainer, controlContainer){
         });
 
     $('#' + this.views.control.messageRadioId).change({controller: this}, function(e){
-        e.data.controller.feedAction(); });
+        if (e.data.controller.currentAction != null) e.data.controller.currentAction(); });
     $('#' + this.views.control.placeRadioId).change({controller: this}, function(e){
-        e.data.controller.feedAction(); });
+        if (e.data.controller.currentAction != null) e.data.controller.currentAction(); });
     $('#' + this.views.control.nearbyCheckboxId).change({controller: this}, function(e){
-        e.data.controller.feedAction(); });
+        if (e.data.controller.currentAction != null) e.data.controller.currentAction(); });
 
     this.detectControlTextChange = function (controller){
         var text = controller.views.control.getText();
         if (controller.oldControlText != text){
-            controller.feedAction();
+            if (controller.currentAction != null) controller.currentAction();
             controller.oldControlText = text;
         }
     };
