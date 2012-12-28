@@ -169,9 +169,22 @@ class PlaceInstance(SzApiView):
             'longitude': request.QUERY_PARAMS['longitude'],
             'accuracy': request.QUERY_PARAMS.get('accuracy'),
             }
+        message = request.QUERY_PARAMS.get('message')
+        if (message):
+            if len(message) > 1:
+                all_things = list(models.Thing.objects.all())
+                categorizationService = services.CategorizationService()
+                things = categorizationService.detect_things_in_text(all_things, message)
+                messages_queryset =\
+                    lambda p_place, p_things:\
+                        p_things and p_place.message_set.filter(things__in=p_things)\
+                        or p_place.message_set.all()
+                serializer = serializers.PlaceSerializer(instance=place,
+                    latitude=position['latitude'], longitude=position['longitude'],
+                    messages=messages_queryset, things=things)
+                return Response(serializer.data)
         serializer = serializers.PlaceSerializer(instance=place,
-            latitude=position['latitude'], longitude=position['longitude'],
-        )
+            latitude=position['latitude'], longitude=position['longitude'])
         return Response(serializer.data)
 
 class PlaceMessages(SzApiView):
