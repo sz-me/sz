@@ -9,11 +9,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = ('username', 'email')
 
-class MessageSerializer(serializers.HyperlinkedModelSerializer):
+class MessageSerializer(serializers.ModelSerializer):
+    username = sz_api_fields.NestedField(transform=lambda obj, args: obj.user.username)
     class Meta:
         model = models.Message
         read_only_fields = ('date', )
-        exclude = ('things', 'user', 'place')
+        exclude = ('place','user',)
 class PaginatedMessageSerializer(pagination.PaginationSerializer):
     class Meta:
         object_serializer_class = MessageSerializer
