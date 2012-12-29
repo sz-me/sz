@@ -21,6 +21,10 @@ class CategorizationService:
         for thing in detected_things:
             message.things.add(thing)
         return detected_things
+    def get_with_additional_things(self, things):
+        categories = set([thing.category for thing in things])
+        things_many = [category.thing_set.all() for category in categories]
+        return set([el for lst in things_many for el in lst])
 
 from django.utils import timezone
 class ModelCachingService:

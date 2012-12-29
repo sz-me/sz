@@ -132,6 +132,7 @@ class PlaceRoot(SzApiView):
                     all_things = list(models.Thing.objects.all())
                     categorizationService = services.CategorizationService()
                     things = categorizationService.detect_things_in_text(all_things, message)
+                    things = categorizationService.get_with_additional_things(things)
                 city_id = api_services.geonames_city_service(position)[0]['id']
                 places = queries.feed( \
                     latitude=position['latitude'],\
@@ -170,23 +171,37 @@ class PlaceInstance(SzApiView):
             'accuracy': request.QUERY_PARAMS.get('accuracy'),
             }
         message = request.QUERY_PARAMS.get('message')
-        if (message):
+        if message:
+            things = None
+
             if len(message) > 1:
                 all_things = list(models.Thing.objects.all())
                 categorizationService = services.CategorizationService()
                 things = categorizationService.detect_things_in_text(all_things, message)
-                messages_queryset =\
-                    lambda p_place, p_things:\
-                        p_things and p_place.message_set.filter(things__in=p_things)\
-                        or p_place.message_set.all()
-                serializer = serializers.PlaceSerializer(instance=place,
-                    latitude=position['latitude'], longitude=position['longitude'],
-                    messages=messages_queryset, things=things)
-                return Response(serializer.data)
+                things = categorizationService.get_with_additional_things(things)
+
+            messages_queryset = lambda p_place, p_things:\
+                p_things and p_place.message_set.filter(things__in=p_things) or p_place.message_set.all()
+            serializer = serializers.PlaceSerializer(instance=place, latitude=position['latitude'],
+                longitude=position['longitude'], messages=messages_queryset, things=things)
+            return Response(serializer.data)
         serializer = serializers.PlaceSerializer(instance=place,
             latitude=position['latitude'], longitude=position['longitude'])
         return Response(serializer.data)
 
 class PlaceMessages(SzApiView):
     def post(self, request, pk, format=None):
-        pass
+        print 'POST'
+        serializer = serializers.MessageSerializer(data=request.DATA)
+        if serializer.is_valid():
+            message = serializer.object
+            message.place = models.Place.objects.get(pk=pk)
+            print message.place
+            message.user = request.user
+            print message.user
+            message.save()
+            things = models.Thing.objects.all()
+            categorization_service = services.CategorizationService()
+            categorization_service.detect_things(things, message)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
