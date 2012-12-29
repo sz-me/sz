@@ -1,5 +1,3 @@
-_dlopen(kernel32, 0)
-_dlopen(c:\PostgreSQL\9.2\bin\libgeos_c-1.dll, 0)
 [
     {
         "pk": 2,
