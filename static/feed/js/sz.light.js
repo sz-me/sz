@@ -1,6 +1,6 @@
 var sz = sz || {};
 sz.light = {};
-sz.light.views = {};
+sz.light.static = {};
 
 sz.light.ControlView = function(){
     this.textId = 'query_' + new Date().valueOf();
@@ -9,8 +9,8 @@ sz.light.ControlView = function(){
     this.placeRadioId = "place_" + new Date().valueOf();
     this.searchMenuContainerId = "search-menu_" + new Date().valueOf();
     this.postingMenuContainerId = "posting-menu_" + new Date().valueOf();
-    this.cancelButtonCssClass = 'cancel-button';
-    this.submitButtonCssClass = 'submit-button';
+    this.cancelButtonId = 'cancel-button_' + new Date().valueOf();
+    this.submitButtonId = 'submit-button_' + new Date().valueOf();
     this.getHtmlSearchMenu = function(model){
         return '<menu id="' + this.searchMenuContainerId + '">' +
             '<label for = "' + this.messageRadioId + '">things</label>' +
@@ -33,8 +33,8 @@ sz.light.ControlView = function(){
     };
     this.getHtmlPostingMenu = function(model){
         return '<menu id="' + this.postingMenuContainerId + '" hidden>' +
-            '<button class="submit-button">Post</button>' +
-            '<button class="cancel-button">Back</button>' +
+            '<button class="submit-button" id="' + this.submitButtonId + '">Post</button>' +
+            '<button class="cancel-button" id="' + this.cancelButtonId + '">Back</button>' +
             '</menu>';
     };
     this.getHtml = function(model){
@@ -75,7 +75,9 @@ sz.light.ControlView = function(){
 sz.light.viewMessages = function(messages){
     var html = '<ul>';
     $.each(messages, function(i, message) {
-        html += '<li> <time>' + new Date(message.date).toDateString() + '</time> ' + message.text + '</li>'
+        html += '<li> <time>' + new Date(message.date).toDateString() + '</time> ' +
+            message.text + ' ~@' + message.username +
+            '</li>'
     });
     html += '</ul>';
     return html;
@@ -153,6 +155,8 @@ sz.light.LoadingView = function(){
     };
 };
 
+sz.light.static.map = null;
+sz.light.static.marker = null;
 sz.light.showMap = function(model){
     var myLatlng = new google.maps.LatLng(model.position[1], model.position[0]);
     var myOptions = {
@@ -163,19 +167,26 @@ sz.light.showMap = function(model){
     if ($("#map_canvas").is(':hidden'))
     {
         $("#map_canvas").show();
-        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-        var marker = new google.maps.Marker({
-            position: myLatlng,
-            map: map,
-            title: model.name
-        });
-        marker.setMap(map);
+
+        if (sz.light.static.map == null)
+            sz.light.static.map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        else
+            sz.light.static.map.setCenter(myLatlng)
+
+        if (sz.light.static.marker == null)
+            sz.light.static.marker = new google.maps.Marker({
+                position: myLatlng,
+                map: sz.light.static.map,
+                title: model.name
+            });
+        else
+            sz.light.static.marker.setPosition(myLatlng);
+            sz.light.static.marker.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
     }
 }
 
-sz.light.controllers = {};
-sz.light.controllers.static = {};
-sz.light.controllers.static.responseHandler = function(controller, response, success, forbidden, error){
+sz.light.static.controllers = {};
+sz.light.static.controllers.responseHandler = function(controller, response, success, forbidden, error){
     if (response.meta.code == 403){
         if (forbidden == null){
             if (controller.forbiddenHandler != null )
@@ -186,7 +197,7 @@ sz.light.controllers.static.responseHandler = function(controller, response, suc
         else
             forbidden(controller, response.data || response.meta)
     }
-    else if(response.meta.code == 200)
+    else if(response.meta.code == 200 || response.meta.code == 201)
         success(controller, response.data);
     else{
         if (error == null)
@@ -205,16 +216,15 @@ sz.light.Controller = function(api, feedContainer, controlContainer){
     this.position = null;
 
     //actions
-    this.action = function(action, params, verb, success, forbidden, error){
+    this.action = function(action, url, params, verb, success, forbidden, error){
         this.currentAction = action;
-        var url = this.currentUrl;
         var p = params();
         p.longitude = this.position.longitude;
         p.latitude = this.position.latitude;
         var controller = this;
         verb.call(this.api, url, p,
             function(response){
-                sz.light.controllers.static.responseHandler(controller, response, success, forbidden, error);
+                sz.light.static.controllers.responseHandler(controller, response, success, forbidden, error);
             });
     };
 
@@ -230,9 +240,6 @@ sz.light.Controller = function(api, feedContainer, controlContainer){
             sz.light.showMap(model);
             var html = controller.views.details.getHtml(model);
             controller.containers.feed.html(html);
-
-
-
         }
         var params = function(){
             var text = controller.views.control.getText.call(controller.views.control);
@@ -241,10 +248,9 @@ sz.light.Controller = function(api, feedContainer, controlContainer){
                     return {message: text};
             return {};
         };
-        this.action(this.detailsAction, params,
-            this.api.get, success, null, null);
+        this.action(this.detailsAction, this.currentUrl,
+            params, this.api.get, success, null, null);
     };
-
     this.feedAction = function(){
         $('#map_canvas').hide()
         this.loadingAction(null);
@@ -264,8 +270,30 @@ sz.light.Controller = function(api, feedContainer, controlContainer){
         var params = function(){
             return controller.views.control.getSearchParams.call(controller.views.control);
         };
-        this.action(this.feedAction, params,
-            this.api.get, success, null, null);
+        this.action(this.feedAction, this.currentUrl,
+            params, this.api.get, success, null, null);
+    };
+    this.postAction = function(){
+        var controller = this;
+        var success = function(controller, model){
+            var text = model.things.join(', ');
+            $('#' + controller.views.control.messageRadioId).attr('checked', true);
+            controller.oldControlText = text;
+            $('#' + controller.views.control.textId).val(text);
+            controller.feedAction();
+        }
+        var params = function(){
+            var text = controller.views.control.getText.call(controller.views.control);
+            if (text != null)
+                if (!(!text.length || /^\s*$/.test(text)))
+                    return {
+                        text: text,
+                        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+                    };
+            return {};
+        };
+        this.action(controller.detailsAction, controller.currentUrl + 'messages/',
+            params, controller.api.post, success, null, null);
     };
 
     this.views = {};
@@ -286,13 +314,13 @@ sz.light.Controller = function(api, feedContainer, controlContainer){
 
     this.forbiddenHandler = null;
 
-
-
-
-
-
     // events
-    $('.' + this.views.control.cancelButtonCssClass).click(
+    $('#' + this.views.control.submitButtonId).click(
+        {controller: this},
+        function(e) {
+            e.data.controller.postAction();
+        });
+    $('#' + this.views.control.cancelButtonId).click(
         {controller: this},
         function(e) {
             e.data.controller.feedAction();

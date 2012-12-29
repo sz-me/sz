@@ -61,7 +61,9 @@
 
 </head>
 <body style="max-width:640px;">
-    <header style="height:32px; background: url({% static "img/logo.png"%}) no-repeat left bottom;">
+    <header style="height:18px; background: url({% static "img/logo.png"%}) no-repeat left bottom;text-align: right;">
+        {% csrf_token %}
+        @{% firstof user.username %}
     </header>
     <section id="feed-section" style="padding-bottom:80px;">
         <hr/>
