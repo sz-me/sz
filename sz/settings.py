@@ -5,7 +5,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+     ('Shmot Zhmot', 'shmotzhmot@outlook.com'),
 )
 
 MANAGERS = ADMINS
@@ -57,7 +57,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = SZ_ROOT + 'static'
+# STATIC_ROOT = SZ_ROOT + 'static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -68,7 +68,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    ('feed', SZ_ROOT + 'static/feed')
+    SZ_ROOT + 'static',
 )
 
 # List of finder classes that know how to find static files in
@@ -128,6 +128,7 @@ INSTALLED_APPS = (
     'sz.core',
     'sz.api',
     'sz.feed',
+    'registration',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -181,6 +182,13 @@ GEONAMES_API_CONFIG = {
     }
 
 DEFAULT_DISTANCE = 300
+
+ACCOUNT_ACTIVATION_DAYS = 7
+EMAIL_HOST = 'smtp.live.com'
+EMAIL_HOST_USER ='shmotzhmot@outlook.com'
+EMAIL_HOST_PASSWORD = 'hmot'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'shmotzhmot@outlook.com'
 '''
 import sys
 if 'test' in sys.argv:

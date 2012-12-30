@@ -192,7 +192,7 @@ sz.light.static.controllers.responseHandler = function(controller, response, suc
             if (controller.forbiddenHandler != null )
                 controller.forbiddenHandler();
             else
-                document.location = '/api-auth/login/?next=/light/';
+                document.location = $("#auth_login_url").val();
         }
         else
             forbidden(controller, response.data || response.meta)

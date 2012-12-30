@@ -4,3 +4,4 @@ markdown
 simplejson
 djangorestframework
 psycopg2
+django-registration
