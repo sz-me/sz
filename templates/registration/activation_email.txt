@@ -1,7 +1,7 @@
 Hello,
 
 Please follow this link to complete your registration on {{ site }}:
-http://shmotzhmot.me/activate/{{activation_key}}/
+http://shmotzhmot.me/accounts/activate/{{activation_key}}/
 
 You have {{ expiration_days }} days to complete it.
 
