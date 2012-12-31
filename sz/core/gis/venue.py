@@ -6,7 +6,8 @@ def search(position, query, radius):
     client = Foursquare(
         client_id = FOURSQUARE_CONFIG['client_id'],
         client_secret = FOURSQUARE_CONFIG['client_secret'],
-        redirect_uri = FOURSQUARE_CONFIG['redirect_uri']
+        redirect_uri = FOURSQUARE_CONFIG['redirect_uri'],
+        version='20120609',
     )
     params={
         'll': ('%s,%s' % (position['latitude'], position['longitude'])),

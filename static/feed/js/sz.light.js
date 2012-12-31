@@ -122,7 +122,7 @@ sz.light.DetailsView = function(){
     this.getHtml = function(model){
         messages = sz.light.viewMessages(model.messages.results);
         var html = '<h1>' + '<img src="' +
-            model.foursquare_icon_prefix + '32' +
+            model.foursquare_icon_prefix + 'bg_32' +
             model.foursquare_icon_suffix + '" style="display: inline-block; vertical-align: top;"> ';
         html += model.name + ', ' + Math.floor(model.distance) + 'm</h1>';
 

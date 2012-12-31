@@ -71,7 +71,7 @@ def venue_place_service(position, query = None, distance = None):
                     and (u"%s" % l[u'location'].get(u'crossStreet')) or None,
                 position = gis.ll_to_point(l[u'location'].get(u'lng'), l[u'location'].get(u'lat')),
                 city_id = None,
-                foursquare_icon_suffix = utils.safe_get(l, lambda el: el[u'categories'][0][u'icon'][u'name']),
+                foursquare_icon_suffix = utils.safe_get(l, lambda el: el[u'categories'][0][u'icon'][u'suffix']),
                 foursquare_icon_prefix = utils.safe_get(l, lambda el: el[u'categories'][0][u'icon'][u'prefix']),
 
             ),
