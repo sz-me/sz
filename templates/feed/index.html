@@ -4,160 +4,224 @@
  <head>
   <title>ShZH</title>
   <meta charset="utf-8" />
-   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
-     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+<!--    <meta name = "viewport" content = "width = device-width"/> -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.autoResize.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/sz.api.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/mobile.4ways.js"></script>
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/mobile.4ways.css">
+<!--     <script type="text/javascript" src="{{ STATIC_URL }}js/add.js"></script> -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css">
+    <link rel="shortcut icon" href="favicon.ico" />
+    
     
  </head>
  <body>
  {% csrf_token %}
-<div id='screen'> 
-    <div id='topArea'>
+ 
+    <header>
         <div id='logo'>ShmotZhmot</div>
-        <div id='recomedation'><span>12 рек</span></div>
-        <div id='city'>Город не определен</div>
-        
-    </div>
-    <div id='mainmenu'>
-        <div id='feedMenu' class='mainmenu'>Что покупают другие</div>
-        <div id='searchMenu' class='mainmenu'>Найти вещь</div>
-        <div id='sendMenu' class='mainmenu'>Поделиться покупкой</div>
-    </div> 
-    
-    <div id='feedArea' class='area'>
-    </div>
-    
-    <div id='search_send_area'>
-        <div id='searchArea' class='area'>
-            <div id='placeArea'>
-                 <div id='lessPlace' class='lessmore_active'><<</div>
-                 <div id='morePlace' class='lessmore_active'>>></div>
-                 <div id='staticPlace'>
-                     <div id='movePlace'></div>
-                 </div>
-                 
-            </div>
-            <div id='tagsArea' >
-                <div id='tagsLeft'>
-                    <div class='changeGender' id='prevGender'></div>
-                    <div id='dollyPlace'>
-                        <div class='dollyHead'></div>
-                        <div class='dollyBody'></div>
-                        <div class='dollyLegs'></div>
-                        <div class='dollyFoot'></div>
-                    </div>
-                    
-                </div>
-                <div id='tagsRight'>
-                    <div id='searchString'>
-                        <div id='searcStringIcn'></div>
-                        <input type="input" id='tagsSearchString' value='Найти'/>
-                    </div>
-                    <div id='tagsPlace'>
-                        <div id='dollyPopularPlace' class='dollyPlace'><div id='dollyPopularMove' class='moveArea'></div></div>
-                        <div id='dollyHeadPlace' class='dollyPlace'><div id='dollyHeadMove' class='moveArea'></div></div>
-                        <div id='dollyBodyPlace' class='dollyPlace'><div id='dollyBodyMove' class='moveArea'></div></div>
-                        <div id='dollyLegsPlace' class='dollyPlace'><div id='dollyLegsMove' class='moveArea'></div></div>
-                        <div id='dollyFootPlace' class='dollyPlace'><div id='dollyFootMove' class='moveArea'></div></div>
-                    </div>
-                    
-                </div>
-                    <div class='botArea'>
-                        <div class='changeGender' id='nextGender'></div>
-                        <div id='lessmoreTags'>
-                            <div id='moreTags' class='lessmore_active'>>></div>
-                            <div id='lessTags' class='lessmore_active'><<</div>
-                            
-                        </div>
-                    </div>
-                <div class='newMessage'>
-                    <div id='geoMessage'></div>
-                    <div id='tagsMessage'></div>
-		 <!--   <div class='myusername'>Сиреневый Ежик</div>
-                    <div class='myuserpic'></div>-->
-                    <textarea class='messageText' rows='2' autocomplete="off">Спроси о ништяках</textarea>
-                    <span class='sendmessage'>Спросить</span>
-                </div>
-            </div>
-        </div>
-    </div>
+        <div id='user' class='logIn'>Вход</div>
+    </header>
+    <section>
+	<div id='searchArea'>
+	    <div id='searchString'>
+		<div></div>
+		<input tupe='text' value='Найти магазин' align='left' autocomplete="off"/>
+		
+	    </div>
+	</div>
+	<div id='menu'>
+	    <div id='feedNear'></div>
+	    <div id='feedPopular'></div>
+	</div>
+      
+      <div id='feed'>
+	  <div id='placeArea'>
+	  </div>
+      </div>
+  </section>
+<!--  <div id='screenOverlay'></div>
+  <div id='newmessageArea'>
+    <textarea id="newmessageText" rows="1" autocomplete="off">Расскажи мне о ништяках</textarea>
+  </div>-->
   
-</div>
-   <!--
-<div>Ширина: <input type="input" id='screenWidth'  value='' style='width:50px;'/></div>
-<div>Высота: <input type="input" id='screenHeight' value='' style='width:50px;'/></div>
-<input type="button" id='setScreen' value='Установить'/>
-    -->
-    
-    
-<script type="text/javascript">
-$(document).ready(function () {
-    $("#setScreen").click(function(){
-        $("#screen").width($("#screenWidth").val());
-        $("#screen").height($("#screenHeight").val());
-        });
-    var winWidth = $("#screen").width();
-    var winHeight = $("#screen").height();
-    
-    api = new sz.Api({uri: 'api/',request_func: $.ajax});
-        
-    function cityView(data){
-        if (data.data.length == 1){var $value = data.data[0]; $("#city").text($value.name).attr('class',$value.geoname_id)}
-        else{$("#city").text('Нипонятная ошибка')}}
-    
-    navigator.geolocation.getCurrentPosition(function(data) {
-    var latitude = data['coords']['latitude'];
-    var longitude = data['coords']['longitude'];
-    var accuracy = data['coords']['accuracy'];
-    api.get('cities',
-        {latitude: latitude,longitude: longitude},
-        function(r){ cityView(r);});
-    });
-    
-    var unitX = winWidth*0.05;
-    var unitY = winHeight*0.05;
-    
-    $("#topArea").height(unitY);
-    $("#logo").css({fontSize:unitY*0.5+'px',paddingTop:unitY*0.25+'px'});
-    $("#city,#recomedation").css({fontSize:unitY*0.36+'px',paddingTop:unitY*0.32+'px'});
-    
-    $("#mainmenu div").css({fontSize:unitY*0.5+'px',width:unitX*5+'px',marginLeft:unitX*7+'px',paddingTop:unitY*0.5+'px',paddingBottom:unitY*0.5+'px',marginBottom:unitY});
-    $("#mainmenu").css({marginTop:((winHeight-$("#topArea").height())/2-$("#mainmenu").height()/2)+'px'});
-    $(".area").hide();
 
-    $("#logo").click(function(){
-        $(".area").hide();
-        $(".tagBox,.tagBoxSelect,.tagMessageBox,.geoBox,.geoBoxSelect,.geoMessageBox").remove();
-        $("#mainmenu").show();
-        });
-    $("#searchMenu").click(searchMenuClick);
-    $("#sendMenu").click(sendMenuClick);
+
     
-    $(".sendmessage").click(function(){   
-        var fulltext = $(".messageText").val();
-        alert(fulltext);
-        api.post('messages/',{"text": "fulltext",
-            "latitude": 50.261957910406444,
-            "longitude": 127.53488266715124,
-            "accuracy": 10.0,
-            "city_id": 2026609,
-            "place_id": "4c636f6f79d1e21e62cbd815",
-            "bargain_date": null,
-            "csrfmiddlewaretoken": $('input[name="csrfmiddlewaretoken"]').val()
-        });
-        $(".messageText").text('Расскажи мне о ништяках');
+    
+<script type="text/javascript">	
+function placesView(response){
+    $("#placeArea").text('');
+    var $parentArea = $("#placeArea"), data = response.data;
+    $.each(data,function(index,place){
+        var shopName = place.name,
+            shopAddress = place.address,
+            shopIndex = '/shop.html',            
+           
+            $feedBox = jQuery('<div>',{class:"feedBox"}).appendTo($parentArea),
+            $shopBox = jQuery('<div>',{class:"shopBox",
+		mouseenter:function(){
+		    $(this).closest(".feedBox").css({borderColor:'#e28c1d'});
+		    $(this).find(".shopName").css({color:'#e28c1d',textDecoration:'underline'});
+		    $(this).find(".shopDetail").css({backgroundImage:'url(../static/img/shopDetailSelected.png)',borderColor:'#e28c1d'});},
+		mouseleave:function(){
+		    $(this).closest(".feedBox").css({borderColor:'#696969'});
+		    $(this).find(".shopName").css({color:'#4f4f4f',textDecoration:'none'});
+		    $(this).find(".shopDetail").css({backgroundImage:'url(../static/img/shopDetail.png)',borderColor:'#696969'});}
+	      }).appendTo($feedBox),
+            $shopDetail = jQuery('<div>',{class:"shopDetail",click:function(){document.location = shopIndex}}).appendTo($shopBox),
+            $messageBox = jQuery('<div>',{class:"messageBox"}).appendTo($feedBox),
+
+            messageArr = place.messages;
+        if (messageArr.count>0){
+            var message = messageArr.results[0],
+                messageText = message.text,
+                messageAuthor = message.username,
+                messageTagsArr = message.things,
+                
+                $messageAuthor = jQuery('<div>',{class:"messageAuthor"}).appendTo($messageBox);
+                jQuery('<span>',{text:messageAuthor}).appendTo($messageAuthor);
+                if(messageTagsArr.length>0){$messageTagsArea = jQuery('<div>',{class:"messageTagsArea"}).appendTo($messageBox)};
+                $.each(messageTagsArr,function(index,val){
+		    var tagBox = jQuery('<div>',{class:'tagBox',text:val}).appendTo($messageTagsArea);
+		});
+		
+            }
+	var $messageText = jQuery('<div>',{class:"messageText",text:messageText}).appendTo($messageBox);
        
+        
+        
+
+        jQuery('<span>',{text:shopName,class:'shopName'}).appendTo($shopBox);
+        if(shopAddress){jQuery('<div>',{text:shopAddress,class:'shopAddress'}).appendTo($shopBox);}
+        
+
     });
+};
+
+function cityView(data){
+    if (data.data.length == 1)
+        {
+        var $value = data.data[0],city=$value.name,cityID = $value.geoname_id;
+        $.cookie("shmotCity", city);
+        $.cookie("shmotCityID", cityID);
+        }
+    if (data.meta.code == 403)
+        {document.location = '/api-auth/login/?next=/'}
+}
+
+function getFeed(params){
+    $("#placeArea").text('Loading...');
+    var searchValue = $("#newmessageText").val();
+    if(searchValue=='Найти магазин'){var searchValue='';}
+    params.place = searchValue;
+    szApi.get('places/',
+	    params,
+	    function(response){ 
+		if(response.meta.code==200){placesView(response);}
+		else{
+		if(response.meta.code==403){document.location = '/api-auth/login/?next=/'}
+		else{$("#feed").text(response.data.detail)}
+		}
+	    });
+    var city = $.cookie("shmotCity");
+    var cityID = $.cookie("shmotCityID");
+    if(city){$("#city").text(city)}
+    else{
+	szApi.get('cities/',
+	    {latitude: params.latitude,longitude: params.longitude},
+	    function(response){ cityView(response);});
+	}
+};
+
+function getPosition(params){
+    $("#placeArea").empty();
+    $("#placeArea").text('Loading...');
+    var latitude = $.cookie("shmotLatitude")*1;
+    if(latitude){
+	$("#placeArea").text('Retrieve a position from cookies...');
+        var longitude = $.cookie("shmotLongitude")*1;
+        params.latitude = latitude;
+        params.longitude = longitude;
+        $("#placeArea").text('Set a position...');
+        getFeed(params);
+        }
+    else{
+	navigator.geolocation.getCurrentPosition(function(data) {
+	    $("#placeArea").text('Retrieve a position...');
+	    var latitude = data.coords.latitude;
+	    var longitude = data.coords.longitude;
+	    $.cookie("shmotLatitude",latitude);
+	    $.cookie("shmotLongitude",longitude);
+	    params.latitude = latitude;
+	    params.longitude = longitude;
+	    $("#placeArea").text('Set a position...');
+	    getFeed(params);
+	    });
+	}
+}
+function feedNearClick(){
+    $("#feedPopular").css({backgroundImage:'url(../static/img/popular.png)'}).removeClass("menuActive");
+    $("#feedNear").css({backgroundImage:'url(../static/img/nearSelected.png)'}).addClass("menuActive");
+    var params = {};
+    params.nearby = '';
+    getPosition(params);
+};
+function feedPopularClick(){
+    $("#feedNear").css({backgroundImage:'url(../static/img/near.png)'}).removeClass("menuActive");
+    $("#feedPopular").css({backgroundImage:'url(../static/img/popularSelected.png)'}).addClass("menuActive");
+    var params = {};
+    params.message = '';
+    getPosition(params);
+};
+$(document).ready(function () {
+    szApi = new sz.Api({uri: '../api/',request_func: $.ajax});
+    feedPopularClick();
     
-    $("#feedMenu").click(feedMenuClick);
+    $("#searchString>input")
+	.data('originalText', 'Найти магазин')
+	.focus(function(){
+	    $("#searchString").css({borderColor:'#e28c1d'});
+	    $("#searchString>div").css({backgroundImage:'url(../static/img/searchSelected.png)'});
+	    if (this.value == $(this).data('originalText'))
+		{this.value = '';}
+	    })
+	.blur(function(){
+	    $("#searchString").css({borderColor:'#696969'});
+	    $("#searchString>div").css({backgroundImage:'url(../static/img/search.png)'});
+	    if (this.value == '')
+		{this.value = 'Найти магазин';}
+	    })
+	.keydown(function(event){
+	    if($("#feedPopular").attr('class')=='menuActive'){feedPopularClick()}
+	    else{feedNearClick()}
+	    });
+    
+    $(window).keydown(function(event){if (event.keyCode==27) {$("#screenOverlay,#newmessageArea").hide();}});
+    
+    $("#feedNear").click(feedNearClick);
+    $("#feedPopular").click(feedPopularClick);
+        
+    
+        
+    
+    
+
+// var i = window.screen.height
+// var i = navigator.platform; 
+// $("#logo").text(i+';'+winWidth)
+
+    
+
+  
+
 });
 
 </script>
 
  </body>
 </html>
+
 
 
