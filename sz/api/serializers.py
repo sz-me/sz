@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from sz.api import pagination, fields as sz_api_fields
 from sz.core import models, gis, queries
+from rest_framework.reverse import reverse
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -44,7 +45,13 @@ class PlaceSerializer(serializers.Serializer):
         position = gis.ll_to_point (longitude, latitude)
         messages = kwargs.pop('messages', None)
         things = kwargs.pop('things', None)
-        self.trans_args = {'position' : position, 'messages': messages, 'things': things}
+        request = kwargs.pop('request', None)
+        self.trans_args = {
+            'position' : position,
+            'messages': messages,
+            'things': things,
+            'request': request
+        }
         super(PlaceSerializer, self).__init__(*args, **kwargs)
     url = serializers.HyperlinkedIdentityField(view_name='place-detail')
     name = serializers.CharField(max_length=128)
@@ -53,6 +60,8 @@ class PlaceSerializer(serializers.Serializer):
     contact = serializers.CharField(max_length=512)
     position = serializers.Field()
     city_id = serializers.IntegerField()
+    shmotzhmot_details_url = sz_api_fields.NestedField(transform=lambda p, a:
+        reverse('feed-place', kwargs={'id': p.id}, request=a.get('request', None)))
     foursquare_details_url = serializers.Field()
     foursquare_icon_prefix = serializers.Field()
     foursquare_icon_suffix = serializers.Field()

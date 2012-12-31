@@ -145,7 +145,7 @@ class PlaceRoot(SzApiView):
                     or p_place.message_set.all()
             serializer = serializers.PlaceSerializer(instance=places,
                 latitude=position['latitude'], longitude=position['longitude'],
-                messages=messages_queryset, things=things
+                messages=messages_queryset, things=things, request=request
             )
             return Response(serializer.data)
         else:
@@ -186,7 +186,7 @@ class PlaceInstance(SzApiView):
                 longitude=position['longitude'], messages=messages_queryset, things=things)
             return Response(serializer.data)
         serializer = serializers.PlaceSerializer(instance=place,
-            latitude=position['latitude'], longitude=position['longitude'])
+            latitude=position['latitude'], longitude=position['longitude'], request=request)
         return Response(serializer.data)
 
 class PlaceMessages(SzApiView):
