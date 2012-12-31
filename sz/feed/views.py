@@ -17,6 +17,9 @@ def index(request):
         {'feed': feed}, 
         context_instance = RequestContext(request))
 
+def place(request, id):
+    return render_to_response('feed/place.html', { u'id': u'%s' % id })
+
 def light(request):
     try:
         pass

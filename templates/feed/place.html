@@ -1,0 +1,58 @@
+{% extends "feed/base_feed.html" %}
+{% block script %}
+{{ block.super }}
+    <script type="text/javascript">
+        function viewMessages(messages){
+            var html = '<ul>';
+            $.each(messages, function(i, message) {
+                html += '<li> <time>' + new Date(message.date).toDateString() + '</time> ' +
+                        message.text + ' ~@' + message.username +
+                        '</li>'
+            });
+            html += '</ul>';
+            return html;
+        }
+        function view(response){
+            if (response.meta.code == 403){
+                document.location = '{% url auth_login %}?next={% url feed-place id=id %}';
+            }
+            else if(response.meta.code == 200 || response.meta.code == 201){
+                $('#place_name').text(response.data.name);
+                var messages = viewMessages(response.data.messages.results);
+                $('#feed').html(messages);
+            }
+            else {
+                alert('Error: ' + response.meta.code);
+            }
+        }
+
+        $(document).ready(function () {
+            if (navigator.geolocation)
+            {
+                navigator.geolocation.getCurrentPosition(function(data) {
+
+                    var latitude = data.coords.latitude;
+                    var longitude = data.coords.longitude;
+                    var position = {
+                        longitude: longitude,
+                        latitude: latitude
+                    };
+                    var api = new sz.Api({uri: '../..',request_func: $.ajax});
+                    api.get('/api/places/{{ id }}/', position, view);
+                });
+            }
+            else
+                alert("Geolocation services are not supported by your browser " +
+                        "or you do not have a GPS device in your computer.");
+        });
+    </script>
+{% endblock %}
+{% block header %}
+    <h1 id="place_name">place_id: {{ id }}</h1>
+{% endblock %}
+{% block content %}
+    <div id="feed"></div>
+{% endblock %}
+{% block footer %}
+    [message addition area]
+{% endblock %}
