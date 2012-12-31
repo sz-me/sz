@@ -107,6 +107,16 @@ class Place(models.Model):
     objects = models.GeoManager()
     def foursquare_details_url(self):
         return "https://foursquare.com/v/%s" % self.id
+    foursquare_icon_prefix = models.CharField(
+        max_length=128,
+        null=True,
+        blank=True,
+        verbose_name=u"префикс пиктограммы категории в Foursquare")
+    foursquare_icon_suffix = models.CharField(
+        max_length=16,
+        null=True,
+        blank=True,
+        verbose_name=u"суффикс (расширение) пиктограммы категории в Foursquare")
     def __unicode__(self):
         return u"%s" % self.name + (self.address and (u", %s" % self.address) or u"")
     class Meta:

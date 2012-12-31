@@ -54,7 +54,8 @@ class PlaceSerializer(serializers.Serializer):
     position = serializers.Field()
     city_id = serializers.IntegerField()
     foursquare_details_url = serializers.Field()
-
+    foursquare_icon_prefix = serializers.Field()
+    foursquare_icon_suffix = serializers.Field()
     distance = sz_api_fields.NestedField(transform=lambda p, a:
         gis.calculate_distance_p(p.position, a['position']))
     messages = sz_api_fields.NestedField(
