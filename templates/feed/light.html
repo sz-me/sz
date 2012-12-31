@@ -63,7 +63,7 @@
 <body style="max-width:640px;">
     <header style="height:18px; background: url({% static "feed/img/logo.png"%}) no-repeat left bottom;text-align: right;">
         {% csrf_token %}
-        <input id="auth_login_url" type="hidden" value="{% url auth_login %}?next={% url feed_light %}"/>
+        <input id="auth_login_url" type="hidden" value="{% url auth_login %}?next={% url feed-light %}"/>
         {% if user.is_authenticated %}
             @{{ user }} | <a href="{% url auth_logout %}?next={% url feed_light %}">log out</a>
         {% else %}
