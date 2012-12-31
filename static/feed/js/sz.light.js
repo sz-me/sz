@@ -121,7 +121,10 @@ sz.light.FeedView = function(){
 sz.light.DetailsView = function(){
     this.getHtml = function(model){
         messages = sz.light.viewMessages(model.messages.results);
-        var html = '<h1>' + model.name + ', ' + Math.floor(model.distance) + 'm</h1>';
+        var html = '<h1>' + '<img src="' +
+            model.foursquare_icon_prefix + '32' +
+            model.foursquare_icon_suffix + '" style="display: inline-block; vertical-align: top;"> ';
+        html += model.name + ', ' + Math.floor(model.distance) + 'm</h1>';
 
         if (model.address != null && model.crossStreet != null)
             html += '<p>' + model.address + ' (' + model.crossStreet + ')' + '</p>';
