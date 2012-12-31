@@ -65,9 +65,9 @@
         {% csrf_token %}
         <input id="auth_login_url" type="hidden" value="{% url auth_login %}?next={% url feed-light %}"/>
         {% if user.is_authenticated %}
-            @{{ user }} | <a href="{% url auth_logout %}?next={% url feed_light %}">log out</a>
+            @{{ user }} | <a href="{% url auth_logout %}?next={% url feed-light %}">log out</a>
         {% else %}
-            <a href="{% url auth_login %}?next={% url feed_light %}">log in</a> | <a href="{% url registration_register %}">sign up</a>
+            <a href="{% url auth_login %}?next={% url feed-light %}">log in</a> | <a href="{% url registration_register %}">sign up</a>
         {% endif %}
     </header>
     <section id="feed-section" style="padding-bottom:80px;">
