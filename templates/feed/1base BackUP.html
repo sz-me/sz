@@ -7,7 +7,6 @@
         {% block meta %}
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
             <meta name="robots" content="NONE,NOARCHIVE" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         {% endblock %}
         <title>{% block title %}SZ{% endblock %}</title>
         {% block style %}{% endblock %}
@@ -17,14 +16,15 @@
     <body>
         <header>
         {% block header %}
-	    <div id='logo'>ShmotZhmot</div>
         {% endblock %}
         </header>
         <section id="content">
         {% block content %}
-	  
         {% endblock %}
         </section>
-        
+        <footer>
+        {% block footer %}
+        {% endblock %}
+        </footer>
     </body>
 </html>

@@ -1,0 +1,20 @@
+{% extends "feed/base_feed.html" %}
+
+{% block script %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <section class='top'>
+	    <div id='searchString'>
+		<a></a>
+		<input tupe='text' value='Найти магазин' align='left' autocomplete="off"/>
+	    </div>
+	</section>
+    {{ block.super }}
+    <section id='feed'>
+	  <div id='placeArea'>
+	  </div>
+      </section>
+{% endblock %}
+

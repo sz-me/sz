@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>ShZH</title>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}feed/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}feed/js/sz.api.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}feed/css/styles.css">
+    <link rel="shortcut icon" href="favicon.ico" />
+    
+    
+ </head>
+ <body>
+ {% csrf_token %}
+ 
+    <header>
+        
+    </header>
+    <section>
+	<div id='searchArea'>
+	    <div id='searchString'>
+		<a></a>
+		<input tupe='text' value='Найти магазин' align='left' autocomplete="off"/>
+		
+	    </div>
+	</div>
+	<div id='menu'>
+	    <a id='pageUp'></a>
+	    <a id='feedNear' href='#near'></a>
+	    <a id='feedPopular' href='#popular'></a>
+	</div>
+      
+      <div id='feed'>
+	  <div id='placeArea'>
+	  </div>
+      </div>
+  </section>
+  
+
+
+    
+    
+<script type="text/javascript">	
+function placesView(response){
+    $("#placeArea").text('');
+    var $parentArea = $("#placeArea"), data = response.data;
+    $.each(data,function(index,place){
+        var shopName = place.name,
+            shopAddress = place.address,
+            shopIndex = place.shmotzhmot_details_url,            
+           
+            $feedBox = jQuery('<div>',{class:"feedBox"}).appendTo($parentArea),
+            $shopBox = jQuery('<div>',{class:"shopBox",
+		click:function(){document.location = shopIndex},
+		mouseenter:function(){
+// 		    $(this).closest(".feedBox").css({borderColor:'#e28c1d'});
+		    $(this).css({color:'#e28c1d'});
+		    $(this).find(".shopDetail").css({backgroundImage:'url(../static/feed/img/shopDetailSelected.png)',borderColor:'#e28c1d'});},
+		mouseleave:function(){
+// 		    $(this).closest(".feedBox").css({borderColor:'#696969'});
+		    $(this).css({color:'#4f4f4f'});
+		    $(this).find(".shopDetail").css({backgroundImage:'url(../static/feed/img/shopDetail.png)',borderColor:'#696969'});}
+	      }).appendTo($feedBox),
+            $shopDetail = jQuery('<a>',{class:"shopDetail",href:shopIndex}).appendTo($shopBox),
+            $messageBox = jQuery('<div>',{class:"messageBox"}).appendTo($feedBox),
+
+            messageArr = place.messages;
+        if (messageArr.count>0){
+            var message = messageArr.results[0],
+                messageText = message.text,
+                messageAuthor = message.username,
+                messageTagsArr = message.things,
+                
+                $messageAuthor = jQuery('<div>',{class:"messageAuthor"}).appendTo($messageBox);
+                jQuery('<a>',{class:'messageUserpic'}).appendTo($messageAuthor);
+                jQuery('<span>',{text:messageAuthor}).appendTo($messageAuthor);
+                if(messageTagsArr.length>0){$messageTagsArea = jQuery('<div>',{class:"messageTagsArea"}).appendTo($messageAuthor)};
+                $.each(messageTagsArr,function(index,val){
+		    var tagBox = jQuery('<div>',{class:'tagBox',text:val}).appendTo($messageTagsArea);
+		});
+            }
+	var $messageText = jQuery('<div>',{class:"messageText",text:messageText}).appendTo($messageBox);
+        var $shopName = jQuery('<div>',{text:shopName,class:'shopName'}).appendTo($shopBox);
+        if(shopAddress){jQuery('<div>',{text:shopAddress,class:'shopAddress'}).appendTo($shopBox);}
+        else{$shopName.css({verticalAlign:'-45%'});}
+        
+
+    });
+};
+
+function cityView(data){
+    if (data.data.length == 1)
+        {
+        var $value = data.data[0],city=$value.name,cityID = $value.geoname_id;
+        $.cookie("shmotCity", city);
+        $.cookie("shmotCityID", cityID);
+        }
+    if (data.meta.code == 403)
+        {document.location = '/api-auth/login/?next=/'}
+}
+
+function getFeed(params){
+    $("#placeArea").text('Loading...');
+    var searchValue = $("#searchString>input").val();
+    if(searchValue=='Найти магазин'){var searchValue='';}
+    if(searchValue){delete params.message}
+    params.place = searchValue;
+    szApi.get('places/',
+	    params,
+	    function(response){ 
+		if(response.meta.code==200){placesView(response);}
+		else{
+		if(response.meta.code==403){document.location = '/api-auth/login/?next=/'}
+		else{$("#feed").text(response.data.detail)}
+		}
+	    });
+    var city = $.cookie("shmotCity");
+    var cityID = $.cookie("shmotCityID");
+    if(city){$("#city").text(city)}
+    else{
+	szApi.get('cities/',
+	    {latitude: params.latitude,longitude: params.longitude},
+	    function(response){ cityView(response);});
+	}
+};
+
+function getPosition(params){
+    $("#placeArea").empty();
+    $("#placeArea").text('Loading...');
+    var latitude = $.cookie("shmotLatitude")*1;
+    if(latitude){
+	$("#placeArea").text('Retrieve a position from cookies...');
+        var longitude = $.cookie("shmotLongitude")*1;
+        params.latitude = latitude;
+        params.longitude = longitude;
+        $("#placeArea").text('Set a position...');
+        getFeed(params);
+        }
+    else{
+	navigator.geolocation.getCurrentPosition(function(data) {
+	    $("#placeArea").text('Retrieve a position...');
+	    var latitude = data.coords.latitude;
+	    var longitude = data.coords.longitude;
+	    $.cookie("shmotLatitude",latitude);
+	    $.cookie("shmotLongitude",longitude);
+	    params.latitude = latitude;
+	    params.longitude = longitude;
+	    $("#placeArea").text('Set a position...');
+	    getFeed(params);
+	    });
+	}
+}
+function feedNearClick(){
+    $("#feedPopular").css({backgroundImage:'url(../static/feed/img/popular.png)'}).removeClass("menuActive");
+    $("#feedNear").css({backgroundImage:'url(../static/feed/img/nearSelected.png)'}).addClass("menuActive");
+    var params = {};
+    params.nearby = '';
+    getPosition(params);
+};
+function feedPopularClick(){
+    $("#feedNear").css({backgroundImage:'url(../static/feed/img/near.png)'}).removeClass("menuActive");
+    $("#feedPopular").css({backgroundImage:'url(../static/feed/img/popularSelected.png)'}).addClass("menuActive");
+    var params = {};
+    params.message = '';
+    getPosition(params);
+};
+$(document).ready(function () {
+    if (navigator.geolocation){
+	szApi = new sz.Api({uri: '../api/',request_func: $.ajax});
+	feedPopularClick();
+	
+	$("#searchString>input")
+	    .data('originalText', 'Найти магазин')
+	    .focus(function(){
+		$("#searchString").css({borderColor:'#e28c1d'});
+		$("#searchString>a").css({backgroundImage:'url(../static/feed/img/searchSelected.png)'});
+		if (this.value == $(this).data('originalText'))
+		    {this.value = '';}
+		})
+	    .blur(function(){
+		$("#searchString").css({borderColor:'#696969'});
+		$("#searchString>a").css({backgroundImage:'url(../static/feed/img/search.png)'});
+		if (this.value == '')
+		    {this.value = 'Найти магазин';}
+		    if($("#feedPopular").attr('class')=='menuActive'){feedPopularClick()}
+		    else{feedNearClick()}
+		})
+	    .keydown(function(event){
+		if($("#feedPopular").attr('class')=='menuActive'){feedPopularClick()}
+		else{feedNearClick()}
+		});
+	
+	$(window).keydown(function(event){if (event.keyCode==27) {$("#screenOverlay,#newmessageArea").hide();}});
+	
+	$("#feedNear").click(feedNearClick);
+	$("#feedPopular").click(feedPopularClick);
+	}
+    else{
+	alert('Это очень крутой сайт, мы сами офигели насколько классно все получилось. Но вы не сможете его заценить, потому что ваш браузер не поддерживает гуолокацию или пятый хтмл. Нам очень жаль. Смените бразер и возвращайесь, это того стоит, честное слово.');
+	}
+        
+        
+    
+    
+
+// var i = window.screen.height
+// var i = navigator.platform; 
+// $("#logo").text(i+';'+winWidth)
+
+    
+
+  
+
+});
+
+</script>
+
+ </body>
+</html>
+
+
+

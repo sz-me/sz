@@ -1,0 +1,106 @@
+{% extends "feed/base_feed.html" %}
+{% block style %}
+    {{ block.super }}
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
+    <!--[if lte IE 8]>
+     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
+ <![endif]-->
+{% endblock %}
+{% block script %}
+    {{ block.super }}
+    <script src="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.js"></script>
+    <script type="text/javascript">
+        var createMap = function(position){
+            var map = L.map('map').setView([position.latitude, position.longitude], 16);
+            L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+                    { maxZoom: 18 }).addTo(map);
+            return map;
+        };
+
+        var position = null;
+
+        function viewMessages(messages){
+            var html = '<ul>';
+            $.each(messages, function(i, message) {
+                html += '<li> <time>' + new Date(message.date).toDateString() + '</time> ' +
+                        message.text + ' ~@' + message.username +
+                        '</li>'
+            });
+            html += '</ul>';
+            return html;
+        }
+        function view(response){
+            if (response.meta.code == 403){
+                document.location = '{% url auth_login %}?next={% url feed-place id=id %}';
+            }
+            else if(response.meta.code == 200 || response.meta.code == 201){
+
+                var fsq_category_icon_src = response.data.foursquare_icon_prefix + 'bg_64' +
+                        response.data.foursquare_icon_suffix;
+                $('#fsq_category_icon').html('<img src="' + fsq_category_icon_src + '">');
+
+                $('#place_name').text(response.data.name + ', '+ Math.floor(response.data.distance) + 'm');
+                var map = createMap({longitude: response.data.position[0], latitude: response.data.position[1]});
+                var marker = L.marker([response.data.position[1], response.data.position[0]],
+                        {title:response.data.name }).addTo(map);
+                var address = '';
+                if (response.data.address != null && response.data.crossStreet != null)
+                    address = response.data.address + ' (' + response.data.crossStreet + ')';
+                else
+                {
+                    if (response.data.address != null)
+                        address = response.data.address;
+                    if (response.data.crossStreet != null)
+                        address = response.data.crossStreet;
+                }
+                $('#place_address').html(address);
+
+                var foursquare_details_link = '<a href="' + response.data.foursquare_details_url +'">'
+                        + response.data.foursquare_details_url + '</a>'
+                $('#fsq_details_link').html(foursquare_details_link);
+
+
+                var messages = viewMessages(response.data.messages.results);
+                $('#feed').html(messages);
+            }
+            else {
+                alert('Error: ' + response.meta.code);
+            }
+        }
+
+        $(document).ready(function () {
+            if (navigator.geolocation)
+            {
+                navigator.geolocation.getCurrentPosition(function(data) {
+
+                    var latitude = data.coords.latitude;
+                    var longitude = data.coords.longitude;
+                    position = {
+                        longitude: longitude,
+                        latitude: latitude
+                    };
+                    var api = new sz.Api({uri: '../..',request_func: $.ajax});
+                    api.get('/api/places/{{ id }}/', position, view);
+                });
+            }
+            else
+                alert("Geolocation services are not supported by your browser " +
+                        "or you do not have a GPS device in your computer.");
+        });
+    </script>
+{% endblock %}
+{% block header %}
+    <div id="fsq_category_icon"  style="float:left; width: 64px; height: 64px; margin: 2px 7px 5px 0px;"></div>
+    <div style="height: 71px;">
+        <div id="place_name" style="font-weight: bold; font-size: 1.5em">place_id: {{ id }}</div>
+        <div id="place_address"></div>
+        <div id="fsq_details_link"></div>
+    </div>
+    <div id="map" style="height: 180px;"></div>
+{% endblock %}
+{% block content %}
+    <div id="feed"></div>
+{% endblock %}
+{% block footer %}
+    <textarea></textarea>
+{% endblock %}

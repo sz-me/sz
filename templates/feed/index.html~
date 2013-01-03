@@ -1,118 +1,205 @@
+{% extends "feed/base_feed.html" %}
 
-<!DOCTYPE html>
-<html>
- <head>
-  <title>ShZH</title>
-  <meta charset="utf-8" />
-   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
-     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/mobil.js"></script>
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/mobil.css">
-    
-    <script type="text/javascript" src="/home/kunla/sz/static/feed/js/mobile.4ways.js"></script>
-    <link rel="stylesheet" href="/home/kunla/sz/static/feed/css/mobile.4ways.css">
- </head>
- <body>
-<div id='screen'> 
-    <div id='topArea'>
-        <div id='logo'>ShmotZhmot</div>
-        <div id='recomedation'><span>12 рек</span></div>
-        <div id='city'>Благовещенск</div>
+{% block script %}
+    {{ block.super }}
+    <script type="text/javascript">	
+function placesView(response){
+    $("#feed").text('');
+    var $parentArea = $("#feed"), data = response.data;
+    $.each(data,function(index,place){
+        var shopName = place.name,
+            shopAddress = place.address,
+            shopIndex = place.shmotzhmot_details_url,            
+           
+            $feedBox = jQuery('<ul>').appendTo($parentArea),
+            $shopBox = jQuery('<div>',{id:"shopBox",
+		click:function(){document.location = shopIndex},
+		mouseenter:function(){
+		    $(this).css({color:'#e28c1d'});
+		    $(this).find(".placeProfile").css({backgroundImage:'url(../static/feed/img/arrowRightSelected.png)',borderColor:'#e28c1d'});},
+		mouseleave:function(){
+		    $(this).css({color:'#4f4f4f'});
+		    $(this).find(".placeProfile").css({backgroundImage:'url(../static/feed/img/arrowRight.png)',borderColor:'#696969'});}
+	      }).appendTo($feedBox),
+            $placeProfile = jQuery('<a>',{class:"placeProfile",href:shopIndex}).appendTo($shopBox),
+            $messageBox = jQuery('<article>').appendTo($feedBox),
+
+            messageArr = place.messages;
+        if (messageArr.count>0){
+            var message = messageArr.results[0],
+                messageText = message.text,
+                messageAuthor = message.username,
+                messageTagsArr = message.things;
+                
+                jQuery('<span>',{id:"messageUserpic"}).appendTo($messageBox);
+                jQuery('<div>',{text:messageAuthor,id:"messageAuthor"}).appendTo($messageBox);
+                var $messageTagsArea = jQuery('<div>',{id:"messageTagsArea"}).appendTo($messageBox);
+                $.each(messageTagsArr,function(index,val){
+		    var tagBox = jQuery('<div>',{class:'tagBox',text:val}).appendTo($messageTagsArea);
+		});
+            }
+	var $messageText = jQuery('<div>',{id:"messageText",text:messageText}).appendTo($messageBox);
+        var $shopName = jQuery('<div>',{text:shopName,id:'shopName'}).appendTo($shopBox);
+        if(shopAddress){jQuery('<div>',{text:shopAddress,id:'shopAddress'}).appendTo($shopBox);}
+        else{$shopName.css({verticalAlign:'-45%'});}
         
-    </div>
-    <div id='topEdge'></div>
-    <div id='mainmenu'>
-        <div id='feedMenu' class='mainmenu'>Что покупают другие</div>
-        <div id='searchMenu' class='mainmenu'>Найти вещь</div>
-        <div id='sendMenu' class='mainmenu'>Поделиться покупкой</div>
-    </div> 
-    
-    <div id='area'>
-        <div id='searchArea' class='area'>
-            <div id='tagsArea' >
-                <div id='tagsLeft'>
-                    <div class='changeGender' id='prevGender'>M</div>
-                    <div id='dollyPlace'>
-                        <div class='dollyHead'></div>
-                        <div class='dollyBody'></div>
-                        <div class='dollyLegs'></div>
-                        <div class='dollyFoot'></div>
-                    </div>
-                    <div class='changeGender' id='nextGender'>K</div>
-                </div>
-                <div id='tagsRight'>
-                    <div id='searchString'>
-                        <div id='searcStringIcn'></div>
-                        <input type="input" id='tagsSearchString' value='Найти'/>
-                    </div>
-                    <div id='tagsPlace'>
-                        <div id='dollyPopularPlace' class='dollyPlace'><div id='dollyPopularMove' class='moveArea'></div></div>
-                        <div id='dollyHeadPlace' class='dollyPlace'><div id='dollyHeadMove' class='moveArea'></div></div>
-                        <div id='dollyBodyPlace' class='dollyPlace'><div id='dollyBodyMove' class='moveArea'></div></div>
-                        <div id='dollyLegsPlace' class='dollyPlace'><div id='dollyLegsMove' class='moveArea'></div></div>
-                        <div id='dollyFootPlace' class='dollyPlace'><div id='dollyFootMove' class='moveArea'></div></div>
-                    </div>
-                    <div class='botArea'>
-                        <div id='lessTags' class='lessmore_active'><<</div>
-                        <div id='moreTags' class='lessmore_active'>>></div>
-                    </div>
-                </div>
-                <div id='searchBot'>
-                    <textarea id='searchText' rows='1' autocomplete="off">Спроси о ништяках</textarea>
-                    <div id='searchTextBut'>Спросить</div>
-                </div>
-            </div>
-        </div>
-    </div>
-  
-</div>
-   
-<div>Ширина: <input type="input" id='screenWidth'  value='' style='width:50px;'/></div>
-<div>Высота: <input type="input" id='screenHeight' value='' style='width:50px;'/></div>
-<input type="button" id='setScreen' value='Установить'/>
-    
-    
-    
-<script type="text/javascript">
+
+    });
+};
+
+function cityView(data){
+    if (data.data.length == 1)
+        {
+        var $value = data.data[0],city=$value.name,cityID = $value.geoname_id;
+        $.cookie("shmotCity", city);
+        $.cookie("shmotCityID", cityID);
+        }
+    if (data.meta.code == 403)
+        {document.location = '/api-auth/login/?next=/'}
+}
+
+function getFeed(params){
+    $("#feed").text('Loading...');
+    var searchValue = $("#searchString>input").val();
+    if(searchValue=='Найти магазин'){var searchValue='';}
+    if(searchValue){delete params.message}
+    params.place = searchValue;
+    szApi.get('places/',
+	    params,
+	    function(response){ 
+		if(response.meta.code==200){placesView(response);}
+		else{
+		if(response.meta.code==403){document.location = '/api-auth/login/?next=/'}
+		else{$("#feed").text(response.data.detail)}
+		}
+	    });
+    var city = $.cookie("shmotCity");
+    var cityID = $.cookie("shmotCityID");
+    if(city){$("#city").text(city)}
+    else{
+	szApi.get('cities/',
+	    {latitude: params.latitude,longitude: params.longitude},
+	    function(response){ cityView(response);});
+	}
+};
+
+function getPosition(params){
+    $("#feed").empty();
+    $("#feed").text('Loading...');
+    var latitude = $.cookie("shmotLatitude")*1;
+    if(latitude){
+        var longitude = $.cookie("shmotLongitude")*1;
+        params.latitude = latitude;
+        params.longitude = longitude;
+        getFeed(params);
+        }
+    else{
+	navigator.geolocation.getCurrentPosition(function(data) {
+	    var latitude = data.coords.latitude;
+	    var longitude = data.coords.longitude;
+	    $.cookie("shmotLatitude",latitude);
+	    $.cookie("shmotLongitude",longitude);
+	    params.latitude = latitude;
+	    params.longitude = longitude;
+	    getFeed(params);
+	    });
+	}
+}
+function feedNearClick(){
+    $("#feedPopular").css({backgroundImage:'url(../static/feed/img/popular.png)'}).removeClass("menuActive");
+    $("#feedNear").css({backgroundImage:'url(../static/feed/img/nearSelected.png)'}).addClass("menuActive");
+    var params = {};
+    params.nearby = '';
+    getPosition(params);
+};
+function feedPopularClick(){
+    $("#feedNear").css({backgroundImage:'url(../static/feed/img/near.png)'}).removeClass("menuActive");
+    $("#feedPopular").css({backgroundImage:'url(../static/feed/img/popularSelected.png)'}).addClass("menuActive");
+    var params = {};
+    params.message = '';
+    getPosition(params);
+};
+
+
 $(document).ready(function () {
-    $("#setScreen").click(function(){
-        $("#screen").width($("#screenWidth").val());
-        $("#screen").height($("#screenHeight").val());
-        });
-    var winWidth = $("#screen").width();
-    var winHeight = $("#screen").height();
-    $(".area").hide();
-//     $("#mainmenu").css({marginLeft:(winWidth/2-$("#mainmenu").width()/2)+'px',marginTop:((winHeight-$("#topArea").height())/2-$("#mainmenu").height()/2)+'px'});
-    var marginLeft = (winWidth-($("#feedMenu").width()+15+$("#searchMenu").width()+15+$("#sendMenu").width()+15))/4+'px'
-    $("#feedMenu, #searchMenu,#sendMenu").css({marginLeft:marginLeft});
-//     $("#sendMenu").css({marginRight:marginLeft});
-    $("#searchMenu").click(searchMenuClick);
-    $("#searchTextBut").css({marginLeft:(winWidth/2-$("#searchTextBut").width()/2)+'px'});
-    $("#searchText")
-        .data('originalText', $("#searchText").text())
-        .css('color', '#999')
-        .focus(function() {
-            var $el = $(this);
-            if (this.value == $el.data('originalText')) {
-                this.value = '';
-                $(this).attr('rows','2').animate({color:'#444'},200);
-                jQuery($(this)).autoResize();
-                $("#searchTextBut").show();
-            }
-        })
-        .blur(function() {
-            if (this.value == '') {
-                this.value = $(this).data('originalText');
-                $(this).attr('rows','1').animate({color: '#999'},200);
-                $("#searchTextBut").hide();
-            }
-        });
+    var monW = $(window).width();
+    if(monW>262){ 
+    if (navigator.geolocation){
+	szApi = new sz.Api({uri: '../api/',request_func: $.ajax});
+	feedPopularClick();
+	
+	$("#searchString>input")
+	    .data('originalText', 'Найти магазин')
+	    .focus(function(){
+		$("#searchString").css({borderColor:'#e28c1d'});
+		$("#searchString>a").css({backgroundImage:'url(../static/feed/img/searchSelected.png)'});
+		if (this.value == $(this).data('originalText')){this.value = '';}
+		})
+	    .blur(function(){$("#searchString").css({borderColor:'#696969'});
+		$("#searchString>a").css({backgroundImage:'url(../static/feed/img/search.png)'});
+		if ($("#searchString>input").val() == '')
+		    {$("#searchString>input").val($("#searchString>input").data('originalText'));}
+		if($("#feedPopular").attr('class')=='menuActive'){feedPopularClick()}
+		else{feedNearClick()}
+	    })
+	    .keydown(function(event){
+		if (event.keyCode!=27)
+		{
+		    if($("#feedPopular").attr('class')=='menuActive'){feedPopularClick()}
+		    else{feedNearClick()}
+		}
+	    });
+	
+	
+	$("#feedNear").click(feedNearClick);
+	$("#feedPopular").click(feedPopularClick);
+	var $pageUp = $("#pageUp");
+	    var	speed = 500;
+	    $pageUp.click(function(){
+		    $("html:not(:animated)" +( !$.browser.opera ? ",body:not(:animated)" : "")).animate({ scrollTop: 0}, 500 );
+		    return false;
+	    });
+	    function show_scrollTop(){
+		    ( $(window).scrollTop()>50 ) ? $pageUp.fadeIn(600) : $pageUp.hide();
+	    }
+	    $(window).scroll( function(){show_scrollTop()} ); show_scrollTop();
+	}
+    else{
+	alert('Это очень крутой сайт, мы сами офигели насколько классно все получилось. Но вы не сможете его заценить, потому что ваш браузер не поддерживает гуолокацию или пятый хтмл. Нам очень жаль. Смените бразер и возвращайесь, это того стоит, честное слово.');
+	}}
+    else{$("body").empty().text('Нам очень жаль, но ваш телефон слишком узенький, вы не сможете посмотреть содержимое этой страницы :(')}
+// var i = window.screen.height
+// var i = navigator.platform; 
+// $("#logo").text(i+';'+winWidth)
 });
 
 </script>
 
- </body>
-</html>
-
-
+{% endblock %}
+{% block header %}
+{{ block.super }}
+{% csrf_token %}
+	<section id='user' class='logIn'>
+	    <input id="auth_login_url" type="hidden" value="{% url auth_login %}?next={% url feed-index %}"/>
+	    {% if user.is_authenticated %}
+		@{{ user }} | <a href="{% url auth_logout %}?next={% url feed-index %}">log out</a>
+	    {% else %}
+		<a href="{% url auth_login %}?next={% url feed-indexs %}">log in</a> | <a href="{% url registration_register %}">sign up</a>
+	    {% endif %}
+	</section>
+{% endblock %}
+{% block content %}
+	<section class='top'>
+	    <div id='searchString'>
+		<a></a>
+		<input tupe='text' value='Найти магазин' align='left' autocomplete="off"/>
+	    </div>
+	</section>
+    <aside>
+	    <a id='feedNear' href='#near'></a>
+	    <a id='feedPopular' href='#popular'></a>
+	    <a id='pageUp'></a>
+    </aside>
+    <section id='feed'>
+    </section>
+{% endblock %}

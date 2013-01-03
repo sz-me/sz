@@ -219,11 +219,7 @@
 	</section>
 {% endblock %}
 {% block content %}
-   <section id='placeBox'>
-	<span id='castleIco'></span>
-        <div id='shopName'>place_id: {{ id }}</div>
-        <div id='shopAddress'></div>
-    </section> 
+   
     <aside>
 	<a id='mapLink'></a>
 	<a id='tagLink'></a>
@@ -231,6 +227,11 @@
 	<a id='pageUp'></a>
     </aside>
 <section id='feed'>
+<section id='placeBox'>
+	<span id='castleIco'></span>
+        <div id='shopName'>place_id: {{ id }}</div>
+        <div id='shopAddress'></div>
+    </section> 
 	<div id='newmessageArea'>
 	    <textarea id="newmessageText" rows="1" autocomplete="off">Расскажи мне о ништяках</textarea>
 	    <a id='newmessageAdd'></a>

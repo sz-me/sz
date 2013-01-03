@@ -1,135 +1,236 @@
-body{font-family: Arial, Helvetica, sans-serif;}
-
-#mainmenu{
-    background:orange;
-    height:auto;
-    top:0px;
-    right:0px;
-    text-align:center;
-    font-weight: bold;
-}
-
-#menu{
-    width:100%;
-    background:orange;
-    color:white;
-}
-    
-
-#category{
-    margin-left:110px;
-    display:block;
-    width:auto;
-    height:50px;
-}
-    
-
-#city,#place,#tags{
-    
+body{
+  width:100%;
+  margin-left:-0.5px;
     margin-top:-1px;
-    text-align:center;
-    float:left;
-    width:auto;
-    height:35px;
-    padding-right:15px;
-    padding-left:15px;
-    padding-top:1em;
-    background:gray;
     font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-size:1em;
-    border:1px solid white;
-    border-bottom:1px solid gray;
-    cursor: pointer;
-    box-shadow: -2px 2px 2px #333;
-    -moz-box-shadow: -2px 2px 2px #333;
-    -webkit-box-shadow: -2px 2px 2px #333;
+    color:#333;
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;}
+
+header{
+    border-bottom:1px solid #ababab;
+    top:0px;
 }
 
-#city{border-radius:20px 0px 0px 0px;
-
-    box-shadow: 0px 2px 2px #333;
-    -moz-box-shadow: 0px 2px 2px #333;
-    -webkit-box-shadow: 0px 2px 2px #333;
+a,span{
+    float:left;
+    display:block;
+    cursor:pointer;
+    background-repeat: no-repeat;
+    background-size: contain;
+    text-decoration:none;
 }
 
-#tags{border-radius:0px 20px 0px 0px;}
+#user>a{display:inline;float:none;}
 
-
-
-
-#tagsTopArea{
-    float:right;
+#logo{
+  cursor:pointer;
+  float:left;
+  margin-top:0.1em;
+  margin-left:0.2em;
 }
 
-#myuser{
-    margin-bottom:-50px;
-    text-align:center;
-   width:100px;
-   padding-top:5px;
-   padding-bottom:3px;
-    /*font-family: Arial, Helvetica, sans-serif;
-    font-weight: normal;
-    font-size:12px;
-    border:1px solid white;
-    border-bottom:1px solid gray;
-    border-radius:20px 20px 0px 0px;
-    cursor: pointer;
-    box-shadow: -2px 0px 0px #333;
-    -moz-box-shadow: -2px 0px 0px #333;
-    -webkit-box-shadow: -2px 0px 0px #333;*/
+
+#user{
+  cursor:pointer;
+  float:right;
+  margin-top:0.1em;
+  margin-right:0.2em;
+  
+}
+
+.top{width:100%;}
+
+#searchString{
+    cursor:text;
+    border:1px solid #ababab;
+    border-top:none;
+}
+
+#searchString>a{background-image:url(../img/search.png);}
+
+#searchString>input{
+    margin:0px;
+    resize: none;
+    outline: none;
+    -moz-appearance: none;
+    display:block;
+    border:none;
     
 }
+aside{position:fixed;}
+aside>a{float:none;}
 
-#myface{
-    border-radius:5px;
-    border:2px solid #DDD;
-        cursor: pointer;
-    box-shadow: 0px 0px 4px #666;
-    -moz-box-shadow: 0px 0px 4px #666;
-    -webkit-box-shadow: 0px 0px 4px #666;
-}
+#pageUp{background-image:url(../img/pageUp.png);}
+#feedPopular{background-image:url(../img/popular.png);}
+#feedNear{background-image:url(../img/near.png);}
 
-.close{margin-right:8px;margin-left:-2px;}
+#feed{float:right;}
 
-
-
-#sepString{
-    box-shadow: 0px 0px 2px #333;
-    border-top:1px solid white;
-    border-bottom:1px solid white;
+#newmessageText{
     width:100%;
-    height:10px;
-    background:gray;
+    resize: none;
+    outline: none;
+    -moz-appearance: none;
+    border:1px solid #ababab;
+    color:#666;
+    margin:0;
+    padding:0;
 }
 
-#area{
-    box-shadow: 0px 0px 2px #333;
-    border-top:1px solid white;
-    border-bottom:1px solid white;
+#newmessageAdd{
+    margin-right:-2px;
+    float:right;
+  background-image:url(../img/newmessage.png);
+}
+
+#placeProfile,#searchString>a,#messageDetail{float:right;}
+
+
+ul{display:block;padding-left:2px;width:100%;}
+
+#shopBox{width:100%;text-align:right;}
+
+#placeProfile,#messageDetail{background-image:url(../img/arrowRight.png);}
+
+#shopName{font-weight: bold;}
+
+#messageAuthor:hover,.tagBox:hover,#user>a:hover{color:#e28c1d;}
+
+article{width:100%%;border-bottom:1px solid #ababab;display:block;}
+
+#messageAuthor{font-weight: bold;}
+
+#messageUserpic{background-image:url(../img/userpic.png);}
+
+.tagBox{float:left;text-decoration:underline;}
+
+#shopBox,#messageAuthor,.tagBox{cursor:pointer;color:#4f4f4f;}
+
+#shopName,#shopAddress,article>div{overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
+
+#messageText{white-space:pre-wrap}
+
+#placeBox{color:#4f4f4f;text-align:right;}
+
+#castleIco{
+    float:right;
+    cursor:auto;
+    background-image:url(../img/castle.png);
+}
+
+
+#tshirt{background-image:url(../img/tshirt.png);}
+#socks{background-image:url(../img/socks.png);}
+#pants{background-image:url(../img/pants.png);}
+#sarafan{background-image:url(../img/sarafan.png);}
+#trousers{background-image:url(../img/trousers.png);}
+#skirt{background-image:url(../img/skirt.png);}
+#shirt{background-image:url(../img/shirt.png);}
+
+
+.feedOverflow{
+    display:none;
+    position:fixed;
+    background:white;
+    opacity:0.8;
+    z-index:9999;
+    top:0;
+    left:0;
     width:100%;
-    background:gray;
+    height:100%;
 }
 
-.addMessage{
-    padding:1em;
-    cursor:pointer;
-    background:green;
-    border:3px solid white;
-    border-radius:18px;
-      box-shadow: 0px 0px 4px #666;
-    -moz-box-shadow: 0px 0px 4px #666;
-    -webkit-box-shadow: 0px 0px 4px #666;
+#mapArea{
+    display:none;
+    position:absolute;
+    background:white;
+    z-index:9999;
+    top:10%;
+    left:20%;
+    width:60%;
+    border:1px solid #ababab;
 }
 
-
-#feed{
-    text-align:center;
-    width:90%;
-    margin-left:5%;
+#map{
+    height:5em;
+    width:100%;
 }
 
+#placeDescr{width:100%;}
 
+#mapLink{background-image:url(../img/mapLink.png);}
+#tagLink{background-image:url(../img/tagLink.png);}
+#socialLink{background-image:url(../img/socialLink.png);}
 
+#fsq_details_link{background-image:url(../img/4sqIcn.png);}
 
+#placeOwner{background-image:url(../img/owner.png);}
 
+body{font-size:1em}
+#shopAddress,#messageTagsArea{ font-size: 0.7em; }
+header,#shopName{font-size:1.1em}
+header{height:1.6em;padding-top:0.4em;}
+aside{padding-top:2px;}
+article{margin-bottom:0.6em;}
+#messageUserpic{margin-left:1em;}
+article>div{padding-left:0.2em;}
+#messageTagsArea{height:1.3em;}
+#messageText{
+    margin-top:0.2em;
+    margin-bottom:0.4em;
+    max-height:2.5em;
+    min-height:1em;}
+#placeBox{margin-top:1.2em;margin-bottom:1.2em;}
+#newmessageArea{margin-top:0.2em;margin-bottom:0.4em;}
+aside>a{margin-bottom:1em;}
+#shopName{padding-right:0.2em;}
+#shopAddress{padding-right:0.4em;}
+a{height:2em;width:2em;}
+aside>a,#searchString>a{height:1.5em;width:1.5em;}
+span{height:3.5em;width:3.5em;}
+#castleIco{margin-top:-0.6em;}
+body{width:40%;margin-left:30%;}
+#searchString{margin-left:10%;}
+#searchString>input{width:90%;}
+input,textarea{padding-top:0.4em;padding-left:0.3em;padding-bottom:0.4em;}
+#feed,#searchString,#placeBox{width:80%;}
+#feed,#placeBox{margin-right:10%;}
+#shopBox,#placeDescr{height:2.2em;}
+#placeDescr>a{margin-right:1em;}
+
+@media screen and (min-width: 1200px)  {body{width:46%;margin-left:27%;}}
+ 
+@media screen and (max-width: 1199px)  {body{width:46%;margin-left:27%;}}
+    
+@media screen and (max-width: 1099px)  {body{width:50%;margin-left:25%;}}
+
+@media screen and (max-width: 999px)  {body{width:60%;margin-left:30%;}}
+
+@media screen and (max-width: 799px)  {
+    body{width:100%;margin-left:0;}
+    #searchString,#placeBox{margin-left:10%;}
+    #feed,#searchString,#placeBox{width:80%;}
+    #feed{margin-right:10%;}
+    aside{width:10%;}
+    aside>a{height:4em;width:98%;}
+}
+
+@media screen and (max-width: 569px) {
+    #feed,#searchString,#placeBox{width:85%;}
+    #searchString>input{width:80%;}
+    #searchString,#placeBox{margin-left:13%;}
+    #feed{margin-right:2%}
+    aside{width:17%;}
+    aside>a{height:3em;width:100%;}
+}
+
+@media screen and (max-width: 410px) {
+    #feed,#searchString,#placeBox{width:79%;}
+    #searchString>input{width:70%;}
+    #searchString{margin-left:18%;}
+    #feed{margin-right:3%;}
+}
+
+/* Сверстать под айфон!! */

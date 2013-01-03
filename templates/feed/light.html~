@@ -75,7 +75,7 @@
         <article id="map_canvas" style="width:100%; height:120px; background-color:white;"></article>
         <article id="feed"></article>
     </section>
-    <footer style="background-color:green;position:fixed;bottom:0;width:100%;max-width:640px;">
+    <footer style="background-color:white;position:fixed;bottom:0;width:100%;max-width:640px;">
         <hr/>
         <section id="control">
         </section>

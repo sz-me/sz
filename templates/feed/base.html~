@@ -18,6 +18,10 @@
         <header>
         {% block header %}
 	    <div id='logo'>ShmotZhmot</div>
+	    <div id='userArea'>
+	    {% block userArea %}
+	    {% endblock %}
+	    </div>
         {% endblock %}
         </header>
         <section id="content">
