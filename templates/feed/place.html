@@ -49,7 +49,7 @@
         
         function view(response){
             if (response.meta.code == 403){
-                document.location = '{% url auth_login %}?next={% url feed-place id=id %}';
+                document.location = $('#auth_login_url').val();
             }
             else if(response.meta.code == 200 || response.meta.code == 201){
 

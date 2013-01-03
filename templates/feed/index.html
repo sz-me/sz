@@ -69,8 +69,10 @@ function getFeed(params){
 	    function(response){ 
 		if(response.meta.code==200){placesView(response);}
 		else{
-		if(response.meta.code==403){document.location = '/api-auth/login/?next=/'}
-		else{$("#feed").text(response.data.detail)}
+		    if(response.meta.code==403){
+                document.location = $('#auth_login_url').val();}
+		        else{$("#feed").text(response.data.detail)
+            }
 		}
 	    });
     var city = $.cookie("shmotCity");
