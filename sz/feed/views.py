@@ -18,7 +18,8 @@ def index(request):
         context_instance = RequestContext(request))
 
 def place(request, id):
-    return render_to_response('feed/place.html', { u'id': u'%s' % id })
+    return render_to_response('feed/place.html', { u'id': u'%s' % id },
+        context_instance = RequestContext(request))
 
 def light(request):
     try:

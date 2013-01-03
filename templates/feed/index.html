@@ -55,7 +55,7 @@ function cityView(data){
         $.cookie("shmotCityID", cityID);
         }
     if (data.meta.code == 403)
-        {document.location = '/api-auth/login/?next=/'}
+        {document.location = '/api-auth/login/?next={% url feed-index %}'}
 }
 
 function getFeed(params){
@@ -177,16 +177,7 @@ $(document).ready(function () {
 
 {% endblock %}
 {% block header %}
-{{ block.super }}
-{% csrf_token %}
-	<section id='user' class='logIn'>
-	    <input id="auth_login_url" type="hidden" value="{% url auth_login %}?next={% url feed-index %}"/>
-	    {% if user.is_authenticated %}
-		@{{ user }} | <a href="{% url auth_logout %}?next={% url feed-index %}">log out</a>
-	    {% else %}
-		<a href="{% url auth_login %}?next={% url feed-indexs %}">log in</a> | <a href="{% url registration_register %}">sign up</a>
-	    {% endif %}
-	</section>
+    {{ block.super }}
 {% endblock %}
 {% block content %}
 	<section class='top'>

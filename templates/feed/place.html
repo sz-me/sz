@@ -207,16 +207,8 @@
     </script>
 {% endblock %}
 {% block header %}
-{{ block.super }}
-{% csrf_token %}
-	<section id='user' class='logIn'>
-	    <input id="auth_login_url" type="hidden" value="{% url auth_login %}?next={% url feed-place id=id %}"/>
-	    {% if user.is_authenticated %}
-		@{{ user }} | <a href="{% url auth_logout %}?next={% url feed-place id=id %}">log out</a>
-	    {% else %}
-		<a href="{% url auth_login %}?next={% url feed-place id=id %}">log in</a> | <a href="{% url registration_register %}">sign up</a>
-	    {% endif %}
-	</section>
+    {{ block.super }}
+    {% csrf_token %}
 {% endblock %}
 {% block content %}
    <section id='placeBox'>

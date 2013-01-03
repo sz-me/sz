@@ -189,11 +189,8 @@ EMAIL_HOST_USER ='shmotzhmot@outlook.com'
 EMAIL_HOST_PASSWORD = 'hmot'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'shmotzhmot@outlook.com'
-'''
-import sys
-if 'test' in sys.argv:
-    try:
-        from settings_for_test import *
-    except ImportError:
-        pass
-'''
+
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'django.core.context_processors.request',
+    )
