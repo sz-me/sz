@@ -10,6 +10,7 @@
     {{ block.super }}
     <script src="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.js"></script>
     <script type="text/javascript">
+    api = new sz.Api({uri: '../..',request_func: $.ajax});
         var createMap = function(position){
             var map = L.map('map').setView([position.latitude, position.longitude], 16);
             L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
@@ -20,29 +21,39 @@
         var position = null;
         
         function refreshFeed(response){
-	    alert('Хорошо!');
+	    var message = response.data;
+	    var $parentArea = $("#messageArea");
+	    var $messageBox = createMessage(message)
+	    $messageBox.prependTo($parentArea)
 	    };
-
+	
+	function createMessage(message){
+	    var messageText = message.text,
+		messageAuthor = message.username,
+		messageTagsArr = message.things;
+		
+		$messageBox = jQuery('<article>'),
+		$messageDetail = jQuery('<a>',{id:"messageDetail"}).appendTo($messageBox),
+	    
+	    jQuery('<span>',{id:"messageUserpic"}).appendTo($messageBox);
+	    var $messageAuthor = jQuery('<div>',{id:"messageAuthor"}).appendTo($messageBox);
+	    jQuery('<span>',{text:messageAuthor}).appendTo($messageAuthor);
+	    var $messageTagsArea = jQuery('<div>',{id:"messageTagsArea"}).appendTo($messageBox);
+	    $.each(messageTagsArr,function(index,val){
+		var tagBox = jQuery('<div>',{class:'tagBox',text:' '+val+' '}).appendTo($messageTagsArea);
+	    });
+	    var $messageText = jQuery('<div>',{id:"messageText",text:messageText}).appendTo($messageBox);
+	    return $messageBox
+	    }
+	
         function createFeed(response){
 	    var $parentArea = $("#messageArea");
 	    $parentArea.empty();
 	    var messageArr = response.data.messages;
 	    if (messageArr.count>0){
 		$.each(messageArr.results,function(index,message){
-		    var messageText = message.text,
-			messageAuthor = message.username,
-			messageTagsArr = message.things;
-			
-			$messageBox = jQuery('<article>').appendTo($parentArea),
-			$messageDetail = jQuery('<a>',{id:"messageDetail"}).appendTo($messageBox),
-		    
-		    jQuery('<span>',{id:"messageUserpic"}).appendTo($messageBox);
-		    jQuery('<div>',{text:messageAuthor,id:"messageAuthor"}).appendTo($messageBox);
-		    var $messageTagsArea = jQuery('<div>',{id:"messageTagsArea"}).appendTo($messageBox);
-		    $.each(messageTagsArr,function(index,val){
-			var tagBox = jQuery('<div>',{class:'tagBox',text:val}).appendTo($messageTagsArea);
-		    });
-		    var $messageText = jQuery('<div>',{id:"messageText",text:messageText}).appendTo($messageBox);
+		    var $messageBox = createMessage(message);
+		    $messageBox.appendTo($parentArea)
 		});
 	    }
 	};
@@ -52,18 +63,15 @@
                 document.location = $('#auth_login_url').val();
             }
             else if(response.meta.code == 200 || response.meta.code == 201){
-
-//                 var fsq_category_icon_src = response.data.foursquare_icon_prefix + 'bg_64' +
-//                         response.data.foursquare_icon_suffix;
-//                 $('#fsq_category_icon').html('<img src="' + fsq_category_icon_src + '">');
 		var placeName = response.data.name;
-                $("#shopName").text(placeName /*+ ', '+ Math.floor(response.data.distance) + 'm'*/);
+                $("#shopName").text(placeName);
                 $("title").text(placeName);
                 
+		$("#distanceNum").text(Math.floor(response.data.distance));
                 var map = createMap({longitude: response.data.position[0], latitude: response.data.position[1]});
                 var marker = L.marker([response.data.position[1], response.data.position[0]],
                         {title:response.data.name }).addTo(map);
-                        
+                $("#mapArea").hide();        
                 var address = '';
                 if (response.data.address != null && response.data.crossStreet != null)
                     address = response.data.address + ' (' + response.data.crossStreet + ')';
@@ -74,9 +82,6 @@
                         address = response.data.crossStreet;
 		    }
                 $("#shopAddress").text(address);
-
-                $("#fsq_details_link").attr('href',response.data.foursquare_details_url);
-
 		createFeed(response);
 		
             }
@@ -84,35 +89,28 @@
                 alert('Пичалька: ' + response.meta.code);
             }
         }
-
-        $(document).ready(function () {
-	    var monW = $(window).width();
-	    if(monW>262){ 
-            if (navigator.geolocation)
-            {
-		var latitude = $.cookie('shmotLatitude')*1;
+        
+	function getData(){
+	    var latitude = $.cookie('shmotLatitude')*1;
 		if(latitude){
 		    var longitude = $.cookie('shmotLongitude')*1;
-		    position = {
-			    longitude: longitude,
-			    latitude: latitude
-			};
-		    var api = new sz.Api({uri: '../..',request_func: $.ajax});
+		    position = {longitude: longitude,latitude: latitude};
 		    api.get('/api/places/{{ id }}/', position, view);
-		    }
+		}
 		else{
 		    navigator.geolocation.getCurrentPosition(function(data) {
-
 			var latitude = data.coords.latitude;
 			var longitude = data.coords.longitude;
-			position = {
-			    longitude: longitude,
-			    latitude: latitude
-			};
-			var api = new sz.Api({uri: '../..',request_func: $.ajax});
+			position = {longitude: longitude,latitude: latitude};
 			api.get('/api/places/{{ id }}/', position, view);
 		    });
 		}
+	    }
+
+        $(document).ready(function () { 
+            if (navigator.geolocation)
+            {
+		getData()
 		
 		$("#newmessageAdd").hide();
 		$("#newmessageText")
@@ -123,7 +121,7 @@
 			    this.value = '';
 			    var w = $("#newmessageAdd").width();
 			    var h = $(this).height();
-			    $(this).height(h*2).width($("#feed").width()-w-h).css({borderColor:'#e28c1d'});
+			    $(this).height(h*2).width($("#feed").width()-w-h).css({borderColor:'#e28c1d',color:'#333'});
 			    $(this).autoResize();
 			    $("#newmessageAdd").show();
 			}
@@ -132,7 +130,9 @@
 			if ($("#newmessageText").val() == '')
 			{
 			    var h = $("#newmessageText").height();
-			    $("#newmessageText").height(h*0.5).width($("#feed").width()).css({borderColor:'#696969'}).val($(this).data('originalText'));
+			    var p = $("#newmessageText").css('paddingLeft');
+			    var textPadding = p.slice(0,p.length-2);
+			    $("#newmessageText").height(h*0.5).width($("#feed").width()-textPadding*2).css({borderColor:'#ababab',color:'#666'}).val($(this).data('originalText'));
 			    $("#newmessageAdd").hide();
 			    api.get('/api/places/{{ id }}/',
 				    position,
@@ -145,64 +145,86 @@
 		    .keypress(function(event){
 			if (event.keyCode!=27)
 			{
-			    var params = {
-				message:$(this).val(),
-				latitude:latitude,
-				longitude:longitude
-				};
-			    api.get('/api/places/{{ id }}/',
-				    params,
-				    function(response){ 
-					if(response.meta.code==200){createFeed(response);}
-					else{$("#messageArea").text('Пичалька :'+response.meta.code+':(')}
-				    });
+			    var text = $(this).val();
+			    if(text==$(this).data('originalText')){var text=''}
+			    var latitude = $.cookie('shmotLatitude')*1;
+			    if(latitude){
+				var longitude = $.cookie('shmotLongitude')*1;
+				var params = {message:text,latitude:latitude,longitude:longitude};
+				api.get('/api/places/{{ id }}/',params,function(response){ 
+					    if(response.meta.code==200){createFeed(response);}
+					    else{$("#messageArea").text('Пичалька :'+response.meta.code+':(')}
+					});
+			    }
+			    else{
+				navigator.geolocation.getCurrentPosition(function(data) {
+				    var latitude = data.coords.latitude;
+				    var longitude = data.coords.longitude;
+				    var params = {message:text,latitude:latitude,longitude:longitude};
+				    api.get('/api/places/{{ id }}/',params,function(response){ 
+						if(response.meta.code==200){createFeed(response);}
+						else{$("#messageArea").text('Пичалька :'+response.meta.code+':(')}
+					    });
+				});
+			    }
 			}
 		    });
 		    
 		    $("#newmessageAdd").click(function(){
 			text = $("#newmessageText").val();
 			if (text){
-			    var params = {text:text};
-			    api.post('/api/places/{{ id }}/messages/',
-				    params,
+			    var params = {text:text,
+					   csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()};
+			    api.post('/api/places/{{ id }}/messages/',params,
 				    function(response){
-					if(response.meta.code==201){refreshFeed(response);}
+					if(response.meta.code==201){
+					    $("#newmessageText").val('').blur();
+					}
 					else{$("#messageArea").text('Пичалька :'+response.meta.code+':(')}
 				    })
 			    }
 		    });
 		    
-		    
-		    $("#castleIco").click(function(){
-			$(".feedOverflow").show();
-			$("#mapArea").show();
-		    });
-		    
-		    $(".feedOverflow").click(function(){
-			$(this).hide();
+		    $("#feedLink").click(function(){
+			$("#tagLink").css({backgroundImage:'url(../../static/feed/img/tagLink.png)'}).removeClass("menuActive");
+			$("#tagArea").hide();
+			$("#mapLink").css({backgroundImage:'url(../../static/feed/img/mapLink.png)'}).removeClass("menuActive");
 			$("#mapArea").hide();
-// 			document.location=''
-		    });
+			$("#feedLink").css({backgroundImage:'url(../../static/feed/img/feedLinkSelected.png)'}).addClass("menuActive");
+			$("#messageArea").show();
+			$("#newmessageArea").show();
+			$("#newmessageText").keypress();
+			});
+			
+		    $("#tagLink").click(function(){
+			$("#feedLink").css({backgroundImage:'url(../../static/feed/img/feedLink.png)'}).removeClass("menuActive");
+			$("#messageArea").hide();
+			$("#newmessageArea").hide();
+			$("#mapLink").css({backgroundImage:'url(../../static/feed/img/mapLink.png)'}).removeClass("menuActive");
+			$("#mapArea").hide();
+			$("#tagLink").css({backgroundImage:'url(../../static/feed/img/tagLinkSelected.png)'}).addClass("menuActive");
+			$("#tagArea").show();
+			});
 		    
-		    $(window).keydown(function(event){
-			if(event.keyCode==27){$(".feedOverflow").click();}
-		    });
+		    $("#mapLink").click(function(){
+			$("#feedLink").css({backgroundImage:'url(../../static/feed/img/feedLink.png)'}).removeClass("menuActive");
+			$("#messageArea").hide();
+			$("#newmessageArea").hide();
+			$("#tagLink").css({backgroundImage:'url(../../static/feed/img/tagLink.png)'}).removeClass("menuActive");
+			$("#tagArea").hide();
+			$("#mapLink").css({backgroundImage:'url(../../static/feed/img/mapLinkSelected.png)'}).addClass("menuActive");
+			$("#mapArea").show();
+			});
 		    
-	    var $pageUp = $("#pageUp");
-	    var	speed = 500;
-	    $pageUp.click(function(){
-		    $("html:not(:animated)" +( !$.browser.opera ? ",body:not(:animated)" : "")).animate({ scrollTop: 0}, 500 );
-		    return false;
-	    });
-	    function show_scrollTop(){
-		    ( $(window).scrollTop()>50 ) ? $pageUp.fadeIn(600) : $pageUp.hide();
-	    }
-	    $(window).scroll( function(){show_scrollTop()} ); show_scrollTop();
+		    
+		    
+	    pageUp();
+	    pageSize()
+	    $(window).resize(function(){pageSize();});
             }
             else
                 alert("Geolocation services are not supported by your browser " +
-                        "or you do not have a GPS device in your computer.");}
-	     else{$("body").empty().text('Нам очень жаль, но ваш телефон слишком узенький, вы не сможете посмотреть содержимое этой страницы :(')}
+                        "or you do not have a GPS device in your computer.");
         });
     </script>
 {% endblock %}
@@ -211,33 +233,35 @@
     {% csrf_token %}
 {% endblock %}
 {% block content %}
-   <section id='placeBox'>
+<div id='placeTop'>
+ <section id='owner'>
+    <a id='crown'></a><span>Вася Пупкин</span>
+</section>
+<section id='placeBox'>
 	<span id='castleIco'></span>
         <div id='shopName'>place_id: {{ id }}</div>
         <div id='shopAddress'></div>
-    </section> 
+    </section>   
+</div>
     <aside>
 	<a id='mapLink'></a>
 	<a id='tagLink'></a>
-	<a id='socialLink'></a>
+	<a id='feedLink'></a>
 	<a id='pageUp'></a>
     </aside>
 <section id='feed'>
 	<div id='newmessageArea'>
+	    {% csrf_token %}
 	    <textarea id="newmessageText" rows="1" autocomplete="off">Расскажи мне о ништяках</textarea>
 	    <a id='newmessageAdd'></a>
 	</div>
 	<div id='messageArea'></div>
-    
-</section>
-<section class='feedOverflow'></section>
-<section id='mapArea'>
-    <div id="map"></div> 
-    <div id='placeDescr'>
-	<a id="fsq_details_link"></a>
-	<a id="fsq_category_icon" style='display:none;'></a>	    
-	<a id="placeOwner" href='#place_owner'></a>
-    </div>
+	<div id='mapArea'>
+	    <div id='distance'>Расстояние: <span id='distanceNum'>1230</span><span id='distanceUnit'>м</span></div>
+	    <div id='mesPowerString'>Сила слова: 0.4</div>
+	    <div id="map"></div> 
+	</div>
+	<div id='tagArea'></div>
 </section>
 
 {% endblock %}
