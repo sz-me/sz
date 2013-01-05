@@ -9,7 +9,7 @@ from sz.api import serializers, services as api_services
 from sz.api.response import Response
 from sz.core import lists, models, services, queries, utils
 
-categorizationService = services.CategorizationService(list(models.Thing.objects.all()))
+categorization_service = services.CategorizationService(list(models.Thing.objects.all()))
 
 class SzApiView(APIView):
     """
@@ -131,8 +131,8 @@ class PlaceRoot(SzApiView):
                         caching_service.save()
             else:
                 if len(message) > 2:
-                    things, stems = categorizationService.parse_text(message)
-                    things = categorizationService.get_with_additional_things(things)
+                    things, stems = categorization_service.parse_text(message)
+                    things = categorization_service.get_with_additional_things(things)
                 city_id = api_services.geonames_city_service(position)[0]['id']
                 places = queries.feed( \
                     latitude=position['latitude'],\
@@ -172,8 +172,8 @@ class PlaceInstance(SzApiView):
         stems = None
         if message:
             if len(message) > 2:
-                things, stems = categorizationService.parse_text(message)
-                things = categorizationService.get_with_additional_things(things)
+                things, stems = categorization_service.parse_text(message)
+                things = categorization_service.get_with_additional_things(things)
 
         messages_queryset = lambda p_place, args:\
                 p_place.message_set.filter(queries.messages_Q(args['things'], args['stems']))
@@ -193,8 +193,6 @@ class PlaceMessages(SzApiView):
             message.user = request.user
             print message.user
             message.save()
-            things = models.Thing.objects.all()
-            categorization_service = services.CategorizationService()
-            categorization_service.detect_things(things, message)
+            categorization_service.detect_things(message)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
