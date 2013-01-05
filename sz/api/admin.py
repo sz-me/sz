@@ -23,8 +23,8 @@ admin.site.register(models.Thing, ThingAdmin)
 from sz.core import services
 def detect_things(modeladmin, request, queryset):
     things = models.Thing.objects.all()
-    categorization = services.CategorizationService()
-    [categorization.detect_things(things, message) for message in queryset]
+    categorization = services.CategorizationService(things)
+    [categorization.detect_things(message) for message in queryset]
 detect_things.short_description = u"Развесить ярлычки"
 
 class MessageAdmin(admin.ModelAdmin):
