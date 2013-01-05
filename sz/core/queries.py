@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import datetime
+import functools
 from django.db import models as dj_models
+from django.db.models import Q
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.measure import D
 from django.utils import timezone
@@ -10,6 +12,16 @@ from sz import settings
 DEFAULT_DISTANCE = settings.DEFAULT_DISTANCE
 # TODO: вынести в sz.settings
 DEFAULT_PAGINATE_BY = 7
+
+def messages_Q(things, stems):
+    messages_with_condition = Q()
+    if things:
+        messages_with_things = Q(things__in=things)
+        messages_with_condition = messages_with_condition & messages_with_things
+    if stems:
+        messages_with_stems = functools.reduce(lambda f, s: f | Q(text__icontains=s), stems, Q())
+        messages_with_condition = messages_with_condition & messages_with_stems
+    return messages_with_condition
 
 def feed(**kwargs):
     '''
@@ -25,9 +37,9 @@ def feed(**kwargs):
     place = kwargs.pop('place', None)
     nearby = kwargs.pop('nearby', None)
     things = kwargs.pop('things', None)
-    filtered_places = models.Place.objects.exclude(message__id__isnull=True)
-    if not(things is None):
-        filtered_places = filtered_places.filter(message__things__in=things)
+    stems = kwargs.pop('stems', None)
+    filtered_places = models.Place.objects\
+        .filter(message__in = models.Message.objects.filter(messages_Q(things, stems)))
     if nearby is None:
         # TODO: определять город по координатам
         city_id = kwargs.pop('city_id', None)

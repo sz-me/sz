@@ -9,6 +9,8 @@ from sz.api import serializers, services as api_services
 from sz.api.response import Response
 from sz.core import lists, models, services, queries, utils
 
+categorizationService = services.CategorizationService(list(models.Thing.objects.all()))
+
 class SzApiView(APIView):
     """
         Base class for SZ Web API views
@@ -108,13 +110,14 @@ class PlaceRoot(SzApiView):
             nearby = request.QUERY_PARAMS.get('nearby')
             nearby = utils.safe_cast(nearby, int, nearby)
             things = None
+            stems = None
             if message is None:
                 places_from_venue = api_services.venue_place_service(position, query, nearby)
                 places = [r['place'] for r in places_from_venue]
                 if places:
                     if len(places) > 0:
                         caching_service = services.ModelCachingService(
-                            places, lambda e: e.date, datetime.timedelta(seconds=60*60*24*7))
+                            places, lambda e: e.date, datetime.timedelta(seconds=60*60*24*3))
                         if len(caching_service.for_insert):
                             city_id = api_services.geonames_city_service(position)[0]['id']
                             for e in caching_service.for_insert:
@@ -127,26 +130,20 @@ class PlaceRoot(SzApiView):
                                 e.city_id = stored_city.city_id
                         caching_service.save()
             else:
-                things = None
-                if len(message) > 1:
-                    all_things = list(models.Thing.objects.all())
-                    categorizationService = services.CategorizationService()
-                    things = categorizationService.detect_things_in_text(all_things, message)
+                if len(message) > 2:
+                    things, stems = categorizationService.parse_text(message)
                     things = categorizationService.get_with_additional_things(things)
                 city_id = api_services.geonames_city_service(position)[0]['id']
                 places = queries.feed( \
                     latitude=position['latitude'],\
                     longitude=position['longitude'],\
-                    city_id=city_id, nearby=nearby, things=things)
+                    city_id=city_id, nearby=nearby, things=things, stems=stems)
 
-            messages_queryset = \
-                lambda p_place, p_things:\
-                p_things and p_place.message_set.filter(things__in=p_things) \
-                    or p_place.message_set.all()
-            serializer = serializers.PlaceSerializer(instance=places,
-                latitude=position['latitude'], longitude=position['longitude'],
-                messages=messages_queryset, things=things, request=request
-            )
+            messages_queryset = lambda p_place, args:\
+                    p_place.message_set.filter(queries.messages_Q(args['things'], args['stems']))
+            serializer = serializers.PlaceSerializer(
+                instance=places, latitude=position['latitude'], longitude=position['longitude'],
+                messages=messages_queryset, things=things, stems=stems, request=request)
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -171,22 +168,18 @@ class PlaceInstance(SzApiView):
             'accuracy': request.QUERY_PARAMS.get('accuracy'),
             }
         message = request.QUERY_PARAMS.get('message')
+        things = None
+        stems = None
         if message:
-            things = None
-
-            if len(message) > 1:
-                all_things = list(models.Thing.objects.all())
-                categorizationService = services.CategorizationService()
-                things = categorizationService.detect_things_in_text(all_things, message)
+            if len(message) > 2:
+                things, stems = categorizationService.parse_text(message)
                 things = categorizationService.get_with_additional_things(things)
 
-            messages_queryset = lambda p_place, p_things:\
-                p_things and p_place.message_set.filter(things__in=p_things) or p_place.message_set.all()
-            serializer = serializers.PlaceSerializer(instance=place, latitude=position['latitude'],
-                longitude=position['longitude'], messages=messages_queryset, things=things)
-            return Response(serializer.data)
-        serializer = serializers.PlaceSerializer(instance=place,
-            latitude=position['latitude'], longitude=position['longitude'], request=request)
+        messages_queryset = lambda p_place, args:\
+                p_place.message_set.filter(queries.messages_Q(args['things'], args['stems']))
+        serializer = serializers.PlaceSerializer(instance=place, latitude=position['latitude'],
+            longitude=position['longitude'], messages=messages_queryset, things=things, stems=stems)
+
         return Response(serializer.data)
 
 class PlaceMessages(SzApiView):

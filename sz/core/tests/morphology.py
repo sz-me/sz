@@ -4,6 +4,11 @@ from sz.core.morphology import stemmers
 from sz.core import models, morphology, services
 
 class MorphUtilsTest(TestCase):
+    def test_extract_words_ru(self):
+        text = u'съешь ещё этих мягких французских булочек с маслом, please'
+        self.assertEqual(morphology.extract_words_ru(text),
+            set([u'маслом', u'съешь', u'булочек', u'французских', u'мягких']))
+
     def test_replace_last(self):
         top = u'майк'
         self.assertEquals(morphology.replace_last(top, 2, u'ечк'), u'маечк')
@@ -30,7 +35,7 @@ class StemmerTest(TestCase):
 
 class CatigorizationServiceTest(TestCase):
     def setUp(self):
-        self.thinks = [
+        thinks = [
             models.Thing(
                 name=u'майка',
                 stem = russian_stemmer.stemWord(u'майка')),
@@ -41,8 +46,8 @@ class CatigorizationServiceTest(TestCase):
                 name=u'носки',
                 stem = russian_stemmer.stemWord(u'носки')),
             ]
-        self.categorizationService = services.CategorizationService()
+        self.categorizationService = services.CategorizationService(thinks)
     def test_detect_thing(self):
         message = models.Message(id=1, text=u"купил маЁчку, носок и пакет трусов, доволен как лось!")
-        detected_things = self.categorizationService.detect_things(self.thinks, message)
+        detected_things = self.categorizationService.detect_things(message)
         self.assertEquals(len(detected_things), 3)

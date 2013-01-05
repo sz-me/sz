@@ -1,26 +1,49 @@
 # -*- coding: utf-8 -*-
 from sz.core import lists, morphology
+from sz.core.morphology import stemmers
 
 class CategorizationService:
-    def detect_things_in_text(self, things, text):
-        words = set(morphology.extract_words(text))
-        detected_things = filter(
-            lambda think: lists.any(
-                lambda word:
-                    word.startswith(think.stem) or
-                    morphology.addition_for_ended_in_k(think.stem) and lists.any(
-                        lambda form: word.startswith(form),
-                        morphology.addition_for_ended_in_k(think.stem)),
-                filter(lambda word: len(word) > 2, words)),
-            things
-        )
-        return detected_things
-    def detect_things(self, things, message):
-        detected_things = self.detect_things_in_text(things, message.text)
+    def __init__(self, things):
+        self.things = things
+        self.sremmer_ru = stemmers.RussianStemmer()
+    """
+        Определяет какой вещи соответствует слово, если никакой, то возвращает None
+    """
+    def _detect_thing_in_word_ru(self, word):
+        for thing in self.things:
+            if word.startswith(thing.stem) or\
+               morphology.addition_for_ended_in_k(thing.stem) and\
+               lists.any(lambda form:
+               word.startswith(form),
+                   morphology.addition_for_ended_in_k(thing.stem)):
+                return thing
+        return None
+
+    def parse_text(self, text):
+        words = set(morphology.extract_words_ru(text))
+        things = set([])
+        stems = set([])
+        for word in words:
+            if len(word) > 2:
+                thing = self._detect_thing_in_word_ru(word)
+                if thing:
+                    things.add(thing)
+                else:
+                    stem = self.sremmer_ru.stemWord(word)
+                    stems.add(stem)
+                    addition = morphology.addition_for_ended_in_k(stem)
+                    if addition:
+                        for form in addition:
+                            stems.add(form)
+        return things, stems
+
+    def detect_things(self, message):
+        things, stems = self.parse_text(message.text)
         message.things.clear()
-        for thing in detected_things:
+        for thing in things:
             message.things.add(thing)
-        return detected_things
+        return things
+
     def get_with_additional_things(self, things):
         categories = set([thing.category for thing in things])
         things_many = [category.thing_set.all() for category in categories]

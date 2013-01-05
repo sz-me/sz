@@ -43,13 +43,15 @@ class PlaceSerializer(serializers.Serializer):
         latitude = self.serializer = kwargs.pop('latitude', None)
         assert longitude and latitude, 'longitude and latitude are required'
         position = gis.ll_to_point (longitude, latitude)
-        messages = kwargs.pop('messages', None)
+        messages = kwargs.pop('messages', [])
         things = kwargs.pop('things', None)
+        stems = kwargs.pop('stems', None)
         request = kwargs.pop('request', None)
         self.trans_args = {
             'position' : position,
             'messages': messages,
             'things': things,
+            'stems': stems,
             'request': request
         }
         super(PlaceSerializer, self).__init__(*args, **kwargs)
@@ -68,7 +70,7 @@ class PlaceSerializer(serializers.Serializer):
     distance = sz_api_fields.NestedField(transform=lambda p, a:
         gis.calculate_distance_p(p.position, a['position']))
     messages = sz_api_fields.NestedField(
-        transform=lambda p, a: a['messages'] and a['messages'](p, a['things']) or p.message_set.all(),
+        transform=lambda p, a: a['messages'](p, a),
         serializer=PaginatedMessageSerializer)
 
     categories = sz_api_fields.NestedField(
