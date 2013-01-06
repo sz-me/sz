@@ -3,6 +3,8 @@ from django.contrib.gis.db import models
 from sz.core.db import LowerCaseCharField
 from django.contrib import auth
 from sz.core.morphology import stemmers
+from imagekit import models as imagekit_models
+from imagekit import processors
 
 class Category(models.Model):
     name = LowerCaseCharField(
@@ -142,6 +144,13 @@ class Message(models.Model):
     place = models.ForeignKey(
         Place,
         verbose_name=u"место")
+    photo = models.ImageField(upload_to='photos/%Y/%m/%d',
+        verbose_name=u"фотография",
+        null=True, blank=True)
+    reduced_photo = imagekit_models.ImageSpecField([processors.ResizeToFit(435, 375),], image_field='photo',
+        options={'quality': 85})
+    thumbnail = imagekit_models.ImageSpecField([processors.ResizeToFill(90, 90),], image_field='photo',
+        options={'quality': 85})
     things = models.ManyToManyField(
         Thing,
         null=True,

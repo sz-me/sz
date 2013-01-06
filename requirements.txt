@@ -5,3 +5,5 @@ simplejson
 djangorestframework
 psycopg2
 django-registration
+PIL
+django-imagekit
