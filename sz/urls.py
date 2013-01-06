@@ -1,10 +1,14 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from sz.core.forms import RegistrationForm
+from sz import settings
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+        'document_root': settings.MEDIA_ROOT,
+        }),
     url(r'^$', 'sz.feed.views.index', name='feed-index'),
     url(r'^v/(?P<id>\w+)/$', 'sz.feed.views.place', name='feed-place'),
     url(r'^light/$', 'sz.feed.views.light', name='feed-light'),
