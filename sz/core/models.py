@@ -144,9 +144,10 @@ class Message(models.Model):
     place = models.ForeignKey(
         Place,
         verbose_name=u"место")
-    photo = models.ImageField(upload_to='photos/%Y/%m/%d',
-        verbose_name=u"фотография",
-        null=True, blank=True)
+    photo = imagekit_models.ProcessedImageField(upload_to='photos/%Y/%m/%d',
+        verbose_name=u"фотография", null=True, blank=True,
+        processors=[processors.ResizeToFit(1350, 1200),], options={'quality': 85}
+    )
     reduced_photo = imagekit_models.ImageSpecField([processors.ResizeToFit(435, 375),], image_field='photo',
         options={'quality': 85})
     thumbnail = imagekit_models.ImageSpecField([processors.ResizeToFill(90, 90),], image_field='photo',
