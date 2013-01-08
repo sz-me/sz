@@ -108,16 +108,16 @@ function getPosition(params){
 	    });
 	}
 }
-function feedNearClick(){
-    $("#feedPopular").css({backgroundImage:'url(../static/feed/img/popular.png)'}).removeClass("menuActive");
-    $("#feedNear").css({backgroundImage:'url(../static/feed/img/nearSelected.png)'}).addClass("menuActive");
+function feedPlacesClick(){
+    $("#feedMessages").css({backgroundImage:'url(../static/feed/img/messages.png)'}).removeClass("menuActive");
+    $("#feedPlaces").css({backgroundImage:'url(../static/feed/img/castle.png)'}).addClass("menuActive");
     var params = {};
-    params.nearby = '';
+//     params.nearby = '';
     getPosition(params);
 };
-function feedPopularClick(){
-    $("#feedNear").css({backgroundImage:'url(../static/feed/img/near.png)'}).removeClass("menuActive");
-    $("#feedPopular").css({backgroundImage:'url(../static/feed/img/popularSelected.png)'}).addClass("menuActive");
+function feedMessagesClick(){
+    $("#feedPlaces").css({backgroundImage:'url(../static/feed/img/castle.png)'}).removeClass("menuActive");
+    $("#feedMessages").css({backgroundImage:'url(../static/feed/img/messages.png)'}).addClass("menuActive");
     var params = {};
     params.message = '';
     getPosition(params);
@@ -129,7 +129,7 @@ $(document).ready(function () {
     if(monW>262){ 
     if (navigator.geolocation){
 	szApi = new sz.Api({uri: '../api/',request_func: $.ajax});
-	feedPopularClick();
+	feedMessagesClick();
 	
 	$("#searchString>input")
 	    .data('originalText', 'Найти магазин')
@@ -142,20 +142,20 @@ $(document).ready(function () {
 		$("#searchString>a").css({backgroundImage:'url(../static/feed/img/search.png)'});
 		if ($("#searchString>input").val() == '')
 		    {$("#searchString>input").val($("#searchString>input").data('originalText'));}
-		if($("#feedPopular").attr('class')=='menuActive'){feedPopularClick()}
-		else{feedNearClick()}
+		if($("#feedMessages").attr('class')=='menuActive'){feedMessagesClick()}
+		else{feedPlacesClick()}
 	    })
 	    .keydown(function(event){
 		if (event.keyCode!=27)
 		{
-		    if($("#feedPopular").attr('class')=='menuActive'){feedPopularClick()}
-		    else{feedNearClick()}
+		    if($("#feedMessages").attr('class')=='menuActive'){feedMessagesClick()}
+		    else{feedPlacesClick()}
 		}
 	    });
 	
 	
-	$("#feedNear").click(feedNearClick);
-	$("#feedPopular").click(feedPopularClick);
+	$("#feedPlaces").click(feedPlacesClick);
+	$("#feedMessages").click(feedMessagesClick);
 	pageUp();
 	pageSize()
 	$(window).resize(function(){pageSize();});
@@ -176,11 +176,16 @@ $(document).ready(function () {
     {{ block.super }}
 {% endblock %}
 {% block content %}
+<nav>
+	<span id='all'>Все</span>
+	<span id='nearby'>Ближайшие</span>
+    </nav>
     <aside>
-	    <a id='feedNear' href='#near'></a>
-	    <a id='feedPopular' href='#popular'></a>
+	    <a id='feedPlaces' href='#feedPlaces'></a>
+	    <a id='feedMessages' href='#feedMessages'></a>
 	    <a id='pageUp'></a>
     </aside>
+    
     <section id='feed'>
 	    <div id='searchString'>
 		<a></a>
