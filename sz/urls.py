@@ -11,7 +11,7 @@ urlpatterns = patterns('',
         }),
     url(r'^$', 'sz.feed.views.index', name='feed-index'),
     url(r'^v/(?P<id>\w+)/$', 'sz.feed.views.place', name='feed-place'),
-    url(r'^light/$', 'sz.feed.views.light', name='feed-light'),
+    url(r'^light/', include('sz.light.urls'), name='light'),
     url(r'^api/', include('sz.api.urls'), name='api'),
     url(r'^accounts/register/$', 'registration.views.register',
         {
