@@ -1,0 +1,30 @@
+<div class="container-fluid" sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()">
+	<div class="row-fluid">
+		<div class="span2">
+		</div>
+		<div class="span10">
+			<ul class="media-list">
+				<li ng-repeat="place in places.data" class="media">
+					<a class="pull-left" href="{{place.shmotzhmot_details_url}}"><img class="media-object" src="{{place.foursquare_icon_prefix}}bg_64{{place.foursquare_icon_suffix}}"></a>
+					<div class="media-body">
+						<h4 class="media-heading">{{place.name}}</h4>
+						<address>
+							{{place.address}} <br/>
+							{{place.distance | number:1}}m
+						</address>
+						Messages: {{place.messages.length}}
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="navbar navbar-fixed-bottom" ng-show="showSearchPanel">
+		<div class="navbar-inner">
+			<div class="container">
+				<form class="navbar-search pull-left">
+					<input type="text" class="search-query" placeholder="Search">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

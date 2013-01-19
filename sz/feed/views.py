@@ -1,7 +1,6 @@
 # Create your views here.
 from django.shortcuts import render_to_response
-from django.template import Context, loader
-from django.http import HttpResponse
+from django.shortcuts import redirect
 from sz.core.models import Message
 from django.template import RequestContext
 from django.http import Http404
@@ -40,3 +39,6 @@ def light(request):
         'light/index.html',
         {},
         context_instance = RequestContext(request))
+
+def ng(request):
+    return redirect('/client/app/index.html')
