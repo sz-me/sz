@@ -4,9 +4,14 @@ from sz.core.forms import RegistrationForm
 
 admin.autodiscover()
 
+
+
+
+
 urlpatterns = patterns('',
     url(r'^$', 'sz.feed.views.index', name='feed-index'),
     url(r'^v/(?P<id>\w+)/$', 'sz.feed.views.place', name='feed-place'),
+    url(r'^place_select/', 'sz.feed.views.place_select', name='feed-place_select'),
     url(r'^light/$', 'sz.feed.views.light', name='feed-light'),
     url(r'^api/', include('sz.api.urls'), name='api'),
     url(r'^accounts/register/$', 'registration.views.register',

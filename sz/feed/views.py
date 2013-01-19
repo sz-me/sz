@@ -16,6 +16,16 @@ def index(request):
         'feed/index.html', 
         {'feed': feed}, 
         context_instance = RequestContext(request))
+        
+def place_select(request):
+    try:
+        feed = Message.objects.all().order_by('-date')
+    except DatabaseError: 
+        raise Http404
+    return render_to_response(
+        'feed/place_select.html', 
+        {'feed': feed}, 
+        context_instance = RequestContext(request))
 
 def place(request, id):
     return render_to_response('feed/place.html', { u'id': u'%s' % id },
