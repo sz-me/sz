@@ -113,7 +113,7 @@ function pageSize(){
         menuWidth = em*15,
         menuMargin = (bodyWidth-menuWidth)*0.5;
     if (menuWidth>feedWidth){var menuWidth=bodyWidth,menuMargin=0;}
-    var menuPaddding = (menuWidth-2*em-3*1.05*em)*0.5
+    var menuPaddding = (menuWidth-2*em-3*1.1*em)*0.5
     $("body").width(bodyWidth).css({marginLeft:bodyMargin});
     $("#feed").width(feedWidth).css({marginLeft:marginLeft});
     $("#menu").width(menuWidth).css({marginLeft:menuMargin,borderRadius:menuWidth,paddingTop:menuPaddding,paddingBottom:menuPaddding-em});;

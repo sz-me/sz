@@ -1,0 +1,1 @@
+﻿'use strict';function FeedController($scope, $routeParams, Places) {	$scope.places = Places.query();	$scope.showSearchPanel = true;	$scope.changeScrollToUp = function(){ $scope.showSearchPanel = true; };	$scope.changeScrollToDown = function(){ $scope.showSearchPanel = false; };}function PlaceController($scope, $routeParams) {	$scope.id = $routeParams.placeId}
