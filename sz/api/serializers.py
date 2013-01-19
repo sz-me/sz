@@ -6,9 +6,11 @@ from sz.core import models, gis, queries
 from rest_framework.reverse import reverse
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    name = serializers.CharField(source="username")
+    full_name = serializers.CharField(source="get_full_name")
     class Meta:
         model = User
-        fields = ('username', 'email')
+        fields = ('username','full_name')
 
 class MessageSerializer(serializers.ModelSerializer):
     username = sz_api_fields.NestedField(transform=lambda obj, args: obj.user.username)
@@ -92,3 +94,14 @@ class CitySearchSerializer(serializers.Serializer):
         if  not (latitude and longitude and not query or not latitude and not longitude and query):
             raise serializers.ValidationError("Only latitude and longitude or only query required")
         return attrs
+
+class AuthenticationSerializer(serializers.Serializer):
+    def __init__(self, *args, **kwargs):
+        user = self.serializer = kwargs.pop('user', None)
+        self.trans_args = {
+            'user' : user,
+        }
+        super(AuthenticationSerializer, self).__init__(*args, **kwargs)
+
+    token = serializers.Field(source='key')
+    user = sz_api_fields.NestedField(transform=lambda p, a: a.get('user', None), serializer=UserSerializer)

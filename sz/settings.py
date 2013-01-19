@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'sz.feed',
     'registration',
     'imagekit',
+    'rest_framework.authtoken',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -174,7 +175,11 @@ REST_FRAMEWORK = {
         ),
     'DEFAULT_PERMISSIONS': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-        )
+        ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        ),
 }
 
 GEONAMES_API_CONFIG = {
@@ -195,3 +200,5 @@ from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.request',
     )
+
+CLIENT_ROOT = os.path.join(SZ_ROOT, 'client')

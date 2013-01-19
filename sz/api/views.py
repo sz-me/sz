@@ -8,6 +8,8 @@ from rest_framework.views import APIView
 from sz.api import serializers, services as api_services
 from sz.api.response import Response
 from sz.core import lists, models, services, queries, utils
+from rest_framework.authtoken import models as authtoken_models
+from rest_framework.authtoken import serializers as authtoken_serializers
 
 categorization_service = services.CategorizationService(list(models.Thing.objects.all()))
 
@@ -195,4 +197,19 @@ class PlaceMessages(SzApiView):
             message.save()
             categorization_service.detect_things(message)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Authentication(SzApiView):
+    model = authtoken_models.Token
+    def get(self, request):
+        responseSerializer = serializers.AuthenticationSerializer(
+            instance = request.auth, user=request.user)
+        return Response(responseSerializer.data)
+    def post(self, request):
+        serializer = authtoken_serializers.AuthTokenSerializer(data=request.DATA)
+        if serializer.is_valid():
+            user=serializer.object['user'];
+            token, created = authtoken_models.Token.objects.get_or_create(user=user)
+            responseSerializer = serializers.AuthenticationSerializer(instance=token, user=user)
+            return Response(responseSerializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
