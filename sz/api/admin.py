@@ -1,5 +1,6 @@
 ﻿from sz.core import models
 from django.contrib import admin
+from imagekit.admin import AdminThumbnail
 
 class CategoryAdmin(admin.ModelAdmin):
     def things_to_str(self, obj):
@@ -35,7 +36,8 @@ class MessageAdmin(admin.ModelAdmin):
         tags = set(['%s' % thing.category for thing in obj.things.all()])
         return ', '.join(tags)
     categories_to_str.short_description = u'Категории'
-    list_display = ('date', 'user', 'text', 'place',
+    admin_thumbnail = AdminThumbnail(image_field='thumbnail')
+    list_display = ('date', 'user', 'text', 'admin_thumbnail', 'place',
                     'things_to_str', 'categories_to_str')
     list_display_links = ('text',)
     list_per_page = 25

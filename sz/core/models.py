@@ -1,8 +1,13 @@
 ﻿# -*- coding: utf-8 -*-
-from django.contrib.gis.db import models
-from sz.core.db import LowerCaseCharField
+import os, uuid
+from time import strftime
 from django.contrib import auth
+from django.contrib.gis.db import models
+from imagekit import models as imagekit_models
+from imagekit import processors
+from sz.core.db import LowerCaseCharField
 from sz.core.morphology import stemmers
+
 
 class Category(models.Model):
     name = LowerCaseCharField(
@@ -142,6 +147,19 @@ class Message(models.Model):
     place = models.ForeignKey(
         Place,
         verbose_name=u"место")
+    def get_photo_path(self, filename):
+        ext = filename.split('.')[-1]
+        filename = "%s.%s" % (uuid.uuid4(), ext)
+        directory = strftime('photos/%Y/%m/%d')
+        return os.path.join(directory, filename)
+    photo = imagekit_models.ProcessedImageField(upload_to=get_photo_path,
+        verbose_name=u"фотография", null=True, blank=True,
+        processors=[processors.ResizeToFit(1350, 1200),], options={'quality': 85}
+    )
+    reduced_photo = imagekit_models.ImageSpecField([processors.ResizeToFit(435, 375),], image_field='photo',
+        options={'quality': 85})
+    thumbnail = imagekit_models.ImageSpecField([processors.ResizeToFill(90, 90),], image_field='photo',
+        options={'quality': 85})
     things = models.ManyToManyField(
         Thing,
         null=True,

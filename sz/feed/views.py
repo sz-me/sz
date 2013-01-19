@@ -37,6 +37,6 @@ def light(request):
     except DatabaseError:
         raise Http404
     return render_to_response(
-        'feed/light.html',
+        'light/index.html',
         {},
         context_instance = RequestContext(request))
