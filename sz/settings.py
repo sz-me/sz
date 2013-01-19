@@ -1,6 +1,6 @@
 # Django settings for sz project.
 import os
-SZ_ROOT = os.path.dirname(os.path.dirname(__file__)) + '/'
+SZ_ROOT = os.path.dirname(os.path.dirname(__file__))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -13,11 +13,11 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',#'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'sz',#SZ_ROOT + 'data/sz.db3',                      # Or path to database file if using sqlite3.
-        'USER': 'postgres',                      # Not used with sqlite3.
-        'PASSWORD': 'hmot',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'NAME': 'sz',#SZ_ROOT + 'data/sz.db3', # Or path to database file if using sqlite3.
+        'USER': 'postgres', # Not used with sqlite3.
+        'PASSWORD': 'hmot', # Not used with sqlite3.
+        'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '', # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -46,12 +46,12 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(SZ_ROOT, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -68,7 +68,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    SZ_ROOT + 'static',
+    os.path.join(SZ_ROOT, 'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -76,7 +76,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+# 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -86,7 +86,7 @@ SECRET_KEY = 'fe+lo66hccwrun4!)-1y_#dn6k093j%%124jlyp7v0mrkf=0b0'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+# 'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -105,7 +105,7 @@ ROOT_URLCONF = 'sz.urls'
 WSGI_APPLICATION = 'sz.wsgi.application'
 
 TEMPLATE_DIRS = (
-    SZ_ROOT + 'templates',
+    os.path.join(SZ_ROOT, 'templates'),
 
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
@@ -129,6 +129,7 @@ INSTALLED_APPS = (
     'sz.api',
     'sz.feed',
     'registration',
+    'imagekit',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -161,9 +162,9 @@ LOGGING = {
 }
 
 FOURSQUARE_CONFIG = {
-    'client_id':        'BSQGPWXDOZ40ZANNNJAXJUSBGTSIUW0LSNYOPBYEZCV4PSL1',
-    'client_secret':    'CUB01RXAKUXKZ54DW2PADXO30GMOWK5WAX5HA0X05OHL2LM4',
-    'redirect_uri':     'https://sz.me/callback'
+    'client_id': 'BSQGPWXDOZ40ZANNNJAXJUSBGTSIUW0LSNYOPBYEZCV4PSL1',
+    'client_secret': 'CUB01RXAKUXKZ54DW2PADXO30GMOWK5WAX5HA0X05OHL2LM4',
+    'redirect_uri': 'https://sz.me/callback'
 }
 
 REST_FRAMEWORK = {
