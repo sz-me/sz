@@ -1,0 +1,37 @@
+.navbar-inner,
+input[type="text"]{
+    background-color: #FFF;
+    background-image:none;
+    border: 1px solid #666;
+}
+
+
+.nav-pills>li>a:hover{
+    background-color:#FFF;
+    background-image:none;
+}
+
+.pull-right{
+    margin-right:1em;
+}
+
+.content{
+    border: 1px solid #666;
+}
+
+.place_box{
+    border: 1px solid red;
+}
+
+
+
+.place_address{
+    float:none;
+    text-align:right;
+    overflow: hidden;text-overflow:ellipsis;white-space: nowrap;
+}
+
+.place_box_messages{
+    border:1px solid green;
+}
+
