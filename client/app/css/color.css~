@@ -1,37 +1,84 @@
-.navbar-inner,
+
 input[type="text"]{
-    background-color: #FFF;
-    background-image:none;
-    border: 1px solid #666;
+    border:1px solid #bbb;
 }
 
-
-.nav-pills>li>a:hover{
-    background-color:#FFF;
-    background-image:none;
+#logo{
+    margin-left:5px;
 }
 
-.pull-right{
-    margin-right:1em;
+#searchString{
+    margin-left:10px;
 }
 
-.content{
-    border: 1px solid #666;
-}
 
 .place_box{
-    border: 1px solid red;
+/*     border-bottom:1px solid #DDD; */
 }
 
 
-
-.place_address{
+.place_address,.recentlyPlace,#user{
+    cursor:pointer;
     float:none;
     text-align:right;
-    overflow: hidden;text-overflow:ellipsis;white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 
 .place_box_messages{
-    border:1px solid green;
+   
 }
 
+.place_box_messages_tags{
+    max-height:30px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+}
+
+.place_box_messages_text{
+    max-height:63px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+}
+
+
+#menuSlide{
+    position:fixed;
+    bottom:0;
+    z-index:1030;
+    background:white;
+}
+
+#menutop{
+    background-color:none;
+    background-image:url(../img/topmenu.png);
+    background-size:auto;
+}
+
+#logo{
+    color:#EEE;
+    text-shadow:none;
+}
+
+#charLabel{
+    color: rgb(51, 51, 51);
+    
+}
+
+
+.tabs-below>.nav-tabs{
+    position:absolute;
+    bottom:0;
+}
+
+.modal{
+    margin-left:0;
+    margin-top:0;
+    max-height:none;
+    overflow: hidden;
+    text-overflow:ellipsis;
+}
+.modal-body{
+    max-height:none;
+}

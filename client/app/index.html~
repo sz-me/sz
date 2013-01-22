@@ -1,96 +1,602 @@
 <!DOCTYPE html>
 <html ng-app="sz.client">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-	<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
         <link rel="stylesheet" href="css/bootstrap/css/bootstrap.css">
         <script src="css/bootstrap/js/bootstrap.js"></script>
         
         <link rel="stylesheet" href="css/color.css">
         
-	<title>SZ</title>
-	    
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular-resource.js"></script>
-	<script src="js/services.js"></script>
-	<script src="js/directives.js"></script>
-	<script src="js/controllers.js"></script>
-	<script src="js/app.js"></script>
+        <title>SZ</title>
+            
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular-resource.js"></script>
+        <script src="js/services.js"></script>
+        <script src="js/directives.js"></script>
+        <script src="js/controllers.js"></script>
+        <script src="js/app.js"></script>
 </head>
 <body ng-controller="MasterPageController" sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()" sz-change-scroll-to-top="changeScrollToTop()">
-    <div class="navbar navbar-fixed-top " ng-show="showMenuPanel">
-        <div class="navbar-inner ">        
-             <div class="container-fluid">
-                <div class="row-fluid">
-                    <div class="span2"></div>
-                    <div class="span8"> 
-                        <ul class="nav ">
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id='logo'>ShmotZhmot</a>
-                                <ul class="dropdown-menu">
-                                    <ul class="nav nav-pills">
-                                        <li><a href="#">Лента</a></li>
-                                        <li><a href="#">Хвастаться</a></li>
-                                    </ul>
+
+    <div id="charInfo" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-body">
+            <div style="width:100%;height:50px;">
+                <form class="navbar-search pull-left">
+                    <input type="text" class="search-query" placeholder="Search">
+                </form>
+            </div>
+            <div class="tabbable tabs-right" id="charInfo_tab"> 
+                <ul class="nav nav-tabs" style="text-align:center;">
+                    <li class="active"><a href="#char_castle" data-toggle="tab" >Замки</a></li>
+                    <li><a href="#char_buy" data-toggle="tab">Покупки</i></a></li>
+                    <li><a href="#char_event" data-toggle="tab">События</i></a></li>
+                    <li><a href="#char_ability" data-toggle="tab">Способности</a></li>
+                    <li><a href="#char_inventory" data-toggle="tab">Инвентарь</i></a></li>
+                    <li><a href="#char_custom" data-toggle="tab">Настройки</a></li>
+                    <li><a href="#char_logout" data-toggle="tab">Выход</a></li>
+                </ul>
+                <div class="tab-content" id="charInfo_tab_content">
+                    <div class="tab-pane active" id="char_castle">
+                
+                            <div class="tabbable tabs-below" >
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="char_castle_green">
+                                        <div class="accordion" id="char_castle_green_accordion">
+                                            <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#char_castle_green_accordion" href="#char_castle_green_1">
+                                                        <div style="float:left;margin-top:5px">
+                                                            <span class="badge badge-success">1873</span>
+                                                        </div>
+                                                        <div class="place_address" >
+                                                            <div style='line-height:16px;'><strong>Мазазин 1</strong></div>
+                                                            <div style='line-height:14px;'><small>адрес</small></div>                     
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div id="char_castle_green_1" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <span class="label" style="float:left;margin-right:5px;">800</span><h6 class="place_box_messages_author" style='margin:0;float:left'>pauk_slon</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">700</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Дуня Кулакова</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">300</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Бориска</h6><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#char_castle_green_accordion" href="#char_castle_green_2">
+                                                        <div style="float:left;margin-top:5px">
+                                                            <span class="badge badge-success">1873</span>
+                                                        </div>
+                                                        <div class="place_address" >
+                                                            <div style='line-height:16px;'><strong>Мазазин 1</strong></div>
+                                                            <div style='line-height:14px;'><small>адрес</small></div>                     
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div id="char_castle_green_2" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <span class="label" style="float:left;margin-right:5px;">800</span><h6 class="place_box_messages_author" style='margin:0;float:left'>pauk_slon</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">700</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Дуня Кулакова</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">300</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Бориска</h6><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                             <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#char_castle_green_accordion" href="#char_castle_green_3">
+                                                        <div style="float:left;margin-top:5px">
+                                                            <span class="badge badge-success">1873</span>
+                                                        </div>
+                                                        <div class="place_address" >
+                                                            <div style='line-height:16px;'><strong>Мазазин 1</strong></div>
+                                                            <div style='line-height:14px;'><small>адрес</small></div>                     
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div id="char_castle_green_3" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <span class="label" style="float:left;margin-right:5px;">800</span><h6 class="place_box_messages_author" style='margin:0;float:left'>pauk_slon</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">700</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Дуня Кулакова</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">300</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Бориска</h6><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                             <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#char_castle_green_accordion" href="#char_castle_green_4">
+                                                        <div style="float:left;margin-top:5px">
+                                                            <span class="badge badge-success">1873</span>
+                                                        </div>
+                                                        <div class="place_address" >
+                                                            <div style='line-height:16px;'><strong>Мазазин 1</strong></div>
+                                                            <div style='line-height:14px;'><small>адрес</small></div>                     
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div id="char_castle_green_4" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <span class="label" style="float:left;margin-right:5px;">800</span><h6 class="place_box_messages_author" style='margin:0;float:left'>pauk_slon</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">700</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Дуня Кулакова</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">300</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Бориска</h6><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#char_castle_green_accordion" href="#char_castle_green_5">
+                                                        <div style="float:left;margin-top:5px">
+                                                            <span class="badge badge-success">1873</span>
+                                                        </div>
+                                                        <div class="place_address" >
+                                                            <div style='line-height:16px;'><strong>Мазазин 1</strong></div>
+                                                            <div style='line-height:14px;'><small>адрес</small></div>                     
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div id="char_castle_green_5" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <span class="label" style="float:left;margin-right:5px;">800</span><h6 class="place_box_messages_author" style='margin:0;float:left'>pauk_slon</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">700</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Дуня Кулакова</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">300</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Бориска</h6><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#char_castle_green_accordion" href="#char_castle_green_6">
+                                                        <div style="float:left;margin-top:5px">
+                                                            <span class="badge badge-success">1873</span>
+                                                        </div>
+                                                        <div class="place_address" >
+                                                            <div style='line-height:16px;'><strong>Мазазин 1</strong></div>
+                                                            <div style='line-height:14px;'><small>адрес</small></div>                     
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div id="char_castle_green_6" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <span class="label" style="float:left;margin-right:5px;">800</span><h6 class="place_box_messages_author" style='margin:0;float:left'>pauk_slon</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">700</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Дуня Кулакова</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">300</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Бориска</h6><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#char_castle_green_accordion" href="#char_castle_green_7">
+                                                        <div style="float:left;margin-top:5px">
+                                                            <span class="badge badge-success">1873</span>
+                                                        </div>
+                                                        <div class="place_address" >
+                                                            <div style='line-height:16px;'><strong>Мазазин 1</strong></div>
+                                                            <div style='line-height:14px;'><small>адрес</small></div>                     
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div id="char_castle_green_7" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <span class="label" style="float:left;margin-right:5px;">800</span><h6 class="place_box_messages_author" style='margin:0;float:left'>pauk_slon</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">700</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Дуня Кулакова</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">300</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Бориска</h6><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="char_castle_orange">
+                                        <div class="accordion" id="char_castle_orange_accordion">
+                                            <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#char_castle_orange_accordion" href="#char_castle_orange_1">
+                                                        <div style="float:left;margin-top:5px">
+                                                            <span class="badge badge-warning">1873</span>
+                                                        </div>
+                                                        <div class="place_address" >
+                                                            <div style='line-height:16px;'><strong>Мазазин 1</strong></div>
+                                                            <div style='line-height:14px;'><small>адрес</small></div>                     
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div id="char_castle_orange_1" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <span class="label" style="float:left;margin-right:5px;">800</span><h6 class="place_box_messages_author" style='margin:0;float:left'>pauk_slon</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">700</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Дуня Кулакова</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">300</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Бориска</h6><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#char_castle_orange_accordion" href="#char_castle_orange_2">
+                                                        <div style="float:left;margin-top:5px">
+                                                            <span class="badge badge-warning">1873</span>
+                                                        </div>
+                                                        <div class="place_address" >
+                                                            <div style='line-height:16px;'><strong>Мазазин 1</strong></div>
+                                                            <div style='line-height:14px;'><small>адрес</small></div>                     
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div id="char_castle_orange_2" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <span class="label" style="float:left;margin-right:5px;">800</span><h6 class="place_box_messages_author" style='margin:0;float:left'>pauk_slon</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">700</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Дуня Кулакова</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">300</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Бориска</h6><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                       </div>
+                                    </div>
+                                    <div class="tab-pane" id="char_castle_red">
+                                        <div class="accordion" id="char_castle_red_accordion">
+                                            <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#char_castle_red_accordion" href="#char_castle_red_1">
+                                                        <div style="float:left;margin-top:5px">
+                                                            <span class="badge badge-important">1873</span>
+                                                        </div>
+                                                        <div class="place_address" >
+                                                            <div style='line-height:16px;'><strong>Мазазин 1</strong></div>
+                                                            <div style='line-height:14px;'><small>адрес</small></div>                     
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div id="char_castle_red_1" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <span class="label" style="float:left;margin-right:5px;">800</span><h6 class="place_box_messages_author" style='margin:0;float:left'>pauk_slon</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">700</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Дуня Кулакова</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">300</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Бориска</h6><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-group">
+                                                <div class="accordion-heading">
+                                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#char_castle_red_accordion" href="#char_castle_red_2">
+                                                        <div style="float:left;margin-top:5px">
+                                                            <span class="badge badge-important">1873</span>
+                                                        </div>
+                                                        <div class="place_address" >
+                                                            <div style='line-height:16px;'><strong>Мазазин 1</strong></div>
+                                                            <div style='line-height:14px;'><small>адрес</small></div>                     
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div id="char_castle_red_2" class="accordion-body collapse">
+                                                    <div class="accordion-inner">
+                                                        <span class="label" style="float:left;margin-right:5px;">800</span><h6 class="place_box_messages_author" style='margin:0;float:left'>pauk_slon</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">700</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Дуня Кулакова</h6><br>
+                                                        <span class="label" style="float:left;margin-right:5px;">300</span><h6 class="place_box_messages_author" style='margin:0;margin-right:5px;float:left'>Бориска</h6><br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#char_castle_green" data-toggle="tab"><span class="badge badge-success">32</span></a></li>
+                                    <li><a href="#char_castle_orange" data-toggle="tab"><span class="badge badge-warning">4</span></a></a></li>
+                                    <li><a href="#char_castle_red" data-toggle="tab"><span class="badge badge-important">6</span></a></a></li>
                                 </ul>
+                                
+                            </div>
+                        
+                        
+                    </div>
+                    <div class="tab-pane" id="char_buy">
+                        <h4 style="text-align:center">23 января 2013</h4>
+                        <div class="media place_box" >
+                            <div style="float:right;text-align:left;margin-top:-2px;margin-left:3px;">
+                                <span class="badge badge-success">1873</span><br>
+                                <span class="badge">800</span>
+                            </div>
+                            <a href="#" style='margin-left:2px;float:right'>
+                                <img class="media-object" src="img/castle.png"  width="39" height="39" align="right">
+                            </a>
+                            <div class="media-body">
+                                
+                                <div class="place_address" >
+                                    <strong>Магазин 1</strong><br>
+                                    <small>адрес адрес</small>                   
+                                </div>
+                                <div class="media place_box_messages">
+                                    <div class="media-body place_box_messages" >
+                                        <div class='place_box_messages_tags' style='line-height:14px;'>
+                                            <small >
+                                            <em>
+                                                <span>таракан</span>
+                                                <span>безнадежность</span>
+                                                <span>смысл</span>
+                                                <span>смерть</span>
+                                                <span>абсурд</span>
+                                                <span>страх</span>
+                                                <span>галка</span>
+                                                <span>болезнь</span>
+                                            </em>
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <p class="place_box_messages_text">
+                                    Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил, что он у себя в постели превратился в страшное насекомое. Лежа на панцирнотвердой спине, он видел, стоило ему приподнять голову, свой коричневый, выпуклый, разделенный дугообразными чешуйками живот, на верхушке которого еле держалось готовое вот-вот окончательно сползти одеяло. Его многочисленные, убого тонкие по сравнению с остальным телом ножки беспомощно копошились у него перед глазами. «Что со мной случилось? » – подумал он. Это не было сном. Его комната, настоящая, разве что слишком маленькая, но обычная комната, мирно покоилась в своих четырех хорошо знакомых стенах.
+                                    </p>
+                                    <div class="btn-group place_box_messages_btn pull-right" data-toggle="buttons-radio" style="margin-bottom:10px">
+                                        <button type="button" class="btn btn-inverse disabled">Свернуть</button>
+                                        <button type="button" class="btn btn-inverse">Текст</button>
+                                        <button type="button" class="btn btn-inverse">Фото</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="media place_box" >
+                            <div style="float:right;text-align:left;margin-top:-2px;margin-left:3px;">
+                                <span class="badge badge-success">1873</span><br>
+                                <span class="badge">800</span>
+                            </div>
+                            <a href="#" style='margin-left:2px;float:right'>
+                                <img class="media-object" src="img/castle.png"  width="39" height="39" align="right">
+                            </a>
+                            <div class="media-body">
+                                
+                                <div class="place_address" >
+                                    <strong>Магазин 1</strong><br>
+                                    <small>адрес адрес</small>                   
+                                </div>
+                                <div class="media place_box_messages">
+                                    <div class="media-body place_box_messages" >
+                                        <div class='place_box_messages_tags' style='line-height:14px;'>
+                                            <small >
+                                            <em>
+                                                <span>таракан</span>
+                                                <span>безнадежность</span>
+                                                <span>смысл</span>
+                                                <span>смерть</span>
+                                                <span>абсурд</span>
+                                                <span>страх</span>
+                                                <span>галка</span>
+                                                <span>болезнь</span>
+                                            </em>
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <p class="place_box_messages_text">
+                                    Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил, что он у себя в постели превратился в страшное насекомое. Лежа на панцирнотвердой спине, он видел, стоило ему приподнять голову, свой коричневый, выпуклый, разделенный дугообразными чешуйками живот, на верхушке которого еле держалось готовое вот-вот окончательно сползти одеяло. Его многочисленные, убого тонкие по сравнению с остальным телом ножки беспомощно копошились у него перед глазами. «Что со мной случилось? » – подумал он. Это не было сном. Его комната, настоящая, разве что слишком маленькая, но обычная комната, мирно покоилась в своих четырех хорошо знакомых стенах.
+                                    </p>
+                                    <div class="btn-group place_box_messages_btn pull-right" data-toggle="buttons-radio" style="margin-bottom:10px">
+                                        <button type="button" class="btn btn-inverse disabled">Свернуть</button>
+                                        <button type="button" class="btn btn-inverse">Текст</button>
+                                        <button type="button" class="btn btn-inverse">Фото</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="media place_box" >
+                            <div style="float:right;text-align:left;margin-top:-2px;margin-left:3px;">
+                                <span class="badge badge-success">1873</span><br>
+                                <span class="badge">800</span>
+                            </div>
+                            <a href="#" style='margin-left:2px;float:right'>
+                                <img class="media-object" src="img/castle.png"  width="39" height="39" align="right">
+                            </a>
+                            <div class="media-body">
+                                
+                                <div class="place_address" >
+                                    <strong>Магазин 1</strong><br>
+                                    <small>адрес адрес</small>                   
+                                </div>
+                                <div class="media place_box_messages">
+                                    <div class="media-body place_box_messages" >
+                                        <div class='place_box_messages_tags' style='line-height:14px;'>
+                                            <small >
+                                            <em>
+                                                <span>таракан</span>
+                                                <span>безнадежность</span>
+                                                <span>смысл</span>
+                                                <span>смерть</span>
+                                                <span>абсурд</span>
+                                                <span>страх</span>
+                                                <span>галка</span>
+                                                <span>болезнь</span>
+                                            </em>
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <p class="place_box_messages_text">
+                                    Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил, что он у себя в постели превратился в страшное насекомое. Лежа на панцирнотвердой спине, он видел, стоило ему приподнять голову, свой коричневый, выпуклый, разделенный дугообразными чешуйками живот, на верхушке которого еле держалось готовое вот-вот окончательно сползти одеяло. Его многочисленные, убого тонкие по сравнению с остальным телом ножки беспомощно копошились у него перед глазами. «Что со мной случилось? » – подумал он. Это не было сном. Его комната, настоящая, разве что слишком маленькая, но обычная комната, мирно покоилась в своих четырех хорошо знакомых стенах.
+                                    </p>
+                                    <div class="btn-group place_box_messages_btn pull-right" data-toggle="buttons-radio" style="margin-bottom:10px">
+                                        <button type="button" class="btn btn-inverse disabled">Свернуть</button>
+                                        <button type="button" class="btn btn-inverse">Текст</button>
+                                        <button type="button" class="btn btn-inverse">Фото</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="pager" style='margin-bottom:8px;'>
+                            <li class="next disabled pull-left" >
+                                <a href="#">&larr; Newer</a>
                             </li>
-                        </ul>
-                        <ul class="nav  pull-right">
-                            <li class="dropdown">
-                                <a class="dropdown-toggle " data-toggle="dropdown" href="#" >Джо-джамс,это ты?</a>
-                                <ul class="dropdown-menu" >
-                                    <form class="form-horizontal pull-left">
-                                        <div class="control-group">
-                                            <div class="controls">
-                                                <input type="text" id="inputEmail" placeholder="Email">
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <div class="controls">
-                                                <input type="password" id="inputPassword" placeholder="Password">
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <div class="controls">
-                                                <label class="checkbox">
-                                                    <input type="checkbox"> Помнить</label>
-                                                <button type="submit" class="btn">Войти</button>
-                                                <button type="submit" class="btn">Регистрация</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </ul>
+                            <li class="previous pull-right">
+                                <a href="#">Older &rarr;</a>
                             </li>
+                            
                         </ul>
+                    </div>
+                  
+                    <div class="tab-pane" id="char_event">
+                        <p>char_ability</p>
+                    </div>
+                    <div class="tab-pane" id="char_ability">
+                        <p>char_ability</p>
+                    </div>
+                    <div class="tab-pane" id="char_inventory">
+                        <p>char_inventory.</p>
+                    </div>
+                    <div class="tab-pane" id="char_custom">
+                        <p>char_custom</p>
+                    </div>
+                    <div class="tab-pane" id="char_logout">
+                        <p>Bye-bye =~_^=</p>
                     </div>
                 </div>
             </div>
             
-         
-        </div>
-    </div>  
-    <div class="container-fluid" style='margin-top:50px'>
-        <div class="row-fluid">
-            <div class="span3">
-            <!--Sidebar content-->
-            </div>
-            <div class="span6">
-                <div  ng-view class="content"></div>
-            </div>
         </div>
     </div>
-    
-    <div class="navbar navbar-fixed-bottom " ng-show="showSearchPanel" id="searchPanel">
-        <div class="navbar-inner">
-                <div class="container">
-                        <form class="navbar-search pull-left">
+
+    <div id="feed">
+         <div class="navbar navbar-fixed-top" id="menuPanel" ng-show="showMenuPanel" >
+            <div class="navbar-inner" id="menutop">
+            
+            <ul class="nav nav-pills pull-right">                        
+                <li><button type="button" class="btn  pull-left" data-toggle="button">Рядом</button></li>
+                <li>
+                        <form class="navbar-search pull-left" id="searchString">
                                 <input type="text" class="search-query" placeholder="Искать" >
                         </form>
-                </div>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle brand"
+                        data-toggle="dropdown"
+                        href="#" id="logo">
+                        SmotZhmot
+                    </a>
+<!--                                     <b class="caret"></b> -->
+                    <ul class="dropdown-menu nav-pills">
+                        <li><a href="#">Лента</a></li>
+                        <li><a href="#">Хвастаться</a></li>
+                    </ul>
+                </li>
+            </ul>
+            </div>
         </div>
+        
+<!--     </div> -->
+ 
+ 
+        <div  ng-view class="content" id="content"></div>
+        
+        <div id="menuSlide" ng-show="showSearchPanel">
+            <a id="charLabel" href="#charInfo" role="button" data-toggle="modal">
+                <div id="user" style="float:left;">
+                    <h6 style='margin:0;text-align:center'>Fionna</h6>
+                    <img class="media-object" src="img/userFace.png"   >
+                </div>
+                <div style="text-align:center;float:left;" id="castlePrev">
+                    <div><a href="#"><span class="badge badge-success">32</span></a></div>
+                    <div><a href="#"><span class="badge badge-warning">4</span></a></div>
+                    <div><a href="#"><span class="badge badge-important">6</span></a></div>
+                </div>
+            </a>
+        </div>
+        char_castle
     </div>
+ 
     
+    
+   <script type="text/javascript"> 
+    function pageSize(){
+        var winWidth = $(window).width();
+        var winHeight = $(window).height();
+        var menuSlideHorizontal = false;
+        var menuSlideWidth = 50;
+        var menutopHeight = 50;
+        var menuSlideHorizontalHeight = 20;
+        var contentMargin = 10;
+        var contentMarginT = menutopHeight;
+        var searchWidth = 206;
+        var modalTop = menutopHeight + contentMargin;
+        //desktop
+        if (winWidth>800){
+            if(winWidth>1200){
+                var feedWidth = winWidth*0.4;
+            }
+            if(1000<winWidth&&winWidth<1199){
+                var feedWidth = winWidth*0.5;
+            }
+            if(winWidth&&winWidth<999){
+                var feedWidth = winWidth*0.6;
+            }
+        }
+        else{
+            //phone horizontal
+            if(570<winWidth&&winWidth<799){
+                var feedWidth = winWidth-contentMargin*2-menuSlideWidth;}
+            //phone vertical
+            else{
+                var feedWidth = winWidth-contentMargin*4;
+                var menuSlideHorizontal = true;
+                }
+            var searchWidth = feedWidth -  135 - $("#logo").width();
+            }
+        
+        if(menuSlideHorizontal){
+            var feedWidth = feedWidth + contentMargin;
+            var contentMarginL = contentMargin;
+            var contentWidth = feedWidth;
+            var menuSlideHeight = menuSlideHorizontalHeight;
+            var modalLeft = contentMarginL;
+            
+            var modalHeight = winHeight - modalTop - menuSlideHorizontalHeight;
+            
+//             $("#content,.modal").width(feedWidth).css({marginTop:contentMargin,marginLeft:contentMarginL});
+            
+            
+            var userWidth = 0;
+            var userMargin = 0;
+            var userBoxHeight = 17;
+            var userBoxWidth = 70;
+            
+            $("#castlePrev").height(20).css({width:"auto"})
+            $("#castlePrev>div").css({float:"left",marginLeft:10});
+        }
+        else{
+            var menuSlideHeight = winHeight - menutopHeight;
+            var contentWidth = feedWidth;
+            var contentMarginL = menuSlideWidth + contentMargin;
+            var feedWidth = contentWidth + menuSlideWidth + contentMargin;
+            var modalLeft = menuSlideWidth;
+            var modalHeight = winHeight - modalTop - contentMargin;
+            
+            var userWidth = menuSlideWidth-1;
+            var userMargin = 0;
+            var userBoxWidth = userWidth;
+            var userBoxHeight = userBoxWidth+16;
+            
+            $("#castlePrev").width(userBoxWidth).css({height:"auto"})
+            $("#castlePrev>div").css({float:"none",marginLeft:0});
+           
+        }
+        var modalWidth = contentWidth;
+        
+        if(searchWidth<45){var searchWidth=45;}
+        $('input[type="text"]').width(searchWidth)
+        var feedMargin = (winWidth - feedWidth)*0.5-contentMargin;
+        var modalLeft = modalLeft + feedMargin;
+        $("#content").width(contentWidth).css({marginLeft:contentMarginL,marginTop:contentMarginT});
+        $(".modal").height(modalHeight).width(modalWidth).css({left:modalLeft,top:modalTop});
+        $("#charInfo_tab_content").height(modalHeight-60);
+        $("#feed").width(feedWidth).css({marginLeft:feedMargin});
+        $("#menutop>ul").css({marginRight:feedMargin});
+        $("#menuSlide").width(menuSlideWidth).height(menuSlideHeight);
+        $("#user img").attr({width:userWidth,height:userWidth}).css({marginLeft:userMargin});
+        $("#user").height(userBoxHeight).width(userBoxWidth)        
+        
+//         var tabContHeight = $(".charInfo").height()-40-40;
+//         $("#char_castle>.tabbable>.tab-content").height(tabContHeight);
+        
+        
+
+//         $("#logo").text(winHeight)
+        }
+        
+    
+    pageSize()
+    $(window).resize(function(){pageSize();});
+   </script>
  
 </body>
 </html>
