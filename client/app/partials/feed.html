@@ -7,63 +7,142 @@
 
 	
 <ul class="media-list" id="searchTextResults">
+        
+        
 	<li ng-repeat="place in places.data" class="media">
 		
-		    <div class="media place_box" >
-                        <div style="float:right;text-align:left;margin-top:-2px;margin-left:3px;">
-                            <span class="badge badge-success">1873</span><br>
-                            <span class="badge">800</span>
+		    <div class="place_box" >
+                        <div class="navbar  " >
+                            <div class="navbar-inner" style="padding:0; background-image:none;background-color:transparent;border:none;box-shadow:none;border-radius:none;">
+                                <ul class="nav pull-right" style="margin-bottom:0">
+                                    <li class="dropdown">
+                                        <div class="dropdown-toggle place_address" data-toggle="dropdown" href="#"  >                                    
+                                            <a href='#' style="float:right;margin:8px 5px 0px 5px;" >
+                                                <i class=" icon-chevron-down" ></i>
+                                            </a>
+                                            <div  style="float:right;" id="b">                                    
+                                                <strong style="line-height:12px;">{{place.name}}</strong><br>
+                                                <small style="line-height:10px;">{{place.address}}</small>    
+                                            </div>                                    
+                                        </div>
+                <!--                                     <b class="caret"></b> -->
+                                        <ul class="dropdown-menu  pager mybtn">
+                                             <li>
+                                                <div style="border-bottom:1px solid silver;padding-bottom:8px;">
+                                                    <span class="badge badge-success">1873</span><br>
+                                                    <span class="badge">800</span>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="#" style="margin:8px 0"> 
+                                                    <i class=" icon-plus"></i>
+                                                </a>
+                                            </li>
+                                            
+                                            <li>
+                                                <a href="#"> 
+                                                    <i class=" icon-info-sign"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>           
                         </div>
-                        <a href="#" style='margin-left:2px;float:right'>
-                            <i class="icon-plus-sign"></i>
-                        </a>
-                        <div class="media-body">
-                            
-                            <div class="place_address" >
-                                <strong>{{place.name}}</strong><br>
-                                <small>{{place.address}}</small>                   
-                            </div>
-                            <div class="media place_box_messages">
-                                <a href="#" style='margin-left:0px;margin-right:5px;float:left'>
-                                    <img class="media-object" src="img/pauk_slon.png"  width="30" height="30" align="left">
-                                </a>
-                                <div class="media-body place_box_messages" >
-                                    <span class="badge " >8</span><h6 class="place_box_messages_author" style='margin:0;display:inline;margin-left:3px;line-height:16px;'>Pauk_slon</h6>
-                                    <div class='place_box_messages_tags' style='line-height:14px;'>
-                                        <small >
-                                        <em>
-                                            <span>таракан</span>
-                                            <span>безнадежность</span>
-                                            <span>смысл</span>
-                                            <span>смерть</span>
-                                            <span>абсурд</span>
-                                            <span>страх</span>
-                                            <span>галка</span>
-                                            <span>болезнь</span>
-                                        </em>
-                                        </small>
-                                    </div>
+<!--                        <div class="place_box_info "  >
+                            <ul class="nav dropdown pull-right" style="margin-bottom:0">
+                                <div class="dropdown-toggle place_address" data-toggle="dropdown" href="#"  >                                    
+                                     <a href='#' style="float:right;margin:8px 5px 0px 5px;" >
+                                         <i class=" icon-chevron-down" ></i>
+                                     </a>
+                                    <div  style="float:right;" id="b">                                    
+                                        <strong style="line-height:12px;">{{place.name}}</strong><br>
+                                        <small style="line-height:10px;">{{place.address}}</small>    
+                                    </div>                                    
                                 </div>
-                                <p class="place_box_messages_text">
-                                Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил, что он у себя в постели превратился в страшное насекомое. Лежа на панцирнотвердой спине, он видел, стоило ему приподнять голову, свой коричневый, выпуклый, разделенный дугообразными чешуйками живот, на верхушке которого еле держалось готовое вот-вот окончательно сползти одеяло. Его многочисленные, убого тонкие по сравнению с остальным телом ножки беспомощно копошились у него перед глазами. «Что со мной случилось? » – подумал он. Это не было сном. Его комната, настоящая, разве что слишком маленькая, но обычная комната, мирно покоилась в своих четырех хорошо знакомых стенах.
-                                </p>
-                                <div class="btn-group place_box_messages_btn pull-right" data-toggle="buttons-radio">
-                                    <button type="button" class="btn btn-inverse disabled">Свернуть</button>
-                                    <button type="button" class="btn btn-inverse">Текст</button>
-                                    <button type="button" class="btn btn-inverse">Фото</button>
+                                <ul class="dropdown-menu pager mybtn" >
+                                    <li>
+                                        <div style="border-bottom:1px solid silver;padding-bottom:8px;">
+                                            <span class="badge badge-success">1873</span><br>
+                                            <span class="badge">800</span>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <a href="#" style="margin:8px 0"> 
+                                            <i class=" icon-plus"></i>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a href="#"> 
+                                            <i class=" icon-info-sign"></i>
+                                        </a>
+                                    </li>
+                                </ul>     
+                            </ul>
+                        </div>-->
+                        <div class=" place_box_messages">
+                            <a href="#" style='margin-left:0px;margin-right:5px;float:left'>
+                                <img class="media-object" src="img/user.png"  width="30" height="30" align="left">
+                            </a>
+                            <div class="media-body place_box_messages" >
+                                <span class="badge " >8</span><h6 class="place_box_messages_author" style='margin:0;display:inline;margin-left:3px;line-height:16px;'>Дуня Кулакова</h6>
+                                <div class='place_box_messages_tags' style='line-height:14px;'>
+                                    <small >
+                                    <em >
+                                        <span>таракан</span>&nbsp;
+                                        <span>безнадежность</span>&nbsp;
+                                        <span>смысл</span>&nbsp;
+                                        <span>смерть</span>&nbsp;
+                                        <span>абсурд</span>&nbsp;
+                                        <span>страх</span>&nbsp;
+                                        <span>галка</span>&nbsp;
+                                        <span>болезнь</span>&nbsp;
+                                         <span>таракан</span>&nbsp;
+                                        <span>безнадежность</span>&nbsp;
+                                        <span>смысл</span>&nbsp;
+                                        <span>смерть</span>&nbsp;
+                                        <span>абсурд</span>&nbsp;
+                                        <span>страх</span>&nbsp;
+                                        <span>галка</span>&nbsp;
+                                        <span>болезнь</span>&nbsp;
+                                    </em>
+                                    </small>
                                 </div>
                             </div>
-                            <ul class="pager" style='margin-bottom:8px;'>
-                                <li class="next disabled pull-left" >
-                                    <a href="#">&larr; Newer</a>
+                            <p class="place_box_messages_text">
+                            И еще прошу я вас, мой далекий друг Джонни Депп, отписать мне как величать вас по батюшке, потому что мы еще плохо знаем друг друга и вы маненько пугаете меня своим нахрапом .А ежели вы думаете, что у нас все девки проститутки, как в вашей Америке, то и не пишите мне больше, потому как у нас девки не такие и сама я не такая, а вы тогда сами как есть козел
+                            </p>
+                            <ul class="pager mybtn" >
+                                <li >
+                                    <a href="#" class="active" > 
+                                        <i class=" icon-text-height"></i>
+                                    </a>
                                 </li>
-                                <li class="previous pull-right">
-                                    <a href="#">Older &rarr;</a>
+                                <li >
+                                    <a href="#"> 
+                                        <i class="icon-picture"></i>
+                                    </a>
                                 </li>
-                               
                             </ul>
                         </div>
+                        <ul class="pager mybtn " >
+                            <li class="disabled pull-left" >
+                                <a href="#"> 
+                                    <i class="icon-chevron-left"></i>
+                                </a>
+                            </li>
+                            <li class=" pull-right">
+                                <a href="#"> 
+                                    <i class="icon-chevron-right"></i>
+                                </a>
+                            </li>
+                            
+                        </ul>
+                        
                     </div>
+                    
 		
 		
 		
@@ -99,5 +178,6 @@
         }
 //     buttonSet();
 //     $(window).resize(function(){buttonSet();});
+
     </script>
 	
