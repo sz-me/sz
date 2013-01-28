@@ -1,4 +1,11 @@
-
+a,img{
+    outline: none;
+    -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
 input[type="text"]{
     border:1px solid #bbb;
     min-width:45px;
@@ -44,6 +51,11 @@ input[type="text"]{
     max-height:63px;
     overflow: hidden;
     text-overflow:ellipsis;
+}
+
+.place_box_messages_photo{
+    text-align:center;
+    display:none;
 }
 
 

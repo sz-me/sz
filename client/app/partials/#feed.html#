@@ -1,3 +1,4 @@
+
 <div ng-init='places = {"meta":{"code":200},"data":[
 {"name": "Benetton","address": "Большая Садовая, 302-бис, пятый этаж, кв. № 50)","messages":{"count": 31,"results": [{"username": "pauk_slon", "id": 90, "date": "2013-01-04T15:38:17.029Z", "text": "nsjhf jhgrfkhkjshf dhiugyhiutnhi gjrhdiuh vhudheuyrt yiuhjhskjehr fegruydgdk cgjhre 250!", "things": ["sgfjhgf","sjdhfjgh","kfjhnjh","sdfhjdf"]},{"username": "pauk_slon", "id": 90, "date": "2013-01-04T15:38:17.029Z", "text": "nsjhf jhgrfkhkjshf dhiugyhiutnhi gjrhdiuh vhudheuyrt yiuhjhskjehr fegruydgdk cgjhre 250!", "things": ["sgfjhgf","sjdhfjgh","kfjhnjh","sdfhjdf"]},{"username": "pauk_slon", "id": 90, "date": "2013-01-04T15:38:17.029Z", "text": "nsjhf jhgrfkhkjshf dhiugyhiutnhi gjrhdiuh vhudheuyrt yiuhjhskjehr fegruydgdk cgjhre 250!", "things": ["sgfjhgf","sjdhfjgh","kfjhnjh","sdfhjdf"]}]}}, 
 {"name": "1", "address": "Большая Садовая, 302-бис, пятый этаж, кв. № 50)", "messages": {"count": 4,"results": [{"username": "pauk_slon", "id": 90, "date": "2013-01-04T15:38:17.029Z", "text": "nsjhf jhgrfkhkjshf dhiugyhiutnhi gjrhdiuh vhudheuyrt yiuhjhskjehr fegruydgdk cgjhre 250!", "things": ["sgfjhgf","sjdhfjgh","kfjhnjh","sdfhjdf"]},{"username": "pauk_slon", "id": 90, "date": "2013-01-04T15:38:17.029Z", "text": "nsjhf jhgrfkhkjshf dhiugyhiutnhi gjrhdiuh vhudheuyrt yiuhjhskjehr fegruydgdk cgjhre 250!", "things": ["sgfjhgf","sjdhfjgh","kfjhnjh","sdfhjdf"]},{"username": "pauk_slon", "id": 90, "date": "2013-01-04T15:38:17.029Z", "text": "nsjhf jhgrfkhkjshf dhiugyhiutnhi gjrhdiuh vhudheuyrt yiuhjhskjehr fegruydgdk cgjhre 250!", "things": ["sgfjhgf","sjdhfjgh","kfjhnjh","sdfhjdf"]}]}},
@@ -73,19 +74,15 @@
                             <p class="place_box_messages_text" ng-style="place_box_messages_text">
                         {{message.text}}
                             </p>
-                            <div class="place_box_messages_photo" ng-style="place_box_messages_photo">
-                                <img class="media-object" src="img/photo.jpg" >
-                            </div>
-
                             <ul class="pager mybtn" >
 
                                 <li >
-                                    <a href=""  ng-click="place_box_messages_text={maxHeight:'none'};place_box_messages_photo={};">
+                                    <a href=""  ng-click="place_box_messages_text={maxHeight:'none'};">
                                        <img class="media-object" src="img/ico/black/glyphicons_029_notes_2.png">
                                     </a>
                                 </li>
                                 <li >
-                                    <a href="" ng-click="place_box_messages_text={};place_box_messages_photo={display:'block'};"> 
+                                    <a href="" ng-click="place_box_messages_text={};"> 
                                         <img class="media-object" src="img/ico/black/glyphicons_138_picture.png">
                                     </a>
                                 </li>

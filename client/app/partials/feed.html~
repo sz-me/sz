@@ -56,9 +56,9 @@
                             </li>
                         </ul>           
                 </div>
-                <ul class=" place_box_messages_big_box" style="margin-left:0;list-style:none;">
-                    <div class="place_box_messages_wrapper" >
-                        <li  ng-repeat="message in messages.results" class="place_box_messages_box_mes" style="float:left">
+                <ul class=" place_box_messages_big_box" style="margin-left:0;list-style:none;" ng-init="showedMessageIndex=0">
+<!--                     <div class="place_box_messages_wrapper" > -->
+                        <li  ng-repeat="message in messages.results.slice(showedMessageIndex) | limitTo: 1" class="place_box_messages_box_mes" style="float:left">
                             <a href="#" style='margin-left:0px;margin-right:5px;float:left' id="place_box_messages_box_mes_author">
                                 <img class="media-object" src="img/user.png"  width="30" height="30" align="left">
                             </a>
@@ -88,16 +88,16 @@
                                 </li>
                             </ul>
                         </li>
-                    </div>
+<!--                     </div> -->
                 </ul>
                 <ul class="pager mybtn " >
                     <li class="disabled pull-left" >
-                        <a id="btn_place_box_message_newer" ng-click="PlaceBoxMessageNewer()"> 
+                        <a id="btn_place_box_message_newer" > 
                            <img class="media-object" src="img/ico/black/glyphicons_224_chevron-left.png">
                         </a>
                     </li>
                     <li class=" pull-right" >
-                        <a id="btn_place_box_message_older" ng-click="PlaceBoxMessageOlder($(this))"> 
+                        <a id="btn_place_box_message_older" > 
                            <img class="media-object" src="img/ico/black/glyphicons_223_chevron-right.png">
                         </a>
                     </li>
@@ -124,20 +124,20 @@
         $("#btn_page_scroll_Up").text(messages_BboxWidth)
         })
 
-    $.each($(".place_box_messages_big_box"),function(index,val){
-        var $messages_Bbox = $(val);
-        var messages_BboxWidth = $messages_Bbox.width();
-        var $wrapper = $messages_Bbox.find(".place_box_messages_wrapper");
-        var $messages = $wrapper.find(".place_box_messages_box_mes");
-        var messageVal  = 3;
-        var fmessageHeight = $messages.first().height()+40;
-        var wrapperWidth = messages_BboxWidth*messageVal;
-        
-        $messages_Bbox.height(fmessageHeight);
-        $wrapper.height(fmessageHeight).width(wrapperWidth);
-        $(".place_box_messages_box_mes").width(messages_BboxWidth);
-//         $("#btn_page_scroll_Up").text(wrapperWidth+';'+messageVal)
-        });
+//     $.each($(".place_box_messages_big_box"),function(index,val){
+//         var $messages_Bbox = $(val);
+//         var messages_BboxWidth = $messages_Bbox.width();
+//         var $wrapper = $messages_Bbox.find(".place_box_messages_wrapper");
+//         var $messages = $wrapper.find(".place_box_messages_box_mes");
+//         var messageVal  = 3;
+//         var fmessageHeight = $messages.first().height()+40;
+//         var wrapperWidth = messages_BboxWidth*messageVal;
+//         
+//         $messages_Bbox.height(fmessageHeight);
+//         $wrapper.height(fmessageHeight).width(wrapperWidth);
+//         $(".place_box_messages_box_mes").width(messages_BboxWidth);
+// //         $("#btn_page_scroll_Up").text(wrapperWidth+';'+messageVal)
+//         });
 
     </script>
 	

@@ -1,4 +1,11 @@
-
+a,img{
+    outline: none;
+    -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
 input[type="text"]{
     border:1px solid #bbb;
     min-width:45px;
@@ -44,6 +51,11 @@ input[type="text"]{
     max-height:63px;
     overflow: hidden;
     text-overflow:ellipsis;
+}
+
+.place_box_messages_text{
+    text-align:center;
+    display:none;
 }
 
 
@@ -179,20 +191,3 @@ input[type="text"]{
     color:#888;
 }
 
-
-li {
-  transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -webkit-transition: all 0.5s ease;
-  background: lightblue;
-  max-height: 50px; /* 1000px works too */
-  overflow: hidden;
-  padding: 5px;
-}
-/* The 'hidden' state to transition from & to */
-li.ui-animate {
-  opacity: 0;
-  max-height: 0;
-  padding: 0 5px;
-}
