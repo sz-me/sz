@@ -5,13 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
         <link rel="stylesheet" href="css/bootstrap/css/bootstrap.css">
-        <script src="css/bootstrap/js/bootstrap.js"></script>
+         <script src="css/bootstrap/js/bootstrap.js"></script> 
         <link rel="stylesheet" href="css/color.css">
         
         <title>SZ</title>
             
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular-resource.js"></script>
+        <script src="js/angular-ui-0.3.2/common/module.js"></script>
         <script src="js/services.js"></script>
         <script src="js/directives.js"></script>
         <script src="js/controllers.js"></script>
@@ -26,23 +27,23 @@
             
                 <ul class="nav " > 
                     <li>
-                        <a href='#' class="navitem" >
-                            <i class="icon-shopping-cart icon-white"></i>
+                        <a href='#' class="navitem" id="btn_feed" >
+                           <img class="media-object" src="img/ico/black/glyphicons_355_bullhorn.png">
                         </a>
                     </li>
                     <li>
-                        <a href='#' class="navitem" >
-                            <i class=" icon-certificate icon-white"></i>
+                        <a href='#' class="navitem" id="btn_game_event">
+                            <img class="media-object" src="img/ico/black/glyphicons_009_magic.png">
                         </a>
                     </li>
                     <li>
-                        <a href='#' class="navitem">
-                            <i class="icon-globe icon-white"></i>
+                        <a href='#' class="navitem" id="btn_map">
+                            <img class="media-object" src="img/ico/black/glyphicons_340_globe.png">
                         </a>
                     </li>
                     <li>
-                        <a href='#' class="navitem" >
-                            <i class="icon-user icon-white"></i>
+                        <a href='#' class="navitem" id="btn_char">
+                            <img class="media-object" src="img/ico/black/glyphicons_003_user.png">
                         </a>
                     </li>
                 </ul>
@@ -50,33 +51,39 @@
             
         </div>
         <div class="navbar-inner" id="searchString" >
-            <ul class="nav " > 
-                <li><button type="button" class="btn  " data-toggle="button" style="margin-top:5px;margin-right:8px;float:left">Рядом</button></li>
+            <ul class="nav pager mybtn" > 
                 <li>
-                    <form class="navbar-search pull-left" >
+                    <a href='#' id="btn_near"  style="float:left;margin-right:8px;">
+                        <img class="media-object" src="img/ico/black/glyphicons_377_riflescope.png">
+                    </a>
+                </li>
+                <li>
+                    <form class="navbar-search pull-left" style="margin-top:8px;">
                             <input type="text" class="search-query" placeholder="Искать" >
                     </form>
                 </li>
             </ul>
         </div>
         <div  ng-view class="content" id="content"></div>
+      
+
         
         <div class="navbar navbar-fixed-bottom"  ng-show="showSearchPanel" >
             <div class="navbar-inner" id="menubottom" >
                 <ul class="pager mybtn " >
                     <li>
                         <a href="#" id="btn_page_scroll_Up" style="float:left;margin-left:8px;"> 
-                           <i class=" icon-arrow-up"></i>
+                           <img class="media-object" src="img/ico/black/glyphicons_213_up_arrow.png">
                         </a>
                     </li>
                        <li >
                         <a href="#" id="btn_new_message"> 
-                          <i class="icon-comment"></i>
+                          <img class="media-object" src="img/ico/black/glyphicons_124_message_plus.png">
                         </a>
                     </li>
                     <li >
                         <a href="#" id="btn_search"> 
-                           <i class=" icon-search"></i>
+                           <img class="media-object" src="img/ico/black/glyphicons_027_search.png">
                         </a>
                     </li>
                     <li>
@@ -86,26 +93,7 @@
                         </div>
                     </li>
                 </ul>
-                <ul class="nav" style="float:right">
-                </ul>
-                <!--<ul class="nav"> 
-                    <li>
-                        <button type="button" class="btn  pull-left" ><i class=" icon-arrow-up"></i></button>
-                    </li>
-                    
-                    <li>
-                        <button type="button" class="btn  pull-left" ><i class=" icon-plus"></i></button>
-                    </li>
-                    <li>
-                        <button type="button" class="btn  pull-left" ><i class=" icon-search"></i></button>
-                    </li>
-                    <li>
-                        <a href='#' style="border-left:1px solid silver;border-right:1px solid silver;margin-left:10px;" id="a">
-                            <span class="badge badge-success">2</span>
-                            <span class="badge badge-warning">4</span>
-                        </a>
-                    </li>
-                </ul>-->
+               
             </div>
         </div>
  
@@ -176,6 +164,10 @@
     
     pageSize()
     $(window).resize(function(){pageSize();});
+    
+    
+
+
    </script>
  
 </body>

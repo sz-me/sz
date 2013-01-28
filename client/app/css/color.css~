@@ -1,23 +1,25 @@
 
 input[type="text"]{
     border:1px solid #bbb;
+    min-width:45px;
 }
 
 #logo{
     margin-left:5px;
 }
 
-#searchString{
-    margin-left:10px;
-}
 
 
 .place_box{
-/*     border-bottom:1px solid #DDD; */
+    padding-bottom:8px;
+    border-bottom:1px solid rgb(51,51,51);
 }
 
+.place_box_info{
+    height:43px;
+}
 
-.place_address,.recentlyPlace,#user{
+.place_address{
     cursor:pointer;
     float:none;
     text-align:right;
@@ -26,8 +28,10 @@ input[type="text"]{
     white-space: nowrap;
 }
 
+
+
 .place_box_messages{
-   
+   margin-top:3px;
 }
 
 .place_box_messages_tags{
@@ -51,9 +55,28 @@ input[type="text"]{
 }
 
 #menutop{
-    background-color:none;
-    background-image:url(../img/topmenu.png);
-    background-size:auto;
+    background-color:transparent;
+    background-image:none;
+    background: #e75480;
+/*     #b5a642, #808000 */
+    background: -moz-linear-gradient(top,  #BBB, #909090); /* Firefox 3.6+ */
+    /* Chrome 1-9, Safari 4-5 */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fefcea), color-stop(100%,#f1da36));
+    /* Chrome 10+, Safari 5.1+ */
+    background: -webkit-linear-gradient(top, #BBB, #909090);
+    background: -o-linear-gradient(top,  #BBB, #909090); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #BBB, #909090); /* IE10 */
+    background: linear-gradient(top, #BBB, #909090); /* CSS3 */ 
+    
+}
+
+
+#menubottom{
+    padding:5px 0 ;
+    border-right:1px solid silver;
+    border-left:1px solid silver;
+    border-color:silver;
+    border-radius: 15px 15px 0 0;
 }
 
 #logo{
@@ -81,4 +104,95 @@ input[type="text"]{
 }
 .modal-body{
     max-height:none;
+}
+
+#menutop>ul{
+    margin:0;
+}
+
+
+
+.navitem{
+    min-width:30px;
+    max-width:160px;
+    text-align:center;
+}
+
+/*.navbar .nav > li > a:focus, .navbar .nav > li > a:hover  {
+    background-color:#e28705;
+}*/
+
+.pager{
+    margin:0;
+}
+
+.mybtn>li>a{
+    padding:10px 19px 10px 19px ;
+    max-width:25px;
+    
+    min-height:25px;
+/*     border-color:rgb(51,51,51); */
+    
+    background: #55ddff; /* Старые браузеры */
+    background: -moz-radial-gradient(#EEE, #CCC); /* FF3.6+ */
+    background: -webkit-gradient(radial, center center, 0, center center, 100%, 
+                color-stop(0%,#55ddff), color-stop(100%,#0081b5)); /* Chrome, Safari4+ */
+    background: -webkit-radial-gradient(#EEE, #CCC); /* Chrome 10+, Safari 5.1+ */
+    background: -o-radial-gradient(#EEE, #CCC); /* Opera 12 */
+    background: -ms-radial-gradient(#EEE, #CCC); /* IE10 */
+    background: radial-gradient(#EEE, #CCC); /* CSS3 */
+}
+
+.mybtn>li>a:hover{
+    background: rgb(0, 129, 194);
+    background: rgb(0, 129, 194); /* Старые браузеры */
+    background: -moz-radial-gradient(#55ddff, #0081b5); /* FF3.6+ */
+    background: -webkit-gradient(radial, center center, 0, center center, 100%, 
+                color-stop(0%,#55ddff), color-stop(100%,#0081b5)); /* Chrome, Safari4+ */
+    background: -webkit-radial-gradient(#55ddff, #0081b5); /* Chrome 10+, Safari 5.1+ */
+    background: -o-radial-gradient(#55ddff, #0081b5); /* Opera 12 */
+    background: -ms-radial-gradient(#55ddff, #0081b5); /* IE10 */
+    background: radial-gradient(#55ddff, #0081b5); /* CSS3 */
+}
+
+
+
+.dropdown-menu {
+    min-width:10px;
+    padding-right:8px;
+    padding-left:8px;
+}
+
+#searchString{
+    text-align:left;
+    padding:0;
+    margin:10px 0 ;
+    background-image:none;
+    background-color:transparent;
+    border:none;
+    box-shadow:none;
+    border-radius:0;
+}
+
+.place_box_messages_tags span{
+    text-decoration:underline;
+    color:#888;
+}
+
+
+li {
+  transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  background: lightblue;
+  max-height: 50px; /* 1000px works too */
+  overflow: hidden;
+  padding: 5px;
+}
+/* The 'hidden' state to transition from & to */
+li.ui-animate {
+  opacity: 0;
+  max-height: 0;
+  padding: 0 5px;
 }
