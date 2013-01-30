@@ -71,14 +71,14 @@ input[type="text"]{
     background-image:none;
     background: #e75480;
 /*     #b5a642, #808000 */
-    background: -moz-linear-gradient(top,  #BBB, #909090); /* Firefox 3.6+ */
+    background: -moz-linear-gradient(top,  #ffa500, #cc5500); /* Firefox 3.6+ */
     /* Chrome 1-9, Safari 4-5 */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fefcea), color-stop(100%,#f1da36));
     /* Chrome 10+, Safari 5.1+ */
-    background: -webkit-linear-gradient(top, #BBB, #909090);
-    background: -o-linear-gradient(top,  #BBB, #909090); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #BBB, #909090); /* IE10 */
-    background: linear-gradient(top, #BBB, #909090); /* CSS3 */ 
+    background: -webkit-linear-gradient(top, #ffa500, #cc5500);
+    background: -o-linear-gradient(top,  #ffa500, #cc5500); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #ffa500, #cc5500); /* IE10 */
+    background: linear-gradient(top, #ffa500, #cc5500); /* CSS3 */ 
     
 }
 
@@ -141,30 +141,29 @@ input[type="text"]{
 .mybtn>li>a{
     padding:10px 19px 10px 19px ;
     max-width:25px;
-    
+    width:25px;
     min-height:25px;
 /*     border-color:rgb(51,51,51); */
-    
-    background: #55ddff; /* Старые браузеры */
-    background: -moz-radial-gradient(#EEE, #CCC); /* FF3.6+ */
+    box-shadow:none !important;
+    background: #AAA; /* Старые браузеры */
+    background: -moz-radial-gradient(#AAA, #777); /* FF3.6+ */
     background: -webkit-gradient(radial, center center, 0, center center, 100%, 
                 color-stop(0%,#55ddff), color-stop(100%,#0081b5)); /* Chrome, Safari4+ */
-    background: -webkit-radial-gradient(#EEE, #CCC); /* Chrome 10+, Safari 5.1+ */
-    background: -o-radial-gradient(#EEE, #CCC); /* Opera 12 */
-    background: -ms-radial-gradient(#EEE, #CCC); /* IE10 */
-    background: radial-gradient(#EEE, #CCC); /* CSS3 */
+    background: -webkit-radial-gradient(#AAA, #777); /* Chrome 10+, Safari 5.1+ */
+    background: -o-radial-gradient(#AAA, #777); /* Opera 12 */
+    background: -ms-radial-gradient(#AAA, #777); /* IE10 */
+    background: radial-gradient(#AAA, #777); /* CSS3 */
 }
 
 .mybtn>li>a:hover{
-    background: rgb(0, 129, 194);
-    background: rgb(0, 129, 194); /* Старые браузеры */
-    background: -moz-radial-gradient(#55ddff, #0081b5); /* FF3.6+ */
+    background: #ffa500; /* Старые браузеры */
+    background: -moz-radial-gradient(#ffa500, #cc5500); /* FF3.6+ */
     background: -webkit-gradient(radial, center center, 0, center center, 100%, 
                 color-stop(0%,#55ddff), color-stop(100%,#0081b5)); /* Chrome, Safari4+ */
-    background: -webkit-radial-gradient(#55ddff, #0081b5); /* Chrome 10+, Safari 5.1+ */
-    background: -o-radial-gradient(#55ddff, #0081b5); /* Opera 12 */
-    background: -ms-radial-gradient(#55ddff, #0081b5); /* IE10 */
-    background: radial-gradient(#55ddff, #0081b5); /* CSS3 */
+    background: -webkit-radial-gradient(#ffa500, #cc5500); /* Chrome 10+, Safari 5.1+ */
+    background: -o-radial-gradient(#ffa500, #cc5500); /* Opera 12 */
+    background: -ms-radial-gradient(#ffa500, #cc5500); /* IE10 */
+    background: radial-gradient(#ffa500, #cc5500); /* CSS3 */
 }
 
 
@@ -186,14 +185,14 @@ input[type="text"]{
     border-radius:0;
 }
 
-.place_box_messages_tags span{
+.place_box_messages_tag{
+    margin-right:3px;
+    float:left;
     text-decoration:underline;
     color:#888;
 }
 
-.pagination-large ul > li > a > i {
-            line-height: 17.5px;
-        }
-        .pagination ul > li > a, .pagination ul > li > span {
-            width: 20px;
-        }
+.place_box_messages_box_mes{
+    float:left;
+    width:100%;
+}

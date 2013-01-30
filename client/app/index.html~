@@ -54,7 +54,7 @@
             <ul class="nav pager mybtn" > 
                 <li>
                     <a href='#' id="btn_near"  style="float:left;margin-right:8px;">
-                        <img class="media-object" src="img/ico/black/glyphicons_377_riflescope.png">
+                        <img class="media-object" src="img/ico/white/glyphicons_377_riflescope.png">
                     </a>
                 </li>
                 <li>
@@ -65,7 +65,6 @@
             </ul>
         </div>
         
-     <input type="button" value="set">
         
         <div  ng-view class="content" id="content"></div>
       
@@ -76,17 +75,17 @@
                 <ul class="pager mybtn " >
                     <li>
                         <a href="#" id="btn_page_scroll_Up" style="float:left;margin-left:8px;"> 
-                           <img class="media-object" src="img/ico/black/glyphicons_213_up_arrow.png">
+                           <img class="media-object" src="img/ico/white/glyphicons_213_up_arrow.png">
                         </a>
                     </li>
                        <li >
                         <a href="#" id="btn_new_message"> 
-                          <img class="media-object" src="img/ico/black/glyphicons_124_message_plus.png">
+                          <img class="media-object" src="img/ico/white/glyphicons_124_message_plus.png">
                         </a>
                     </li>
                     <li >
                         <a href="#" id="btn_search"> 
-                           <img class="media-object" src="img/ico/black/glyphicons_027_search.png">
+                           <img class="media-object" src="img/ico/white/glyphicons_027_search.png">
                         </a>
                     </li>
                     <li>

@@ -84,57 +84,99 @@ angular.module('sz.client.directives', [])
             }
         })  
         .directive('szFeedMessageBox', function () {
-        return {
-            restrict: 'EA',
-            replace: true,
-            template:
-                    '<ul class=" place_box_messages_big_box" style="margin-left:0;list-style:none;" ">'+
-//                         '<li  ng-repeat="message in messages.results.slice(showedMessageIndex) | limitTo: 1" class="place_box_messages_box_mes" style="float:left">'+
-                            '<a href="#" style="margin-left:0px;margin-right:5px;float:left" id="place_box_messages_box_mes_author">'+
-                                '<img class="media-object" src="img/user.png"  width="30" height="30" align="left">'+
+            return {
+                restrict: 'EA',
+                replace: true,
+                template:
+                        '<li  class="place_box_messages_box_mes" >'+
+                            '<a href="#" style="margin-left:0px;margin-right:5px;float:left;margin-top:6px" id="place_box_messages_box_mes_author">'+
+                                '<img class="media-object" src="img/user.png"  width="32" height="32" align="left">'+
                             '</a>'+
-                            '<div class="media-body place_box_messages" >'+
-                                '<span class="badge " >8</span><h6 class="place_box_messages_author" style="margin:0;display:inline;margin-left:3px;line-height:16px;">{{messages[first].username}}</h6>'+
-                                '<small >'+
-                                '<ul class="place_box_messages_tags" style="line-height:14px;" >'+
-                                    '<em ng-repeat="thing in messages[first].things">'+
-                                        '<span>{{thing}}&nbsp</span>'+
-                                    '</em>'+
-                                '</ul>'+
-                                '</small>'+
+                            '<div class="media-body place_box_messages_header" >'+
+                                '<span class="badge " >8</span><h6 class="place_box_messages_author" style="margin:0;display:inline;margin-left:3px;line-height:16px;">{{messages[cur].username}}</h6>'+
+                                
+                                    '<div class="place_box_messages_tags" style="line-height:14px;" >'+
+                                        '<small>'+
+                                        '<em ng-repeat="thing in messages[cur].things">'+
+                                            '<div class="place_box_messages_tag">{{thing}}</div>'+
+                                        '</em>'+
+                                        '</small>'+
+                                    '</div>'+
+                                
                             '</div>'+
-                            '<p class="place_box_messages_text" ng-style="place_box_messages_text">'+
-                                '{{messages[first].text}}'+
+                            
+                            '<p class="place_box_messages_text">'+
+                                '{{messages[cur].text}}'+
                             '</p>'+
-//                     '</li>'+
-                    '</ul>',
-            /*
-                '<div class="pagination pagination-large pagination-centered">' +
-                    '<ul>' +
-                        '<li ng-repeat="page in pages"' +
-                        '>' +
-                            '<a>{{messages[page].username}}</a>' +
-                        '</li>' +
-                    '</ul>' +
-                    '</div>',*/
-            scope: {
-                cur: '=',
-                messages:'='
-                
-            },
-            link: function (scope, element, attrs) {
-                var calcPages = function () {
-                    scope.total = scope.messages.length-1;
-                    scope.start = scope.cur;
-                    scope.first = scope.start;
-                    if (scope.cur < 0) {scope.cur=0}
-                    if (scope.cur > scope.total) {scope.cur=0}
+                            
+                            '<div class="place_box_messages_photo" >'+
+                                '<img class="media-object" src="img/photo.jpg" width="220">'+
+                            '</div>'+
 
-                };
-                scope.$watch('cur', calcPages);
-                scope.$watch('total', calcPages);
+                            '<ul class="pager mybtn" >'+
 
-            }
-        };
+                                '<li >'+
+                                    '<a href=""  ng-click="showMessageTextFull()">'+
+                                       '<img class="media-object" src="img/ico/white/glyphicons_029_notes_2.png">'+
+                                    '</a>'+
+                                '</li>'+
+                                '<li >'+
+                                    '<a href="" ng-click="showMessagePhoto()"> '+
+                                        '<img class="media-object" src="img/ico/white/glyphicons_138_picture.png">'+
+                                    '</a>'+
+                                '</li>'+
+                            '</ul>'+
+                        '</li>',
+                scope: {
+                    cur: '=',
+                    messages:'='
+                    
+                },
+                link: function (scope, element, attrs) {
+                    var calcPages = function () {
+                        scope.total = scope.messages.length-1;
+                        scope.messageText.css({maxHeight:scope.textHeight+'px'});
+                        scope.messagePhoto.hide();
+//                         scope.start = scope.cur;
+//                         scope.end = scope.start;
+                        if (scope.cur < 0) {scope.cur=0}
+                        if (scope.cur > scope.total) {scope.cur=0}
+//                         scope.pages = [];
+//                         for (var i = scope.start; i <= scope.end; ++i) {
+//                             scope.pages.push(i);
+//                         }
+                        
+                   /*     
+                        var messageHeight = scope.messageBox.css('height');
+                        scope.wrapper.animate({height:messageHeight},500);*/
+
+                    };
+                    scope.messageBox = $(element[0]);
+                    scope.wrapper = scope.messageBox.closest(".place_box_messages_wrapper");
+                    scope.messageText =  scope.messageBox.find(".place_box_messages_text");
+                    scope.messagePhoto =  scope.messageBox.find(".place_box_messages_photo");
+                    scope.textHeight = parseInt(scope.messageText.css('maxHeight'));
+                    scope.$watch('cur', calcPages);
+                    scope.$watch('total', calcPages);
+                    
+                    scope.showMessageTextFull = function(){  
+                        scope.messagePhoto.slideUp(200)
+                        var messageHeight = scope.messageText.height();
+                        if (messageHeight>scope.textHeight){var h=scope.textHeight; }
+                        else{var h=1000}                        
+                        scope.messageText.css({maxHeight:h+'px'})
+//                         var i = scope.messageText.height();
+//                         scope.wrapper.animate({height:350+'px'},200);
+                    }
+                    scope.showMessagePhoto = function(){
+                        if (scope.messagePhoto.is(":hidden"))
+                        {
+                            scope.messageText.css({maxHeight:scope.textHeight+'px'});
+                            scope.messagePhoto.slideDown(200);
+                        }
+                        else{scope.messagePhoto.slideUp(200);}
+                    }
+                }
+            };
     })
 	;
