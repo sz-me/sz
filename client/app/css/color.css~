@@ -53,7 +53,7 @@ input[type="text"]{
     text-overflow:ellipsis;
 }
 
-.place_box_messages_text{
+.place_box_messages_photo{
     text-align:center;
     display:none;
 }
@@ -191,3 +191,9 @@ input[type="text"]{
     color:#888;
 }
 
+.pagination-large ul > li > a > i {
+            line-height: 17.5px;
+        }
+        .pagination ul > li > a, .pagination ul > li > span {
+            width: 20px;
+        }

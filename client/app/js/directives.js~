@@ -98,7 +98,7 @@ angular.module('sz.client.directives', [])
                                 '<small >'+
                                 '<ul class="place_box_messages_tags" style="line-height:14px;" >'+
                                     '<em ng-repeat="thing in messages[first].things">'+
-                                        '<span>{{thing}}&nbsp</span>'+
+                                        '<span>{{thing}}&nbsp;</span>'+
                                     '</em>'+
                                 '</ul>'+
                                 '</small>'+

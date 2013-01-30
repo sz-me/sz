@@ -7,8 +7,7 @@
 
 <div ng-init='messages = {
 "results": [
-{"username": "1Дуня Кулакова", "id": 90, "date": "2013-01-04T15:38:17.029Z", "text": "Человек царь зверей, оглянись, не робей. Создан весь этот мир для утехи твоей. Чем угодно ты можешь себя ублажать, но послушай меня и не трогай ежа. Ёжик самый в лесу неебабельный зверь, у него не бывает открытых дверей, у него нету незащищенных щелей, весь в иголках по самые дырки ноздрей. У козы томный взгляд, у овцы добрый нрав, на лошадку кто с верху залез - тот и прав,если хочешь экзотики - вот и удав, только ежика,брат, ты в покое оставь. Лишь ежа никогда не сумеешь уметь, лишь ежа никогда тебе не поиметь, носом к собственной жопе с испугу прирос, ёжик - это колючий ураварос. К тигру нужен подход и к любому коту, у пираньи есть зубы, но только во рту, при желании можно впердолить кроту, только ёжика ты обходи за версту.", "things": ["понедельник","вторник","бездельник","дворник","штаны","полоска","трава","жилетка","сигаретка","папироска","аристократ","сократ","тратуар","дамы","герлы","телка","метелка","метла","меняла",
-"туман","рубль","карман","бездельник","дворник","аристократ","сократ"]},
+{"username": "1Дуня Кулакова", "id": 90, "date": "2013-01-04T15:38:17.029Z", "text": "Человек царь зверей, оглянись, не робей. Создан весь этот мир для утехи твоей. Чем угодно ты можешь себя ублажать, но послушай меня и не трогай ежа. Ёжик самый в лесу неебабельный зверь, у него не бывает открытых дверей, у него нету незащищенных щелей, весь в иголках по самые дырки ноздрей. У козы томный взгляд, у овцы добрый нрав, на лошадку кто с верху залез - тот и прав,если хочешь экзотики - вот и удав, только ежика,брат, ты в покое оставь. Лишь ежа никогда не сумеешь уметь, лишь ежа никогда тебе не поиметь, носом к собственной жопе с испугу прирос, ёжик - это колючий ураварос. К тигру нужен подход и к любому коту, у пираньи есть зубы, но только во рту, при желании можно впердолить кроту, только ёжика ты обходи за версту.", "things": ["понедельник","вторник","бездельник","дворник","штаны","полоска","трава","жилетка","сигаретка","папироска","аристократ","сократ","тратуар","дамы","герлы","телка","метелка","метла","меняла","туман","рубль","карман","бездельник","дворник","аристократ","сократ"]},
 {"username": "2Дуня Кулакова", "id": 90, "date": "2013-01-04T15:38:17.029Z", "text": "Даже ёжики ёжиков могут с трудом, а иначе бы ёжики были кругом, пожирали бы все - и коренья и кость, только с личною жизнью у них не срослось. По словам знатока можно вылюбить моль, можно выхохать выхухоль, выпчелить пчел, хоть китайскую пушку и ивовый кол,только с ёжиков выйдет буквально прокол. Знают все санитары, медсестры врачи - после ёжика можно уже не лечить, ампутировать нафиг и сразу забыть и потом с калатушкой на танцы ходить. Рядом с ёжиком всякий предмет или зверь - это просто находка и кладезь идей. Бородатая тетя - отличный улов. А ежу дай отставку пока ты здоров.", "things": ["понедельник","вторник","бездельник","дворник","штаны","полоска","трава","жилетка","сигаретка","папироска","аристократ","сократ","тратуар","дамы","герлы","телка","метелка","метла","меняла","туман","рубль","карман","бездельник","дворник","аристократ","сократ"]},
 {"username": "3Дуня Кулакова", "id": 90, "date": "2013-01-04T15:38:17.029Z", "text": " Пожалей свой батон - нафига тебе ёж? Ты ж батон добровольно в капкан не кладешь, ты ж его шутки ради в костер не суешь. Вот и ёж бесполезная трата хуёж. Если живность обходит тебя за версту, даже куры попрятались в дальнем лесу - две руки и смекалка героя спасут. А из ёжика выйдет наваристый суп. Можно ёжика стукнуть, а можно и пнуть, можно тросточкой ёжика в пузико ткнуть, можно в ёжика из револьвера пальнуть, но впихнуть в него что-нибудь - думать забудь. У природы свое чувство юмора есть, чтобы сбить с человека напрасную спесь. Заруби на носу: пусть хитер ты и смел, только маленький ежик тебя поимел. ", "things": ["понедельник","вторник","бездельник","дворник","штаны","полоска","трава","жилетка","сигаретка","папироска","аристократ","сократ","тратуар","дамы","герлы","телка","метелка","метла","меняла","туман","рубль","карман","бездельник","дворник","аристократ","сократ"]}
 ]}'>
@@ -16,8 +15,9 @@
 	
 <ul class="media-list" id="searchTextResults">
 	<li ng-repeat="place in places.data" class="media">
-            <div class="place_box" ng-controller="FeedPlaceBox">
-		<div class="navbar  " >
+	<message-next>	
+            <div class="place_box">
+                <div class="navbar  " >
                     <div class="navbar-inner" style="padding:0; background-image:none;background-color:transparent;border:none;box-shadow:none;border-radius:none;">
                         <ul class="nav pull-right" style="margin-bottom:0">
                             <li class="dropdown">
@@ -54,25 +54,94 @@
                         </ul>          
                     </div> 
                 </div>
-	        <sz-feed-message-box cur="PlaceBoxMessage.cur"  messages='messages.results'></sz-feed-message-box>
+                <ul class=" place_box_messages_big_box" style="margin-left:0;list-style:none;" ng-init="showedMessageIndex=0">
+<!--                     <div class="place_box_messages_wrapper" > -->
+                        <li  ng-repeat="message in messages.results.slice(showedMessageIndex) | limitTo: 1" class="place_box_messages_box_mes" style="float:left">
+                            <a href="#" style='margin-left:0px;margin-right:5px;float:left' id="place_box_messages_box_mes_author">
+                                <img class="media-object" src="img/user.png"  width="30" height="30" align="left">
+                            </a>
+                            <div class="media-body place_box_messages" >
+                                <span class="badge " >8</span><h6 class="place_box_messages_author" style='margin:0;display:inline;margin-left:3px;line-height:16px;'>{{message.username}}</h6>
+                                <small >
+                                <ul class='place_box_messages_tags' style='line-height:14px;' >
+                                    <em ng-repeat="thing in message.things">
+                                        <span>{{thing}}&nbsp;</span>
+                                    </em>
+                                </ul>
+                                </small>
+                            </div>
+                            <p class="place_box_messages_text" ng-style="place_box_messages_text">
+                        {{message.text}}
+                            </p>
+                            <div class="place_box_messages_photo" ng-style="place_box_messages_photo">
+                                <img class="media-object" src="img/photo.jpg" >
+                            </div>
+
+                            <ul class="pager mybtn" >
+
+                                <li >
+                                    <a href=""  ng-click="place_box_messages_text={maxHeight:'none'};place_box_messages_photo={};">
+                                       <img class="media-object" src="img/ico/black/glyphicons_029_notes_2.png">
+                                    </a>
+                                </li>
+                                <li >
+                                    <a href="" ng-click="place_box_messages_text={};place_box_messages_photo={display:'block'};"> 
+                                        <img class="media-object" src="img/ico/black/glyphicons_138_picture.png">
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+<!--                     </div> -->
+                </ul>
+
                 <ul class="pager mybtn " >
                     <li class="disabled pull-left" >
-                        <a id="btn_place_box_message_newer" ng-click='PlaceBoxMessage.cur=PlaceBoxMessage.cur-1'> 
+                        <a id="btn_place_box_message_newer" ng-click="showedMessageIndex = showedMessageIndex - 1"> 
                            <img class="media-object" src="img/ico/black/glyphicons_224_chevron-left.png">
                         </a>
                     </li>
                     <li class=" pull-right" >
-                        <a id="btn_place_box_message_older" ng-click='PlaceBoxMessage.cur=PlaceBoxMessage.cur+1'>
+                        <a id="btn_place_box_message_older">
                            <img class="media-object" src="img/ico/black/glyphicons_223_chevron-right.png">
                         </a>
                     </li>
                 </ul>
                 
             </div>
+    </message-next>
 	</li>
 </ul>
-<!--
-     <sz-feed-message-box cur="PlaceBoxMessage.cur"  messages='messages.results'></sz-feed-message-box>
- <input type="button" value="<" ng-click='PlaceBoxMessage.cur=PlaceBoxMessage.cur-1'>
- <input type="button" value=">" ng-click='PlaceBoxMessage.cur=PlaceBoxMessage.cur+1'>
- -->
+
+   <script type="text/javascript"> 
+   
+   
+    $(".btn_place_box_message_older").click(function(){
+        var $place_box = $(this).closest(".place_box");
+        var $messages_Bbox = $place_box.find(".place_box_messages_big_box");
+        var messages_BboxWidth = $messages_Bbox.width();
+        var $wrapper = $place_box.find(".place_box_messages_wrapper");
+        jQuery($wrapper).animate(
+            {marginLeft:'-='+messages_BboxWidth+'px'},
+            500
+        );
+        
+        $("#btn_page_scroll_Up").text(messages_BboxWidth)
+        })
+
+//     $.each($(".place_box_messages_big_box"),function(index,val){
+//         var $messages_Bbox = $(val);
+//         var messages_BboxWidth = $messages_Bbox.width();
+//         var $wrapper = $messages_Bbox.find(".place_box_messages_wrapper");
+//         var $messages = $wrapper.find(".place_box_messages_box_mes");
+//         var messageVal  = 3;
+//         var fmessageHeight = $messages.first().height()+40;
+//         var wrapperWidth = messages_BboxWidth*messageVal;
+//         
+//         $messages_Bbox.height(fmessageHeight);
+//         $wrapper.height(fmessageHeight).width(wrapperWidth);
+//         $(".place_box_messages_box_mes").width(messages_BboxWidth);
+// //         $("#btn_page_scroll_Up").text(wrapperWidth+';'+messageVal)
+//         });
+
+    </script>
+	
