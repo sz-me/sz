@@ -116,7 +116,7 @@ angular.module('sz.client.directives', [])
                             '<ul class="pager mybtn" >'+
 
                                 '<li >'+
-                                    '<a href=""  ng-click="showMessageTextFull()">'+
+                                    '<a href=""  ng-click="showMessageTextFull()" style="margin-right:5px;">'+
                                        '<img class="media-object" src="img/ico/white/glyphicons_029_notes_2.png">'+
                                     '</a>'+
                                 '</li>'+

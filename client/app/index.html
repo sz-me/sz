@@ -21,7 +21,7 @@
 <body ng-controller="MasterPageController" sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()" sz-change-scroll-to-top="changeScrollToTop()">
 
 
-    <div id="feed">
+    <div id="feed" >
         <div class="navbar navbar-static-top "  id="menuPanel" >
             <div class="navbar-inner" id="menutop" style="padding:0">
             
@@ -66,32 +66,32 @@
         </div>
         
         
-        <div  ng-view class="content" id="content"></div>
+        <div  ng-view class="content" id="content" ></div>
       
 
         
         <div class="navbar navbar-fixed-bottom"  ng-show="showSearchPanel" >
             <div class="navbar-inner" id="menubottom" >
-                <ul class="pager mybtn " >
+                <ul class="nav " style="width:100%">
                     <li>
-                        <a href="#" id="btn_page_scroll_Up" style="float:left;margin-left:8px;"> 
+                        <a href="#" id="btn_page_scroll_Up" class="navitem"> 
                            <img class="media-object" src="img/ico/white/glyphicons_213_up_arrow.png">
                         </a>
                     </li>
                        <li >
-                        <a href="#" id="btn_new_message"> 
+                        <a href="#" id="btn_new_message" class="navitem"> 
                           <img class="media-object" src="img/ico/white/glyphicons_124_message_plus.png">
                         </a>
                     </li>
                     <li >
-                        <a href="#" id="btn_search"> 
+                        <a href="#" id="btn_search" class="navitem"> 
                            <img class="media-object" src="img/ico/white/glyphicons_027_search.png">
                         </a>
                     </li>
-                    <li>
-                        <div id="castle_info_val" style="float:right;display: inline-block;border-left:1px solid ;border-color:silver;padding:4px 8px;margin-left:8px">
+                    <li style="float:right">
+                        <div id="castle_info_val" style="margin-right:12px;">
                             <div><span class="badge badge-success">2</span></div>
-                            <div><span class="badge badge-warning">4</span></div>
+                            <div><span class="badge badge-important">4</span></div>
                         </div>
                     </li>
                 </ul>
@@ -112,53 +112,44 @@
         var topmenuWidth = $("#menutop>ul").width();
         var botmenuWidth = $("#menubottom>ul").width()+10;
         var contentMargin = 10;
+        var contentMarginL = 5;
         var searchStringWidth = 200;
         
         var botmenuBtnFloat = 'none';
         var btnPageScrollMarginL = 8;
-        var castleInfoMargin = 8;
-        var castleInfoPadding = 8;
         
         if (winWidth>800){
             if(winWidth>1200){
-                var contentWidth = winWidth*0.4;
+                var feedWidth = winWidth*0.4;
             }
             if(1000<winWidth&&winWidth<1199){
-                var contentWidth = winWidth*0.5;
+                var feedWidth = winWidth*0.5;
             }
             if(winWidth&&winWidth<999){
-                var contentWidth = winWidth*0.6;
+                var feedWidth = winWidth*0.6;
             }
-            var contentMarginL = (winWidth - contentWidth)*0.5;
+            var feedMarginL = (winWidth - feedWidth)*0.5;
         }
         else{
-            if(430<winWidth){
-                var contentWidth = winWidth-contentMargin*4;
-                var contentMarginL = contentMargin;
-            }
-            else{
-                var contentWidth = winWidth-contentMargin*4;
-                var contentMarginL = contentMargin;
-                if(winWidth<340){
-                    var searchStringWidth = contentWidth - 115;
-                    var botmenuBtnFloat = 'left';
-                    var btnPageScrollMarginL = 2;
-                    var castleInfoMargin = 0;
-                    var castleInfoPadding = 2;
-                }
-            }
+            var feedWidth = winWidth-contentMargin*4;
+            var feedMarginL = contentMargin;
+            if(winWidth<340){
+                var searchStringWidth = feedWidth - 125;
+                var botmenuBtnFloat = 'left';
+                var btnPageScrollMarginL = 2;
+            }            
         }
         
-        $("#btn_new_message,#btn_search").css({float:botmenuBtnFloat});
-        $("#btn_page_scroll_Up").css({marginLeft:btnPageScrollMarginL+'px'});
-        $("#castle_info_val").css({marginRight:castleInfoMargin+'px',paddingLeft:castleInfoPadding,paddingRight:castleInfoPadding});
+        
+        var contentWidth = feedWidth - contentMarginL*2;
+        var btn_new_messageMarginL = contentWidth*0.5-60-53;
+        $("#btn_new_message").css({marginLeft:btn_new_messageMarginL+'px'});
         $("#searchString input[type='text']").width(searchStringWidth);
         
-        var botmenuMarginL = (contentWidth-botmenuWidth)*0.5;
-        $("#content,#menubottom,#searchString").width(contentWidth).css({marginLeft:contentMarginL+'px'});
-//         $("#menubottom>ul").css({marginLeft:botmenuMarginL});
+        $("#menubottom").width(feedWidth).css({marginLeft:feedMarginL+'px'});
+        $("#content,#searchString").width(contentWidth).css({marginLeft:contentMarginL+feedMarginL+'px'});
         
-        var menutopMarginL = contentMarginL+(contentWidth-topmenuWidth)*0.5;
+        var menutopMarginL = feedMarginL+(feedWidth-topmenuWidth)*0.5;
         $("#menutop>ul").css({marginLeft:menutopMarginL});
 //    $("#btn_page_scroll_Up").text(winWidth)
     }

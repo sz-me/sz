@@ -110,7 +110,7 @@ angular.module('sz.client.directives', [])
                             '</p>'+
                             
                             '<div class="place_box_messages_photo" >'+
-                                '<img class="media-object" src="img/photo.jpg" width="230">'+
+                                '<img class="media-object" src="img/photo.jpg" width="220">'+
                             '</div>'+
 
                             '<ul class="pager mybtn" >'+
