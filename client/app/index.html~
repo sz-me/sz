@@ -27,24 +27,24 @@
             
                 <ul class="nav " > 
                     <li>
-                        <a href='#' class="navitem" id="btn_feed" >
+                        <div  class="navitem" id="btn_feed" >
                            <img class="media-object" src="img/ico/white/glyphicons_355_bullhorn.png">
-                        </a>
+                        </div>
                     </li>
                     <li>
-                        <a href='#' class="navitem" id="btn_game_event">
+                        <div  class="navitem" id="btn_game_event">
                             <img class="media-object" src="img/ico/white/glyphicons_009_magic.png">
-                        </a>
+                        </div>
                     </li>
                     <li>
-                        <a href='#' class="navitem" id="btn_map">
+                        <div class="navitem" id="btn_map">
                             <img class="media-object" src="img/ico/white/glyphicons_340_globe.png">
-                        </a>
+                        </div>
                     </li>
                     <li>
-                        <a href='#' class="navitem" id="btn_char">
+                        <div class="navitem" id="btn_char">
                             <img class="media-object" src="img/ico/white/glyphicons_003_user.png">
-                        </a>
+                        </div>
                     </li>
                 </ul>
             </div>            
@@ -91,7 +91,7 @@
                     <li style="float:right">
                         <div id="castle_info_val" style="margin-right:12px;">
                             <div><span class="badge badge-success">2</span></div>
-                            <div><span class="badge badge-warning">4</span></div>
+                            <div><span class="badge badge-important">4</span></div>
                         </div>
                     </li>
                 </ul>
@@ -110,7 +110,6 @@
         var winWidth = $(window).width();
         var winHeight = $(window).height();
         var topmenuWidth = $("#menutop>ul").width();
-        var botmenuWidth = $("#menubottom>ul").width()+10;
         var contentMargin = 10;
         var contentMarginL = 5;
         var searchStringWidth = 200;
