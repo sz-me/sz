@@ -88,28 +88,29 @@ angular.module('sz.client.directives', [])
                 restrict: 'EA',
                 replace: true,
                 template:
-                        '<li  class="place_box_messages_box_mes" >'+
-                            '<div class="place_box_messages_datetime">'+
-                                '<strong >'+
+                        '<li  class="place_box_messages_box_mes" >'+   
+                            '<div class="place_box_messages_datetime" >'+
+                                '<small style="line-height:9px;font-weight:bold;font-size:80%;width:100%;">'+
                                     '{{date}}'+
-                                '</strong>'+'<br>'+
-                                '<small >'+
-                                    '{{time}}'+
+                                '</small >'+
+                                '<small style="line-height:9px;font-size:80%;width:100%;">'+
+                                    ' {{time}}'+
                                 '</small>'+
                             '</div>'+
                             '<a href="#" style="margin-left:0px;margin-right:5px;float:left;margin-top:6px" id="place_box_messages_box_mes_author">'+
                                 '<img class="media-object" src="img/user.png"  width="32" height="32" align="left">'+
                             '</a>'+
                             '<div class="media-body place_box_messages_header" >'+
-                                '<span class="badge " >8</span><h6 class="place_box_messages_author" style="margin:0;display:inline;margin-left:3px;line-height:16px;">{{username}}</h6>'+
+                                '<span class="badge " >8</span>'+
+                                '<h6 class="place_box_messages_author" style="margin:0;display:inline;margin-left:3px;line-height:16px;">{{username}}</h6>'+
                                 
-//                                     '<div class="place_box_messages_tags" style="line-height:14px;" >'+
-//                                         '<small>'+
-//                                         '<em ng-repeat="thing in things">'+
-//                                             '<div class="place_box_messages_tag">{{thing}}</div>'+
-//                                         '</em>'+
-//                                         '</small>'+
-//                                     '</div>'+
+                                    '<div class="place_box_messages_tags" style="line-height:14px;" >'+
+                                        '<small>'+
+                                        '<em ng-repeat="thing in things">'+
+                                            '<div class="place_box_messages_tag">{{thing}}</div>'+
+                                        '</em>'+
+                                        '</small>'+
+                                    '</div>'+
                                 
                             '</div>'+
                             
@@ -117,23 +118,24 @@ angular.module('sz.client.directives', [])
                                 '{{text}}'+
                             '</p>'+
                             
-//                             '<div class="place_box_messages_photo" >'+
-//                                 '<img class="media-object" src="img/photo.jpg" width="220">'+
-//                             '</div>'+
-// 
-//                             '<ul class="pager mybtn" >'+
-// 
-//                                 '<li >'+
-//                                     '<a href=""  ng-click="showMessageTextFull()" style="margin-right:5px;">'+
-//                                        '<img class="media-object" src="img/ico/white/glyphicons_029_notes_2.png">'+
-//                                     '</a>'+
-//                                 '</li>'+
-//                                 '<li >'+
-//                                     '<a href="" ng-click="showMessagePhoto()"> '+
-//                                         '<img class="media-object" src="img/ico/white/glyphicons_138_picture.png">'+
-//                                     '</a>'+
-//                                 '</li>'+
-//                             '</ul>'+
+                            '<div class="place_box_messages_photo" >'+
+                                '<img class="media-object" src="img/photo.jpg" width="100">'+
+                            '</div>'+
+
+                            '<ul class="pager mybtn" >'+
+
+                                '<li >'+
+                                    '<a href=""  ng-click="showMessageTextFull()" style="margin-right:5px;">'+
+                                       '<img class="media-object" src="img/ico/white/glyphicons_029_notes_2.png">'+
+                                    '</a>'+
+                                '</li>'+
+                                '<li >'+
+                                    '<a href="" ng-click="showMessagePhoto()"> '+
+                                        '<img class="media-object" src="img/ico/white/glyphicons_138_picture.png">'+
+                                    '</a>'+
+                                '</li>'+
+                            '</ul>'+
+                            
                         '</li>',
                 scope: {
                     cur: '=',
@@ -141,10 +143,7 @@ angular.module('sz.client.directives', [])
                     messages:'='
                 },
                 link: function (scope, element, attrs) {
-                    var setPages = function () {
-                        scope.messageText.css({maxHeight:scope.textHeight+'px'});
-                        scope.messagePhoto.hide();
-                        
+                    var setPages = function () {                        
                         var msg = scope.messages[scope.cur];
                         var datetime = msg.date.split('T');
                         scope.date = datetime[0];
@@ -153,41 +152,36 @@ angular.module('sz.client.directives', [])
                         scope.things = msg.things;
                         scope.text = msg.text;
                         
-                        var w = scope.textWidth;
-//                         $("#btn_page_scroll_Up").text(scope.prev+';'+scope.cur+';'+scope.fol)
+//                         $("#btn_search").text(scope.date+';'+scope.time)
+                        var endMargin = -1*scope.textWidth;;
                         if (scope.fol){
+                            scope.wrapper.css({height:scope.curHeiht})
                             var pHeiht = scope.pPage.height();
                             var nHeiht = scope.nPage.height();
-                            
+                            scope.pPage.css({margin:'0px'})
+                            scope.nPage.css({margin:'0px'})
                             scope.pPage.remove();
                             scope.nPage.remove();
                             if (scope.prev<scope.cur){
                                 scope.pPage = scope.clone;
-                                scope.wrapper.prepend(scope.pPage);
 //                                 scope.pPage.css({backgroundColor:'red'});
                                 scope.nPage = createPage(scope.fol);
 //                                 scope.nPage.css({backgroundColor:'blue'});
-                                scope.wrapper.append(scope.nPage);
-                                var curHeiht = nHeiht;
-                                scope.wrapper.css({marginLeft:0}).animate({marginLeft:-1*w+'px',height:curHeiht+'px'},700);
-                                
+                                scope.curHeiht = nHeiht;
+                                var startMargin = 0;
+//                                 scope.nPage.css({margin:'0 50px'})
                             }
                             else{
                                 scope.nPage = scope.clone;
 //                                 scope.nPage.css({backgroundColor:'silver'});
-                                scope.wrapper.append(scope.nPage);
                                 scope.pPage = createPage(scope.fol)
 //                                 scope.pPage.css({backgroundColor:'green'});
-                                scope.wrapper.prepend(scope.pPage);
-                                var curHeiht = pHeiht;
-                                if(scope.fol<scope.total+1){
-                                    scope.wrapper.css({marginLeft:-2*w+'px'}).animate({marginLeft:-1*w+'px',height:curHeiht+'px'},700);
-                                }
-                                else{
-                                    scope.wrapper.css({marginLeft:-1*w+'px',height:curHeiht+'px'})
-                                }
+                                scope.curHeiht = pHeiht;
+                                var startMargin = endMargin*2;
                             }
-//                             $("#btn_search").text('pPage:'+scope.pPage.height()+';nPage:'+scope.nPage.height())
+                            scope.wrapper.prepend(scope.pPage);
+                            scope.wrapper.append(scope.nPage);
+                            scope.wrapper.css({marginLeft:startMargin+'px'}).animate({marginLeft:endMargin+'px',height:scope.curHeiht+'px'},700);
                         }
                         else{
                             if(scope.pPage){scope.pPage.remove();scope.nPage.remove();}
@@ -197,35 +191,46 @@ angular.module('sz.client.directives', [])
                             scope.nPage = createPage(scope.cur+1);
 //                             scope.nPage.css({backgroundColor:'olive'});
                             scope.wrapper.append(scope.nPage);
-//                             $("#btn_page_scroll_Up").text('pPage:'+scope.pPage.height()+';nPage:'+scope.nPage.height())
-                            var curHeiht = scope.pPage.height();
-                            scope.wrapper.css({height:curHeiht+'px'});
+                            scope.curHeiht = scope.pPage.height();
+                            //почему то сли менять высоту через ксс или height, а не через анимейт, то коряво распологаютцо элементы на странице
+                            scope.wrapper.css({marginLeft:endMargin+'px'}).animate({height:scope.curHeiht+'px'},100)
                         }
-                        
-                        
-//                         scope.wrapper.animate({height:curHeiht+'px'},500);
-                        
+                        scope.bigBox.find(".place_box_messages_text").css({maxHeight:scope.textHeight+'px'});
+                        scope.bigBox.find(".place_box_messages_photo").hide();
                         
                     };
                     
                     function createPage(num){
                         if(num>scope.total){var num = 0}
                         var message = scope.messages[num];
-                        var $box = jQuery('<li>',{class:"place_box_messages_box_mes"});
+                        var $box = jQuery('<li>',{class:"place_box_messages_box_mes"});     
                         var $datetime = jQuery('<div class="place_box_messages_datetime">').appendTo($box);
                         var datetime = message.date.split('T');
                         var btnWidth = 53;
                         var btnHeight = 45;
-                        var $date = jQuery('<strong >',{text:datetime[0]}).appendTo($datetime);
+                        var $date = jQuery('<strong >',{text:datetime[0],css:{lineHeight:'12px'}}).appendTo($datetime);
                         jQuery('<br>').appendTo($datetime);
-                        var $time = jQuery('<small >',{text:datetime[1].split('.')[0]}).appendTo($datetime);
-                        $datetime.width(scope.textWidth-btnWidth*2).css({marginLeft:btnWidth+'px',marginTop:-1*btnHeight+'px'});
+                        var $time = jQuery('<small >',{text:datetime[1].split('.')[0],css:{lineHeight:'10px'}}).appendTo($datetime);
+//                         $datetime.width(scope.textWidth-btnWidth*2).css({marginLeft:btnWidth+'px',marginTop:-1*btnHeight+'px'});
                         var $user = jQuery('<a>',{href:"#",css:{marginLeft:'0px',marginRight:'5px',float:'left',marginTop:'6px'},class:"place_box_messages_box_mes_author"}).appendTo($box);
                         var $userpic = jQuery( '<img class="media-object" src="img/user.png"  width="32" height="32" align="left">').appendTo($user);
                         var $boxHeader = jQuery('<div class="media-body place_box_messages_header" >').appendTo($box);
                         var $rait = jQuery('<span class="badge " >8</span>').appendTo($boxHeader);
                         var $username = jQuery('<h6>',{class:"place_box_messages_author",text:message.username}).appendTo($boxHeader);
+                        var $thingsArea = jQuery( '<div class="place_box_messages_tags" style="line-height:14px;" >').appendTo($box);
+                        var $thingsAreaEm = jQuery('<em>').appendTo(jQuery('<small>').appendTo($thingsArea));
+                        $.each(message.things,function(index,thing){
+                            var $thing = jQuery('<div>',{class:"place_box_messages_tag",text:thing}).appendTo($thingsAreaEm);
+                        })
                         var $text = jQuery('<p>',{class:"place_box_messages_text",text:message.text}).appendTo($box);
+                        var $btnUL = jQuery('<ul class="pager mybtn" >').appendTo($box);
+                        var $btnTextLi = jQuery('<li >').appendTo($btnUL);
+                        var $btnText = jQuery('<a href=""  style="margin-right:5px;">').appendTo($btnTextLi);
+                        var $btnTextIco = jQuery('<img class="media-object" src="img/ico/white/glyphicons_029_notes_2.png">').appendTo($btnText);
+                        var $btnPhotoLi = jQuery('<li >').appendTo($btnUL);
+                        var $btnPhoto = jQuery('<a href="" "> ').appendTo($btnPhotoLi);
+                        var $btnPhotoIco = jQuery('<img class="media-object" src="img/ico/white/glyphicons_138_picture.png">').appendTo($btnPhoto);
+                   
                         $box.width(scope.textWidth);
                         return $box
                     }
@@ -246,6 +251,7 @@ angular.module('sz.client.directives', [])
                     scope.messageBox = $(element[0]);
                     scope.wrapper = scope.messageBox.closest(".place_box_messages_wrapper");
                     scope.bigBox = scope.wrapper.closest(".place_box_messages_big_box");
+//                     scope.bigWrapper = scope.bigBox.closest(".place_box_wrapper");
                     scope.messageText =  scope.messageBox.find(".place_box_messages_text");
                     scope.textHeight = parseInt(scope.messageText.css('maxHeight'));
                     scope.textWidth = scope.bigBox.width();
@@ -254,10 +260,10 @@ angular.module('sz.client.directives', [])
                     var i = scope.textWidth;
                     scope.wrapper.width(scope.textWidth*3.3);
                     scope.messageBox.width(scope.textWidth);
-                    $("#btn_page_scroll_Up").text(scope.textWidth+';'+i)
                     var btnWidth = 53;
                     var btnHeight = 45;
-                    scope.datetime.width(scope.textWidth-btnWidth*2).css({marginLeft:btnWidth+'px',marginTop:-1*btnHeight+'px'});
+//                     scope.datetime.width(scope.textWidth-btnWidth*2).css({marginLeft:btnWidth+'px',marginTop:-1*btnHeight+'px'});
+                    
                     scope.$watch('cur', setPages);
                     scope.$watch('next', nextPages);
                     
@@ -268,10 +274,17 @@ angular.module('sz.client.directives', [])
                     scope.showMessagePhoto = function(){
                         if (scope.messagePhoto.is(":hidden"))
                         {
-                            scope.messageText.animate({maxHeight:scope.textHeight+'px'},500)
+                            scope.messageText.animate({maxHeight:scope.textHeight+'px'},500);                            
                             scope.messagePhoto.slideDown(500);
+                            var imgHeight = scope.messagePhoto.find("img").height();
+                            var newHeight = imgHeight+scope.curHeiht;
+                            scope.wrapper.animate({height:newHeight+'px'},500);
+//                             $("#btn_search").text(newHeight+';'+imgHeight)
                         }
-                        else{scope.messagePhoto.slideUp(500);}
+                        else{
+                            scope.messagePhoto.slideUp(500);
+                            scope.wrapper.animate({height:scope.curHeiht+'px'},500);
+                        }
                     }
                     
                     
@@ -279,15 +292,21 @@ angular.module('sz.client.directives', [])
                     function textHeight(){
 //                         scope.wrapper.css({height:'auto'});
                         var messageHeight = scope.messageText.height();
-                        if (messageHeight>scope.textHeight){var h=scope.textHeight; }
-                        else{
-                            var $textClone = scope.messageText.clone();
-                            $textClone.css({maxHeight:'none',display:'none',width:scope.textWidth+'px',backgroundColor:'red'});
-                            $("#content").prepend($textClone);
-                            var h = $textClone.height();
-                            $textClone.remove();                            
-                        }                        
-                        scope.messageText.animate({maxHeight:h+'px'},500)
+                        if (messageHeight>=scope.textHeight){
+                            if (messageHeight>scope.textHeight)
+                                {var h=scope.textHeight;var newHeight = scope.curHeiht}
+                            else{
+                                var $textClone = scope.messageText.clone();
+                                $textClone.css({maxHeight:'none',display:'none',width:scope.textWidth+'px',backgroundColor:'red'});
+                                $("#content").prepend($textClone);
+                                var h = $textClone.height();
+                                $textClone.remove();
+                                var newHeight = scope.curHeiht - scope.textHeight + h}
+                            scope.messageText.animate({maxHeight:h+'px'},500);
+                            scope.wrapper.animate({height:newHeight+'px'},500);
+                        }
+                        
+                        
                     }
                 }
             };

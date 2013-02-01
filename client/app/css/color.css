@@ -38,6 +38,8 @@ input[type="text"]{
 .place_box_messages_wrapper{
 /*     overflow: hidden; */
 /* border:2px solid black; */
+/* background:orange; */
+overflow-y:hidden;
 }
 
 .place_box_messages{
@@ -59,6 +61,7 @@ input[type="text"]{
 .place_box_messages_photo{
     text-align:center;
     display:none;
+    margin-bottom:10px;
 }
 
 
@@ -169,7 +172,7 @@ input[type="text"]{
     
 }
 .place_box_messages_datetime{
-    padding:1px 0;
+/*     padding:1px 0; */
     text-align:center;
     margin-bottom:5px;
 /*     overflow-x: hidden; */
