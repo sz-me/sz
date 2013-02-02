@@ -14,20 +14,15 @@
 {"username": "4Дуня Кулакова", "id": 90, "date": "2013-01-02T14:38:17.029Z", "text": "Даже ёжики ёжиков ", "things": ["понедельник","вторник","бездельник","дворник","штаны","полоска","трава","жилетка","сигаретка","папироска","аристократ","сократ","тратуар","дамы","герлы","телка","метелка","метла","меняла","туман","рубль","карман","бездельник","дворник","аристократ","сократ"]}
 ]}'>	
 <ul class="media-list" id="searchTextResults">
-	<li ng-repeat="place in places.data" class="media place_box_wrapper">
-            <div class="place_box" ng-controller="FeedPlaceBox">
+	<li ng-repeat="place in places.data" class="media place_box" ng-controller="FeedPlaceBox">
 		<div class="navbar  " >
                     <div class="navbar-inner" style="padding:0; background-image:none;background-color:transparent;border:none;box-shadow:none;border-radius:none;">
                         <ul class="nav pull-right" style="margin-bottom:0">
                             <li class="dropdown">
-                                <div class="dropdown-toggle place_address" data-toggle="dropdown" href="#"  >                                    
-                                    <a href='#' style="float:right;margin:8px 5px 0px 5px;" >
+                                <div class="dropdown-toggle " data-toggle="dropdown" href="#"  >                                    
+                                    <a href='#' style="float:left;margin:10px 8px 0px 0px;" >
                                        <img class="media-object" src="img/ico/black/glyphicons_367_expand.png">
-                                    </a>
-                                    <div  style="float:right;" >                                    
-                                        <strong style="line-height:12px;">{{place.name}}</strong><br>
-                                        <small style="line-height:10px;">{{place.address}}</small>    
-                                    </div>                                    
+                                    </a>                                                                     
                                 </div>
                                 <ul class="dropdown-menu  pager mybtn">
                                         <li>
@@ -50,7 +45,11 @@
                                     </li>
                                 </ul>
                             </li>
-                        </ul>          
+                        </ul> 
+                        <div style="text-align:right;" class="place_address">                                    
+                             <strong style="line-height:12px;">{{place.name}}</strong><br>
+                             <small style="line-height:10px;">{{place.address}}</small>    
+                       </div>           
                     </div> 
                 </div>
                 <ul class="pager mybtn "  style="line-height:0px;" >
@@ -73,7 +72,6 @@
 		</ul>
                	 
                 
-            </div>
 	</li>
 </ul>
 <!--

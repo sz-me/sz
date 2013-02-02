@@ -27,24 +27,24 @@
             
                 <ul class="nav " > 
                     <li>
-                        <div  class="navitem" id="btn_feed" >
+                        <a href='#' class="navitem" id="btn_feed" >
                            <img class="media-object" src="img/ico/white/glyphicons_355_bullhorn.png">
-                        </div>
+                        </a>
                     </li>
                     <li>
-                        <div  class="navitem" id="btn_game_event">
+                        <a href='#' class="navitem" id="btn_game_event">
                             <img class="media-object" src="img/ico/white/glyphicons_009_magic.png">
-                        </div>
+                        </a>
                     </li>
                     <li>
-                        <div class="navitem" id="btn_map">
+                        <a href='#' class="navitem" id="btn_map">
                             <img class="media-object" src="img/ico/white/glyphicons_340_globe.png">
-                        </div>
+                        </a>
                     </li>
                     <li>
-                        <div class="navitem" id="btn_char">
-                            <img class="media-object" src="img/ico/white/glyphicons_003_user.png">
-                        </div>
+                        <a href='#' class="navitem" id="btn_char">
+                            <img class="media-object" src="img/ico/white/glyphicons_352_nameplate.png">
+                        </a>
                     </li>
                 </ul>
             </div>            
@@ -59,7 +59,7 @@
                 </li>
                 <li>
                     <form class="navbar-search pull-left" style="margin-top:8px;">
-                            <input type="text" class="search-query" placeholder="Искать" >
+                            <input type="text" class="search-query" placeholder="Искать на странице" >
                     </form>
                 </li>
             </ul>
@@ -79,7 +79,7 @@
                         </a>
                     </li>
                        <li >
-                        <a href="#" id="btn_new_message" class="navitem"> 
+                        <a href="#/place_list" id="btn_new_message" class="navitem"> 
                           <img class="media-object" src="img/ico/white/glyphicons_124_message_plus.png">
                         </a>
                     </li>
@@ -155,10 +155,6 @@
         
     
     pageSize()
-    $(window).resize(function(){pageSize();});
-    
-    
-
 
    </script>
  

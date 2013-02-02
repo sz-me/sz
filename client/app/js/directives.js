@@ -90,14 +90,14 @@ angular.module('sz.client.directives', [])
                 template:
                         '<li  class="place_box_messages_box_mes" >'+   
                             '<div class="place_box_messages_datetime" >'+
-                                '<small style="line-height:9px;font-weight:bold;font-size:80%;width:100%;">'+
+                                '<small style="line-height:9px;font-size:80%;">'+
                                     '{{date}}'+
                                 '</small >'+
-                                '<small style="line-height:9px;font-size:80%;width:100%;">'+
+                                '<small style="line-height:9px;font-size:80%;">'+
                                     ' {{time}}'+
                                 '</small>'+
                             '</div>'+
-                            '<a href="#" style="margin-left:0px;margin-right:5px;float:left;margin-top:6px" id="place_box_messages_box_mes_author">'+
+                            '<a href="#" style="margin-left:0px;margin-right:5px;float:left;margin-top:3px" id="place_box_messages_box_mes_author">'+
                                 '<img class="media-object" src="img/user.png"  width="32" height="32" align="left">'+
                             '</a>'+
                             '<div class="media-body place_box_messages_header" >'+
@@ -105,11 +105,11 @@ angular.module('sz.client.directives', [])
                                 '<h6 class="place_box_messages_author" style="margin:0;display:inline;margin-left:3px;line-height:16px;">{{username}}</h6>'+
                                 
                                     '<div class="place_box_messages_tags" style="line-height:14px;" >'+
-                                        '<small>'+
-                                        '<em ng-repeat="thing in things">'+
-                                            '<div class="place_box_messages_tag">{{thing}}</div>'+
-                                        '</em>'+
-                                        '</small>'+
+//                                         '<small>'+
+                                        '<a ng-repeat="thing in things" style="margin-right:3px;display:inline-block;font-size:85%">'+
+                                            '{{thing}}'+
+                                        '</a>'+
+//                                         '</small>'+
                                     '</div>'+
                                 
                             '</div>'+
@@ -147,7 +147,8 @@ angular.module('sz.client.directives', [])
                         var msg = scope.messages[scope.cur];
                         var datetime = msg.date.split('T');
                         scope.date = datetime[0];
-                        scope.time = datetime[1].split('.')[0];
+                        var time = datetime[1].split('.')[0];
+                        scope.time = time.slice(0,time.length-3)
                         scope.username = msg.username;
                         scope.things = msg.things;
                         scope.text = msg.text;
@@ -208,8 +209,7 @@ angular.module('sz.client.directives', [])
                         var datetime = message.date.split('T');
                         var btnWidth = 53;
                         var btnHeight = 45;
-                        var $date = jQuery('<strong >',{text:datetime[0],css:{lineHeight:'12px'}}).appendTo($datetime);
-                        jQuery('<br>').appendTo($datetime);
+                        var $date = jQuery('<small >',{text:datetime[0],css:{lineHeight:'9px'}}).appendTo($datetime);
                         var $time = jQuery('<small >',{text:datetime[1].split('.')[0],css:{lineHeight:'10px'}}).appendTo($datetime);
 //                         $datetime.width(scope.textWidth-btnWidth*2).css({marginLeft:btnWidth+'px',marginTop:-1*btnHeight+'px'});
                         var $user = jQuery('<a>',{href:"#",css:{marginLeft:'0px',marginRight:'5px',float:'left',marginTop:'6px'},class:"place_box_messages_box_mes_author"}).appendTo($box);

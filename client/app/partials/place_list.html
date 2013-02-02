@@ -1,4 +1,6 @@
-{"meta": {"code": 200}, "data": [
+﻿<div ng-init='places={
+"meta": {"code": 200},
+"data": [
 {"url": "/api/places/4db189220f2c0353f5cb6141/", "name": "Салон-магазин МТС", "address": "Амурская ул, 201, корпус 1", "crossStreet": null, "contact": {}, "position": [127.533220644, 50.2634202488], "city_id": 2026609, "shmotzhmot_details_url": "http://shmotzhmot.me/v/4db189220f2c0353f5cb6141/", "foursquare_details_url": "https://foursquare.com/v/4db189220f2c0353f5cb6141", "foursquare_icon_prefix": "https://foursquare.com/img/categories_v2/shops/technology_", "foursquare_icon_suffix": ".png", "distance": 511.26819210634204, "messages": {"count": 1}}, 
 {"url": "/api/places/4c636f6f79d1e21e62cbd815/", "name": "Амурская Ярмарка", "address": null, "crossStreet": null, "contact": {}, "position": [127.535035078, 50.2620810719], "city_id": 2026609, "shmotzhmot_details_url": "http://shmotzhmot.me/v/4c636f6f79d1e21e62cbd815/", "foursquare_details_url": "https://foursquare.com/v/4c636f6f79d1e21e62cbd815", "foursquare_icon_prefix": "https://foursquare.com/img/categories_v2/shops/mall_", "foursquare_icon_suffix": ".png", "distance": 601.2961610121148, "messages": {"count": 3}}, 
 {"url": "/api/places/4f289f72e4b01c87678b9fa7/", "name": "Exclusive", "address": "Амурская Ярмарка", "crossStreet": null, "contact": {}, "position": [127.534795812, 50.2620584801], "city_id": 2026609, "shmotzhmot_details_url": "http://shmotzhmot.me/v/4f289f72e4b01c87678b9fa7/", "foursquare_details_url": "https://foursquare.com/v/4f289f72e4b01c87678b9fa7", "foursquare_icon_prefix": "https://foursquare.com/img/categories_v2/shops/giftshop_", "foursquare_icon_suffix": ".png", "distance": 584.1350830985704, "messages": {"count": 0}}, {"url": "/api/places/4ddbb4b245ddf752bfc70ca6/", "name": "МЕГА", "address": null, "crossStreet": null, "contact": {}, "position": [127.536709555, 50.2678467789], "city_id": 2026609, "shmotzhmot_details_url": "http://shmotzhmot.me/v/4ddbb4b245ddf752bfc70ca6/", "foursquare_details_url": "https://foursquare.com/v/4ddbb4b245ddf752bfc70ca6", "foursquare_icon_prefix": "https://foursquare.com/img/categories_v2/shops/mall_", "foursquare_icon_suffix": ".png", "distance": 998.1372465119571, "messages": {"count": 6}}, 
@@ -13,3 +15,24 @@
 {"url": "/api/places/4f7283e8e4b0c861bc03b8d6/", "name": "Росбанк", "address": "Институтская 6", "crossStreet": null, "contact": {}, "position": [127.525755005, 50.2992334892], "city_id": 2026609, "shmotzhmot_details_url": "http://shmotzhmot.me/v/4f7283e8e4b0c861bc03b8d6/", "foursquare_details_url": "https://foursquare.com/v/4f7283e8e4b0c861bc03b8d6", "foursquare_icon_prefix": "https://foursquare.com/img/categories_v2/shops/financial_", "foursquare_icon_suffix": ".png", "distance": 4183.84174589779, "messages": {"count": 0}}, 
 {"url": "/api/places/50a0b2dde4b0f56d623206f9/", "name": "Институтская 7 Sun Planet", "address": null, "crossStreet": null, "contact": {}, "position": [127.52218734, 50.2999948425], "city_id": 2026609, "shmotzhmot_details_url": "http://shmotzhmot.me/v/50a0b2dde4b0f56d623206f9/", "foursquare_details_url": "https://foursquare.com/v/50a0b2dde4b0f56d623206f9", "foursquare_icon_prefix": "https://foursquare.com/img/categories_v2/shops/tanning_salon_", "foursquare_icon_suffix": ".png", "distance": 4279.605678425662, "messages": {"count": 0}},
 {"url": "/api/places/502b0cfae4b0e9c46a16e2b3/", "name": "ТБЦ Чайка", "address": "Институтская 6", "crossStreet": null, "contact": {}, "position": [127.52574334, 50.2988649517], "city_id": 2026609, "shmotzhmot_details_url": "http://shmotzhmot.me/v/502b0cfae4b0e9c46a16e2b3/", "foursquare_details_url": "https://foursquare.com/v/502b0cfae4b0e9c46a16e2b3", "foursquare_icon_prefix": "https://foursquare.com/img/categories_v2/shops/mall_", "foursquare_icon_suffix": ".png", "distance": 4142.878748041398, "messages": {"count": 0}}
+]}'>
+</div>
+<ul class="media-list" ng-controller="FeedPlaceBox">
+    <li class="media placeList_box" ng-repeat="place in places.data">
+        <div class="foursquare_ico" style="float:left;margin-right:5px;width:64px;height:64px;">
+            <img src={{place.foursquare_icon_prefix+'64'+place.foursquare_icon_suffix}}>
+        </div>
+        <div style="text-align:left;" class="place_address">                                    
+            <a href="">
+                <strong style="line-height:12px;">{{place.name}}</strong><br>
+                <small style="line-height:10px;">{{place.address}}</small>    
+            </a>
+        </div>
+        <div class="placeList_box_info" style="z-index:100" >
+            <span class="badge badge-success">1370</span>
+            <span class="badge" >800</span>
+<!--            <img src="img/ico/black/glyphicons_283_t-shirt.png" width="20" style="margin-left:3px;">  <span class="badge" style="background-color:transparent;color:rgb(51,51,51);padding-left:0;padding-right:3px;">40</span>
+            <img src="img/ico/black/glyphicons_003_user.png" width="17" style="margin-left:3px;">  <span class="badge" style="background-color:transparent;color:rgb(51,51,51);padding-left:0;padding-right:3px;">120</span>-->
+        </div>
+    </li>
+</ul>
