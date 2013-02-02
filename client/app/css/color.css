@@ -1,4 +1,4 @@
-a,img{
+a{
     outline: none;
     -moz-user-select: none;
   -khtml-user-select: none;
@@ -84,6 +84,14 @@ overflow-y:hidden;
     
 }
 
+.nav>li>a{
+    outline: none;
+    -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
 
 #menubottom{
     padding:5px 0 ;
@@ -126,6 +134,12 @@ overflow-y:hidden;
 }
 
 .foursquare_ico,.mybtn>li>a{
+    outline: none;
+    -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
     background: #AAA; /* Старые браузеры */
     background: -moz-radial-gradient(#AAA, #777); /* FF3.6+ */
     background: -webkit-gradient(radial, center center, 0, center center, 100%, 
