@@ -18,7 +18,7 @@
         <script src="js/controllers.js"></script>
         <script src="js/app.js"></script>
 </head>
-<body ng-controller="MasterPageController" sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()" sz-change-scroll-to-top="changeScrollToTop()">
+<body ng-controller="MasterPageController"  sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()" sz-change-scroll-to-top="changeScrollToTop()">
 
 
     <div id="feed" >
@@ -53,7 +53,7 @@
         <div class="navbar-inner" id="searchString" >
             <ul class="nav pager mybtn" > 
                 <li>
-                    <a href='#' id="btn_near"  style="float:left;margin-right:8px;">
+                    <a href='' id="btn_near"  style="float:left;margin-right:8px;" >
                         <img class="media-object" src="img/ico/white/glyphicons_377_riflescope.png">
                     </a>
                 </li>
@@ -72,11 +72,14 @@
         
         <div class="navbar navbar-fixed-bottom"  ng-show="showSearchPanel" >
             <div class="navbar-inner" id="menubottom" >
-                <ul class="nav " style="width:100%">
+                <ul class="nav " style="width:100%"  >
                     <li>
-                        <a href="#" id="btn_page_scroll_Up" class="navitem"> 
-                           <img class="media-object" src="img/ico/white/glyphicons_213_up_arrow.png">
-                        </a>
+			<sz-scrolling-to-top  top="scrollToTop.top">
+			</sz-scrolling-to-top>
+			<a href="" id="btn_page_scroll_Up" class="navitem" ng-click="scrollToTop.top = true"> 
+			    <img class="media-object" src="img/ico/white/glyphicons_213_up_arrow.png">
+			</a>
+			
                     </li>
                        <li >
                         <a href="#/place_list" id="btn_new_message" class="navitem"> 

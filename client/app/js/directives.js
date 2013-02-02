@@ -48,8 +48,7 @@ angular.module('sz.client.directives', [])
                             
             }
 	})
-        .directive('szChangeScrollToTop', function() {
-            
+        .directive('szChangeScrollToTop', function() {            
             return function(scope, elm, attr){
                 var raw = elm[0];
                 var params = {
@@ -82,7 +81,23 @@ angular.module('sz.client.directives', [])
 		});
 			
             }
-        })  
+        }) 
+	.directive('szScrollingToTop',function(){
+	    return {
+		restrict:'EA',
+		scope:{top:'='},
+		link:function(scope,elm,attr){
+			var test = function(){
+			    var i = $("#btn_search").text();
+			    if (scope.top){
+				$('body,html').animate({scrollTop: 0}, 800);
+				scope.top = false;
+			    }	    
+			}
+			scope.$watch('top', test);
+		    }
+		}
+	})
         .directive('szFeedMessageBox', function () {
             return {
                 restrict: 'EA',
