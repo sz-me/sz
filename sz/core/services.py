@@ -1,11 +1,31 @@
 # -*- coding: utf-8 -*-
 from sz.core import lists, morphology
 from sz.core.morphology import stemmers
+import re
+
+non_word_pattern = re.compile(r'\W+', flags=re.U)
 
 class CategorizationService:
-    def __init__(self, things):
-        self.things = things
+    def __init__(self, categories):
+        #self.categories = categories
         self.sremmer_ru = stemmers.RussianStemmer()
+        #self.sremmer_ru.stemWord(word)
+        self.stems_ru = map(lambda category: {
+            u"category": category,
+            u"stems": self._category_stems(category)
+        }, categories )
+    def _get_all_stems(self, word):
+        stem = self.sremmer_ru.stemWord(word)
+        all_stems = set([stem,])
+        addition = morphology.addition_for_ended_in_k(stem)
+        if addition:
+            all_stems = all_stems | addition
+        return all_stems
+    def _category_stems(self, category):
+        phrases = [
+            [ self._get_all_stems(word) for word in non_word_pattern.split(keyword.strip())]
+            for keyword in category.keywords.split(u',')]
+        return phrases
     """
         Определяет какой вещи соответствует слово, если никакой, то возвращает None
     """
@@ -48,6 +68,7 @@ class CategorizationService:
         categories = set([thing.category for thing in things])
         things_many = [category.thing_set.all() for category in categories]
         return set([el for lst in things_many for el in lst])
+
 
 from django.utils import timezone
 class ModelCachingService:

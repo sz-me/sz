@@ -5,82 +5,48 @@ from django.contrib import auth
 from django.contrib.gis.db import models
 from imagekit import models as imagekit_models
 from imagekit import processors
-from sz.core.db import LowerCaseCharField
-from sz.core.morphology import stemmers
 
 
+class ModifyingFieldDescriptor(object):
+    """ Modifies a field when set using the field's (overriden) .to_python() method. """
+    def __init__(self, field):
+        self.field = field
+    def __get__(self, instance, owner=None):
+        if instance is None:
+            raise AttributeError('Can only be accessed via an instance.')
+        return instance.__dict__[self.field.name]
+    def __set__(self, instance, value):
+        instance.__dict__[self.field.name] = self.field.to_python(value)
+
+class LowerCaseCharField(models.CharField):
+    def to_python(self, value):
+        value = super(LowerCaseCharField, self).to_python(value)
+        if isinstance(value, basestring):
+            return value.lower()
+        return value
+    def contribute_to_class(self, cls, name):
+        super(LowerCaseCharField, self).contribute_to_class(cls, name)
+        setattr(cls, self.name, ModifyingFieldDescriptor(self))
+
+# Entities
 class Category(models.Model):
-    name = LowerCaseCharField(
+    alias = LowerCaseCharField(
+        verbose_name=u"Псевдоним для идентификации",
+        max_length=32,
+        db_index=True)
+    name = models.CharField(
         verbose_name=u"наименование",
         max_length=64,
-        primary_key=True,
         db_index=True)
-    BODY_PART_CHOICES = (
-        ('head', 'Head'),
-        ('top', 'Top'),
-        ('palms', 'Palms'),
-        ('bottom', 'Bottom'),
-        ('feed', 'Feed'),
-    )
-    body_part = models.CharField(
-        max_length=8,
-        choices=BODY_PART_CHOICES,
-        verbose_name=u"часть тела",
-    )
-    GENDER_CHOICES = (
-        ('male', 'Male'),
-        ('female', 'Female'),
-        ('kid', 'Kid'),
-    )
-    gender = models.CharField(
-        max_length=8,
-        choices=GENDER_CHOICES,
-        null=True,
-        blank=True,
-        verbose_name=u"пол",
-    )
-    LAYER_CHOICES = (
-        ('under', 'Under'),
-        ('middle', 'Middle'),
-        ('outer', 'Outer'),
-        )
-    layer = models.CharField(
-        max_length=8,
-        choices=LAYER_CHOICES,
-        verbose_name=u"слой",
-    )
+    keywords = LowerCaseCharField(
+        verbose_name=u"ключевые слова",
+        max_length=2048,
+        help_text=u"ключевые слова, разделённые запятыми, регистр неважен")
     def __unicode__(self):
         return u"%s" % self.name
     class Meta:
         verbose_name = u"категория"
         verbose_name_plural = u"категории"
-
-class Thing(models.Model):
-    name = LowerCaseCharField(
-        verbose_name=u"наименование",
-        help_text=u"Определяет принадлежность сообщения к категории",
-        max_length=64,
-        primary_key=True,
-        db_index=True)
-    stem = LowerCaseCharField(
-        verbose_name=u"основа",
-        help_text=u"Строка, проверяемая на вхождение",
-        max_length=64,
-        unique=True,
-        db_index=True,
-        editable=False)
-    category = models.ForeignKey(
-        Category,
-        verbose_name=u"категория")
-    def save(self, *args, **kwargs):
-        stemmer = stemmers.RussianStemmer()
-        self.stem = stemmer.stemWord(self.name)
-        super(Thing, self).save(*args, **kwargs)
-    def __unicode__(self):
-        return u"%s" % self.name
-    class Meta:
-        verbose_name = u"вещь"
-        verbose_name_plural = u"вещи"
 
 class Place(models.Model):
     id = models.CharField(
@@ -160,8 +126,8 @@ class Message(models.Model):
         options={'quality': 85})
     thumbnail = imagekit_models.ImageSpecField([processors.ResizeToFill(90, 90),], image_field='photo',
         options={'quality': 85})
-    things = models.ManyToManyField(
-        Thing,
+    categories = models.ManyToManyField(
+        Category,
         null=True,
         blank=True)
     class Meta:
