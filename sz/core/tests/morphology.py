@@ -32,7 +32,7 @@ class StemmerTest(TestCase):
         print russian_stemmer.stemWord(u'палаточка')
         self.assertEquals(russian_stemmer.stemWord(u'майка'), u'майк')
 
-
+import re
 class CatigorizationServiceTest(TestCase):
     def setUp(self):
         self.categories = [
@@ -51,12 +51,19 @@ class CatigorizationServiceTest(TestCase):
         self.assertSetEqual(set([u'куртк', u'курток', u'курточк']), jacket)
     def test_category_stems(self):
         stems = self.categorizationService.stems_ru[0][u"stems"]
-        print stems
-        print u', '.join([u' '.join([u'-'.join(form) for form in stem_group]) for stem_group in stems])
+        #print stems
+        #print u', '.join([u' '.join([u'-'.join(form) for form in stem_group]) for stem_group in stems])
         self.assertSetEqual(stems[0][0], set([u'дубленок', u'дубленк', u'дубленочк']))
         self.assertSetEqual(stems[1][0], set([u'шуб']))
         self.assertSetEqual(stems[3][1], set([u'куртк', u'курток', u'курточк']))
+    def test_make_phrase_pattern(self):
+        phrase = [set([u'зимн']), set([u'куртк', u'курток', u'курточк'])]
+        pattern = self.categorizationService._make_phrase_pattern(phrase)
+        self.assertEqual(pattern, ur'(зимн)\w*\W*(куртк|курток|курточк)')
+        self.assertTrue(re.search(pattern, u'купил зимнюю куртку!', flags=re.U))
+    '''
     def test_detect_thing(self):
         message = models.Message(id=1, text=u"купил маЁчку, носок и пакет трусов, доволен как лось!")
         detected_things = self.categorizationService.detect_things(message)
         self.assertEquals(len(detected_things), 3)
+    '''

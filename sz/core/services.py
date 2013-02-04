@@ -26,6 +26,10 @@ class CategorizationService:
             [ self._get_all_stems(word) for word in non_word_pattern.split(keyword.strip())]
             for keyword in category.keywords.split(u',')]
         return phrases
+    def _make_phrase_pattern(self, phrase):
+        pattern = ur"\w*\W*".join([ ur'(%s)' % ur'|'.join(word_set) for word_set in phrase ])
+        print pattern
+        return pattern
     """
         Определяет какой вещи соответствует слово, если никакой, то возвращает None
     """
