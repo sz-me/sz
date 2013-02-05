@@ -1,78 +1,69 @@
 # -*- coding: utf-8 -*-
-from sz.core import lists, morphology
-from sz.core.morphology import stemmers
 import re
+from sz.core import lists,morphology
+from sz.core.morphology import stemmers
 
-non_word_pattern = re.compile(r'\W+', flags=re.U)
 
-class CategorizationService:
-    def __init__(self, categories):
-        #self.categories = categories
-        self.sremmer_ru = stemmers.RussianStemmer()
-        #self.sremmer_ru.stemWord(word)
-        self.stems_ru = map(lambda category: {
-            u"category": category,
-            u"stems": self._category_stems(category)
-        }, categories )
-    def _get_all_stems(self, word):
-        stem = self.sremmer_ru.stemWord(word)
+class StemmerService:
+    def __init__(self, stemmer):
+        self.stemmer = stemmer
+    def get_all_stems(self, word):
+        self.stemmer.stemWord(word)
+    def get_main_stem(self, word):
+        self.stemmer.stemWord(word)
+
+class RussianStemmerService(StemmerService):
+    def __init__(self):
+        stemmer = stemmers.RussianStemmer()
+        StemmerService.__init__(self, stemmer)
+    def get_all_stems(self, word):
+        stem = self.stemmer.stemWord(word)
         all_stems = set([stem,])
         addition = morphology.addition_for_ended_in_k(stem)
         if addition:
             all_stems = all_stems | addition
         return all_stems
+
+class CategorizationService:
+    """
+    This is a service that detects text categories by keywords, contained in the text
+    """
+    non_word_pattern = re.compile(r'\W+', flags=re.U)
+    def __init__(self, categories, russianStemmingService):
+        self.russianStemmingService = russianStemmingService
+        self.keywords_ru = map(lambda category: {
+            u"category": category,
+            u"patterns": map(
+                lambda x: re.compile(self._make_phrase_pattern(x), flags=re.U|re.I),
+                self._category_stems(category))
+        }, categories )
+    def _get_all_stems(self, word):
+        all_stems = self.russianStemmingService.get_all_stems(word)
+        return all_stems
+    """
+    Return a list of all stems for category (for each keyword from the category)
+    """
     def _category_stems(self, category):
-        phrases = [
-            [ self._get_all_stems(word) for word in non_word_pattern.split(keyword.strip())]
-            for keyword in category.keywords.split(u',')]
+        phrases = \
+        [
+            [
+                self._get_all_stems(word)
+                    for word in self.non_word_pattern.split(keyword.strip())
+            ]
+
+            for keyword in category.keywords.split(u',')
+        ]
         return phrases
     def _make_phrase_pattern(self, phrase):
+        # todo считать за одну букву [ао] и [еёи]
         pattern = ur"\w*\W*".join([ ur'(%s)' % ur'|'.join(word_set) for word_set in phrase ])
-        print pattern
         return pattern
-    """
-        Определяет какой вещи соответствует слово, если никакой, то возвращает None
-    """
-    def _detect_thing_in_word_ru(self, word):
-        for thing in self.things:
-            if word.startswith(thing.stem) or\
-               morphology.addition_for_ended_in_k(thing.stem) and\
-               lists.any(lambda form:
-               word.startswith(form),
-                   morphology.addition_for_ended_in_k(thing.stem)):
-                return thing
-        return None
-
-    def parse_text(self, text):
-        words = set(morphology.extract_words_ru(text))
-        things = set([])
-        stems = set([])
-        for word in words:
-            if len(word) > 2:
-                thing = self._detect_thing_in_word_ru(word)
-                if thing:
-                    things.add(thing)
-                else:
-                    stem = self.sremmer_ru.stemWord(word)
-                    stems.add(stem)
-                    addition = morphology.addition_for_ended_in_k(stem)
-                    if addition:
-                        for form in addition:
-                            stems.add(form)
-        return things, stems
-
-    def detect_things(self, message):
-        things, stems = self.parse_text(message.text)
-        message.things.clear()
-        for thing in things:
-            message.things.add(thing)
-        return things
-
-    def get_with_additional_things(self, things):
-        categories = set([thing.category for thing in things])
-        things_many = [category.thing_set.all() for category in categories]
-        return set([el for lst in things_many for el in lst])
-
+    def _has_matches(self, text, patterns):
+        matches = filter(lambda x: x.search(text), patterns)
+        return matches
+    def detect_categories(self, text):
+        matches = filter(lambda x: self._has_matches(text, x[u"patterns"]), self.keywords_ru)
+        return map(lambda x: x[u"category"], matches)
 
 from django.utils import timezone
 class ModelCachingService:

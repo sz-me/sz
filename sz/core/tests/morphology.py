@@ -32,38 +32,50 @@ class StemmerTest(TestCase):
         print russian_stemmer.stemWord(u'палаточка')
         self.assertEquals(russian_stemmer.stemWord(u'майка'), u'майк')
 
+class RussianStemmerServiceTest(TestCase):
+    def setUp(self):
+        self.stemmer = services.RussianStemmerService()
+    def test_get_all_stems(self):
+        termo = self.stemmer.get_all_stems(u"термобелье")
+        self.assertSetEqual(set([u'термобел',]), termo)
+        jacket = self.stemmer.get_all_stems(u"куртка")
+        self.assertSetEqual(set([u'куртк', u'курток', u'курточк']), jacket)
+
+class StemmingServiceMock:
+    def __init__(self):
+        self.stem_dictionary = {
+            u'куртка': set([u'куртк', u'курток', u'курточк']),
+            u'платье': set([ur'плат',]),
+            u'зимняя': set([ur'зимн',]),
+            u'пальто': set([ur'пальто',]),
+            u'костюм': set([ur'костюм',]),
+            u'дублёнка': set([u'дубленок', u'дубленк', u'дубленочк']),
+            u'шуба': set([u'шуб']),
+            }
+    def get_all_stems(self, word):
+        all_stems = self.stem_dictionary.get(word, set([ur'stem',]))
+        return all_stems
+
 import re
 class CatigorizationServiceTest(TestCase):
     def setUp(self):
-        self.categories = [
+        categories = [
             models.Category(alias=u"outdoor", name=u"Верхняя одежда",
                 keywords=u"Дубленка, Шуба, Пуховик, Зимняя куртка"),
             models.Category(alias=u"trousers", name=u"Брюки",
-                keywords=u"Брюки, Штаны, Капри, Карго, Леггинсы, Лосины, Хакама, Шаровары, Джинсы, Скинни, Бэгги, Джегенсы"),
+                keywords=u"Брюки, Штаны, Джинсы"),
             models.Category(alias=u"socks", name=u"Чулочно-носочное",
                 keywords=u"Носки, Портянки, Гольфы, Гетры, Чулки, Колготки, Термобелье, Рейтузы"),
         ]
-        self.categorizationService = services.CategorizationService(self.categories)
-    def test_get_all_stems(self):
-        termo = self.categorizationService._get_all_stems(u"термобелье")
-        self.assertSetEqual(set([u'термобел',]), termo)
-        jacket = self.categorizationService._get_all_stems(u"куртка")
-        self.assertSetEqual(set([u'куртк', u'курток', u'курточк']), jacket)
-    def test_category_stems(self):
-        stems = self.categorizationService.stems_ru[0][u"stems"]
-        #print stems
-        #print u', '.join([u' '.join([u'-'.join(form) for form in stem_group]) for stem_group in stems])
-        self.assertSetEqual(stems[0][0], set([u'дубленок', u'дубленк', u'дубленочк']))
-        self.assertSetEqual(stems[1][0], set([u'шуб']))
-        self.assertSetEqual(stems[3][1], set([u'куртк', u'курток', u'курточк']))
+        stemmingService = StemmingServiceMock()
+        self.categorizationService = services.CategorizationService(categories, stemmingService)
     def test_make_phrase_pattern(self):
         phrase = [set([u'зимн']), set([u'куртк', u'курток', u'курточк'])]
         pattern = self.categorizationService._make_phrase_pattern(phrase)
         self.assertEqual(pattern, ur'(зимн)\w*\W*(куртк|курток|курточк)')
         self.assertTrue(re.search(pattern, u'купил зимнюю куртку!', flags=re.U))
-    '''
-    def test_detect_thing(self):
-        message = models.Message(id=1, text=u"купил маЁчку, носок и пакет трусов, доволен как лось!")
-        detected_things = self.categorizationService.detect_things(message)
-        self.assertEquals(len(detected_things), 3)
-    '''
+    def test_detect_categories(self):
+        text=u"купил ШУБУ жене!"
+        detected_categories = self.categorizationService.detect_categories(text)
+        print u", ".join([category.name for category in detected_categories])
+        self.assertEquals(len(detected_categories), 1)
