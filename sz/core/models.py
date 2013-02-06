@@ -1,7 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 import os, uuid
 from time import strftime
-from django.contrib import auth
+from django.contrib.auth import models as auth_models
 from django.contrib.gis.db import models
 from imagekit import models as imagekit_models
 from imagekit import processors
@@ -30,10 +30,11 @@ class LowerCaseCharField(models.CharField):
 
 # Entities
 class Category(models.Model):
-    alias = LowerCaseCharField(
+    alias = models.SlugField(
         verbose_name=u"Псевдоним для идентификации",
         max_length=32,
-        db_index=True)
+        db_index=True,
+        unique=True)
     name = models.CharField(
         verbose_name=u"наименование",
         max_length=64,
@@ -108,7 +109,7 @@ class Message(models.Model):
         blank=False,
         verbose_name=u"сообщение")
     user = models.ForeignKey(
-        auth.models.User,
+        auth_models.User,
         verbose_name=u"пользователь")
     place = models.ForeignKey(
         Place,
