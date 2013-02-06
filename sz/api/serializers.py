@@ -28,12 +28,12 @@ class CategorySerializer(serializers.Serializer):
     last = sz_api_fields.NestedField(transform=lambda obj, args: obj['last'])
     #messages = sz_api_fields.NestedField(serializer=MessageSerializer)
 
-class PlaceSearchSerializer(serializers.Serializer):
+class FeedRequestSerializer(serializers.Serializer):
     latitude = serializers.FloatField(required = True)
     longitude = serializers.FloatField(required = True)
     accuracy = serializers.FloatField(required = False)
-    place = serializers.CharField(required = False)
-    message = serializers.CharField(required = False)
+    categories = serializers.Field()
+    query = serializers.CharField(required = False)
     nearby = serializers.IntegerField(required = False)
 
 class PlaceSerializer(serializers.Serializer):
