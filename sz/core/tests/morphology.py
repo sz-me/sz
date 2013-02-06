@@ -49,7 +49,7 @@ class StemmingServiceMock:
             u'зимняя': set([ur'зимн',]),
             u'пальто': set([ur'пальто',]),
             u'костюм': set([ur'костюм',]),
-            u'дублёнка': set([u'дубленок', u'дубленк', u'дубленочк']),
+            u'дубленка': set([u'дубленок', u'дубленк', u'дубленочк']),
             u'шуба': set([u'шуб']),
             }
     def get_all_stems(self, word):
@@ -72,10 +72,11 @@ class CatigorizationServiceTest(TestCase):
     def test_make_phrase_pattern(self):
         phrase = [set([u'зимн']), set([u'куртк', u'курток', u'курточк'])]
         pattern = self.categorizationService._make_phrase_pattern(phrase)
-        self.assertEqual(pattern, ur'(зимн)\w*\W*(куртк|курток|курточк)')
+        print pattern
+        self.assertEqual(pattern, ur'(зимн)\w*\W*(куртк|курт[ао]к|курт[ао]чк)')
         self.assertTrue(re.search(pattern, u'купил зимнюю куртку!', flags=re.U))
     def test_detect_categories(self):
-        text=u"купил ШУБУ жене!"
+        text=u"купил ДУБЛЁНКУ жене!"
         detected_categories = self.categorizationService.detect_categories(text)
         print u", ".join([category.name for category in detected_categories])
         self.assertEquals(len(detected_categories), 1)

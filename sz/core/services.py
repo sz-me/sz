@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import re
+import re, string
 from sz.core import lists,morphology
 from sz.core.morphology import stemmers
 
@@ -54,9 +54,20 @@ class CategorizationService:
             for keyword in category.keywords.split(u',')
         ]
         return phrases
+    def _replace_vowel_ru(self, word):
+        replace_table_ru = {
+            u'а': u'[ао]',
+            u'о': u'[ао]',
+            u'е': u'[еёи]',
+            u'ё': u'[её]',
+        }
+        new_word = ""
+        for sign in word:
+            new_word += replace_table_ru.get(sign, sign)
+        return new_word
     def _make_phrase_pattern(self, phrase):
         # todo считать за одну букву [ао] и [еёи]
-        pattern = ur"\w*\W*".join([ ur'(%s)' % ur'|'.join(word_set) for word_set in phrase ])
+        pattern = ur"\w*\W*".join([ self._replace_vowel_ru(ur'(%s)' % ur'|'.join(word_set)) for word_set in phrase ])
         return pattern
     def _has_matches(self, text, patterns):
         matches = filter(lambda x: x.search(text), patterns)
