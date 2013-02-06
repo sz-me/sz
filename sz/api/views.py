@@ -11,7 +11,9 @@ from sz.core import lists, models, services, queries, utils
 from rest_framework.authtoken import models as authtoken_models
 from rest_framework.authtoken import serializers as authtoken_serializers
 
-categorization_service = services.CategorizationService(list(models.Thing.objects.all()))
+categorization_service = services.CategorizationService(
+    models.Category.objects.all(),
+    services.RussianStemmerService())
 
 class SzApiView(APIView):
     """
@@ -99,7 +101,7 @@ class PlaceRoot(SzApiView):
     """
     permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None):
-        serializer = serializers.PlaceSearchSerializer(data=request.QUERY_PARAMS)
+        serializer = serializers.FeedRequestSerializer(data=request.QUERY_PARAMS)
         if serializer.is_valid():
             position = {
                 'latitude': request.QUERY_PARAMS['latitude'],
