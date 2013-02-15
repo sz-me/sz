@@ -110,7 +110,7 @@ class CategorizationService:
             try:
                 stem = models.Stem.objects.get(language=s[1], stem=s[0])
             except ObjectDoesNotExist:
-                stem = models.Stem(stem=s[1], language=s[0])
+                stem = models.Stem(language=s[1], stem=s[0])
                 stem.save()
             message.stems.add(stem)
         return message
