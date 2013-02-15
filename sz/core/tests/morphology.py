@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
 from sz.core.morphology import stemmers
-from sz.core import models, morphology, services
+from sz.core import models, morphology
+from sz.core.services import morphology as services
+
 
 class MorphUtilsTest(TestCase):
     def test_extract_words_ru(self):
-        text = u'съешь ещё этих мягких французских булочек с маслом, please'
+        text = u'съешь ещё этих мягких французских булочек с маслом, please 15'
         self.assertEqual(morphology.extract_words_ru(text),
             set([u'маслом', u'съешь', u'булочек', u'французских', u'мягких']))
 
@@ -32,14 +34,19 @@ class StemmerTest(TestCase):
         print russian_stemmer.stemWord(u'палаточка')
         self.assertEquals(russian_stemmer.stemWord(u'майка'), u'майк')
 
-class RussianStemmerServiceTest(TestCase):
+class RussianStemmingServiceTest(TestCase):
     def setUp(self):
-        self.stemmer = services.RussianStemmerService()
+        self.stemmingService = services.RussianStemmingService()
     def test_get_all_stems(self):
-        termo = self.stemmer.get_all_stems(u"термобелье")
-        self.assertSetEqual(set([u'термобел',]), termo)
-        jacket = self.stemmer.get_all_stems(u"куртка")
+        inner = self.stemmingService.get_all_stems(u"термобелье")
+        self.assertSetEqual(set([u'термобел',]), inner)
+        jacket = self.stemmingService.get_all_stems(u"куртка")
         self.assertSetEqual(set([u'куртк', u'курток', u'курточк']), jacket)
+    def test_get_all_stems_for_text(self):
+        text=u"купил ДУБЛЁНКУ и ещё ДУБЛЕНКУ жене!"
+        stems = self.stemmingService.get_all_stems_for_text(text)
+        #print u'set([%s])' % u', '.join([u'u\'%s\'' % stem for stem in stems])
+        self.assertSetEqual(set([u'жен', u'дубленок', u'дубленк', u'дубленочк', u'куп']), stems)
 
 class StemmingServiceMock:
     def __init__(self):

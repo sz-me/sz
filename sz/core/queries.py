@@ -13,33 +13,29 @@ DEFAULT_DISTANCE = settings.DEFAULT_DISTANCE
 # TODO: вынести в sz.settings
 DEFAULT_PAGINATE_BY = 7
 
-def messages_Q(things, stems):
-    messages_with_condition = Q()
-    if things:
-        messages_with_things = Q(things__in=things)
-        messages_with_condition = messages_with_condition & messages_with_things
-    if stems:
-        messages_with_stems = functools.reduce(lambda f, s: f | Q(text__icontains=s), stems, Q())
-        messages_with_condition = messages_with_condition & messages_with_stems
-    return messages_with_condition
+def stems_stem_Q(stems):
+    return functools.reduce(lambda f, s: f | Q(stems__stem__icontains=s[0]), stems, Q())
+
+def place_name_Q(stems):
+    return functools.reduce(lambda f, s: f | Q(name__icontains=s[0]), stems, Q())
 
 def feed(**kwargs):
-    '''
+    """
     Возвращает ленту последний событий в городе или в близлежащих местах,
     если задан параметр nearby. Если nearby задан числом, то рассматриваются
     места в радиусе данного значения (в метрах).
-    '''
+    """
     latitude = kwargs.pop('latitude', None)
     longitude = kwargs.pop('longitude', None)
     assert latitude and longitude, 'latitude and longitude are required'
     current_position = fromstr("POINT(%s %s)" % (longitude, latitude))
-    paginate_by = kwargs.pop('paginate_by', DEFAULT_PAGINATE_BY)
-    place = kwargs.pop('place', None)
-    nearby = kwargs.pop('nearby', None)
-    things = kwargs.pop('things', None)
-    stems = kwargs.pop('stems', None)
+    paginate_by = kwargs.get('paginate_by', DEFAULT_PAGINATE_BY)
+    stems = kwargs.get('stems', None)
+    nearby = kwargs.get('nearby', None)
+    category = kwargs.get('category', None)
+
     filtered_places = models.Place.objects\
-        .filter(message__in = models.Message.objects.filter(messages_Q(things, stems)))
+        .filter(message__stems__in=models.Message.objects.filter(stems_stem_Q(stems)))
     if nearby is None:
         # TODO: определять город по координатам
         city_id = kwargs.pop('city_id', None)
@@ -48,18 +44,31 @@ def feed(**kwargs):
     else:
         distance = utils.safe_cast(nearby, int, DEFAULT_DISTANCE)
         distance_kwargs = {'m':'%i' % distance}
-        filtered_places = filtered_places\
-        .filter(position__distance_lte=(current_position, D(**distance_kwargs) ))\
-        .distance(current_position).order_by('distance')
-
-    if place:
-        filtered_places = filtered_places.filter(name__icontains=place)
-
-    query = filtered_places\
-            .annotate(last_message=dj_models.Max('message__id'))\
+        filtered_places = filtered_places.filter(position__distance_lte=(current_position, D(**distance_kwargs) ))\
+            .distance(current_position).order_by('distance')
+    if category is not None:
+        filtered_places = filtered_places.filter(message__categories__in=[category,])
+    '''
+    if stems:
+        if len(stems) > 0:
+            filtered_places = filtered_places.filter(place_name_Q(stems))
+    '''
+    query = filtered_places.annotate(last_message=dj_models.Max('message__id'))\
             .order_by('-last_message')[:paginate_by]
-
     return query
+
+
+def messages(places, **kwargs):
+    paginate_by = kwargs.get('paginate_by', DEFAULT_PAGINATE_BY)
+    stems = kwargs.get('stems', None)
+    category = kwargs.get('category', None)
+    filtered_messages = models.Message.objects.filter(place__pk__in=[p.pk for p in places])\
+        .filter(stems__stem__in=[stem[0] for stem in stems])
+    if category is not None:
+        filtered_messages = filtered_messages.filter(categories__in=[category,])
+    query = filtered_messages.order_by('-date')[:paginate_by]
+    return query
+
 
 def categories(place):
     last_day = timezone.now() - datetime.timedelta(days=56)

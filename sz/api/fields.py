@@ -1,4 +1,5 @@
 from rest_framework import fields
+from rest_framework import relations
 from sz.api import pagination
 from sz.api import services
 
@@ -27,7 +28,7 @@ class NestedField(fields.Field):
             value = serializer.data
         return value
 
-class ResourceField (fields.HyperlinkedIdentityField):
+class ResourceField (relations.HyperlinkedIdentityField):
     def field_to_native(self, obj, field_name):
         url = super(ResourceField, self).field_to_native(obj, field_name)
         return { 'url': url, }

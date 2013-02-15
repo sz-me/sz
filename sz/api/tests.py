@@ -76,7 +76,7 @@ class PlaceTest(TestCase):
 
     def test_places_view(self):
         request = self.factory.get('/places/', position)
-        view = views.PlaceRoot.as_view()
+        view = views.PlaceFeed.as_view()
         response = view(request)
         self.assertEqual(response.status_code, 200)
 

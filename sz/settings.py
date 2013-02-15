@@ -170,8 +170,11 @@ FOURSQUARE_CONFIG = {
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
+    #    'rest_framework.renderers.JSONRenderer',
         'sz.api.renderers.UnicodeJSONRenderer',
+    #    'rest_framework.renderers.BrowsableAPIRenderer',
         'sz.api.renderers.BrowsableAPIRenderer',
+        'rest_framework.renderers.TemplateHTMLRenderer',
         ),
     'DEFAULT_PERMISSIONS': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',

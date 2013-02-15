@@ -1,6 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 import os, uuid
 from time import strftime
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import models as auth_models
 from django.contrib.gis.db import models
 from imagekit import models as imagekit_models
@@ -18,6 +19,7 @@ class ModifyingFieldDescriptor(object):
     def __set__(self, instance, value):
         instance.__dict__[self.field.name] = self.field.to_python(value)
 
+
 class LowerCaseCharField(models.CharField):
     def to_python(self, value):
         value = super(LowerCaseCharField, self).to_python(value)
@@ -25,13 +27,24 @@ class LowerCaseCharField(models.CharField):
             return value.lower()
         return value
     def contribute_to_class(self, cls, name):
+        """
+        :param cls:
+        :param name:
+        """
         super(LowerCaseCharField, self).contribute_to_class(cls, name)
         setattr(cls, self.name, ModifyingFieldDescriptor(self))
 
+
 # Entities
+LANGUAGE_CHOICES = (
+    ('en', 'English'),
+    ('ru', 'Russian'),
+)
+
+
 class Category(models.Model):
     alias = models.SlugField(
-        verbose_name=u"Псевдоним для идентификации",
+        verbose_name=u"псевдоним",
         max_length=32,
         db_index=True,
         unique=True)
@@ -39,6 +52,11 @@ class Category(models.Model):
         verbose_name=u"наименование",
         max_length=64,
         db_index=True)
+    description = models.CharField(
+        verbose_name=u"описание",
+        max_length=256,
+        null=True,
+        blank=True,)
     keywords = LowerCaseCharField(
         verbose_name=u"ключевые слова",
         max_length=2048,
@@ -48,6 +66,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = u"категория"
         verbose_name_plural = u"категории"
+
 
 class Place(models.Model):
     id = models.CharField(
@@ -96,6 +115,28 @@ class Place(models.Model):
         verbose_name_plural = u"места"
         ordering = ["name"]
 
+
+class Stem(models.Model):
+    stem = LowerCaseCharField(
+        verbose_name=u"основа слова",
+        max_length=32,
+        db_index=True,
+        unique=True
+    )
+
+    language = LowerCaseCharField(
+        verbose_name=u"язык",
+        db_index=True,
+        max_length=2,
+        choices=LANGUAGE_CHOICES
+    )
+    def __unicode__(self):
+        return u"%s" % self.stem
+
+    class Meta:
+        unique_together = ('stem', 'language',)
+
+
 class Message(models.Model):
     date = models.DateTimeField(
         auto_now_add=True,
@@ -129,6 +170,10 @@ class Message(models.Model):
         options={'quality': 85})
     categories = models.ManyToManyField(
         Category,
+        null=True,
+        blank=True)
+    stems = models.ManyToManyField(
+        Stem,
         null=True,
         blank=True)
     class Meta:

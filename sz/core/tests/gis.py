@@ -8,7 +8,7 @@ position = {
     'longitude': 127.5266082,
     'accuracy': 50
 }
-
+'''
 class GeoServicesTest(TestCase):
     def test_search_venues(self):
         result = venue.search(position, None, None)
@@ -58,4 +58,4 @@ class GeoNamesTest(TestCase):
             g['toponymName']
             ) for g in r['geonames']])
         self.assertTrue(r)
-
+'''

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.http.multipartparser import parse_header
-from django.utils import simplejson as json
+#from django.utils import simplejson as json
+import json
 from rest_framework import renderers as rest_framework_renderers
 from rest_framework.utils import encoders
 
