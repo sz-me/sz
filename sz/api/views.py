@@ -59,6 +59,20 @@ class CategoriesRoot(SzApiView):
         return Response(serializer.data)
 
 
+class CategoriesDetect(SzApiView):
+    """ Detect categories of clothes in a text """
+
+    def get(self, request, format=None):
+        categories_detecting_request_form = forms.CategoriesDetectingRequestForm(request.QUERY_PARAMS)
+        if categories_detecting_request_form.is_valid():
+            params = categories_detecting_request_form.cleaned_data
+            categories = categorization_service.detect_categories(params['text'])
+            serializer = serializers.CategorySerializer(instance=categories)
+            return Response(serializer.data)
+        else:
+            return Response(categories_detecting_request_form.errors)
+
+
 class CategoriesInstance(SzApiView):
     """ Retrieve a category of clothes """
 

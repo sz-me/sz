@@ -10,9 +10,13 @@ class FeedRequestForm(forms.Form):
     query = forms.CharField(required=False, label=u'Запрос')
     nearby = forms.IntegerField(required=False, min_value=0, max_value=5000, label=u'Удалённость', initial=0)
     category = forms.ModelChoiceField(
-        queryset=models.Category.objects.all(), required = False, label=u'Категория', to_field_name='alias')
+        queryset=models.Category.objects.all(), required=False, label=u'Категория', to_field_name='alias')
 
 
 class NearestCityRequestForm(forms.Form):
     latitude = forms.FloatField(required=True, min_value=-90.0, max_value=90.0, label=u'Широта')
     longitude = forms.FloatField(required=True, min_value=-180.0, max_value=180.0, label=u'Долгота')
+
+
+class CategoriesDetectingRequestForm(forms.Form):
+    text = forms.CharField(required=True, label=u'Текст')

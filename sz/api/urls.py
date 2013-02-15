@@ -4,6 +4,7 @@ from sz.api import views
 urlpatterns = patterns('',
     url(r'^$', views.ApiRoot.as_view()),
     url(r'^categories$', views.CategoriesRoot.as_view(), name='category-list'),
+    url(r'^categories/detect$', views.CategoriesDetect.as_view(), name='category-detect'),
     url(r'^categories/(?P<pk>\w+)$', views.CategoriesInstance.as_view(), name='category-detail'),
     url(r'^messages/(?P<pk>\d+)$', views.MessageInstance.as_view(), name='message-detail'),
     url(r'^users$', views.UserRoot.as_view(), name='user-list'),
