@@ -63,7 +63,7 @@ class Category(models.Model):
         return sorted([kw.strip() for kw in normalized_keywords.split(',')])
 
     def save(self, *args, **kwargs):
-        self.keywords = u', '.join(self.get_keywords_set())
+        self.keywords = u', '.join(self.get_keywords_list())
         super(Category, self).save(*args, **kwargs)
 
     def __unicode__(self):
