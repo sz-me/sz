@@ -7,7 +7,7 @@ from django.utils import timezone
 from sz.core import models, utils
 from sz import settings
 
-DEFAULT_DISTANCE = settings.DEFAULT_DISTANCE
+DEFAULT_DISTANCE = settings.DEFAULT_RADIUS
 # TODO: вынести в sz.settings
 DEFAULT_PAGINATE_BY = 7
 
@@ -15,7 +15,7 @@ DEFAULT_PAGINATE_BY = 7
 def feed(**kwargs):
     """
     Возвращает ленту последний событий в городе или в близлежащих местах,
-    если задан параметр nearby. Если nearby задан числом, то рассматриваются
+    если задан аргумент :radius:, то рассматриваются
     места в радиусе данного значения (в метрах).
     """
     latitude = kwargs.pop('latitude', None)
@@ -24,19 +24,18 @@ def feed(**kwargs):
     current_position = fromstr("POINT(%s %s)" % (longitude, latitude))
     paginate_by = kwargs.get('paginate_by', DEFAULT_PAGINATE_BY)
     stems = kwargs.get('stems', [])
-    nearby = kwargs.get('nearby', None)
+    radius = kwargs.get('radius', None)
     category = kwargs.get('category', None)
-
     filtered_places = models.Place.objects.annotate(last_message=dj_models.Max('message__id'))\
         .filter(last_message__isnull=False)
-    if nearby is None:
+    print kwargs['radius']
+    if radius == 0 or radius is None:
         # TODO: определять город по координатам
         city_id = kwargs.pop('city_id', None)
         assert city_id, 'city_id is required'
         filtered_places = filtered_places.filter(city_id=city_id)
     else:
-        distance = utils.safe_cast(nearby, int, DEFAULT_DISTANCE)
-        distance_kwargs = {'m':'%i' % distance}
+        distance_kwargs = {'m': '%i' % radius}
         filtered_places = filtered_places.filter(position__distance_lte=(current_position, D(**distance_kwargs)))\
             .distance(current_position).order_by('distance')
     if len(stems) > 0:

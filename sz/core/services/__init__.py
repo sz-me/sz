@@ -76,11 +76,8 @@ class PlaceService:
         latitude, longitude = self._get_position(**kwargs)
         city = self._get_city(**kwargs)
         query = kwargs.get('query', None)
-        nearby = kwargs.get('nearby', None)
-        if 'nearby' in kwargs:
-            nearby = utils.safe_cast(nearby, int, settings.DEFAULT_DISTANCE)
-        print nearby
-        result = venue.search({'latitude': latitude, 'longitude': longitude}, query, nearby)
+        radius = kwargs.get('radius', None)
+        result = venue.search({'latitude': latitude, 'longitude': longitude}, query, radius)
         place_and_distance_list = \
             map(lambda l:
                 dict(place=models.Place(
