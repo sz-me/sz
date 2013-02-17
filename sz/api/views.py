@@ -17,8 +17,7 @@ categorization_service = morphology.CategorizationService(
     morphology.RussianStemmingService())
 city_service = gis.BlagoveshchenskCityService()
 venue_service = None
-model_caching_service = services.ModelCachingService
-place_service = services.PlaceService(city_service, None, model_caching_service, categorization_service)
+place_service = services.PlaceService(city_service, None, categorization_service)
 
 
 class SzApiView(APIView):
