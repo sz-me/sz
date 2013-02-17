@@ -4,9 +4,11 @@ from rest_framework import serializers
 from sz.api import pagination, fields as sz_api_fields
 from sz.core import models
 
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     name = serializers.CharField(source="username")
     full_name = serializers.CharField(source="get_full_name")
+
     class Meta:
         model = User
         fields = ('username','full_name')
@@ -15,9 +17,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class AuthenticationSerializer(serializers.Serializer):
     def __init__(self, *args, **kwargs):
         user = self.serializer = kwargs.pop('user', None)
-        self.trans_args = {
-            'user' : user,
-            }
+        self.trans_args = {'user': user}
         super(AuthenticationSerializer, self).__init__(*args, **kwargs)
 
     token = serializers.Field(source='key')

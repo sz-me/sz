@@ -67,10 +67,10 @@ class CategorizationService:
             [
                 [
                     self._get_all_stems(word)
-                    for word in self.non_word_pattern.split(keyword.strip())
+                    for word in self.non_word_pattern.split(keyword)
                 ]
 
-                for keyword in category.keywords.split(u',')
+                for keyword in category.get_keywords_list()
             ]
         return phrases
 

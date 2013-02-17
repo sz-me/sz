@@ -54,9 +54,17 @@ class Category(models.Model):
         verbose_name=u"описание", max_length=256,
         null=True, blank=True)
 
-    keywords = LowerCaseCharField(
+    keywords = models.TextField(
         verbose_name=u"ключевые слова", max_length=2048,
         help_text=u"ключевые слова, разделённые запятыми, регистр неважен")
+
+    def get_keywords_list(self):
+        normalized_keywords = u' '.join(self.keywords.split()).lower()
+        return sorted([kw.strip() for kw in normalized_keywords.split(',')])
+
+    def save(self, *args, **kwargs):
+        self.keywords = u', '.join(self.get_keywords_set())
+        super(Category, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return u"%s" % self.name
@@ -112,7 +120,7 @@ class Place(models.Model):
     class Meta:
         verbose_name = u"место"
         verbose_name_plural = u"места"
-        ordering = ["name"]
+        ordering = ("name",)
 
 
 class Stem(models.Model):
