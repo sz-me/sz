@@ -11,6 +11,7 @@ class ModelCachingManager:
     cached = []
     for_insert = []
     for_update = []
+
     def __init__(self, data, date, delta):
         assert data, 'data is required'
         if len(data) > 0:
@@ -88,11 +89,11 @@ class PlaceService:
                     contact=l.get(u'contact'),
                     address=l[u'location'].get(u'address') and (u"%s" % l[u'location'].get(u'address')) or None,
                     crossStreet=l[u'location'].get(u'crossStreet') and (u"%s" % l[u'location'].get(u'crossStreet'))
-                        or None,
+                    or None,
                     position=gis_core.ll_to_point(l[u'location'].get(u'lng'), l[u'location'].get(u'lat')),
                     city_id=None,
                     foursquare_icon_suffix=utils.safe_get(l, lambda el: el[u'categories'][0][u'icon'][u'suffix']),
-                    foursquare_icon_prefix=utils.safe_get(l, lambda el: el[u'categories'][0][u'icon'][u'prefix']),),
+                    foursquare_icon_prefix=utils.safe_get(l, lambda el: el[u'categories'][0][u'icon'][u'prefix']), ),
                     distance=l[u'location'].get(u'distance')),
                 result["venues"])
         if len(place_and_distance_list) > 0:

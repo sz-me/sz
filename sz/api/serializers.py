@@ -43,9 +43,9 @@ class PaginatedMessageSerializer(pagination.PaginationSerializer):
 
 
 class PlaceSerializer(serializers.HyperlinkedModelSerializer):
-
     longitude = serializers.Field()
     latitude = serializers.Field()
+    foursquare_details_url = serializers.Field()
 
     class Meta:
         model = models.Place
