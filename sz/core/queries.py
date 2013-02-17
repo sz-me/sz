@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
-import functools
 from django.db import models as dj_models
-from django.db.models import Q
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.measure import D
 from django.utils import timezone

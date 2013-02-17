@@ -16,6 +16,6 @@ class Response(RestFrameworkResponse):
         For example being set automatically by the `APIView`.
         """
         super(Response, self).__init__(None, status=status, template_name=template_name, headers=headers)
-        self.data = { 'data': data, 'meta' : { 'code': status } }
+        self.data = {'data': data, 'meta': {'code': status}}
 
 

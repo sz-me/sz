@@ -41,6 +41,7 @@ class SzApiView(APIView):
 
 
 class ApiRoot(SzApiView):
+
     def get(self, request, format=None):
         return Response({
             'city-nearest': reverse('city-nearest'),
@@ -94,7 +95,7 @@ class MessageInstance(SzApiView):
         try:
             return models.Message.objects.get(pk=pk)
         except models.Message.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            raise Http404 #return Response(status=status.HTTP_404_NOT_FOUND)
 
     def get(self, request, pk, format=None):
         message = self.get_object(pk)
@@ -135,7 +136,7 @@ class PlaceFeed(SzApiView):
     News feed that represents a list of places of whom somebody recently left a message
     For example, [news feed for location (50.2616113, 127.5266082)](?latitude=50.2616113&longitude=127.5266082).
     """
-    def _serialize_news_feed_item(self, item):
+    def _serialize_item(self, item):
         print item
         place_serializer = serializers.PlaceSerializer(instance=item["place"])
         serialized_item = place_serializer.data
@@ -149,34 +150,34 @@ class PlaceFeed(SzApiView):
         if feed_request.is_valid():
             params = feed_request.cleaned_data
             feed = place_service.feed(**params)
-            response = [self._serialize_news_feed_item(item) for item in feed]
+            response = [self._serialize_item(item) for item in feed]
             return Response(response)
         else:
             return Response(feed_request.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PlaceSearch(SzApiView):
-    """ Wrapper for Venue search """
+    """
+    Wrapper for Venue search
+    For example, [places for location (50.2616113, 127.5266082)](?latitude=50.2616113&longitude=127.5266082).
+    """
     permission_classes = (permissions.IsAuthenticated,)
+
+    def _serialize_item(self, item):
+        item_serializer = serializers.PlaceSerializer(instance=item[u'place'])
+        serialized_item = item_serializer.data
+        serialized_item['distance'] = item["distance"]
+        return serialized_item
+
     def get(self, request, format=None):
-        """
-        if places:
-                    if len(places) > 0:
-                        caching_service = services.ModelCachingService(
-                            places, lambda e: e.date, datetime.timedelta(seconds=60*60*24*3))
-                        if len(caching_service.for_insert):
-                            city_id = api_services.geonames_city_service(position)[0]['id']
-                            for e in caching_service.for_insert:
-                                e.city_id = city_id
-                        if len(caching_service.cached) > 0:
-                            for e in caching_service.cached:
-                                stored_city = lists.first_match(
-                                    lambda x: x.id == e.id,
-                                    caching_service.stored)
-                                e.city_id = stored_city.city_id
-                        caching_service.save()
-        """
-        return Response({})
+        place_search_request = forms.PlaceSearchRequestForm(request.QUERY_PARAMS)
+        if place_search_request.is_valid():
+            params = place_search_request.cleaned_data
+            places = place_service.search(**params)
+            response = [self._serialize_item(place) for place in places]
+            return Response(response)
+        else:
+            return Response(place_search_request.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PlaceInstance(SzApiView):
@@ -187,7 +188,7 @@ class PlaceInstance(SzApiView):
     def get_object(self, pk):
         try:
             return models.Place.objects.get(pk=pk)
-        except models.Message.DoesNotExist:
+        except models.Place.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):

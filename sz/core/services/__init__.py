@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.utils import timezone
-from sz.core import lists, queries
-from sz.core import gis as gis_core
+from sz import settings
+from sz.core import lists, models, queries, gis as gis_core, utils
+from sz.core.gis import venue
 
 
 class ModelCachingService:
@@ -33,6 +34,7 @@ class ModelCachingService:
         map(lambda e: e.save(force_insert=True), self.for_insert)
         map(lambda e: e.save(force_update=True), self.for_update)
 
+
 class PlaceService:
     def __init__(self, city_service, venue_service, caching_service, categorization_service):
         self.venue_service = venue_service
@@ -40,10 +42,14 @@ class PlaceService:
         self.caching_service = caching_service
         self.categorization_service = categorization_service
 
-    def feed(self, **kwargs):
+    def _get_position(self, **kwargs):
         latitude = kwargs.get('latitude', None)
         longitude = kwargs.get('longitude', None)
         assert latitude and longitude, 'latitude and longitude are required'
+        return (latitude, longitude)
+
+    def feed(self, **kwargs):
+        latitude, longitude = self._get_position(**kwargs)
         city = self.city_service.get_city_by_position(longitude, latitude)
         kwargs['city_id'] = city['id']
         query = kwargs.pop('query', None)
@@ -59,4 +65,30 @@ class PlaceService:
             }
             for place in places]
         return feed
+
+    def search(self, **kwargs):
+        latitude, longitude = self._get_position(**kwargs)
+        query = kwargs.pop('query', None)
+        nearby = kwargs.pop('nearby', None)
+        if not(nearby is None):
+            nearby = utils.safe_cast(nearby, int, settings.DEFAULT_DISTANCE)
+        result = venue.search({'latitude': latitude, 'longitude': longitude}, query, nearby)
+        place_and_distance_list = map(lambda l:
+        {
+            'place': models.Place(
+                id=l[u'id'],
+                name=l[u'name'],
+                contact=l.get(u'contact'),
+                address=l[u'location'].get(u'address') and (u"%s" % l[u'location'].get(u'address')) or None,
+                crossStreet=l[u'location'].get(u'crossStreet') and (u"%s" % l[u'location'].get(u'crossStreet')) or None,
+                position=gis_core.ll_to_point(l[u'location'].get(u'lng'), l[u'location'].get(u'lat')),
+                city_id=None,
+                foursquare_icon_suffix=utils.safe_get(l, lambda el: el[u'categories'][0][u'icon'][u'suffix']),
+                foursquare_icon_prefix=utils.safe_get(l, lambda el: el[u'categories'][0][u'icon'][u'prefix']),
+
+                ),
+            'distance': l[u'location'].get(u'distance'),
+        },
+        result["venues"])
+        return place_and_distance_list
         #self.venue_service.search({'latitude':latitude, 'longitude': longitude}, **kwargs)

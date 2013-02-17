@@ -2,8 +2,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from sz.api import pagination, fields as sz_api_fields
-from sz.core import models, gis, queries
-from rest_framework.reverse import reverse
+from sz.core import models
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     name = serializers.CharField(source="username")
@@ -44,6 +43,10 @@ class PaginatedMessageSerializer(pagination.PaginationSerializer):
 
 
 class PlaceSerializer(serializers.HyperlinkedModelSerializer):
+
+    longitude = serializers.Field()
+    latitude = serializers.Field()
+
     class Meta:
         model = models.Place
-        exclude = ('messages',)
+        exclude = ('messages', 'date', 'position', )
