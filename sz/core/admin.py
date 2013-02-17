@@ -9,10 +9,7 @@ categorization_service = morphology.CategorizationService(
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    def things_to_str(self, obj):
-        return ', '.join(map(lambda x: u'%s' % x, obj.thing_set.all()))
-    things_to_str.short_description = u'Вещи'
-    list_display = ('alias', 'name', 'keywords',)
+    list_display = ('alias', 'name', 'description', 'keywords',)
     list_per_page = 50
     ordering = ('name',)
 
