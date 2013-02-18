@@ -136,12 +136,10 @@ class PlaceFeed(SzApiView):
     For example, [news feed for location (50.2616113, 127.5266082)](?latitude=50.2616113&longitude=127.5266082).
     """
     def _serialize_item(self, item):
-        print item
         place_serializer = serializers.PlaceSerializer(instance=item["place"])
-        serialized_item = place_serializer.data
-        serialized_item["distance"] = item["distance"]
         message_serializer = serializers.MessageSerializer(instance=item["messages"])
-        serialized_item["messages"] = message_serializer.data
+        serialized_item = {"place": place_serializer.data, "distance": item["distance"],
+                           "messages": message_serializer.data}
         return serialized_item
 
     def get(self, request, format=None):
@@ -164,8 +162,7 @@ class PlaceSearch(SzApiView):
 
     def _serialize_item(self, item):
         item_serializer = serializers.PlaceSerializer(instance=item[u'place'])
-        serialized_item = item_serializer.data
-        serialized_item['distance'] = item["distance"]
+        serialized_item = {"place": item_serializer.data, "distance": item["distance"]}
         return serialized_item
 
     def get(self, request, format=None):
@@ -192,25 +189,7 @@ class PlaceInstance(SzApiView):
 
     def get(self, request, pk, format=None):
         place = self.get_object(pk)
-        #print u', '.join([u'#%s: %s' % (result['pk'], result['num_messages']) for result in queries.categories(place)])
-        position = {
-            'latitude': request.QUERY_PARAMS['latitude'],
-            'longitude': request.QUERY_PARAMS['longitude'],
-            'accuracy': request.QUERY_PARAMS.get('accuracy'),
-            }
-        message = request.QUERY_PARAMS.get('message')
-        things = None
-        stems = None
-        if message:
-            if len(message) > 2:
-                things, stems = categorization_service.parse_text(message)
-                things = categorization_service.get_with_additional_things(things)
-
-        messages_queryset = lambda p_place, args:\
-                p_place.message_set.filter(queries.messages_Q(args['things'], args['stems']))
-        serializer = serializers.PlaceSerializer(instance=place, latitude=position['latitude'],
-            longitude=position['longitude'], messages=messages_queryset, things=things, stems=stems)
-
+        serializer = serializers.PlaceSerializer(instance=place)
         return Response(serializer.data)
 
 
@@ -234,12 +213,12 @@ class Authentication(SzApiView):
     model = authtoken_models.Token
     def get(self, request):
         responseSerializer = serializers.AuthenticationSerializer(
-            instance = request.auth, user=request.user)
+            instance=request.auth, user=request.user)
         return Response(responseSerializer.data)
     def post(self, request):
         serializer = authtoken_serializers.AuthTokenSerializer(data=request.DATA)
         if serializer.is_valid():
-            user=serializer.object['user'];
+            user = serializer.object['user']
             token, created = authtoken_models.Token.objects.get_or_create(user=user)
             responseSerializer = serializers.AuthenticationSerializer(instance=token, user=user)
             return Response(responseSerializer.data)
