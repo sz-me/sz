@@ -12,10 +12,7 @@ urlpatterns = patterns('',
     url(r'^client/(?P<path>.*)$', 'django.views.static.serve', {
         'document_root': settings.CLIENT_ROOT,
         }),
-    url(r'^ng/$', 'sz.feed.views.ng', name='feed-index'),
-    url(r'^$', 'sz.feed.views.index', name='feed-index'),
-    url(r'^v/(?P<id>\w+)/$', 'sz.feed.views.place', name='feed-place'),
-    url(r'^light/', include('sz.light.urls'), name='light'),
+    url(r'^$', 'sz.core.views.index', name='client-index'),
     url(r'^api/', include('sz.api.urls'), name='api'),
     url(r'^accounts/register/$', 'registration.views.register',
         {
