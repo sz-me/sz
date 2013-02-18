@@ -8,9 +8,14 @@ from sz.core import models, utils
 from sz import settings
 
 DEFAULT_DISTANCE = settings.DEFAULT_RADIUS
-# TODO: вынести в sz.settings
-DEFAULT_PAGINATE_BY = 7
+DEFAULT_PAGINATE_BY = settings.DEFAULT_PAGINATE_BY
 
+
+def get_paging_args(**kwargs):
+    limit = utils.safe_cast(kwargs.get('limit', DEFAULT_PAGINATE_BY), int, DEFAULT_PAGINATE_BY)
+    offset = utils.safe_cast(kwargs.get("offset", 0), int, 0)
+    max_id = kwargs.get("max_id", None)
+    return limit, offset, max_id
 
 def feed(**kwargs):
     """
@@ -22,13 +27,14 @@ def feed(**kwargs):
     longitude = kwargs.pop('longitude', None)
     assert latitude and longitude, 'latitude and longitude are required'
     current_position = fromstr("POINT(%s %s)" % (longitude, latitude))
-    paginate_by = kwargs.get('paginate_by', DEFAULT_PAGINATE_BY)
+    limit, offset, max_id = get_paging_args(**kwargs)
     stems = kwargs.get('stems', [])
     radius = kwargs.get('radius', None)
     category = kwargs.get('category', None)
     filtered_places = models.Place.objects.annotate(last_message=dj_models.Max('message__id'))\
         .filter(last_message__isnull=False)
-    print kwargs['radius']
+    if max_id is not None:
+        filtered_places = filtered_places.filter(message__id__lte=max_id)
     if radius == 0 or radius is None:
         # TODO: определять город по координатам
         city_id = kwargs.pop('city_id', None)
@@ -42,20 +48,22 @@ def feed(**kwargs):
         filtered_places = filtered_places.filter(message__stems__stem__in=[stem[0] for stem in stems])
     if category is not None:
         filtered_places = filtered_places.filter(message__categories__in=[category,])
-    query = filtered_places.order_by('-last_message')[:paginate_by]
+    query = filtered_places.order_by('-last_message')[offset:offset + limit]
     return query
 
 
 def messages(places, **kwargs):
-    paginate_by = kwargs.get('paginate_by', DEFAULT_PAGINATE_BY)
+    limit, offset, max_id = get_paging_args(**kwargs)
     stems = kwargs.get('stems', [])
     category = kwargs.get('category', None)
     filtered_messages = models.Message.objects.filter(place__pk__in=[p.pk for p in places])
+    if max_id is not None:
+        filtered_messages = filtered_messages.filter(id__lte=max_id)
     if len(stems) > 0:
         filtered_messages = filtered_messages.filter(stems__stem__in=[stem[0] for stem in stems])
     if category is not None:
         filtered_messages = filtered_messages.filter(categories__in=[category,])
-    query = filtered_messages.order_by('-date')[:paginate_by]
+    query = filtered_messages.order_by('-date')[offset:offset + limit]
     return query
 
 

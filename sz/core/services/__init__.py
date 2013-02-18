@@ -62,6 +62,8 @@ class PlaceService:
         kwargs['stems'] = self.categorization_service.detect_stems(query)
         #print u"; ".join(u"(stem: %s, lang: % s)" % stem for stem in kwargs['stems'])
         places = queries.feed(**kwargs)
+        kwargs.pop('limit')
+        kwargs.pop('offset')
         messages = queries.messages(places, **kwargs)
         feed = [
             {

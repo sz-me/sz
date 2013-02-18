@@ -4,7 +4,13 @@ from sz import settings
 from sz.core import models
 
 
-class FeedRequestForm(forms.Form):
+class PaginatedRequestForm(forms.Form):
+    max_id = forms.IntegerField(required=False, min_value=0)
+    limit = forms.IntegerField(required=False, min_value=1, max_value=50, initial=settings.DEFAULT_PAGINATE_BY)
+    offset = forms.IntegerField(required=False, min_value=0)
+
+
+class FeedRequestForm(PaginatedRequestForm):
     latitude = forms.FloatField(required=True, min_value=-90.0, max_value=90.0, label=u'Широта')
     longitude = forms.FloatField(required=True, min_value=-180.0, max_value=180.0, label=u'Долгота')
     #accuracy = forms.FloatField(required=False, initial=20, label=u'Погрешность')
