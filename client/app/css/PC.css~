@@ -1,5 +1,0 @@
-.row-fluid{
-    background:red;
-    width:50%;
-    margin-left:25%;
-}
