@@ -18,7 +18,7 @@ class FeedRequestForm(PaginatedRequestForm):
     radius = forms.IntegerField(
         required=False, min_value=0, max_value=5000, label=u'Удалённость', initial=settings.DEFAULT_RADIUS)
     category = forms.ModelChoiceField(
-        queryset=models.Category.objects.all(), required=False, label=u'Категория', to_field_name='alias')
+        queryset=models.Category.objects.all(), required=False, label=u'Категория')
 
 
 class PlaceSearchRequestForm(forms.Form):

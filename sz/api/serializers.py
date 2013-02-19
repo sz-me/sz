@@ -5,7 +5,7 @@ from sz.api import pagination, fields as sz_api_fields
 from sz.core import models
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source="username")
     full_name = serializers.CharField(source="get_full_name")
 
@@ -24,25 +24,20 @@ class AuthenticationSerializer(serializers.Serializer):
     user = sz_api_fields.NestedField(transform=lambda p, a: a.get('user', None), serializer=UserSerializer)
 
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Category
         exclude = ('keywords',)
 
 
-class MessageSerializer(serializers.HyperlinkedModelSerializer):
+class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Message
         read_only_fields = ('date',)
         exclude = ('place', 'user', 'stems',)
 
 
-class PaginatedMessageSerializer(pagination.PaginationSerializer):
-    class Meta:
-        object_serializer_class = MessageSerializer
-
-
-class PlaceSerializer(serializers.HyperlinkedModelSerializer):
+class PlaceSerializer(serializers.ModelSerializer):
     longitude = serializers.Field()
     latitude = serializers.Field()
     foursquare_details_url = serializers.Field()

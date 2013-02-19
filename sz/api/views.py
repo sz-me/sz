@@ -140,7 +140,7 @@ class PlaceFeed(SzApiView):
     def _convert_result_to_response(self, result, url, items):
         category = None
         if result.get('category') is not None:
-            category = result.get('category').alias
+            category = result.get('category').pk
         return dict(url=url, longitude=result.get('longitude'), latitude=result.get('latitude'),
                     category=category, query=result.get('query'), limit=result.get('limit'),
                     max_id=result.get('max_id'), offset=result.get('offset'), results=items,
