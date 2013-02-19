@@ -14,7 +14,7 @@
 {"username": "4Дуня Кулакова", "id": 90, "date": "2013-01-02T14:38:17.029Z", "text": "Даже ёжики ёжиков ", "things": ["понедельник","вторник","бездельник","дворник","штаны","полоска","трава","жилетка","сигаретка","папироска","аристократ","сократ","тратуар","дамы","герлы","телка","метелка","метла","меняла","туман","рубль","карман","бездельник","дворник","аристократ","сократ"]}
 ]}'>	
 <ul class="media-list" id="searchTextResults">
-	<li ng-repeat="place in places.data" class="media place_box" ng-controller="FeedPlaceBox">
+	<li ng-repeat="item in feed.data" class="media place_box" ng-controller="FeedPlaceBox">
 		<div class="navbar  " >
                     <div class="navbar-inner" style="padding:0; background-image:none;background-color:transparent;border:none;box-shadow:none;border-radius:none;">
                         <ul class="nav pull-right" style="margin-bottom:0">
@@ -47,8 +47,8 @@
                             </li>
                         </ul> 
                         <div style="text-align:right;" class="place_address">                                    
-                             <strong style="line-height:12px;">{{place.name}}</strong><br>
-                             <small style="line-height:10px;">{{place.address}}</small>    
+                             <strong style="line-height:12px;">{{item.place.name}}</strong><br>
+                             <small style="line-height:10px;">{{item.place.address}}</small>
                        </div>           
                     </div> 
                 </div>
@@ -67,9 +67,9 @@
 
 	         <ul class=" place_box_messages_big_box" style="margin-left:0;list-style:none;" >
                      <div class="place_box_messages_wrapper" >
-                        <sz-feed-message-box cur="PlaceBoxMessage.cur"  next="PlaceBoxMessage.next" messages='messages.results'></sz-feed-message-box>
+                        <sz-feed-message-box cur="PlaceBoxMessage.cur"  next="PlaceBoxMessage.next" messages='item.messages'></sz-feed-message-box>
 		     </div>
-		</ul>
+		     </ul>
                	 
                 
 	</li>
