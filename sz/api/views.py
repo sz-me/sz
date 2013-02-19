@@ -24,9 +24,10 @@ class SzApiView(APIView):
     """
         Base class for SZ Web API views
     """
+
     def handle_exception(self, exc):
         base_response = APIView.handle_exception(self, exc)
-        return Response(base_response.data, status = base_response.status_code)
+        return Response(base_response.data, status=base_response.status_code)
 
     paginate_by = 2
 
@@ -40,7 +41,6 @@ class SzApiView(APIView):
 
 
 class ApiRoot(SzApiView):
-
     def get(self, request, format=None):
         return Response({
             'city-nearest': reverse('city-nearest'),
@@ -111,6 +111,7 @@ class MessageInstance(SzApiView):
 
 class UserRoot(SzApiView):
     """ List all users. """
+
     def get(self, request, format=None):
         users = User.objects.all()
         serializer = serializers.UserSerializer(instance=users)
@@ -135,11 +136,23 @@ class PlaceFeed(SzApiView):
     News feed that represents a list of places of whom somebody recently left a message
     For example, [news feed for location (50.2616113, 127.5266082)](?latitude=50.2616113&longitude=127.5266082).
     """
+
+    def _convert_result_to_response(self, result, url, items):
+        category = None
+        if result.get('category') is not None:
+            category = result.get('category').alias
+        return dict(url=url, longitude=result.get('longitude'), latitude=result.get('latitude'),
+                    category=category, query=result.get('query'), limit=result.get('limit'),
+                    max_id=result.get('max_id'), offset=result.get('offset'), results=items,
+                    count=result.get('count'))
+
     def _serialize_item(self, item):
         place_serializer = serializers.PlaceSerializer(instance=item["place"])
-        message_serializer = serializers.MessageSerializer(instance=item["messages"])
-        serialized_item = {"place": place_serializer.data, "distance": item["distance"],
-                           "messages": message_serializer.data}
+        message_serializer = serializers.MessageSerializer(instance=item["messages"]["items"])
+        serialized_item = dict(
+            place=place_serializer.data, distance=item["distance"],
+            messages=self._convert_result_to_response(
+                item["messages"], reverse('place-messages', (item["place"].pk,)), message_serializer.data))
         return serialized_item
 
     def get(self, request, format=None):
@@ -147,7 +160,8 @@ class PlaceFeed(SzApiView):
         if feed_request.is_valid():
             params = feed_request.cleaned_data
             feed = place_service.feed(**params)
-            response = [self._serialize_item(item) for item in feed]
+            response = self._convert_result_to_response(
+                feed, reverse('place-feed'), [self._serialize_item(item) for item in feed['items']])
             return Response(response)
         else:
             return Response(feed_request.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -211,10 +225,12 @@ class PlaceMessages(SzApiView):
 
 class Authentication(SzApiView):
     model = authtoken_models.Token
+
     def get(self, request):
         responseSerializer = serializers.AuthenticationSerializer(
             instance=request.auth, user=request.user)
         return Response(responseSerializer.data)
+
     def post(self, request):
         serializer = authtoken_serializers.AuthTokenSerializer(data=request.DATA)
         if serializer.is_valid():

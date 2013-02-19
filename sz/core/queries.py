@@ -11,12 +11,6 @@ DEFAULT_DISTANCE = settings.DEFAULT_RADIUS
 DEFAULT_PAGINATE_BY = settings.DEFAULT_PAGINATE_BY
 
 
-def get_paging_args(**kwargs):
-    limit = utils.safe_cast(kwargs.get('limit', DEFAULT_PAGINATE_BY), int, DEFAULT_PAGINATE_BY)
-    offset = utils.safe_cast(kwargs.get("offset", 0), int, 0)
-    max_id = kwargs.get("max_id", None)
-    return limit, offset, max_id
-
 def feed(**kwargs):
     """
     Возвращает ленту последний событий в городе или в близлежащих местах,
@@ -27,7 +21,7 @@ def feed(**kwargs):
     longitude = kwargs.pop('longitude', None)
     assert latitude and longitude, 'latitude and longitude are required'
     current_position = fromstr("POINT(%s %s)" % (longitude, latitude))
-    limit, offset, max_id = get_paging_args(**kwargs)
+    limit, offset, max_id = utils.get_paging_args(**kwargs)
     stems = kwargs.get('stems', [])
     radius = kwargs.get('radius', None)
     category = kwargs.get('category', None)
@@ -48,12 +42,13 @@ def feed(**kwargs):
         filtered_places = filtered_places.filter(message__stems__stem__in=[stem[0] for stem in stems])
     if category is not None:
         filtered_places = filtered_places.filter(message__categories__in=[category,])
+    count = filtered_places.aggregate(count=dj_models.Count('id'))['count']
     query = filtered_places.order_by('-last_message')[offset:offset + limit]
-    return query
+    return query, count
 
 
 def messages(places, **kwargs):
-    limit, offset, max_id = get_paging_args(**kwargs)
+    limit, offset, max_id = utils.get_paging_args(**kwargs)
     stems = kwargs.get('stems', [])
     category = kwargs.get('category', None)
     filtered_messages = models.Message.objects.filter(place__pk__in=[p.pk for p in places])
@@ -65,6 +60,22 @@ def messages(places, **kwargs):
         filtered_messages = filtered_messages.filter(categories__in=[category,])
     query = filtered_messages.order_by('-date')[offset:offset + limit]
     return query
+
+
+def place_messages(place, **kwargs):
+    limit, offset, max_id = utils.get_paging_args(**kwargs)
+    stems = kwargs.get('stems', [])
+    category = kwargs.get('category', None)
+    filtered_messages = models.Message.objects.filter(place__pk=place.pk)
+    if max_id is not None:
+        filtered_messages = filtered_messages.filter(id__lte=max_id)
+    if len(stems) > 0:
+        filtered_messages = filtered_messages.filter(stems__stem__in=[stem[0] for stem in stems])
+    if category is not None:
+        filtered_messages = filtered_messages.filter(categories__in=[category,])
+    count = filtered_messages.aggregate(count=dj_models.Count('id'))['count']
+    query = filtered_messages.order_by('-date')[offset:offset + limit]
+    return query, count
 
 
 def categories(place):

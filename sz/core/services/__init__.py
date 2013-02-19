@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 from django.utils import timezone
-from sz import settings
+from django.db.models import Max
 from sz.core import lists, models, queries, gis as gis_core, utils
 from sz.core.gis import venue
 
@@ -43,39 +43,51 @@ class PlaceService:
         self.city_service = city_service
         self.categorization_service = categorization_service
 
-    def _get_position(self, **kwargs):
-        latitude = kwargs.get('latitude', None)
-        longitude = kwargs.get('longitude', None)
-        assert latitude and longitude, 'latitude and longitude are required'
-        return (latitude, longitude)
-
     def _get_city(self, **kwargs):
-        latitude, longitude = self._get_position(**kwargs)
+        latitude, longitude = utils.get_position_from_kwargs(**kwargs)
         city = self.city_service.get_city_by_position(longitude, latitude)
         return city
 
-    def feed(self, **kwargs):
-        latitude, longitude = self._get_position(**kwargs)
-        city = self._get_city(**kwargs)
-        kwargs['city_id'] = city['id']
-        query = kwargs.pop('query', None)
-        kwargs['stems'] = self.categorization_service.detect_stems(query)
-        #print u"; ".join(u"(stem: %s, lang: % s)" % stem for stem in kwargs['stems'])
-        places = queries.feed(**kwargs)
+    def _make_result(self, items, count, **kwargs):
+        latitude, longitude = utils.get_position_from_kwargs(**kwargs)
+        limit, offset, max_id = utils.get_paging_args(**kwargs)
+        query = kwargs.get('query', None)
+        category = kwargs.get('category', None)
+        return dict(latitude=latitude, longitude=longitude, query=query, category=category, max_id=max_id, limit=limit,
+                    offset=offset, count=count, items=items)
+
+    def _place_messages_first(self, place, **kwargs):
         kwargs.pop('limit')
         kwargs.pop('offset')
-        messages = queries.messages(places, **kwargs)
-        feed = [
-            {
-                "place": place,
-                "distance": gis_core.calculate_distance(longitude, latitude, place.longitude(), place.latitude()),
-                "messages": filter(lambda m: m.place.id == place.id, messages),
-            }
-            for place in places]
+        return self._place_messages(place, **kwargs)
+
+    def _place_messages(self, place, **kwargs):
+        messages, count = queries.place_messages(place, **kwargs)
+        return self._make_result(messages, count, **kwargs)
+
+    def feed(self, **kwargs):
+        latitude, longitude = utils.get_position_from_kwargs(**kwargs)
+        city = self._get_city(**kwargs)
+        kwargs['city_id'] = city['id']
+        query = kwargs.get('query', None)
+        kwargs['stems'] = self.categorization_service.detect_stems(query)
+        #print u"; ".join(u"(stem: %s, lang: % s)" % stem for stem in kwargs['stems'])
+        max_id = kwargs.get("max_id", None)
+        if max_id is None:
+            max_id = models.Message.objects.aggregate(max_id=Max('id'))["max_id"]
+            kwargs['max_id'] = max_id
+        places, count = queries.feed(**kwargs)
+        feed = self._make_result(
+            [ dict(
+                place=place,
+                distance=gis_core.calculate_distance(longitude, latitude, place.longitude(), place.latitude()),
+                messages=self._place_messages_first(place, **kwargs.copy())
+            ) for place in places], count, **kwargs)
+
         return feed
 
     def search(self, **kwargs):
-        latitude, longitude = self._get_position(**kwargs)
+        latitude, longitude = utils.get_position_from_kwargs(**kwargs)
         city = self._get_city(**kwargs)
         query = kwargs.get('query', None)
         radius = kwargs.get('radius', None)

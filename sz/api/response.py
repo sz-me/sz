@@ -7,7 +7,7 @@ class Response(RestFrameworkResponse):
     arbitrary media types.
     """
     def __init__(self, data=None, status=200,
-                 template_name=None, headers=None):
+                 template_name=None, headers=None, info=dict()):
         """
         Alters the init arguments slightly.
         For example, drop 'template_name', and instead use 'data'.
@@ -16,6 +16,6 @@ class Response(RestFrameworkResponse):
         For example being set automatically by the `APIView`.
         """
         super(Response, self).__init__(None, status=status, template_name=template_name, headers=headers)
-        self.data = {'data': data, 'meta': {'code': status}}
+        self.data = {'data': data, 'meta': {'code': status, 'info': info}}
 
 
