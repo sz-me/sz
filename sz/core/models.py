@@ -1,9 +1,9 @@
 ﻿# -*- coding: utf-8 -*-
 import os, uuid
 from time import strftime
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import models as auth_models
 from django.contrib.gis.db import models
+from django.contrib.sites.models import Site
 from imagekit import models as imagekit_models
 from imagekit import processors
 
@@ -172,6 +172,14 @@ class Message(models.Model):
     thumbnail = imagekit_models.ImageSpecField(
         [processors.ResizeToFill(90, 90), ],
         image_field='photo', options={'quality': 85})
+
+    def photo_urls(self, root_url=""):
+        root_url = root_url.rstrip('/')
+        if self.photo:
+            return dict(full=root_url + self.photo.url, reduced=root_url + self.reduced_photo.url,
+                        thumbnail=root_url + self.thumbnail.url)
+        else:
+            return None
 
     categories = models.ManyToManyField(Category, null=True, blank=True)
 

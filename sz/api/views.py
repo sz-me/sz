@@ -5,12 +5,12 @@ from django.http import Http404
 from rest_framework import permissions, status
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
+from rest_framework.authtoken import models as authtoken_models
+from rest_framework.authtoken import serializers as authtoken_serializers
 from sz.api import serializers, services as api_services, forms
 from sz.api.response import Response
 from sz.core import models, services, queries
 from sz.core.services import morphology, gis
-from rest_framework.authtoken import models as authtoken_models
-from rest_framework.authtoken import serializers as authtoken_serializers
 
 categorization_service = morphology.CategorizationService(
     models.Category.objects.all(),
@@ -99,6 +99,9 @@ class MessageInstance(SzApiView):
     def get(self, request, pk, format=None):
         message = self.get_object(pk)
         serializer = serializers.MessageSerializer(instance=message)
+        data = serializer.data
+        root_url = reverse('client-index', request=request)
+        data['photo'] = message.photo_urls(root_url)
         return Response(serializer.data)
 
     def delete(self, request, pk, format=None):
@@ -146,13 +149,18 @@ class PlaceFeed(SzApiView):
                     max_id=result.get('max_id'), offset=result.get('offset'), results=items,
                     count=result.get('count'))
 
-    def _serialize_item(self, item):
+    def _serialize_item(self, item, root_url):
         place_serializer = serializers.PlaceSerializer(instance=item["place"])
+        photos = [(message.id, message.photo_urls(root_url)) for message in item["messages"]["items"]]
+        photo_by_id = lambda id: filter(lambda p: p[0] == id, photos)[0][1]
         message_serializer = serializers.MessageSerializer(instance=item["messages"]["items"])
+        serialized_messages = message_serializer.data
+        for serialized_message in serialized_messages:
+            serialized_message['photo'] = photo_by_id(serialized_message['id'])
         serialized_item = dict(
             place=place_serializer.data, distance=item["distance"],
             messages=self._convert_result_to_response(
-                item["messages"], reverse('place-messages', (item["place"].pk,)), message_serializer.data))
+                item["messages"], reverse('place-messages', (item["place"].pk,)), serialized_messages))
         return serialized_item
 
     def get(self, request, format=None):
@@ -160,8 +168,9 @@ class PlaceFeed(SzApiView):
         if feed_request.is_valid():
             params = feed_request.cleaned_data
             feed = place_service.feed(**params)
+            root_url = reverse('client-index', request=request)
             response = self._convert_result_to_response(
-                feed, reverse('place-feed'), [self._serialize_item(item) for item in feed['items']])
+                feed, reverse('place-feed'), [self._serialize_item(item, root_url) for item in feed['items']])
             return Response(response)
         else:
             return Response(feed_request.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -218,7 +227,7 @@ class PlaceMessages(SzApiView):
             message.user = request.user
             print message.user
             message.save()
-            categorization_service.detect_things(message)
+            categorization_service.assert_stems(message)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

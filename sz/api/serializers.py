@@ -44,4 +44,4 @@ class PlaceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Place
-        exclude = ('messages', 'date', 'position', )
+        exclude = ('messages', 'date', 'position', 'photo')
