@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         <script src="js/libs/jquery/jquery-1.9.1.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap/css/bootstrap.css">
-        <script src="css/bootstrap/js/bootstrap.js"></script>
+         <script src="css/bootstrap/js/bootstrap.js"></script> 
         <link rel="stylesheet" href="css/color.css">
         
         <title>SZ</title>
@@ -17,13 +17,43 @@
         <script src="js/controllers.js"></script>
         <script src="js/app.js"></script>
 </head>
-<body ng-controller="MasterPageController"  sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()" sz-change-scroll-to-top="changeScrollToTop()">
-
+<body ng-controller="MasterPageController"  sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()">
+    
+    <div id="shmot_filter_overlflow" ng-show="showShmotFilter" ng-click="showShmotFilter=false;showContent=true;">
+    </div>
+    <div id="shmot_filter" ng-show="showShmotFilter" >
+        <div style="width:366px;height:265px" id="shmotInner" >
+            <span class="shmot_box" ng-repeat="shmotCat in shmot_category.data" >
+                <div class="shmot_box_name" ng-click="$emit('ChangeCategory', {'id':shmotCat.id,'name':shmotCat.name})">
+                    {{shmotCat.name}}
+                </div>
+                <button class="btnMy shmot_btn_info" style="margin-top:6px;" ng-click="showShmotCatInfo=true">
+                    <img class="media-object" src="img/ico/blue/glyphicons_195_circle_info.png">
+                </button> 
+                <div class="shmot_category_info" ng-show="showShmotCatInfo" >
+                    <div class="shmot_category_info_name">
+                        {{shmotCat.name}}
+                    </div>
+                    <div class="shmot_category_info_cont">
+                        {{shmotCat.description}}
+                    </div>
+                    <button class="btnMy" ng-click="showShmotCatInfo=false">
+                        <img class="media-object" src="img/ico/blue/glyphicons_224_chevron-left.png">
+                    </button> 
+                    <button class="btnMy" ng-click="showShmotCatInfo=false;$emit('ChangeCategory', {'id':shmotCat.id,'name':shmotCat.name})">
+                        <img class="media-object" src="img/ico/blue/glyphicons_206_ok_2.png">
+                    </button> 
+                </div>
+            </span>
+        </div>
+        <button class="btnMy" ng-click="showShmotFilter=false;showContent=true;">
+            <img class="media-object" src="img/ico/blue/glyphicons_207_remove_2.png">
+        </button>
+    </div>
 
     <div id="feed" >
-        <div class="navbar navbar-static-top "  id="menuPanel" >
-            <div class="navbar-inner" id="menutop" style="padding:0">
-            
+        <div class="navbar navbar-static-top "  id="menuPanel" ng-show="showMenuPanel">
+            <div class="navbar-inner" id="menutop" style="padding:0">            
                 <ul class="nav " > 
                     <li>
                         <a href='#' class="navitem" id="btn_feed" >
@@ -46,50 +76,59 @@
                         </a>
                     </li>
                 </ul>
-            </div>            
-            
+            </div>      
         </div>
         <div class="navbar-inner" id="searchString" >
-            <ul class="nav pager mybtn" > 
-                <li>
-                    <a href='' id="btn_near"  style="float:left;margin-right:8px;" >
-                        <img class="media-object" src="img/ico/white/glyphicons_377_riflescope.png">
-                    </a>
-                </li>
-                <li>
-                    <form class="navbar-search pull-left" style="margin-top:8px;">
-                            <input type="text" class="search-query" placeholder="Искать на странице" >
-                    </form>
-                </li>
-            </ul>
+            <div style="width:100%;height:47px;" >
+                <div id="shmot_filter_btn" >
+                    <div style="float:left;margin-top:10px;cursor:pointer" ng-style="shmot_filter_btn_style" ng-click="showShmotFilter=true;showContent=false;">{{shmot_category_active.name}}</div>
+                    <button class="btnMy"  ng-click="setFilter()" style="float:right;border:none;">
+                        <img class="media-object" src="img/ico/blue/glyphicons_320_filter.png" ng-style="test">
+                    </button>
+                </div>
+            </div>
+            <div style="width:100%;height:47px;" >
+                <button class="btnMy" ng-click="nextD()" style="float:right">
+                    <img class="media-object" src="img/ico/blue/glyphicons_223_chevron-right.png">
+                </button>
+                <button class="btnMy" ng-click="prevD()" style="margin-right:3px;margin-left:3px;font-size:85%;float:right;padding:9px 14px;">
+                    {{distanceList[indexD]}}
+                </button>
+                <button class="btnMy" ng-click="prevD()" style="float:right">
+                    <img class="media-object" src="img/ico/blue/glyphicons_224_chevron-left.png">
+                </button>
+            </div>
+            <form class="navbar-search pull-right">
+                <input type="text" class="search-query" placeholder="Искать на странице" >
+            </form>
         </div>
         
         
-        <div  ng-view class="content" id="content" ></div>
+        <div  ng-view class="content" id="content" ng-show="showContent"></div>
       
 
         
-        <div class="navbar navbar-fixed-bottom"  ng-show="showSearchPanel" >
+        <div class="navbar navbar-fixed-bottom navbar-inverse"  ng-show="showBotMenuPanel" >
             <div class="navbar-inner" id="menubottom" >
                 <ul class="nav " style="width:100%"  >
                     <li>
 			<sz-scrolling-to-top  top="scrollToTop.top">
 			</sz-scrolling-to-top>
-			<a href="" id="btn_page_scroll_Up" class="navitem" ng-click="scrollToTop.top = true"> 
+			<a href="" id="btn_page_scroll_Up" class="navitem" ng-click="scrollToTop.top = true" > 
 			    <img class="media-object" src="img/ico/white/glyphicons_213_up_arrow.png">
 			</a>
 			
                     </li>
                        <li >
-                        <a href="#/place/search" id="btn_new_message" class="navitem">
+                        <a href="#/new_message" id="btn_new_message" class="navitem"> 
                           <img class="media-object" src="img/ico/white/glyphicons_150_edit.png">
                         </a>
                     </li>
-                    <li >
+          <!--          <li >
                         <a href="#" id="btn_search" class="navitem"> 
                            <img class="media-object" src="img/ico/white/glyphicons_027_search.png">
                         </a>
-                    </li>
+                    </li>-->
                     <li style="float:right">
                         <div id="castle_info_val" style="margin-right:12px;">
                             <div><span class="badge badge-success">2</span></div>
@@ -116,8 +155,16 @@
         var contentMarginL = 5;
         var searchStringWidth = 200;
         
-        var botmenuBtnFloat = 'none';
-        var btnPageScrollMarginL = 8;
+        var shmotFilterHeight = 300;        
+        var shmotFilterPaddingTop = 10;
+        var shmotFilterPaddingLeft = 10;
+        var shmotBoxWidthS = 110;
+        var shmotBoxHeight = 54;
+        var shmotNameWidth = 74;
+        var shmotNameHeight = 40;
+        var shmotInfoBtnPaddingTop = 8;
+        var shmotInfoBtnPaddingLeft = 3;
+        var shmotInfoBtnPaddingLeftMax = 14;
         
         if (winWidth>800){
             if(winWidth>1200){
@@ -130,21 +177,30 @@
                 var feedWidth = winWidth*0.6;
             }
             var feedMarginL = (winWidth - feedWidth)*0.5;
+            
         }
         else{
-            var feedWidth = winWidth-contentMargin*4;
+            var feedWidth = winWidth-contentMargin*2.5;
             var feedMarginL = contentMargin;
+            var shmotFilterHeight = winHeight*0.8;
             if(winWidth<340){
                 var searchStringWidth = feedWidth - 125;
-                var botmenuBtnFloat = 'left';
-                var btnPageScrollMarginL = 2;
-            }            
+            }
         }
-        
+        var shmotFilterWidth = feedWidth*0.8;
+        if(shmotFilterHeight>shmotFilterWidth&&winHeight>440){
+            shmotBoxWidth = shmotFilterWidth/2-5*2-2*2;
+            shmotFilterHeight = 435;
+        }
+        else{
+            shmotBoxWidth = (shmotFilterWidth-5*6-2*3)/3;
+            shmotFilterHeight = 305;
+        }
+        if(shmotBoxWidth>shmotBoxWidthS){var shmotInfoBtnPaddingLeft = shmotInfoBtnPaddingLeftMax;}
+        var shmotNameWidth = shmotBoxWidth-33-shmotInfoBtnPaddingLeft*2;
         
         var contentWidth = feedWidth - contentMarginL*2;
-        var btn_new_messageMarginL = contentWidth*0.5-60-53;
-        $("#btn_new_message").css({marginLeft:btn_new_messageMarginL+'px'});
+
         $("#searchString input[type='text']").width(searchStringWidth);
         
         $("#menubottom").width(feedWidth).css({marginLeft:feedMarginL+'px'});
@@ -152,7 +208,20 @@
         
         var menutopMarginL = feedMarginL+(feedWidth-topmenuWidth)*0.5;
         $("#menutop>ul").css({marginLeft:menutopMarginL});
-//    $("#btn_page_scroll_Up").text(winWidth)
+        
+        var shmotFilterLeft = feedMarginL + (feedWidth - shmotFilterWidth - shmotFilterPaddingLeft)*0.5;
+        var shmotFilterTop = (winHeight - shmotFilterHeight - shmotFilterPaddingTop)*0.5;
+        $("#shmot_filter,.shmot_category_info").height(shmotFilterHeight).width(shmotFilterWidth).css({left:shmotFilterLeft+'px',top:shmotFilterTop+'px'});
+        $(".shmot_box").height(shmotBoxHeight).width(shmotBoxWidth);
+        $(".shmot_box_name").height(shmotNameHeight).width(shmotNameWidth);
+        $(".shmot_btn_info").css({padding:shmotInfoBtnPaddingTop+'px '+shmotInfoBtnPaddingLeft+'px'});
+        var shmotInfoContMargin = 10;
+        var shmotInfoNameHeight = 20;
+        var shmotInfoButHeight = 40;
+        var shmotInfoContHeight = shmotFilterHeight-shmotInfoContMargin*2-shmotInfoNameHeight-shmotInfoButHeight ;
+        $("#shmotInner").height(shmotFilterHeight-shmotInfoButHeight).width(shmotFilterWidth)
+        $(".shmot_category_info_cont").height(shmotInfoContHeight);
+        
     }
         
     

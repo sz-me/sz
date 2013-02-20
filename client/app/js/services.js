@@ -45,3 +45,9 @@ szClient.factory('geolocationService', ['$q', '$rootScope', function($q, $rootSc
         }, 1000);
         return d.promise;
     };}]);
+
+szClient.factory('shmotCategoryService', function($resource){
+                return $resource('../../api/categories', {}, {
+                        query: { method:'GET' } 
+                });
+        });
