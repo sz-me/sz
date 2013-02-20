@@ -55,10 +55,10 @@
                     </div> 
                 </div>
                 <div>
-                    <button class="btnMy" ng-click='PlaceBoxMessage.next=PlaceBoxMessage.next-1'>
+                    <button class="btnMy"  ng-class="{btnDisable:!PlaceBoxMessage.cur}" ng-click='PlaceBoxMessage.next=PlaceBoxMessage.next-1'>
                         <img class="media-object" src="img/ico/blue/glyphicons_224_chevron-left.png">
                     </button>
-                    <button class="btnMy pull-right" ng-click='PlaceBoxMessage.next=PlaceBoxMessage.next+1' >
+                    <button class="btnMy " ng-class="{btnDisable:!(item.messages.results.length-1)}" ng-click='PlaceBoxMessage.next=PlaceBoxMessage.next+1' style="float:right">
                         <img class="media-object" src="img/ico/blue/glyphicons_223_chevron-right.png">
                     </button>
                 </div>
@@ -66,29 +66,9 @@
                      <div class="place_box_messages_wrapper" >
                         <sz-feed-message-box cur="PlaceBoxMessage.cur"  next="PlaceBoxMessage.next" messages='item.messages.results' cat='PlaceBoxMessage.cat'></sz-feed-message-box>
 		     </div>
-		     </ul>
+                </ul>
                	 
                 
 	</li>
 </ul>
-<!--
-     <sz-feed-message-box cur="PlaceBoxMessage.cur"  messages='messages.results'></sz-feed-message-box>
- <input type="button" value="<" ng-click='PlaceBoxMessage.cur=PlaceBoxMessage.cur-1'>
- <input type="button" value=">" ng-click='PlaceBoxMessage.cur=PlaceBoxMessage.cur+1'>
- -->
-<script type="text/javascript"> 
-$.each($(".place_box"),function(index,val){
-/*        var $messages_Bbox = $(val);
-        var messages_BboxWidth = $messages_Bbox.width();
-        var $wrapper = $messages_Bbox.find(".place_box_messages_wrapper");
-        var $messages = $wrapper.find(".place_box_messages_box_mes");
-        var messageVal = 3;
-        var fmessageHeight = $(".place_box").height();
-        var wrapperWidth = $(".place_box").width();
-        
-        $messages_Bbox.height(fmessageHeight);
-        $wrapper.height(fmessageHeight).width(wrapperWidth);
-        
-	$(".place_box_messages_box_mes").width(30); */
-});
-</script>	
+

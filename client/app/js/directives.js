@@ -122,12 +122,12 @@ angular.module('sz.client.directives', [])
                             '</div>'+
                             '<ul class="pager" >'+
                                 '<li >'+
-                                    '<button class="btnMy" ng-click="showMessageTextFull()" style="margin-right:5px;">'+
+                                    '<button class="btnMy" ng-class="{btnDisable:!haveText()}" ng-click="showMessageTextFull()" style="margin-right:5px;">'+
                                        '<img class="media-object" src="img/ico/blue/glyphicons_029_notes_2.png">'+
                                     '</button>'+
                                 '</li>'+
                                 '<li >'+
-                                    '<button class="btnMy" ng-click="showMessagePhoto()">'+
+                                    '<button class="btnMy"  ng-class="{btnDisable:!havePhoto()}" ng-click="showMessagePhoto()">'+
                                         '<img class="media-object" src="img/ico/blue/glyphicons_138_picture.png">'+
                                     '</button>'+
                                 '</li>'+
@@ -263,8 +263,6 @@ angular.module('sz.client.directives', [])
                     var i = scope.textWidth;
                     scope.wrapper.width(scope.textWidth*3.3);
                     scope.messageBox.width(scope.textWidth);
-                    var btnWidth = 53;
-                    var btnHeight = 45;
                     
                     scope.$watch('cur', setPages);
                     scope.$watch('next', nextPages);
@@ -288,7 +286,12 @@ angular.module('sz.client.directives', [])
                         }
                     }
                     
-                    
+                    scope.haveText = function () {
+                        return scope.messageText.height()==scope.textHeight;
+                    };
+                    scope.havePhoto = function () {
+                        return true;
+                    };
                     
                     function textHeight(){
                         var messageHeight = scope.messageText.height();
