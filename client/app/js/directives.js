@@ -105,8 +105,8 @@ angular.module('sz.client.directives', [])
                                 
                                     '<div class="place_box_messages_tags" style="line-height:14px;" >'+
 //                                         '<small>'+
-                                        '<a ng-repeat="thing in things" style="margin-right:3px;display:inline-block;font-size:85%;color:#999">'+
-                                            '{{thing}}'+
+                                        '<a ng-repeat="category in categories" style="margin-right:3px;display:inline-block;font-size:85%;color:#999">'+
+                                            '{{category}}'+
                                         '</a>'+
 //                                         '</small>'+
                                     '</div>'+
@@ -137,18 +137,28 @@ angular.module('sz.client.directives', [])
                 scope: {
                     cur: '=',
                     next: '=',
-                    messages:'='
+                    messages:'=',
+                    cat:'='
                 },
                 link: function (scope, element, attrs) {
-                    var setPages = function () {                        
+                    var setPages = function () {  
                         var msg = scope.messages[scope.cur];
                         var datetime = msg.date.split('T');
                         scope.date = datetime[0];
                         var time = datetime[1].split('.')[0];
                         scope.time = time.slice(0,time.length-3)
                         scope.username = msg.username;
-                        scope.things = msg.things;
                         scope.text = msg.text;
+//                         scope.categories = msg.categories;
+                        scope.categories = []
+                        $.each(msg.categories,function(index,id){
+                            $.each(scope.cat,function(index,cat){
+//                                 alert(cat)
+                                if(cat.id==id){
+                                    scope.categories.push(cat.name)
+                                }
+                            })
+                        });
                         
                         var endMargin = -1*scope.textWidth;;
                         if (scope.fol){
@@ -207,15 +217,14 @@ angular.module('sz.client.directives', [])
                         var btnHeight = 45;
                         var $date = jQuery('<small >',{text:datetime[0],css:{lineHeight:'9px',fontSize:'80%'}}).appendTo($datetime);
                         var $time = jQuery('<small >',{text:datetime[1].split('.')[0],css:{lineHeight:'9px',fontSize:'80%'}}).appendTo($datetime);
-//                         $datetime.width(scope.textWidth-btnWidth*2).css({marginLeft:btnWidth+'px',marginTop:-1*btnHeight+'px'});
                         var $user = jQuery('<a>',{href:"#",css:{marginLeft:'0px',marginRight:'5px',float:'left',marginTop:'3px'},class:"place_box_messages_box_mes_author"}).appendTo($box);
                         var $userpic = jQuery( '<img class="media-object" src="img/user.png"  width="32" height="32" align="left">').appendTo($user);
                         var $boxHeader = jQuery('<div class="media-body place_box_messages_header" >').appendTo($box);
                         var $rait = jQuery('<span class="badge " >8</span>').appendTo($boxHeader);
                         var $username = jQuery('<h6>',{class:"place_box_messages_author",text:message.username,css:{margin:0,display:'inline',marginLeft:'3px',lineHeight:'16px'}}).appendTo($boxHeader);
                         var $thingsArea = jQuery( '<div class="place_box_messages_tags" style="line-height:14px;" >').appendTo($box);
-                        $.each(message.things,function(index,thing){
-                            var $thing = jQuery('<a>',{class:"place_box_messages_tag",text:thing,css:{marginRight:'3px',display:'inline-block',fontSize:'85%',color:'#999'}}).appendTo($thingsArea);
+                        $.each(message.categories,function(index,category){
+                            var $category = jQuery('<a>',{class:"place_box_messages_tag",text:category,css:{marginRight:'3px',display:'inline-block',fontSize:'85%',color:'#999'}}).appendTo($thingsArea);
                         })
                         var $text = jQuery('<p>',{class:"place_box_messages_text",text:message.text}).appendTo($box);
                         var $btnUL = jQuery('<ul class="pager mybtn" >').appendTo($box);
@@ -246,7 +255,6 @@ angular.module('sz.client.directives', [])
                     scope.messageBox = $(element[0]);
                     scope.wrapper = scope.messageBox.closest(".place_box_messages_wrapper");
                     scope.bigBox = scope.wrapper.closest(".place_box_messages_big_box");
-//                     scope.bigWrapper = scope.bigBox.closest(".place_box_wrapper");
                     scope.messageText =  scope.messageBox.find(".place_box_messages_text");
                     scope.textHeight = parseInt(scope.messageText.css('maxHeight'));
                     scope.textWidth = scope.bigBox.width();
@@ -257,7 +265,6 @@ angular.module('sz.client.directives', [])
                     scope.messageBox.width(scope.textWidth);
                     var btnWidth = 53;
                     var btnHeight = 45;
-//                     scope.datetime.width(scope.textWidth-btnWidth*2).css({marginLeft:btnWidth+'px',marginTop:-1*btnHeight+'px'});
                     
                     scope.$watch('cur', setPages);
                     scope.$watch('next', nextPages);
