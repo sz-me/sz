@@ -96,9 +96,9 @@ angular.module('sz.client.directives', [])
                                     ' {{time}}'+
                                 '</small>'+
                             '</div>'+
-                            '<a href="#" style="margin-left:0px;margin-right:5px;float:left;margin-top:3px" id="place_box_messages_box_mes_author">'+
-                                '<img class="media-object" src="img/user.png"  width="32" height="32" align="left">'+
-                            '</a>'+
+//                             '<a href="#" style="margin-left:0px;margin-right:5px;float:left;margin-top:3px" id="place_box_messages_box_mes_author">'+
+//                                 '<img class="media-object" src="img/user.png"  width="32" height="32" align="left">'+
+//                             '</a>'+
                             '<div class="media-body place_box_messages_header" >'+
                                 '<span class="badge " >8</span>'+
                                 '<h6 class="place_box_messages_author" style="margin:0;display:inline;margin-left:3px;line-height:16px;">{{username}}</h6>'+
@@ -118,7 +118,7 @@ angular.module('sz.client.directives', [])
                             '</p>'+
                             
                             '<div class="place_box_messages_photo" >'+
-                                '<img class="media-object" src="img/photo.jpg" width="100">'+
+                                '<img class="media-object" src={{photo}}>'+
                             '</div>'+
                             '<ul class="pager" >'+
                                 '<li >'+
@@ -127,7 +127,7 @@ angular.module('sz.client.directives', [])
                                     '</button>'+
                                 '</li>'+
                                 '<li >'+
-                                    '<button class="btnMy"  ng-class="{btnDisable:!havePhoto()}" ng-click="showMessagePhoto()">'+
+                                    '<button class="btnMy"  ng-class="{btnDisable:!photo}" ng-click="showMessagePhoto()">'+
                                         '<img class="media-object" src="img/ico/blue/glyphicons_138_picture.png">'+
                                     '</button>'+
                                 '</li>'+
@@ -147,8 +147,9 @@ angular.module('sz.client.directives', [])
                         scope.date = datetime[0];
                         var time = datetime[1].split('.')[0];
                         scope.time = time.slice(0,time.length-3)
-                        scope.username = msg.username;
+                        scope.username = 'Генерал Плюшкин';
                         scope.text = msg.text;
+                        if(msg.photo){scope.photo = msg.photo.reduced;}
 //                         scope.categories = msg.categories;
                         scope.categories = []
                         $.each(msg.categories,function(index,id){
@@ -217,8 +218,8 @@ angular.module('sz.client.directives', [])
                         var btnHeight = 45;
                         var $date = jQuery('<small >',{text:datetime[0],css:{lineHeight:'9px',fontSize:'80%'}}).appendTo($datetime);
                         var $time = jQuery('<small >',{text:datetime[1].split('.')[0],css:{lineHeight:'9px',fontSize:'80%'}}).appendTo($datetime);
-                        var $user = jQuery('<a>',{href:"#",css:{marginLeft:'0px',marginRight:'5px',float:'left',marginTop:'3px'},class:"place_box_messages_box_mes_author"}).appendTo($box);
-                        var $userpic = jQuery( '<img class="media-object" src="img/user.png"  width="32" height="32" align="left">').appendTo($user);
+//                         var $user = jQuery('<a>',{href:"#",css:{marginLeft:'0px',marginRight:'5px',float:'left',marginTop:'3px'},class:"place_box_messages_box_mes_author"}).appendTo($box);
+//                         var $userpic = jQuery( '<img class="media-object" src="img/user.png"  width="32" height="32" align="left">').appendTo($user);
                         var $boxHeader = jQuery('<div class="media-body place_box_messages_header" >').appendTo($box);
                         var $rait = jQuery('<span class="badge " >8</span>').appendTo($boxHeader);
                         var $username = jQuery('<h6>',{class:"place_box_messages_author",text:message.username,css:{margin:0,display:'inline',marginLeft:'3px',lineHeight:'16px'}}).appendTo($boxHeader);
@@ -230,10 +231,10 @@ angular.module('sz.client.directives', [])
                         var $btnUL = jQuery('<ul class="pager mybtn" >').appendTo($box);
                         var $btnTextLi = jQuery('<li >').appendTo($btnUL);
                         var $btnText = jQuery('<button class="btnMy" style="margin-right:5px;">').appendTo($btnTextLi);
-                        var $btnTextIco = jQuery('<img class="media-object" src="img/ico/blue/glyphicons_029_notes_2.png">').appendTo($btnText);
+                        var $btnTextIco = jQuery('<img class="media-object" src="img/ico/darkgray/glyphicons_029_notes_2.png">').appendTo($btnText);
                         var $btnPhotoLi = jQuery('<li >').appendTo($btnUL);
                         var $btnPhoto = jQuery('<button class="btnMy"> ').appendTo($btnPhotoLi);
-                        var $btnPhotoIco = jQuery('<img class="media-object" src="img/ico/blue/glyphicons_138_picture.png">').appendTo($btnPhoto);
+                        var $btnPhotoIco = jQuery('<img class="media-object" src="img/ico/darkgray/glyphicons_138_picture.png">').appendTo($btnPhoto);
                    
                         $box.width(scope.textWidth);
                         return $box
@@ -288,9 +289,6 @@ angular.module('sz.client.directives', [])
                     
                     scope.haveText = function () {
                         return scope.messageText.height()==scope.textHeight;
-                    };
-                    scope.havePhoto = function () {
-                        return true;
                     };
                     
                     function textHeight(){

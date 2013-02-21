@@ -143,6 +143,7 @@ overflow-y:hidden;
 
 .btnMy:hover,#shmot_filter_btn:hover{
     border-color: #049cdb;
+    box-shadow:0 0 2px #049cdb;
 }
 
 .btnMy{
@@ -157,14 +158,15 @@ overflow-y:hidden;
 }
 
 .btnDisable{
-    opacity:0.7;
-    cursor:normal;
+    opacity:0.3;
+    cursor:default;
     border:1px solid #EFEFEF;
     background:#EFEFEF;
 }
 
 .btnDisable:hover{
     border-color: #EFEFEF;
+    box-shadow:none;
 }
 
 #shmot_filter_btn{
