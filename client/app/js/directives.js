@@ -201,7 +201,8 @@ angular.module('sz.client.directives', [])
                             var h = datetimeH+userH+tagH+textH+btnH+m;
                             scope.curHeiht = h;
                             //почему то если забирать просто как scope.pPage.height(), то фф корректно устанавливает высоту только через анимейт(через ксс или просто через height() съезжает тэги под аватар), а хром в любом случае ставит высоту пикселей на 20 меньше
-                            scope.wrapper.css({marginLeft:endMargin+'px'}).height(scope.curHeiht)
+                            scope.wrapper.css({marginLeft:endMargin+'px',opacity:0,height:0}).animate({opacity:1,height:scope.curHeiht+'px'},1000).height(scope.curHeiht)
+                            
                         }
                         scope.bigBox.find(".place_box_messages_text").css({maxHeight:scope.textHeight+'px'});
                         scope.bigBox.find(".place_box_messages_photo").hide();
@@ -340,6 +341,31 @@ angular.module('sz.client.directives', [])
                         }
                         scope.$watch('showShmotCatInfo', test);
                     }
+            }
+        })
+        .directive('szDisplayFilter',function(){
+            return{
+                restrict:'EA',
+                link:function(scope,elm,attr){
+                    var test = function(){
+                        if(scope.showSearchString){
+                            scope.ss.animate({marginTop:'42px'},500);
+                            scope.showSerachStringOKBtn = true;
+                            scope.showContent = false;
+                        }
+                        else{
+                            scope.ss.animate({marginTop:-1*scope.ssMarginTop+'px'},500);
+                            scope.showSerachStringOKBtn = false;
+                            scope.showContent = true;
+                        }
+                        
+                    }
+                    scope.ss = $("#searchString");
+                    var ssHeigt = scope.ss.height();
+                    scope.ssMarginTop = ssHeigt-45-45;
+                    scope.ss.css({marginTop:-1*scope.ssMarginTop+'px'})
+                    scope.$watch('showSearchString', test);
+                }
             }
         })
         ;

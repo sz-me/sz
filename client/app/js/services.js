@@ -3,11 +3,16 @@
 var szClient = angular.module('sz.client.services', ['ngResource']);
 /* Services */
 
+'use strict';
+
+var szClient = angular.module('sz.client.services', ['ngResource']);
+/* Services */
+
 szClient.factory('feedService', function($resource){
-		return $resource('../../api/places/feed', {}, {
-			query: { method:'GET', params:{}, isArray:false } 
-		});
-	});
+    return $resource('../../api/places/feed', {}, {
+        query: { method:'GET', params:{}, isArray:false }
+    });
+});
 
 szClient.factory('geolocationService', ['$q', '$rootScope', function($q, $rootScope) {
     return function() {
@@ -23,11 +28,7 @@ szClient.factory('geolocationService', ['$q', '$rootScope', function($q, $rootSc
                     navigator.geolocation.getCurrentPosition(
                         function (position) {
                             $rootScope.$apply(function () {
-                                var longitude = position.coords.longitude;
                                 changeLocation(position.coords);
-                                d.resolve({
-                                    aField: 'Hello ' + position.coords.longitude + '!'
-                                });
                             });
                         },
                         function (error) {
@@ -48,6 +49,14 @@ szClient.factory('geolocationService', ['$q', '$rootScope', function($q, $rootSc
 
 szClient.factory('shmotCategoryService', function($resource){
                 return $resource('../../api/categories', {}, {
+                        query: { method:'GET' }
+                });
+        });
+
+szClient.factory('placeService', function($resource){
+                var id = '4f5c11d0e4b0a4baa31f481b'
+                return $resource('../../api/places/'+id,{}, {
                         query: { method:'GET' } 
                 });
         });
+
