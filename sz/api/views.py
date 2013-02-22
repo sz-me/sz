@@ -144,6 +144,8 @@ class PlaceFeed(SzApiView):
         params = result.get('params')
         if result.get('category') is not None:
             params['category'] = result.get('category').pk
+        else:
+            params['category'] = ""
         return dict(url=url, params=result.get('params'), results=items,
                     count=result.get('count'))
 
