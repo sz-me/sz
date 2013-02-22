@@ -1,22 +1,6 @@
 
-<!--<div style="background:red;border:1px solid black">
-    <div ng-repeat="item in feed.data.results" style="border:1px solid blue">
-        Index:{{$index}}<br>
-        Place:{{item.place.name}}<br>
-        Message:{{item.messages}}<br>
-    </div>
-</div>
-<div style="background:yellow">
-{{feed.data.results}}
-</div>
-<div style="background:green">
-{{newfeed}}
-</div>
-<button class="btnMy" ng-click="loadMorePlaces ()">
-    <img class="media-object" src="img/ico/blue/glyphicons_187_more.png">
-</button>-->
 <ul class="media-list" id="searchTextResults">
-	<li ng-repeat="item in feed.data.results" class="media place_box" ng-controller="FeedPlaceBox">
+	<li ng-repeat="item in feed.data.results" class="media place_box" >
             <div style="text-align:right;margin-bottom:10px;" class="place_address"> 
                 <a href="#/v/{{place.id}}" >
                     <strong style="line-height:12px;">{{item.place.name}}</strong><br>
