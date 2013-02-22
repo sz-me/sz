@@ -53,8 +53,9 @@ class PlaceService:
         limit, offset, max_id = utils.get_paging_args(**kwargs)
         query = kwargs.get('query', None)
         category = kwargs.get('category', None)
-        return dict(latitude=latitude, longitude=longitude, query=query, category=category, max_id=max_id, limit=limit,
-                    offset=offset, count=count, items=items)
+        params = dict(latitude=latitude, longitude=longitude, query=query, category=category,
+                      max_id=max_id, limit=limit, offset=offset)
+        return dict(count=count, items=items, params=params)
 
     def _place_messages_first(self, place, **kwargs):
         kwargs.pop('limit')
