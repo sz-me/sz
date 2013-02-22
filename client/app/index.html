@@ -19,7 +19,7 @@
 </head>
 <body ng-controller="MasterPageController"  sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()">
     
-    <div id="shmot_filter_overlflow" ng-show="showShmotFilter" ng-click="showShmotFilter=false;showContent=true;">
+    <div id="shmot_filter_overlflow" ng-show="showShmotFilter" ng-click="showShmotFilter=false;showContent=true;showBotMenuPanel = true;">
     </div>
     <div id="shmot_filter" ng-show="showShmotFilter" >
         <div style="width:366px;height:265px" id="shmotInner" >
@@ -46,7 +46,7 @@
                 </div>
             </span>
         </div>
-        <button class="btnMy" ng-click="showShmotFilter=false;showContent=true;">
+        <button class="btnMy" ng-click="showShmotFilter=false;showContent=true;showBotMenuPanel = true;">
             <img class="media-object" src="img/ico/blue/glyphicons_207_remove_2.png">
         </button>
     </div>
@@ -80,27 +80,35 @@
         </div>
         <div class="navbar-inner" id="searchString" >
             <div style="width:100%;height:47px;" >
+                <div style="float:left;text-shadow:0 0 2px #222;color:#FFF" id="logo">
+                    <h5>shmotzhmot.me</h5>
+                </div>
+                <form class="navbar-search pull-right">
+                    <input type="text" class="search-query" placeholder="Искать на странице" >
+                </form>
+            </div>
+            <div style="width:100%;height:47px;" >
+                <div style="float:left" >
+                    <button class="btnMy" ng-click="nextD()" style="float:right">
+                        <img class="media-object" src="img/ico/blue/glyphicons_223_chevron-right.png">
+                    </button>
+                    <button class="btnMy" ng-click="prevD()" style="margin-right:3px;margin-left:3px;font-size:85%;float:right;padding:9px 14px;">
+                        {{distanceList[indexD]}}
+                    </button>
+                    <button class="btnMy" ng-click="prevD()" style="float:right">
+                        <img class="media-object" src="img/ico/blue/glyphicons_224_chevron-left.png">
+                    </button>
+                </div>
                 <div id="shmot_filter_btn" >
-                    <div style="float:left;margin-top:10px;cursor:pointer" ng-style="shmot_filter_btn_style" ng-click="showShmotFilter=true;showContent=false;">{{shmot_category_active.name}}</div>
+                    <div style="float:left;margin-top:10px;cursor:pointer;white-space:nowrap;overflow:hidden;" ng-style="shmot_filter_btn_style" ng-click="showShmotFilter=true;showContent=false;" id="shmot_filter_btn_val">
+                        {{shmot_category_active.name}}
+                    </div>
                     <button class="btnMy"  ng-click="setFilter()" style="float:right;border:none;">
                         <img class="media-object" src="img/ico/blue/glyphicons_320_filter.png" ng-style="test">
                     </button>
                 </div>
             </div>
-            <div style="width:100%;height:47px;" >
-                <button class="btnMy" ng-click="nextD()" style="float:right">
-                    <img class="media-object" src="img/ico/blue/glyphicons_223_chevron-right.png">
-                </button>
-                <button class="btnMy" ng-click="prevD()" style="margin-right:3px;margin-left:3px;font-size:85%;float:right;padding:9px 14px;">
-                    {{distanceList[indexD]}}
-                </button>
-                <button class="btnMy" ng-click="prevD()" style="float:right">
-                    <img class="media-object" src="img/ico/blue/glyphicons_224_chevron-left.png">
-                </button>
-            </div>
-            <form class="navbar-search pull-right">
-                <input type="text" class="search-query" placeholder="Искать на странице" >
-            </form>
+            
         </div>
         
         
@@ -132,7 +140,7 @@
                     <li style="float:right">
                         <div id="castle_info_val" style="margin-right:12px;">
                             <div><span class="badge badge-success">2</span></div>
-                            <div><span class="badge badge-important">4</span></div>
+                            <div><span class="badge badge-warning">4</span></div>
                         </div>
                     </li>
                 </ul>
@@ -184,7 +192,7 @@
             var feedMarginL = contentMargin;
             var shmotFilterHeight = winHeight*0.8;
             if(winWidth<340){
-                var searchStringWidth = feedWidth - 125;
+                var searchStringWidth = feedWidth -50- $("#logo").width();
             }
         }
         var shmotFilterWidth = feedWidth*0.8;
@@ -202,6 +210,9 @@
         var contentWidth = feedWidth - contentMarginL*2;
 
         $("#searchString input[type='text']").width(searchStringWidth);
+        var shmot_filter_btnWidth = feedWidth - 245;
+        if(shmot_filter_btnWidth>searchStringWidth){var shmot_filter_btnWidth=searchStringWidth}
+        $("#shmot_filter_btn_val").css({maxWidth:shmot_filter_btnWidth+'px'})
         
         $("#menubottom").width(feedWidth).css({marginLeft:feedMarginL+'px'});
         $("#content,#searchString").width(contentWidth).css({marginLeft:contentMarginL+feedMarginL+'px'});
