@@ -23,11 +23,7 @@ szClient.factory('geolocationService', ['$q', '$rootScope', function($q, $rootSc
                     navigator.geolocation.getCurrentPosition(
                         function (position) {
                             $rootScope.$apply(function () {
-                                var longitude = position.coords.longitude;
                                 changeLocation(position.coords);
-                                d.resolve({
-                                    aField: 'Hello ' + position.coords.longitude + '!'
-                                });
                             });
                         },
                         function (error) {
