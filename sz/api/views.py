@@ -141,12 +141,12 @@ class PlaceFeed(SzApiView):
     """
 
     def _convert_result_to_response(self, result, url, items):
-        category = None
+        params = result.get('params')
         if result.get('category') is not None:
-            category = result.get('category').pk
-        return dict(url=url, longitude=result.get('longitude'), latitude=result.get('latitude'),
-                    category=category, query=result.get('query'), limit=result.get('limit'),
-                    max_id=result.get('max_id'), offset=result.get('offset'), results=items,
+            params['category'] = result.get('category').pk
+        else:
+            params['category'] = ""
+        return dict(url=url, params=result.get('params'), results=items,
                     count=result.get('count'))
 
     def _serialize_item(self, item, root_url):
