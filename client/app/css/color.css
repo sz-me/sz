@@ -1,3 +1,21 @@
+select,select:focus,opttion,opttion:focus{
+    text-decoration:none;
+    outline: none;
+    -moz-appearance: none;
+    outline:none;
+}
+select{
+    width:230px;
+    padding:4px 14px;
+    border-radius:15px;
+}
+
+select:focus{
+    border-color: #049cdb;
+    box-shadow:0 0 2px #049cdb;
+}
+
+
 a{
     outline: none;
     -moz-user-select: none;
@@ -198,7 +216,7 @@ overflow-y:hidden;
     padding-left:8px;
 }
 
-#searchString{
+#searchWindow{
     text-align:left;
     padding:0;
     margin:10px 0 ;
@@ -236,65 +254,24 @@ overflow-y:hidden;
     background:#049cdb;
 }
 
-#shmot_filter_overlflow{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    z-index:1040;
-    background:rgb(51,51,51);
-    opacity:0.85;
-}
-
-#shmot_filter,.shmot_category_info{
-    border-radius:15px;
-    text-align:center;
-    position:fixed;
-/*     height:90%; */
-/*     top:5%; */
-    z-index:1050;
-    padding:10px;
-    background:white;
-    border:1px solid #AAA;
-}
-
-.shmot_category_info{
-    z-index:1051;
-/*     display:none; */
-/*    margin-left:82px;
-    margin-top:-31px;*/
+#searchWindowInner{
+    border:1px solid #CCC;
+    padding:8px;
     overflow:hidden;
-}
-
-.shmot_category_info_name{
-    font-size:110%;
-    height:20px;
-    overflow:hidden;
-}
-.shmot_category_info_cont{
-    overflow:hidden;
-    margin:10px 0;
-    font-weight:normal;
 }
 
 .shmot_box{   
+    text-align:center;
+    overflow:hidden;
+    height:47px;
     cursor:pointer;
     border-radius:15px;
-    font-weight:bold;
     font-size:75%;
 /*    width:110px;
     height:54px;*/
     margin:5px;
     float:left;
-    border:1px solid #049cdb;
+    border:1px solid #CCC;
 }
 
-.shmot_box_name{
-    margin-left:3px;
-    float:left;
-    margin-top:7px;
-/*    width:74px;
-    height:40px;*/
-    overflow:hidden;
-}
+

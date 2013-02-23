@@ -348,23 +348,53 @@ angular.module('sz.client.directives', [])
                 restrict:'EA',
                 link:function(scope,elm,attr){
                     var test = function(){
-                        if(scope.showSearchString){
-                            scope.ss.animate({marginTop:'42px'},500);
-                            scope.showSerachStringOKBtn = true;
+                        if(scope.showSearchWin){
+// 			    var feedWidth = $("#content").width()-16;
+// 			    
+// 			    if(scope.filterHeigth>feedWidth){
+// 				var shmotXval = 3;
+// 				var shmotX4Wid = (feedWidth-shmotXval*2-shmotXval*5)/shmotXval -shmotXval;
+// 				if((shmotX4Wid*3)>scope.filterHeigth){var shmotXval = 2 }
+// 			    }
+// 			    else{
+// 				var shmotXval = 4;
+// 				var shmotX4Wid = (feedWidth-shmotXval*2-shmotXval*5)/shmotXval -shmotXval; 
+// 				if((shmotX4Wid*3)>scope.filterHeigth){var shmotXval = 6 }
+// 			    }
+// 			    
+// 			    var shmotBoxW = (feedWidth-shmotXval*2-shmotXval*5)/shmotXval -shmotXval*1.5;
+// 			    $(".shmot_box").width(shmotBoxW)
+                            scope.win.animate({marginTop:'10px'},500);
+                            scope.showSerachWinOKBtn = true;
                             scope.showContent = false;
+			    scope.showBotMenuPanel = false;
+			    scope.showMenuPanel = false;
                         }
                         else{
-                            scope.ss.animate({marginTop:-1*scope.ssMarginTop+'px'},500);
-                            scope.showSerachStringOKBtn = false;
+                            scope.win.animate({marginTop:-1*scope.winMarginTop+'px'},500);
+                            scope.showSerachWinOKBtn = false;
                             scope.showContent = true;
+			    scope.showBotMenuPanel = true;
+			    scope.showMenuPanel = true;
                         }
                         
                     }
-                    scope.ss = $("#searchString");
-                    var ssHeigt = scope.ss.height();
-                    scope.ssMarginTop = ssHeigt-45-45;
-                    scope.ss.css({marginTop:-1*scope.ssMarginTop+'px'})
-                    scope.$watch('showSearchString', test);
+                    scope.win = $("#searchWindow");
+		    scope.winInner = $("#searchWindowInner");
+		    
+                    var ssHeigt = $(window).height()-20;
+		    var botBtnHeight = 47;
+		    var winInnerHeight = ssHeigt-botBtnHeight-10
+		    var searchHeight = 47+8;
+		    var shmotInfoHeight = 128;
+		    scope.filterHeigth = winInnerHeight-8-searchHeight-shmotInfoHeight;
+		    scope.winMarginTop = ssHeigt-80;
+		    scope.win.height(ssHeigt).css({marginTop:-1*scope.winMarginTop+'px'})
+		    scope.winInner.height(winInnerHeight);
+		    $("#shmotFilter").height(scope.filterHeigth);
+
+		    
+                    scope.$watch('showSearchWin', test);
                 }
             }
         })

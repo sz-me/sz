@@ -76,66 +76,35 @@
                         </a>
                     </li>
                 </ul>
-            </div>      
-        </div>
-        <div  id="searchString"  ng-class="searchString">
-            <div style="border:1px solid #CCC;padding:8px;">
-                <div style="width:100%;height:47px;" >  
-                     <div style="float:left" >
-                        <button class="btnMy" ng-click="nextD()" style="float:right">
-                            <img class="media-object" src="img/ico/blue/glyphicons_223_chevron-right.png">
-                        </button>
-                        <button class="btnMy" ng-click="prevD()" style="margin-right:3px;margin-left:3px;font-size:85%;float:right;padding:9px 14px;">
-                            {{distanceList[indexD]}}
-                        </button>
-                        <button class="btnMy" ng-click="prevD()" style="float:right">
-                            <img class="media-object" src="img/ico/blue/glyphicons_224_chevron-left.png">
-                        </button>
-                    </div>
-                    <form class="navbar-search pull-right">
-                        <input type="text" class="search-query" placeholder="Искать на странице" >
-                    </form>
-                </div>
-          <!--      <div style="width:100%;height:47px;" >                   
-                    <div id="shmot_filter_btn" >
-                        <div style="float:left;margin-top:10px;cursor:pointer;white-space:nowrap;overflow:hidden;" ng-style="shmot_filter_btn_style" ng-click="showShmotFilter=true;showContent=false;" id="shmot_filter_btn_val">
-                            {{shmot_category_active.name}}
-                        </div>
-                        <button class="btnMy"  ng-click="setFilter()" style="float:right;border:none;">
-                            <img class="media-object" src="img/ico/blue/glyphicons_320_filter.png" ng-style="test">
-                        </button>
-                    </div>
-                </div>-->
-                <div style="width:366px;height:265px" id="shmotInner" >
-            <span class="shmot_box" ng-repeat="shmotCat in shmot_category.data" >
-                <div class="shmot_box_name" ng-click="$emit('ChangeCategory', {'id':shmotCat.id,'name':shmotCat.name})">
-                    {{shmotCat.name}}
-                </div>
-                <button class="btnMy shmot_btn_info" style="margin-top:6px;" ng-click="showShmotCatInfo=true">
-                    <img class="media-object" src="img/ico/blue/glyphicons_195_circle_info.png">
-                </button> 
-                <div class="shmot_category_info" ng-show="showShmotCatInfo" >
-                    <div class="shmot_category_info_name">
-                        {{shmotCat.name}}
-                    </div>
-                    <div class="shmot_category_info_cont">
-                        {{shmotCat.description}}
-                    </div>
-                    <button class="btnMy" ng-click="showShmotCatInfo=false">
-                        <img class="media-object" src="img/ico/blue/glyphicons_224_chevron-left.png">
-                    </button> 
-                    <button class="btnMy" ng-click="showShmotCatInfo=false;$emit('ChangeCategory', {'id':shmotCat.id,'name':shmotCat.name})">
-                        <img class="media-object" src="img/ico/blue/glyphicons_206_ok_2.png">
-                    </button> 
-                </div>
-            </span>
-        </div>
             </div>
-            <div style="width:100%;height:47px;">
-                <button ng-click="showSearchString=!showSearchString" class="btnMy" style="float:left;border-radius:0 0 15px 15px;border-top:1px solid white;margin-top:-2px" ng-show="showSerachStringOKBtn">
+        </div>
+        <div  id="searchWindow"  >
+            <div  id="searchWindowInner" style="text-align:center">
+                <div style="width:100%;height:47px;" >  
+		    <button class="btnMy" style="margin-right:3px;margin-left:3px;font-size:85%;padding:9px 14px;" ng-repeat="distance in distanceList">
+			{{distance}}
+		    </button>
+                </div>
+                <div style="width:100%;height:47px;" > 
+		    <input type="text" class="search-query" placeholder="Искать" >
+                </div>
+                <div  id="shmotFilter" style="with:100%;height:100px;" >
+		    <select ng-model="shmot_cat" ng-options="c.name for c in shmot_category">
+			 <option value="">Любая категория</option>
+		    </select>
+		</div>
+		<div id="shmot_category_info" style="font-size:80%">
+		    {{shmot_cat.description}}
+		</div>
+            </div>
+            <div style="height:47px;" >
+		<div id="logo" style="padding:0px 3px;float:left;color:#555" ng-show="showContent">
+		    <h5 style="line-height:16px">shmotzhmot.me</h5>
+		</div>
+                <button ng-click="showSearchWin=!showSearchWin" class="btnMy" style="float:left;border-radius:0 0 15px 15px;border-top:1px solid white;margin-top:-2px" ng-show="showSearchWin">
                     <img class="media-object" src="img/ico/blue/glyphicons_206_ok_2.png">
                 </button>
-                <button ng-click="showSearchString=!showSearchString" class="btnMy" style="float:right;border-radius:0 0 15px 15px;border-top:1px solid white;margin-top:-2px">
+                <button ng-click="showSearchWin=!showSearchWin" class="btnMy" style="float:right;border-radius:0 0 15px 15px;border-top:1px solid white;margin-top:-2px">
                     <img class="media-object" src="img/ico/blue/glyphicons_027_search.png">
                 </button>
             </div>
@@ -194,17 +163,6 @@
         var contentMarginL = 5;
         var searchStringWidth = 200;
         
-        var shmotFilterHeight = 300;        
-        var shmotFilterPaddingTop = 10;
-        var shmotFilterPaddingLeft = 10;
-        var shmotBoxWidthS = 110;
-        var shmotBoxHeight = 54;
-        var shmotNameWidth = 74;
-        var shmotNameHeight = 40;
-        var shmotInfoBtnPaddingTop = 8;
-        var shmotInfoBtnPaddingLeft = 3;
-        var shmotInfoBtnPaddingLeftMax = 14;
-        
         if (winWidth>800){
             if(winWidth>1200){
                 var feedWidth = winWidth*0.4;
@@ -226,44 +184,21 @@
                 var searchStringWidth = feedWidth -235;
             }
         }
-        var shmotFilterWidth = feedWidth-25;
-//         if(shmotFilterHeight>shmotFilterWidth&&winHeight>440){
-//             shmotBoxWidth = shmotFilterWidth/2-5*2-2*2;
-//             shmotFilterHeight = 435;
-//         }
-//         else{
-        shmotBoxWidth = (shmotFilterWidth-5*6-2*3)/3;
-        shmotFilterHeight = 305;
-//         }
-        if(shmotBoxWidth>shmotBoxWidthS){var shmotInfoBtnPaddingLeft = shmotInfoBtnPaddingLeftMax;}
-        var shmotNameWidth = shmotBoxWidth-33-shmotInfoBtnPaddingLeft*2;
+
         
         var contentWidth = feedWidth - contentMarginL*2;
 
-        $("#searchString input[type='text']").width(searchStringWidth);
-        var shmot_filter_btnWidth = feedWidth - 245;
-        if(shmot_filter_btnWidth>searchStringWidth){var shmot_filter_btnWidth=searchStringWidth}
-        $("#shmot_filter_btn_val").css({maxWidth:shmot_filter_btnWidth+'px'})
+        $("#searchWindow input[type='text']").width(searchStringWidth);
+
         
         $("#menubottom").width(feedWidth).css({marginLeft:feedMarginL+'px'});
-        $("#content,#searchString").width(contentWidth).css({marginLeft:contentMarginL+feedMarginL+'px'});
+        $("#content,#searchWindow").width(contentWidth).css({marginLeft:contentMarginL+feedMarginL+'px'});
         
         var menutopMarginL = feedMarginL+(feedWidth-topmenuWidth)*0.5;
         $("#menutop").width(winWidth)
         $("#menutop>ul").css({marginLeft:menutopMarginL});
         
-        var shmotFilterLeft = feedMarginL + (feedWidth - shmotFilterWidth - shmotFilterPaddingLeft)*0.5;
-        var shmotFilterTop = (winHeight - shmotFilterHeight - shmotFilterPaddingTop)*0.5;
-        $("#shmot_filter,.shmot_category_info").height(shmotFilterHeight).width(shmotFilterWidth).css({left:shmotFilterLeft+'px',top:shmotFilterTop+'px'});
-        $(".shmot_box").height(shmotBoxHeight).width(shmotBoxWidth);
-        $(".shmot_box_name").height(shmotNameHeight).width(shmotNameWidth);
-        $(".shmot_btn_info").css({padding:shmotInfoBtnPaddingTop+'px '+shmotInfoBtnPaddingLeft+'px'});
-        var shmotInfoContMargin = 10;
-        var shmotInfoNameHeight = 20;
-        var shmotInfoButHeight = 40;
-        var shmotInfoContHeight = shmotFilterHeight-shmotInfoContMargin*2-shmotInfoNameHeight-shmotInfoButHeight ;
-        $("#shmotInner").height(shmotFilterHeight-shmotInfoButHeight).width(shmotFilterWidth)
-        $(".shmot_category_info_cont").height(shmotInfoContHeight);
+
         
     }
         

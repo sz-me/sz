@@ -1,9 +1,5 @@
 'use strict';
 
-var szClient = angular.module('sz.client.services', ['ngResource']);
-/* Services */
-
-'use strict';
 
 var szClient = angular.module('sz.client.services', ['ngResource']);
 /* Services */
