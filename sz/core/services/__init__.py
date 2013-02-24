@@ -62,6 +62,10 @@ class PlaceService:
         if longitude is not None and latitude is not None:
             params['latitude'] = latitude
             params['longitude'] = longitude
+        if 'radius' in kwargs:
+            params['radius'] = kwargs.get('radius')
+            if params['radius'] is None:
+                params['radius'] = ""
         return dict(count=count, items=items, params=params)
 
     def _place_messages_first(self, place, **kwargs):
