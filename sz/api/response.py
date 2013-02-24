@@ -50,7 +50,7 @@ class PlaceMessagesResponseBuilder(PlaceServiceResponseBuilder):
         return serialized_messages
 
 
-class FeedItemResponseBuilder(PlaceServiceResponseBuilder):
+class NewsFeedItemResponseBuilder(PlaceServiceResponseBuilder):
     def __init__(self, photo_host_url=""):
         self.messages_response_builder = PlaceMessagesResponseBuilder(photo_host_url)
 
@@ -65,7 +65,7 @@ class FeedItemResponseBuilder(PlaceServiceResponseBuilder):
 
 class NewsFeedResponseBuilder(PlaceServiceResponseBuilder):
     def __init__(self, photo_host_url=""):
-        self.item_response_builder = FeedItemResponseBuilder(photo_host_url)
+        self.item_response_builder = NewsFeedItemResponseBuilder(photo_host_url)
 
     def build(self, feed):
         serialized_feed = self._convert_feed_service_result_to_response(
