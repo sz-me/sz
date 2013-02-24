@@ -22,7 +22,7 @@ class Response(RestFrameworkResponse):
         self.data = {'data': data, 'meta': {'code': status, 'info': info}}
 
 
-class FeedResponseBuilderBase:
+class PlaceServiceResponseBuilder:
     def _convert_feed_service_result_to_response(self, result, url, items):
         params = result.get('params')
         if result.get('category') is not None:
@@ -33,27 +33,37 @@ class FeedResponseBuilderBase:
                     count=result.get('count'))
 
 
-class FeedItemResponseBuilder(FeedResponseBuilderBase):
+class PlaceMessagesResponseBuilder(PlaceServiceResponseBuilder):
     def __init__(self, photo_host_url=""):
         self.photo_host_url = photo_host_url
 
-    def build(self, item):
-        place_serializer = serializers.PlaceSerializer(instance=item["place"])
+    def build(self, place, messages):
         photos = [(message.id, message.get_photo_absolute_urls(self.photo_host_url))
-                  for message in item["messages"]["items"]]
+                  for message in messages["items"]]
         photo_by_id = lambda id: filter(lambda p: p[0] == id, photos)[0][1]
-        message_serializer = serializers.MessageSerializer(instance=item["messages"]["items"])
+        message_serializer = serializers.MessageSerializer(instance=messages["items"])
         serialized_messages = message_serializer.data
         for serialized_message in serialized_messages:
             serialized_message['photo'] = photo_by_id(serialized_message['id'])
+        serialized_messages = self._convert_feed_service_result_to_response(
+            messages, reverse('place-messages', (place.pk,)), serialized_messages)
+        return serialized_messages
+
+
+class FeedItemResponseBuilder(PlaceServiceResponseBuilder):
+    def __init__(self, photo_host_url=""):
+        self.messages_response_builder = PlaceMessagesResponseBuilder(photo_host_url)
+
+    def build(self, item):
+        serialized_messages = self.messages_response_builder.build(item["place"], item["messages"])
+        place_serializer = serializers.PlaceSerializer(instance=item["place"])
         serialized_item = dict(
             place=place_serializer.data, distance=item["distance"],
-            messages=self._convert_feed_service_result_to_response(
-                item["messages"], reverse('place-messages', (item["place"].pk,)), serialized_messages))
+            messages=serialized_messages)
         return serialized_item
 
 
-class FeedResponseBuilder(FeedResponseBuilderBase):
+class NewsFeedResponseBuilder(PlaceServiceResponseBuilder):
     def __init__(self, photo_host_url=""):
         self.item_response_builder = FeedItemResponseBuilder(photo_host_url)
 

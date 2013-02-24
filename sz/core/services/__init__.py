@@ -67,9 +67,9 @@ class PlaceService:
     def _place_messages_first(self, place, **kwargs):
         kwargs.pop('limit')
         kwargs.pop('offset')
-        return self._place_messages(place, **kwargs)
+        return self.get_place_messages(place, **kwargs)
 
-    def _place_messages(self, place, **kwargs):
+    def get_place_messages(self, place, **kwargs):
         messages, count = queries.place_messages(place, **kwargs)
         return self._make_result(messages, count, **kwargs)
 

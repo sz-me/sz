@@ -134,18 +134,18 @@ class CityNearest(SzApiView):
             return sz_api_response.Response(nearest_city_request.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class PlaceFeed(SzApiView):
+class PlaceRootNewsFeed(SzApiView):
     """
     News feed that represents a list of places of whom somebody recently left a message
     For example, [news feed for location (50.2616113, 127.5266082)](?latitude=50.2616113&longitude=127.5266082).
     """
     def get(self, request, format=None):
-        feed_request = forms.FeedRequestForm(request.QUERY_PARAMS)
+        feed_request = forms.NewsFeedRequestForm(request.QUERY_PARAMS)
         if feed_request.is_valid():
             params = feed_request.cleaned_data
             feed = place_service.get_news_feed(**params)
             photo_host = reverse('client-index', request=request)
-            response_builder = sz_api_response.FeedResponseBuilder(photo_host)
+            response_builder = sz_api_response.NewsFeedResponseBuilder(photo_host)
             serialized_feed = response_builder.build(feed)
             return sz_api_response.Response(serialized_feed)
         else:
@@ -192,7 +192,7 @@ class PlaceInstance(SzApiView):
         return sz_api_response.Response(serializer.data)
 
 
-class PlaceInstanceFeed(SzApiView):
+class PlaceInstanceNewsFeed(SzApiView):
     """
     Retrieve news feed item for a place instance.
     """
@@ -204,7 +204,7 @@ class PlaceInstanceFeed(SzApiView):
             raise Http404
 
     def get(self, request, pk, format=None):
-        feed_request = forms.FeedRequestForm(request.QUERY_PARAMS)
+        feed_request = forms.NewsFeedRequestForm(request.QUERY_PARAMS)
         if feed_request.is_valid():
             place = self.get_object(pk)
             params = feed_request.cleaned_data
@@ -216,7 +216,14 @@ class PlaceInstanceFeed(SzApiView):
             return sz_api_response.Response(feed_request.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class PlaceMessages(SzApiView):
+class PlaceInstanceMessages(SzApiView):
+
+    def get_object(self, pk):
+        try:
+            return models.Place.objects.get(pk=pk)
+        except models.Place.DoesNotExist:
+            raise Http404
+
     def post(self, request, pk, format=None):
         print 'POST'
         serializer = serializers.MessageSerializer(data=request.DATA)
@@ -230,6 +237,19 @@ class PlaceMessages(SzApiView):
             categorization_service.assert_stems(message)
             return sz_api_response.Response(serializer.data, status=status.HTTP_201_CREATED)
         return sz_api_response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, pk, format=None):
+        message_request = forms.MessageRequestForm(request.QUERY_PARAMS)
+        if message_request.is_valid():
+            params = message_request.cleaned_data
+            place = self.get_object(pk)
+            messages = place_service.get_place_messages(place, **params)
+            photo_host = reverse('client-index', request=request)
+            response_builder = sz_api_response.PlaceMessagesResponseBuilder(photo_host)
+            return sz_api_response.Response(response_builder.build(place, messages))
+        else:
+            return sz_api_response.Response(message_request.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class Authentication(SzApiView):

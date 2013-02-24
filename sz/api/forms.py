@@ -10,15 +10,17 @@ class PaginatedRequestForm(forms.Form):
     offset = forms.IntegerField(required=False, min_value=0)
 
 
-class FeedRequestForm(PaginatedRequestForm):
-    latitude = forms.FloatField(required=True, min_value=-90.0, max_value=90.0, label=u'Широта')
-    longitude = forms.FloatField(required=True, min_value=-180.0, max_value=180.0, label=u'Долгота')
-    #accuracy = forms.FloatField(required=False, initial=20, label=u'Погрешность')
+class MessageRequestForm(PaginatedRequestForm):
     query = forms.CharField(required=False, label=u'Запрос')
-    radius = forms.IntegerField(
-        required=False, min_value=0, max_value=5000, label=u'Удалённость', initial=settings.DEFAULT_RADIUS)
     category = forms.ModelChoiceField(
         queryset=models.Category.objects.all(), required=False, label=u'Категория')
+
+
+class NewsFeedRequestForm(MessageRequestForm):
+    latitude = forms.FloatField(required=True, min_value=-90.0, max_value=90.0, label=u'Широта')
+    longitude = forms.FloatField(required=True, min_value=-180.0, max_value=180.0, label=u'Долгота')
+    radius = forms.IntegerField(
+        required=False, min_value=0, max_value=5000, label=u'Удалённость', initial=settings.DEFAULT_RADIUS)
 
 
 class PlaceSearchRequestForm(forms.Form):
