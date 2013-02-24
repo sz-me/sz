@@ -46,7 +46,7 @@ class PlaceMessagesResponseBuilder(PlaceServiceResponseBuilder):
         for serialized_message in serialized_messages:
             serialized_message['photo'] = photo_by_id(serialized_message['id'])
         serialized_messages = self._convert_feed_service_result_to_response(
-            messages, reverse('place-messages', (place.pk,)), serialized_messages)
+            messages, reverse('place-detail-messages', (place.pk,)), serialized_messages)
         return serialized_messages
 
 
@@ -69,7 +69,7 @@ class NewsFeedResponseBuilder(PlaceServiceResponseBuilder):
 
     def build(self, feed):
         serialized_feed = self._convert_feed_service_result_to_response(
-            feed, reverse('place-feed'), [self.item_response_builder.build(item) for item in feed['items']])
+            feed, reverse('place-newsfeed'), [self.item_response_builder.build(item) for item in feed['items']])
         return serialized_feed
 
 

@@ -45,7 +45,7 @@ class ApiRoot(SzApiView):
         return sz_api_response.Response({
             'city-nearest': reverse('city-nearest'),
             'categories': reverse('category-list'),
-            'places-feed': reverse('place-feed'),
+            'places-newsfeed': reverse('place-newsfeed'),
             'users': reverse('user-list'),
         })
 

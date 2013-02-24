@@ -5,7 +5,7 @@ var szClient = angular.module('sz.client.services', ['ngResource']);
 /* Services */
 
 szClient.factory('feedService', function($resource){
-    return $resource('../../api/places/feed', {}, {
+    return $resource('../../api/places/newsfeed', {}, {
         query: { method:'GET', params:{}, isArray:false }
     });
 });
