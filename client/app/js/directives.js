@@ -391,7 +391,7 @@ angular.module('sz.client.directives', [])
 		    scope.winMarginTop = ssHeigt-80;
 		    scope.win.height(ssHeigt).css({marginTop:-1*scope.winMarginTop+'px'})
 		    scope.winInner.height(winInnerHeight);
-		    $("#shmotFilter").height(scope.filterHeigth);
+// 		    $("#shmotFilter").height(scope.filterHeigth);
 
 		    
                     scope.$watch('showSearchWin', test);
