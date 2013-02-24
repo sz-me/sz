@@ -11,15 +11,12 @@ DEFAULT_DISTANCE = settings.DEFAULT_RADIUS
 DEFAULT_PAGINATE_BY = settings.DEFAULT_PAGINATE_BY
 
 
-def feed(**kwargs):
+def feed(latitude, longitude, **kwargs):
     """
     Возвращает ленту последний событий в городе или в близлежащих местах,
     если задан аргумент :radius:, то рассматриваются
     места в радиусе данного значения (в метрах).
     """
-    latitude = kwargs.pop('latitude', None)
-    longitude = kwargs.pop('longitude', None)
-    assert latitude and longitude, 'latitude and longitude are required'
     current_position = fromstr("POINT(%s %s)" % (longitude, latitude))
     limit, offset, max_id = utils.get_paging_args(**kwargs)
     stems = kwargs.get('stems', [])
@@ -72,7 +69,7 @@ def place_messages(place, **kwargs):
     if len(stems) > 0:
         filtered_messages = filtered_messages.filter(stems__stem__in=[stem[0] for stem in stems])
     if category is not None:
-        filtered_messages = filtered_messages.filter(categories__in=[category,])
+        filtered_messages = filtered_messages.filter(categories__in=[category, ])
     count = filtered_messages.aggregate(count=dj_models.Count('id'))['count']
     query = filtered_messages.order_by('-date')[offset:offset + limit]
     return query, count

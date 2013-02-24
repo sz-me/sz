@@ -43,18 +43,25 @@ class PlaceService:
         self.city_service = city_service
         self.categorization_service = categorization_service
 
-    def _get_city(self, **kwargs):
+    def _get_ll(self, **kwargs):
         latitude, longitude = utils.get_position_from_kwargs(**kwargs)
+        kwargs.pop('latitude')
+        kwargs.pop('longitude')
+        return latitude, longitude, kwargs
+
+    def _get_city(self, latitude, longitude):
         city = self.city_service.get_city_by_position(longitude, latitude)
         return city
 
-    def _make_result(self, items, count, **kwargs):
-        latitude, longitude = utils.get_position_from_kwargs(**kwargs)
+    def _make_result(self, items, count, latitude=None, longitude=None, **kwargs):
         limit, offset, max_id = utils.get_paging_args(**kwargs)
         query = kwargs.get('query', None)
         category = kwargs.get('category', None)
-        params = dict(latitude=latitude, longitude=longitude, query=query, category=category,
+        params = dict(query=query, category=category,
                       max_id=max_id, limit=limit, offset=offset)
+        if longitude is not None and latitude is not None:
+            params['latitude'] = latitude
+            params['longitude'] = longitude
         return dict(count=count, items=items, params=params)
 
     def _place_messages_first(self, place, **kwargs):
@@ -66,9 +73,9 @@ class PlaceService:
         messages, count = queries.place_messages(place, **kwargs)
         return self._make_result(messages, count, **kwargs)
 
-    def feed(self, **kwargs):
-        latitude, longitude = utils.get_position_from_kwargs(**kwargs)
-        city = self._get_city(**kwargs)
+    def _make_kwargs_for_feed(self, kwargs):
+        latitude, longitude, kwargs = self._get_ll(**kwargs)
+        city = self._get_city(latitude, longitude)
         kwargs['city_id'] = city['id']
         query = kwargs.get('query', None)
         kwargs['stems'] = self.categorization_service.detect_stems(query)
@@ -77,15 +84,27 @@ class PlaceService:
         if max_id is None:
             max_id = models.Message.objects.aggregate(max_id=Max('id'))["max_id"]
             kwargs['max_id'] = max_id
-        places, count = queries.feed(**kwargs)
-        feed = self._make_result(
-            [ dict(
-                place=place,
-                distance=gis_core.calculate_distance(longitude, latitude, place.longitude(), place.latitude()),
-                messages=self._place_messages_first(place, **kwargs.copy())
-            ) for place in places], count, **kwargs)
+        return latitude, longitude, kwargs
 
+    def _make_feed_item(self, kwargs, latitude, longitude, place):
+        messages = self._place_messages_first(place, **kwargs.copy())
+        distance = gis_core.calculate_distance(longitude, latitude, place.longitude(), place.latitude())
+        item = dict(place=place, distance=distance, messages=messages)
+        return item
+
+    def get_news_feed(self, **kwargs):
+        latitude, longitude, kwargs = self._make_kwargs_for_feed(kwargs)
+        print kwargs
+        places, count = queries.feed(latitude=latitude, longitude=longitude, **kwargs)
+        feed = self._make_result(
+            [self._make_feed_item(kwargs, latitude, longitude, place)
+             for place in places], count, latitude, longitude, **kwargs)
         return feed
+
+    def get_place_news_feed(self, place, **kwargs):
+        latitude, longitude, kwargs = self._make_kwargs_for_feed(kwargs)
+        item = self._make_feed_item(kwargs, latitude, longitude, place)
+        return item
 
     def search(self, **kwargs):
         latitude, longitude = utils.get_position_from_kwargs(**kwargs)

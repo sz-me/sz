@@ -173,11 +173,11 @@ class Message(models.Model):
         [processors.ResizeToFill(90, 90), ],
         image_field='photo', options={'quality': 85})
 
-    def photo_urls(self, root_url=""):
-        root_url = root_url.rstrip('/')
+    def get_photo_absolute_urls(self, photo_host_url=""):
+        photo_host_url = photo_host_url.rstrip('/')
         if self.photo:
-            return dict(full=root_url + self.photo.url, reduced=root_url + self.reduced_photo.url,
-                        thumbnail=root_url + self.thumbnail.url)
+            return dict(full=photo_host_url + self.photo.url, reduced=photo_host_url + self.reduced_photo.url,
+                        thumbnail=photo_host_url + self.thumbnail.url)
         else:
             return None
 
