@@ -79,7 +79,6 @@ class PlaceService:
         kwargs['city_id'] = city['id']
         query = kwargs.get('query', None)
         kwargs['stems'] = self.categorization_service.detect_stems(query)
-        #print u"; ".join(u"(stem: %s, lang: % s)" % stem for stem in kwargs['stems'])
         max_id = kwargs.get("max_id", None)
         if max_id is None:
             max_id = models.Message.objects.aggregate(max_id=Max('id'))["max_id"]
@@ -94,7 +93,6 @@ class PlaceService:
 
     def get_news_feed(self, **kwargs):
         latitude, longitude, kwargs = self._make_kwargs_for_feed(kwargs)
-        print kwargs
         places, count = queries.feed(latitude=latitude, longitude=longitude, **kwargs)
         feed = self._make_result(
             [self._make_feed_item(kwargs, latitude, longitude, place)
