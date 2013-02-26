@@ -56,3 +56,11 @@ szClient.factory('placeService', function($resource){
                 });
         });
 
+szClient.factory('authService', function($resource){
+    return $resource('../../api/auth/:action', {}, {
+        login: { method:'POST', params:{action: 'login'}, isArray:false },
+        logout: { method:'POST', params:{action: 'logout'}, isArray:false },
+        user: { method:'GET', params:{action: 'user'}, isArray:false }
+    });
+});
+
