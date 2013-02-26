@@ -48,17 +48,20 @@ textarea:focus{
 
 
 .place_box{
-    padding-bottom:15px;
-    border-bottom:1px solid #AAA;
+    padding-bottom:8px;
+    border:1px solid #DDD;
+    border-radius:5px;
+    box-shadow: 1px 1px 7px -4px rgba(0, 0, 0, 0.25);
+/*     border-bottom:1px solid #AAA; */
+/*    border:1px solid  rgb(228, 228, 228);
+    box-shadow: 1px 1px 7px -4px rgba(0, 0, 0, 0.25);*/
 }
 
 
-.placeList_box_info{
-padding-top:3px;
-    
-}
 
 .place_address{
+/*     background:rgb(228, 228, 228); */
+    padding:3px;
     cursor:pointer;
     float:none;
     text-align:right;
@@ -66,14 +69,42 @@ padding-top:3px;
     text-overflow:ellipsis;
     white-space: nowrap;
     max-height:70px;
+    /*background:#999;
+    color:white;*/
+        background: #e75480;
+/*     #b5a642, #808000 */
+    background: -moz-linear-gradient(top, #EAEAEA, #DDD); /* Firefox 3.6+ */
+    /* Chrome 1-9, Safari 4-5 */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffa500), color-stop(100%,#d17100));
+    /* Chrome 10+, Safari 5.1+ */
+    background: -webkit-linear-gradient(top, #EAEAEA, #DDD);
+    background: -o-linear-gradient(top,  #EAEAEA, #DDD); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #EAEAEA, #DDD); /* IE10 */
+    background: linear-gradient(top, #EAEAEA, #DDD); /* CSS3 */ 
+/*  border-bottom:1px solid #999; */
+
 }
 
+.chat-bubble-arrow-border{
+    display:inline-block;
+    width: 0;
+    height: 0;
+    border-left: 13px solid transparent;
+    border-right: 13px solid transparent;
+    border-top: 15px solid #DDD;
+}
 
 .place_box_messages_tags{
     max-height:30px;
     overflow: hidden;
     text-overflow:ellipsis;
 }
+
+.place_box_messages_big_box{
+    padding:0 5px;
+}
+
+
 
 .place_box_messages_text{
     max-height:63px;
@@ -290,3 +321,12 @@ padding-top:3px;
 }
 
 time{display:block}
+
+.chat-bubble-arrow{
+    display:inline-block;
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 14px solid white;
+}

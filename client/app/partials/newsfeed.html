@@ -1,0 +1,54 @@
+
+<ul class="media-list" id="searchTextResults">
+	<li ng-repeat="item in feed.data.results" class="media place_box" >
+            <a class="pull-right" >
+                        <i class=" icon-chevron-right"></i>
+                    </a>
+            <div style="text-align:right;margin-bottom:10px;" class="place_address"> 
+<!--                 <button class="btn btn-primary btn-small"   style="float:right;text-align:right"> -->
+<!--                     <img class="media-object" src="img/ico/white/glyphicons_223_chevron-right.png"> -->
+<!--                    <h5>  -->
+                    
+                   <strong >{{item.place.name}}</strong><br>
+                    <small >{{item.place.address}}</small>
+                    
+<!--                     </h5> -->
+<!--                 </button> -->
+<!--                 <div> -->
+<!--                 <a href="#/v/{{place.id}}" style="color:#333;"> -->
+                    
+<!--                 </div> -->
+<!--                 </a> -->
+            </div>      
+            <!--<div>
+                <button class="btn  btn-large"  ng-class="{btnDisable:!PlaceBoxMessage.cur}" ng-click='PlaceBoxMessage.next=PlaceBoxMessage.next-1'>
+                    <img class="media-object" src="img/ico/blue/glyphicons_224_chevron-left.png">
+                </button>
+                <button class="btn  btn-large" ng-class="{btnDisable:!(item.messages.results.length-1)}" ng-click='PlaceBoxMessage.next=PlaceBoxMessage.next+1' style="float:right">
+                    <img class="media-object" src="img/ico/blue/glyphicons_223_chevron-right.png">
+                </button>
+            </div>-->
+            <ul  style="margin-left:0;list-style:none;text-align:center;" >
+<!--                 <div>{{placeMessagesLimit}}</div> -->
+                <li class=" place_box_messages_big_box" style="overflow:hidden">
+                    <div ng-repeat="message in item.messages.results | limitTo:placeMessagesLimit" style="text-align:left;margin-top:10px" class="place_box_message">
+                        <sz-feed-message-box message='message'></sz-feed-message-box>
+                    </div>
+                </li>
+                <li class="btn-group" style="margin-top:10px" ng-show="item.messages.results.length-1">
+                    <button class="btn " data-toggle="button"  ng-click="placeMessagesLimit=showAllPlaceMessages(item.messages.results.length,placeMessagesLimit)" >
+                        {{showAllPlaceMessagesText(item.messages.results.length-1,placeMessagesLimit)}}
+                    </button>
+                </li>
+       <!--         <li style="text-align:left;">
+                    <sz-feed-message-box message='item.messages.results[0]'></sz-feed-message-box>
+                </li>-->
+            </ul>
+	</li>
+	<li style="text-align:center;margin-top:10px;">
+            <button class="btn  btn-large" ng-click="loadMorePlaces ()">
+                <img class="media-object" src="img/ico/blue/glyphicons_187_more.png">
+            </button>
+	</li>
+</ul>
+
