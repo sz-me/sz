@@ -124,14 +124,14 @@ class MessageInstance(SzApiView):
         return sz_api_response.Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class UserRoot(SzApiView):
-    """ List all users. """
-
+class UserInstanceSelf(SzApiView):
+    """ Retrieve profile information for the action user """
+    permission_classes = (permissions.IsAuthenticated,)
     def get(self, request, format=None):
-        users = User.objects.all()
-        serializer = serializers.UserSerializer(instance=users)
+        user = request.user
+        serializer = serializers.UserSerializer(instance=user)
         return sz_api_response.Response(serializer.data)
-
+    
 
 class CityNearest(SzApiView):
 
