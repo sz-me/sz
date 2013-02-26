@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import auth
+from django.middleware import csrf
 from rest_framework import permissions, status
 from rest_framework.authtoken import serializers as authtoken_serializers
 from sz.api import serializers, response as sz_api_response
@@ -15,7 +16,8 @@ class AuthLogin(SzApiView):
         if serializer.is_valid():
             user = serializer.object['user']
             auth.login(request, user)
-            user_serializer = serializers.UserSerializer(instance=user)
+            user_serializer = serializers.AuthUserSerializer(instance=user)
+            csrf.get_token(request)
             return sz_api_response.Response(user_serializer.data)
         return sz_api_response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -38,6 +40,7 @@ class AuthUser(SzApiView):
     def get(self, request, format=None):
         user = request.user
         serializer = serializers.AuthUserSerializer(instance=user)
+        csrf.get_token(request)
         return sz_api_response.Response(serializer.data)
 
 """
