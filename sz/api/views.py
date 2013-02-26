@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
-from django.contrib.auth.models import User
+from django.contrib import auth
 from django.http import Http404
 from rest_framework import permissions, status
 from rest_framework.reverse import reverse
@@ -60,7 +59,8 @@ class ApiRoot(SzApiView):
             'city-nearest': reverse('city-nearest'),
             'categories': reverse('category-list'),
             'places-newsfeed': reverse('place-newsfeed'),
-            'users': reverse('user-list'),
+            'login': reverse('auth-login'),
+            'logout': reverse('auth-logout'),
         })
 
 
@@ -254,6 +254,31 @@ class PlaceInstanceMessages(FilteredListView):
         photo_host = reverse('client-index', request=request)
         response_builder = sz_api_response.PlaceMessagesResponseBuilder(photo_host)
         return sz_api_response.Response(response_builder.build(place, messages))
+
+
+class AuthLogin(SzApiView):
+    """ Log a user in """
+
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+        serializer = authtoken_serializers.AuthTokenSerializer(data=request.DATA)
+        if serializer.is_valid():
+            user = serializer.object['user']
+            auth.login(request, user)
+            user_serializer = serializers.UserSerializer(instance=user)
+            return sz_api_response.Response(user_serializer.data)
+        return sz_api_response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AuthLogout(SzApiView):
+    """ Log out a user who has been logged """
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        auth.logout(request)
+        return sz_api_response.Response({})
 
 
 class Authentication(SzApiView):
