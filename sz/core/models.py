@@ -140,6 +140,14 @@ class Stem(models.Model):
         unique_together = ('stem', 'language',)
 
 
+# Entities
+VISIT_RESUME_CHOICES = (
+    (0, 'It happens...'),
+    (1, "I'll be back."),
+    (2, 'I made a purchase!'),
+)
+
+
 class Message(models.Model):
 
     date = models.DateTimeField(
@@ -180,6 +188,9 @@ class Message(models.Model):
                         thumbnail=photo_host_url + self.thumbnail.url)
         else:
             return None
+
+    resume = models.PositiveIntegerField(verbose_name="Результат посещения", null=True,
+                                         blank=True, choices=VISIT_RESUME_CHOICES)
 
     categories = models.ManyToManyField(Category, null=True, blank=True)
 

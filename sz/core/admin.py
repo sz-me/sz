@@ -30,7 +30,7 @@ class MessageAdmin(admin.ModelAdmin):
     stems_to_str.short_description = u'Основы'
 
     admin_thumbnail = AdminThumbnail(image_field='thumbnail')
-    list_display = ('date', 'user', 'text', 'admin_thumbnail', 'place',
+    list_display = ('date', 'user', 'resume', 'text', 'admin_thumbnail', 'place',
                     'categories_to_str', 'stems_to_str')
     list_display_links = ('text',)
     list_filter = ('categories',)
