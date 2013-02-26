@@ -48,8 +48,7 @@ angular.module('sz.client.directives', [])
                             
             }
 	})
-        .directive('szChangeScrollToTop', function() {
-            
+        .directive('szChangeScrollToDown', function() {
             return function(scope, elm, attr){
                 var raw = elm[0];
                 var params = {
@@ -59,186 +58,127 @@ angular.module('sz.client.directives', [])
                 };
                 var delta = 1;
                 angular.element(window).scroll(function(){
-                        var dir = detectDirection(raw, params, delta);
-                        if ($(this).scrollTop() == 0)
-                                scope.$apply(attr.szChangeScrollToTop);
-                });
+                    var dir = detectDirection(raw, params, delta);
+                    if (dir == -1)
+                            scope.$apply(attr.szChangeScrollToDown);
+                    
+                })
                             
             }
         })
-	.directive('szChangeScrollToDown', function() {
-            return function(scope, elm, attr){
-		var raw = elm[0];
-		var params = {
-			direction: 1,
-			top: raw.getBoundingClientRect().top,
-			changePoint: raw.getBoundingClientRect().top
-		};
-		var delta = 1;
-		angular.element(window).scroll(function(){
-			var dir = detectDirection(raw, params, delta);
-			if (dir == -1)
-				scope.$apply(attr.szChangeScrollToDown);
-		});
-			
+        .directive('szScrollingToTop',function(){
+            return {
+                restrict:'EA',
+                scope:{top:'='},
+                link:function(scope,elm,attr){
+                        var scrolling = function(){
+                            if (scope.top){
+                                $('body,html').animate({scrollTop: 0}, 800);
+                                scope.top = false;
+                            }
+                        }
+                        scope.$watch('top', scrolling);
+                    }
             }
-        })  
+        })
+
         .directive('szFeedMessageBox', function () {
             return {
                 restrict: 'EA',
                 replace: true,
                 template:
-                        '<li  class="place_box_messages_box_mes" >'+
-                            '<div class="place_box_messages_datetime">'+
-                                '<strong >'+
+                        '<li  class="place_box_messages_box_mes" >'+   
+                            '<div class="place_box_messages_datetime" >'+
+                                '<small style="line-height:9px;font-size:80%;">'+
                                     '{{date}}'+
-                                '</strong>'+'<br>'+
-                                '<small >'+
-                                    '{{time}}'+
+                                '</small >'+
+                                '<small style="line-height:9px;font-size:80%;">'+
+                                    ' {{time}}'+
                                 '</small>'+
                             '</div>'+
-                            '<a href="#" style="margin-left:0px;margin-right:5px;float:left;margin-top:6px" id="place_box_messages_box_mes_author">'+
-                                '<img class="media-object" src="img/user.png"  width="32" height="32" align="left">'+
-                            '</a>'+
                             '<div class="media-body place_box_messages_header" >'+
-                                '<span class="badge " >8</span><h6 class="place_box_messages_author" style="margin:0;display:inline;margin-left:3px;line-height:16px;">{{username}}</h6>'+
-                                
-//                                     '<div class="place_box_messages_tags" style="line-height:14px;" >'+
-//                                         '<small>'+
-//                                         '<em ng-repeat="thing in things">'+
-//                                             '<div class="place_box_messages_tag">{{thing}}</div>'+
-//                                         '</em>'+
-//                                         '</small>'+
-//                                     '</div>'+
-                                
-                            '</div>'+
-                            
+                                '<span class="badge " >8</span>'+
+                                '<h6 class="place_box_messages_author" style="margin:0;display:inline;margin-left:3px;line-height:16px;">{{username}}</h6>'+
+                                '<div class="place_box_messages_tags" style="line-height:14px;" >'+
+                                    '<a ng-repeat="category in categories" style="margin-right:3px;display:inline-block;font-size:85%;color:#999">'+
+                                        '{{category}}'+
+                                    '</a>'+
+                                '</div>'+
+                            '</div>'+                            
                             '<p class="place_box_messages_text">'+
                                 '{{text}}'+
-                            '</p>'+
-                            
-//                             '<div class="place_box_messages_photo" >'+
-//                                 '<img class="media-object" src="img/photo.jpg" width="220">'+
-//                             '</div>'+
-// 
-//                             '<ul class="pager mybtn" >'+
-// 
-//                                 '<li >'+
-//                                     '<a href=""  ng-click="showMessageTextFull()" style="margin-right:5px;">'+
-//                                        '<img class="media-object" src="img/ico/white/glyphicons_029_notes_2.png">'+
-//                                     '</a>'+
-//                                 '</li>'+
-//                                 '<li >'+
-//                                     '<a href="" ng-click="showMessagePhoto()"> '+
-//                                         '<img class="media-object" src="img/ico/white/glyphicons_138_picture.png">'+
-//                                     '</a>'+
-//                                 '</li>'+
-//                             '</ul>'+
+                            '</p>'+                            
+                            '<div class="place_box_messages_photo" >'+
+                                '<img class="media-object" src={{photo}}>'+
+                            '</div>'+
+                            '<ul class="pager" >'+
+                                '<li >'+
+                                    '<button class="btnMy" ng-class="{btnDisable:!haveText()}" ng-click="showMessageTextFull()" style="margin-right:5px;">'+
+                                       '<img class="media-object" src="img/ico/blue/glyphicons_029_notes_2.png">'+
+                                    '</button>'+
+                                '</li>'+
+                                '<li >'+
+                                    '<button class="btnMy"  ng-class="{btnDisable:!photo}" ng-click="showMessagePhoto()">'+
+                                        '<img class="media-object" src="img/ico/blue/glyphicons_138_picture.png">'+
+                                    '</button>'+
+                                '</li>'+
+                            '</ul>'+
                         '</li>',
                 scope: {
                     cur: '=',
                     next: '=',
-                    messages:'='
+                    messages:'=',
+                    cat:'='
                 },
                 link: function (scope, element, attrs) {
-                    var setPages = function () {
-                        scope.messageText.css({maxHeight:scope.textHeight+'px'});
-                        scope.messagePhoto.hide();
-                        
-                        var msg = scope.messages[scope.cur];
+                    var setPages = function () {  
+                        var msg = scope.messages[0];
                         var datetime = msg.date.split('T');
                         scope.date = datetime[0];
-                        scope.time = datetime[1].split('.')[0];
-                        scope.username = msg.username;
-                        scope.things = msg.things;
+                        var time = datetime[1].split('.')[0];
+                        scope.time = time.slice(0,time.length-3)
+                        scope.username = 'Генерал Плюшкин';
                         scope.text = msg.text;
-                        
-                        var w = scope.textWidth;
-//                         $("#btn_page_scroll_Up").text(scope.prev+';'+scope.cur+';'+scope.fol)
-                        if (scope.fol){
-                            var pHeiht = scope.pPage.height();
-                            var nHeiht = scope.nPage.height();
-                            
-                            scope.pPage.remove();
-                            scope.nPage.remove();
-                            if (scope.prev<scope.cur){
-                                scope.pPage = scope.clone;
-                                scope.wrapper.prepend(scope.pPage);
-//                                 scope.pPage.css({backgroundColor:'red'});
-                                scope.nPage = createPage(scope.fol);
-//                                 scope.nPage.css({backgroundColor:'blue'});
-                                scope.wrapper.append(scope.nPage);
-                                var curHeiht = nHeiht;
-                                scope.wrapper.css({marginLeft:0}).animate({marginLeft:-1*w+'px',height:curHeiht+'px'},700);
-                                
-                            }
-                            else{
-                                scope.nPage = scope.clone;
-//                                 scope.nPage.css({backgroundColor:'silver'});
-                                scope.wrapper.append(scope.nPage);
-                                scope.pPage = createPage(scope.fol)
-//                                 scope.pPage.css({backgroundColor:'green'});
-                                scope.wrapper.prepend(scope.pPage);
-                                var curHeiht = pHeiht;
-                                if(scope.fol<scope.total+1){
-                                    scope.wrapper.css({marginLeft:-2*w+'px'}).animate({marginLeft:-1*w+'px',height:curHeiht+'px'},700);
+                        if(msg.photo){scope.photo = msg.photo.reduced;}
+                        scope.categories = []
+                        $.each(msg.categories,function(index,id){
+                            $.each(scope.cat,function(index,cat){
+//                                 alert(cat)
+                                if(cat.id==id){
+                                    scope.categories.push(cat.name)
                                 }
-                                else{
-                                    scope.wrapper.css({marginLeft:-1*w+'px',height:curHeiht+'px'})
-                                }
-                            }
-//                             $("#btn_search").text('pPage:'+scope.pPage.height()+';nPage:'+scope.nPage.height())
-                        }
-                        else{
-                            if(scope.pPage){scope.pPage.remove();scope.nPage.remove();}
-                            scope.pPage = createPage(scope.cur);
-                            scope.wrapper.prepend(scope.pPage);
-//                             scope.pPage.css({backgroundColor:'yellow'});
-                            scope.nPage = createPage(scope.cur+1);
-//                             scope.nPage.css({backgroundColor:'olive'});
-                            scope.wrapper.append(scope.nPage);
-//                             $("#btn_page_scroll_Up").text('pPage:'+scope.pPage.height()+';nPage:'+scope.nPage.height())
-                            var curHeiht = scope.pPage.height();
-                            scope.wrapper.css({height:curHeiht+'px'});
-                        }
-                        
-                        
-//                         scope.wrapper.animate({height:curHeiht+'px'},500);
-                        
-                        
+                            })
+                        });
                     };
                     
                     function createPage(num){
                         if(num>scope.total){var num = 0}
                         var message = scope.messages[num];
-                        var $box = jQuery('<li>',{class:"place_box_messages_box_mes"});
+                        var $box = jQuery('<li>',{class:"place_box_messages_box_mes"});     
                         var $datetime = jQuery('<div class="place_box_messages_datetime">').appendTo($box);
                         var datetime = message.date.split('T');
                         var btnWidth = 53;
                         var btnHeight = 45;
-                        var $date = jQuery('<strong >',{text:datetime[0]}).appendTo($datetime);
-                        jQuery('<br>').appendTo($datetime);
-                        var $time = jQuery('<small >',{text:datetime[1].split('.')[0]}).appendTo($datetime);
-                        $datetime.width(scope.textWidth-btnWidth*2).css({marginLeft:btnWidth+'px',marginTop:-1*btnHeight+'px'});
-                        var $user = jQuery('<a>',{href:"#",css:{marginLeft:'0px',marginRight:'5px',float:'left',marginTop:'6px'},class:"place_box_messages_box_mes_author"}).appendTo($box);
-                        var $userpic = jQuery( '<img class="media-object" src="img/user.png"  width="32" height="32" align="left">').appendTo($user);
+                        var $date = jQuery('<small >',{text:datetime[0],css:{lineHeight:'9px',fontSize:'80%'}}).appendTo($datetime);
+                        var $time = jQuery('<small >',{text:datetime[1].split('.')[0],css:{lineHeight:'9px',fontSize:'80%'}}).appendTo($datetime);
                         var $boxHeader = jQuery('<div class="media-body place_box_messages_header" >').appendTo($box);
                         var $rait = jQuery('<span class="badge " >8</span>').appendTo($boxHeader);
-                        var $username = jQuery('<h6>',{class:"place_box_messages_author",text:message.username}).appendTo($boxHeader);
+                        var $username = jQuery('<h6>',{class:"place_box_messages_author",text:message.username,css:{margin:0,display:'inline',marginLeft:'3px',lineHeight:'16px'}}).appendTo($boxHeader);
+                        var $thingsArea = jQuery( '<div class="place_box_messages_tags" style="line-height:14px;" >').appendTo($box);
+                        $.each(message.categories,function(index,category){
+                            var $category = jQuery('<a>',{class:"place_box_messages_tag",text:category,css:{marginRight:'3px',display:'inline-block',fontSize:'85%',color:'#999'}}).appendTo($thingsArea);
+                        })
                         var $text = jQuery('<p>',{class:"place_box_messages_text",text:message.text}).appendTo($box);
+                        var $btnUL = jQuery('<ul class="pager mybtn" >').appendTo($box);
+                        var $btnTextLi = jQuery('<li >').appendTo($btnUL);
+                        var $btnText = jQuery('<button class="btnMy" style="margin-right:5px;">').appendTo($btnTextLi);
+                        var $btnTextIco = jQuery('<img class="media-object" src="img/ico/darkgray/glyphicons_029_notes_2.png">').appendTo($btnText);
+                        var $btnPhotoLi = jQuery('<li >').appendTo($btnUL);
+                        var $btnPhoto = jQuery('<button class="btnMy"> ').appendTo($btnPhotoLi);
+                        var $btnPhotoIco = jQuery('<img class="media-object" src="img/ico/darkgray/glyphicons_138_picture.png">').appendTo($btnPhoto);
+                   
                         $box.width(scope.textWidth);
                         return $box
-                    }
-                    
-                    var nextPages = function(){                        
-                        scope.prev = scope.cur;
-                        if (scope.next>=0){
-                            scope.fol = scope.next+1;
-                            if(scope.next>scope.total){scope.next=0}                         
-                            scope.clone = scope.messageBox.clone();
-                            scope.cur=scope.next;
-                        }
-                        else {scope.next=0}
                     }
                     
                     scope.total = scope.messages.length-1;                    
@@ -254,10 +194,7 @@ angular.module('sz.client.directives', [])
                     var i = scope.textWidth;
                     scope.wrapper.width(scope.textWidth*3.3);
                     scope.messageBox.width(scope.textWidth);
-                    $("#btn_page_scroll_Up").text(scope.textWidth+';'+i)
-                    var btnWidth = 53;
-                    var btnHeight = 45;
-                    scope.datetime.width(scope.textWidth-btnWidth*2).css({marginLeft:btnWidth+'px',marginTop:-1*btnHeight+'px'});
+                    
                     scope.$watch('cur', setPages);
                     scope.$watch('next', nextPages);
                     
@@ -268,29 +205,95 @@ angular.module('sz.client.directives', [])
                     scope.showMessagePhoto = function(){
                         if (scope.messagePhoto.is(":hidden"))
                         {
-                            scope.messageText.animate({maxHeight:scope.textHeight+'px'},500)
+                            scope.messageText.animate({maxHeight:scope.textHeight+'px'},500);                            
                             scope.messagePhoto.slideDown(500);
+                            var imgHeight = scope.messagePhoto.find("img").height()+20;
+                            var newHeight = imgHeight+scope.curHeiht;
+                            scope.wrapper.animate({height:newHeight+'px'},500);
                         }
-                        else{scope.messagePhoto.slideUp(500);}
+                        else{
+                            scope.messagePhoto.slideUp(500);
+                            scope.wrapper.animate({height:scope.curHeiht+'px'},500);
+                        }
                     }
                     
-                    
+                    scope.haveText = function () {
+                        return scope.messageText.height()==scope.textHeight;
+                    };
                     
                     function textHeight(){
-//                         scope.wrapper.css({height:'auto'});
+                        alert(1);
                         var messageHeight = scope.messageText.height();
-                        if (messageHeight>scope.textHeight){var h=scope.textHeight; }
-                        else{
-                            var $textClone = scope.messageText.clone();
-                            $textClone.css({maxHeight:'none',display:'none',width:scope.textWidth+'px',backgroundColor:'red'});
-                            $("#content").prepend($textClone);
-                            var h = $textClone.height();
-                            $textClone.remove();                            
-                        }                        
-                        scope.messageText.animate({maxHeight:h+'px'},500)
+                        if (messageHeight>=scope.textHeight){
+                            if (messageHeight>scope.textHeight)
+                                {var h=scope.textHeight;var newHeight = scope.curHeiht}
+                            else{
+                                var $textClone = scope.messageText.clone();
+                                $textClone.css({maxHeight:'none',display:'none',width:scope.textWidth+'px',backgroundColor:'red'});
+                                $("#content").prepend($textClone);
+                                var h = $textClone.height();
+                                $textClone.remove();
+                                var newHeight = scope.curHeiht - scope.textHeight + h}
+                            scope.messageText.animate({maxHeight:h+'px'},500);
+                            scope.wrapper.animate({height:newHeight+'px'},500);
+                        }
                     }
                 }
             };
-    })
-	;
+        })
+        .directive('szNewMessageWriteText',function(){
+            return {
+                restrict:'EA',
+                scope:{messageText:'='},
+                link:function(scope,elm,attr){
+                        var setHeight = function(){
+                            var i = $("#btn_search").text();
+                            $("#btn_search").text(i+';'+1);
+                        }
+                        scope.$watch('messageText', setHeight);
+                    }
+            }
+        })
+        .directive('szDetermEq',function(){
+            return{
+                restrict:'EA',
+                link:function(scope,elm,attr){
+                    var winWidth = $(window).width();
+                    var winHeight = $(window).height();
+                    var contentMarginL = 5;
+                    var contentMargin = 10;
+                    var topmenuWidth = $("#menutop>ul").width();
+                                  
+                    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+                        scope.eq = 'phone'
+                    }
+                    else{
+                        scope.eq = 'pc'
+                    }
+                    
+//                     if(scope.eq=='pc'){
+//                         var feedWidth = winWidth*0.4;
+//                         var feedMarginL = (winWidth - feedWidth)*0.5;
+//                     }
+//                     else{
+//                         var feedWidth = winWidth-contentMargin*2.5;
+//                         var feedMarginL = contentMargin;
+//                     }
+                    var feedWidth = winWidth-contentMargin*5;
+                    var feedMarginL = contentMargin*2;
+                    var contentWidth = feedWidth - contentMarginL*2;
+//                     $("#menubottom,#searchWindow").width(feedWidth).css({marginLeft:feedMarginL+'px',backgroundColor:'green'});
+//                     $("#content").width(contentWidth).css({marginLeft:contentMarginL+feedMarginL+'px'});
+                    
+                    var menutopMarginL = feedMarginL+(feedWidth-topmenuWidth)*0.5;
+                    $("#menutop").width(winWidth);
+                    $("#menutop>ul").css({marginLeft:menutopMarginL});
+                    
+//                     $("#searchWindow").height(winHeight)
+                    $("#searchWindowInner").height(winHeight-90)
+                }
+            }
+        })
+        
+        ;
         

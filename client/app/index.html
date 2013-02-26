@@ -17,61 +17,29 @@
         <script src="js/controllers.js"></script>
         <script src="js/app.js"></script>
 </head>
-<body ng-controller="MasterPageController"  sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()" sz-display-filter="searchString">
-    
-<!--    <div id="shmot_filter_overlflow" ng-show="showShmotFilter" ng-click="showShmotFilter=false;showContent=true;showBotMenuPanel = true;">
-    </div>
-    <div id="shmot_filter" ng-show="showShmotFilter" >
-        <div style="width:366px;height:265px" id="shmotInner" >
-            <span class="shmot_box" ng-repeat="shmotCat in shmot_category.data" >
-                <div class="shmot_box_name" ng-click="$emit('ChangeCategory', {'id':shmotCat.id,'name':shmotCat.name})">
-                    {{shmotCat.name}}
-                </div>
-                <button class="btnMy shmot_btn_info" style="margin-top:6px;" ng-click="showShmotCatInfo=true">
-                    <img class="media-object" src="img/ico/blue/glyphicons_195_circle_info.png">
-                </button> 
-                <div class="shmot_category_info" ng-show="showShmotCatInfo" >
-                    <div class="shmot_category_info_name">
-                        {{shmotCat.name}}
-                    </div>
-                    <div class="shmot_category_info_cont">
-                        {{shmotCat.description}}
-                    </div>
-                    <button class="btnMy" ng-click="showShmotCatInfo=false">
-                        <img class="media-object" src="img/ico/blue/glyphicons_224_chevron-left.png">
-                    </button> 
-                    <button class="btnMy" ng-click="showShmotCatInfo=false;$emit('ChangeCategory', {'id':shmotCat.id,'name':shmotCat.name})">
-                        <img class="media-object" src="img/ico/blue/glyphicons_206_ok_2.png">
-                    </button> 
-                </div>
-            </span>
-        </div>
-        <button class="btnMy" ng-click="showShmotFilter=false;showContent=true;showBotMenuPanel = true;">
-            <img class="media-object" src="img/ico/blue/glyphicons_207_remove_2.png">
-        </button>
-    </div>-->
- 
+<body ng-controller="MasterPageController"  sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()" sz-determ-eq="searchString">
+
     <div id="feed" >
-        <div class="navbar navbar-static-top "  id="menuPanel" ng-show="showMenuPanel" style="z-index:1030;position:absolute;top:0;left:0">
+        <div class="navbar navbar-static-top "  id="menuPanel" ng-show="showMenuPanel" >
             <div class="navbar-inner" id="menutop" style="padding:0">            
                 <ul class="nav " > 
                     <li>
-                        <a href='#' class="navitem" id="btn_feed" >
+                        <a href='#' class="navitem " id="btn_feed" >
                            <img class="media-object" src="img/ico/white/glyphicons_355_bullhorn.png">
                         </a>
                     </li>
                     <li>
-                        <a href='#' class="navitem" id="btn_game_event">
+                        <a href='#' class="navitem " id="btn_game_event">
                             <img class="media-object" src="img/ico/white/glyphicons_009_magic.png">
                         </a>
                     </li>
                     <li>
-                        <a href='#' class="navitem" id="btn_map">
+                        <a href='#' class="navitem " id="btn_map">
                             <img class="media-object" src="img/ico/white/glyphicons_340_globe.png">
                         </a>
                     </li>
                     <li>
-                        <a href='#' class="navitem" id="btn_char">
+                        <a href='#' class="navitem " id="btn_char">
                             <img class="media-object" src="img/ico/white/glyphicons_352_nameplate.png">
                         </a>
                     </li>
@@ -79,42 +47,44 @@
             </div>
         </div>
         <div  id="searchWindow"  >
-            <div  id="searchWindowInner" style="text-align:center">
-                <div style="width:100%;height:47px;" >  
-		    <button class="btnMy" style="margin-right:3px;margin-left:3px;font-size:85%;padding:9px 14px;" ng-repeat="distance in distanceList">
-			{{distance}}
-		    </button>
+            <form id="searchWindowInner" style="text-align:center;padding-top:5px;" ng-show="showSearchWin">
+                <div style="width:100%;height:47px;" class="btn-group">
+                    <button class="btn btn-primary  btn-large " type="reset" ng-click="shmot_cat.description='';filter.category=100;filter.query='';filter.nearby=''">
+                        Сбросить
+                    </button>
                 </div>
-                <div style="width:100%;height:47px;" > 
-		    <input type="text" class="search-query" placeholder="Искать" >
+                <div style="margin:10px 0;" class="btn-group" data-toggle="buttons-radio">
+		    <button class="btn btn-primary" type="radio" ng-model="nearby"  ng-click="filter.nearby='0.25'">250m</button>
+		    <button class="btn btn-primary" type="radio" ng-model="nearby" ng-click="filter.nearby='1'">1km</button>
+                    <button class="btn btn-primary" type="radio" ng-model="nearby" ng-click="filter.nearby='3'">3km</button>
+                    <button class="btn btn-primary active" type="radio" ng-model="nearby"  ng-click="filter.nearby=''" >city</button>
+                </div>
+                <div style="width:100%;height:47px;margin-top:5px;" > 
+		    <input type="text" class="search-query" ng-model="filter.query"  placeholder="Искать" >
                 </div>
                 <div  id="shmotFilter" style="with:100%;height:100px;" >
-		    <select ng-model="shmot_cat" ng-options="c.name for c in categories">
-			 <option value="">Любая категория</option>
+		    <select ng-model="shmot_cat" ng-options="c.name for c in categories" ng-click="setCategory()">
+			 <option value="" >Любая категория</option>
 		    </select>
 		</div>
 		<div id="shmot_category_info" style="font-size:80%">
 		    {{shmot_cat.description}}
 		</div>
-            </div>
+            </form>
             <div style="height:47px;" >
 		<div id="logo" style="padding:0px 3px;float:left;color:#555" ng-show="showContent">
 		    <h5 style="line-height:16px">shmotzhmot.me</h5>
 		</div>
-                <button ng-click="showSearchWin=!showSearchWin" class="btnMy" style="float:left;border-radius:0 0 15px 15px;border-top:1px solid white;margin-top:-2px" ng-show="showSearchWin">
-                    <img class="media-object" src="img/ico/blue/glyphicons_206_ok_2.png">
+                <button class="btn btn-success  btn-large"  ng-show="showSearchWin" style="float:left;">
+                    <img class="media-object" src="img/ico/white/glyphicons_206_ok_2.png">
                 </button>
-                <button ng-click="showSearchWin=!showSearchWin" class="btnMy" style="float:right;border-radius:0 0 15px 15px;border-top:1px solid white;margin-top:-2px">
+                <button ng-click="setFilter()" class="btn btn-large " style="float:right;">
                     <img class="media-object" src="img/ico/blue/glyphicons_027_search.png">
                 </button>
             </div>
         </div>
         
-        
-        
         <div  ng-view class="content" id="content" ng-show="showContent"></div>
-      
-
         
         <div class="navbar navbar-fixed-bottom navbar-inverse"  ng-show="showBotMenuPanel" >
             <div class="navbar-inner" id="menubottom" >
@@ -151,61 +121,6 @@
  
  
     </div>
-
-    
-    
-   <script type="text/javascript"> 
-    function pageSize(){
-        var winWidth = $(window).width();
-        var winHeight = $(window).height();
-        var topmenuWidth = $("#menutop>ul").width();
-        var contentMargin = 10;
-        var contentMarginL = 5;
-        var searchStringWidth = 200;
-        
-        if (winWidth>800){
-            if(winWidth>1200){
-                var feedWidth = winWidth*0.4;
-            }
-            if(1000<winWidth&&winWidth<1199){
-                var feedWidth = winWidth*0.5;
-            }
-            if(winWidth&&winWidth<999){
-                var feedWidth = winWidth*0.6;
-            }
-            var feedMarginL = (winWidth - feedWidth)*0.5;
-            
-        }
-        else{
-            var feedWidth = winWidth-contentMargin*2.5;
-            var feedMarginL = contentMargin;
-            var shmotFilterHeight = winHeight*0.8;
-            if(winWidth<340){
-                var searchStringWidth = feedWidth -235;
-            }
-        }
-
-        
-        var contentWidth = feedWidth - contentMarginL*2;
-
-        $("#searchWindow input[type='text']").width(searchStringWidth);
-
-        
-        $("#menubottom").width(feedWidth).css({marginLeft:feedMarginL+'px'});
-        $("#content,#searchWindow").width(contentWidth).css({marginLeft:contentMarginL+feedMarginL+'px'});
-        
-        var menutopMarginL = feedMarginL+(feedWidth-topmenuWidth)*0.5;
-        $("#menutop").width(winWidth)
-        $("#menutop>ul").css({marginLeft:menutopMarginL});
-        
-
-        
-    }
-        
-    
-    pageSize()
-
-   </script>
  
 </body>
 </html>
