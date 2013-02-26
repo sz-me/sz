@@ -1,17 +1,27 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from sz.api import pagination, fields as sz_api_fields
+from sz.api import fields as sz_api_fields
 from sz.core import models
 
 
 class UserSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(source="username")
-    full_name = serializers.CharField(source="get_full_name")
+    absolute_url = serializers.Field(source='get_absolute_url')
+    full_name = serializers.Field(source='get_full_name')
 
     class Meta:
         model = User
-        fields = ('username','full_name')
+        exclude = ('password', 'groups', 'user_permissions',)
+
+
+class AuthUserSerializer(serializers.ModelSerializer):
+    is_anonymous = serializers.Field()
+    is_authenticated = serializers.Field()
+
+    class Meta:
+        model = User
+        fields = ('username', 'is_anonymous', 'is_authenticated')
+
 
 
 class AuthenticationSerializer(serializers.Serializer):

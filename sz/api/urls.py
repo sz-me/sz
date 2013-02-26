@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^cities/nearest$', views.CityNearest.as_view(), name='city-nearest'),
     url(r'^auth/login$', views.AuthLogin.as_view(), name='auth-login'),
     url(r'^auth/logout$', views.AuthLogout.as_view(), name='auth-logout'),
+    url(r'^auth/user$', views.AuthUser.as_view(), name='auth-user'),
     url(r'^authentication$', views.Authentication.as_view(), name='token-auth-authenticate'),
 )
 

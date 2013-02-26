@@ -61,6 +61,7 @@ class ApiRoot(SzApiView):
             'places-newsfeed': reverse('place-newsfeed'),
             'login': reverse('auth-login'),
             'logout': reverse('auth-logout'),
+            'current-user': reverse('auth-user'),
         })
 
 
@@ -127,6 +128,7 @@ class MessageInstance(SzApiView):
 class UserInstanceSelf(SzApiView):
     """ Retrieve profile information for the action user """
     permission_classes = (permissions.IsAuthenticated,)
+
     def get(self, request, format=None):
         user = request.user
         serializer = serializers.UserSerializer(instance=user)
@@ -279,6 +281,16 @@ class AuthLogout(SzApiView):
     def post(self, request):
         auth.logout(request)
         return sz_api_response.Response({})
+
+
+class AuthUser(SzApiView):
+    """ Retrieve authentication information for the action user """
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request, format=None):
+        user = request.user
+        serializer = serializers.AuthUserSerializer(instance=user)
+        return sz_api_response.Response(serializer.data)
 
 
 class Authentication(SzApiView):
