@@ -23,7 +23,6 @@ class AuthUserSerializer(serializers.ModelSerializer):
         fields = ('username', 'is_anonymous', 'is_authenticated')
 
 
-
 class AuthenticationSerializer(serializers.Serializer):
     def __init__(self, *args, **kwargs):
         user = self.serializer = kwargs.pop('user', None)

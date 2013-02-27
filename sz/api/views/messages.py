@@ -31,3 +31,10 @@ class MessageInstance(SzApiView):
         message.delete()
         return sz_api_response.Response(status=status.HTTP_204_NO_CONTENT)
 
+
+class MessageResumes(SzApiView):
+    """ List of available choices to resume a visit """
+
+    def get(self, request, format=None):
+        response = [dict(value=choice[0], name=choice[1]) for choice in models.VISIT_RESUME_CHOICES]
+        return sz_api_response.Response(response)
