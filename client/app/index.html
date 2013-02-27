@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="css/bootstrap/css/bootstrap.css">
          <script src="css/bootstrap/js/bootstrap.js"></script> 
         <link rel="stylesheet" href="css/color.css">
+        <link rel="stylesheet" href="css/FortAwesome-Font-Awesome-13d5dd3/css/font-awesome.min.css">
         
         <title>SZ</title>
             
@@ -20,33 +21,65 @@
 <body ng-controller="MasterPageController"  sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()" sz-determ-eq="searchString">
 
     <div id="feed" >
-        <div class="navbar navbar-static-top "  id="menuPanel" ng-show="showMenuPanel" >
-            <div class="navbar-inner" id="menutop" style="padding:0">            
-                <ul class="nav " > 
-                    <li>
-                        <a href='#' class="navitem " id="btn_feed" >
-                           <img class="media-object" src="img/ico/white/glyphicons_355_bullhorn.png">
+        <div class="navbar navbar-fixed-top "  ng-show="showMenuPanel" style="position:fixed">
+            <div class="navbar-inner" id="menutop" style="padding:0">     
+                <ul class="nav" > 
+                    <li class="dropdown" id="dropdownMenu">
+                        <a  data-toggle="collapse" data-target=".nav-collapse" style="color:white">
+                            <i class="icon-reorder icon-2x" ></i>
                         </a>
                     </li>
                     <li>
-                        <a href='#' class="navitem " id="btn_game_event">
-                            <img class="media-object" src="img/ico/white/glyphicons_009_magic.png">
+                        <a href="#/newsfeed" id="logo" style="color:white;margin-top:5px;">
+                            <span style="font-weight:bold;">shmot<span style="font-size:120%;">Ж</span>mot.me</span>
                         </a>
                     </li>
                     <li>
-                        <a href='#' class="navitem " id="btn_map">
-                            <img class="media-object" src="img/ico/white/glyphicons_340_globe.png">
+                        <a href='#/search' class="navitem " id="btn_search" style="color:white">
+                            <i class="icon-search icon-2x" ></i>
                         </a>
                     </li>
                     <li>
-                        <a href='#' class="navitem " id="btn_char">
-                            <img class="media-object" src="img/ico/white/glyphicons_352_nameplate.png">
+                        <a href="#/new_message" id="btn_new_message" class="navitem" style="padding:0;width:84px;margin-left:15px;margin-right:15px;"> 
+                            <button class="btn btn-primary btn-large" style="margin:0;">
+                                <i class="icon-edit icon-2x" ></i>
+                          </button>
                         </a>
                     </li>
                 </ul>
+                <div class="nav-collapse collapse" style="text-align:left;">
+                    <ul class="nav "  style="margin-left:30px;"> 
+                        <li>
+                            <a href='#' id="btn_game_event" style="text-shadow:none;">
+<!--                                 <i class="icon-search icon-large" ></i> -->
+                                <span>Новости</span>
+                            </a>
+                            
+                        </li>
+                        <li>
+                            <a href='#' id="btn_game_event" style="text-shadow:none;">
+<!--                                 <i class="icon-search icon-large" ></i> -->
+                                <span>Рекомендуемое</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='#'  id="btn_map" style="text-shadow:none;">
+<!--                                 <i class="icon-globe icon-large" ></i> -->
+                                <span>Карта</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='#'  id="btn_char" style="text-shadow:none;">
+<!--                                 <i class="icon-search icon-large" ></i> -->
+<!--                                 {{ user.username }} -->
+                                <span>admin@admin.com</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-        <div  id="searchWindow"  >
+<!--        <div  id="searchWindow"  >
             <form id="searchWindowInner" style="text-align:center;padding-top:5px;" ng-show="showSearchWin">
                 <div style="width:100%;height:47px;" class="btn-group">
                     <button class="btn btn-primary  btn-large " type="reset" ng-click="shmot_cat.description='';filter.category=100;filter.query='';filter.nearby=''">
@@ -82,11 +115,11 @@
                     <img class="media-object" src="img/ico/blue/glyphicons_027_search.png">
                 </button>
             </div>
-        </div>
+        </div>-->
         
-        <div  ng-view class="content" id="content" ng-show="showContent"></div>
+        <div  ng-view class="content" id="content" ng-show="showContent" style="margin-top:95px;"></div>
         
-        <div class="navbar navbar-fixed-bottom navbar-inverse"  ng-show="showBotMenuPanel" >
+<!--        <div class="navbar navbar-fixed-bottom navbar-inverse"  ng-show="showBotMenuPanel" >
             <div class="navbar-inner" id="menubottom" >
                 <ul class="nav " style="width:100%"  >
                     <li>
@@ -102,11 +135,6 @@
                           <img class="media-object" src="img/ico/white/glyphicons_150_edit.png">
                         </a>
                     </li>
-          <!--          <li >
-                        <a href="#" id="btn_search" class="navitem"> 
-                           <img class="media-object" src="img/ico/white/glyphicons_027_search.png">
-                        </a>
-                    </li>-->
                     <li style="float:right">
                         <div id="castle_info_val" style="margin-right:12px;">
                             <div><span class="badge badge-success">2</span></div>
@@ -116,7 +144,7 @@
                 </ul>
                
             </div>
-        </div>
+        </div>-->
  
  
  
