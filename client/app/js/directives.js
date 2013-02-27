@@ -92,37 +92,51 @@ angular.module('sz.client.directives', [])
                                 '{{date}}'+
                                 ' {{time}}'+                               
                             '</time>'+
-                            '<div class="media-body place_box_messages_header" >'+
+                             
+                            '<div class="media-body place_box_messages_header" >'+                                
+                                '<div class="place_box_messages_tags" style="line-height:14px;" >'+
+//                                     '<a ng-repeat="categoryname in categoriesname" style="margin-right:3px;display:inline-block;font-size:85%;color:#999">'+
+//                                         '{{categoryname}}'+
+//                                     '</a>'+
+                                        '<div class="catDiv" style="background:green">'+
+                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >'+
+                                        '</div>'+                                        
+                                        '<div class="catDiv" style="background:#7a43b6">'+
+                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_284_pants.png">'+
+                                        '</div>'+    
+                                        '<div class="catDiv" style="background:#ffc40d">'+
+                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_285_sweater.png">'+
+                                        '</div>'+    
+                                        '<div class="catDiv" style="background:#045fdb">'+
+                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png">'+
+                                        '</div>'+    
+                                '</div>'+
                                 '<span class="badge " >8</span>'+
                                 '<h6 class="place_box_messages_author" style="margin:0;display:inline;margin-left:3px;line-height:16px;">{{username}}</h6>'+
-                                '<div class="place_box_messages_tags" style="line-height:14px;" >'+
-                                    '<a ng-repeat="category in categories" style="margin-right:3px;display:inline-block;font-size:85%;color:#999">'+
-                                        '{{category}}'+
-                                    '</a>'+
-                                '</div>'+
-                            '</div>'+                            
+                            '</div>'+       
                             '<p class="place_box_messages_text">'+
                                 '{{text}}'+
                             '</p>'+                            
                             '<div class="place_box_messages_photo" >'+
                                 '<img class="media-object" src={{photo}}>'+
                             '</div>'+
-                            '<ul  style="text-align:center;margin:0" >'+
-                                '<li class="btn-group" >'+
-                                    '<button class="btn  btn-large" data-toggle="button"  id="btnText" ng-show="!hasText()" ng-click="showMessageTextFull()" ">'+
-                                        '<img class="media-object" src="img/ico/blue/glyphicons_029_notes_2.png">'+
+                           '<div  style="text-align:center;margin:5px 0;" >'+
+                                '<span>'+
+                                    '<button class="btn  " data-toggle="button"  id="btnText" ng-show="!hasText()" ng-click="showMessageTextFull()" style="color:#049cdb"">'+
+                                        '<i class="icon-2x" ng-class="btnTextClass"></i>'+
                                     '</button>'+
-                                    '<button class="btn btn-large " data-toggle="button"  id="btnPhoto" ng-show="photo" ng-click="showMessagePhoto()">'+
-                                        '<img class="media-object" src="img/ico/blue/glyphicons_138_picture.png">'+
+                                    '<button class="btn " data-toggle="button"  id="btnPhoto" ng-show="photo" ng-click="showMessagePhoto()" style="color:#049cdb">'+
+                                        '<i class="icon-picture icon-2x" ></i>'+
                                     '</button>'+
-                                '</li>'+
-                            '</ul>'+
+                                '</span>'+
+                            '</div>'+
                         '</div>',
                 scope: {
-                    message:'='
+                    message:'=',
+                    categories:'='
                 },
                 link: function (scope, element, attrs) {
-                    
+//                     alert(scope.categories)
                         var msg = scope.message;
                         var datetime = msg.date.split('T');
                         scope.date = datetime[0];
@@ -131,14 +145,14 @@ angular.module('sz.client.directives', [])
                         scope.username = 'Генерал Плюшкин';
                         scope.text = msg.text;
                         if(msg.photo){scope.photo = msg.photo.reduced;}
-                        scope.categories = []
-//                         $.each(msg.categories,function(index,id){
-//                             $.each(scope.cat,function(index,cat){
-//                                 if(cat.id==id){
-//                                     scope.categories.push(cat.name)
-//                                 }
-//                             })
-//                         });
+                        scope.categoriesname = []
+                        $.each(msg.categories,function(index,id){
+                            $.each(scope.categories,function(index,cat){
+                                if(cat.id==id){
+                                    scope.categoriesname.push(cat.name)
+                                }
+                            })
+                        });
                         scope.messageBox = $(element[0]);
                         scope.messageText =  scope.messageBox.find(".place_box_messages_text");
                         scope.textHeight = parseInt(scope.messageText.css('maxHeight'));
@@ -146,10 +160,8 @@ angular.module('sz.client.directives', [])
                         scope.messagePhoto =  scope.messageBox.find(".place_box_messages_photo");
                         scope.btnText = scope.messageBox.find("#btnText");
                         scope.btnPhoto = scope.messageBox.find("#btnPhoto");
-                        
-//                         scope.textClass = function(){
-//                             if(scope.textHeight>scope.messageText.height()){return 'disabled'}
-//                         }
+//                         scope.btnTextClass='icon-caret-down';
+                        scope.btnTextClass='icon-reorder';
                         scope.hasText = function(){
                             return scope.textHeight>scope.messageText.height()
                         }
@@ -165,10 +177,11 @@ angular.module('sz.client.directives', [])
                                 var newHeight = h;
                                 scope.messageText.animate({maxHeight:newHeight+'px'},500);
                                 scope.btnPhoto.removeClass("active");
+//                                 scope.btnTextClass='icon-caret-up';
                             }
                             else{
                                 scope.messageText.animate({maxHeight:scope.textHeight+'px'},500);
-//                                 scope.btnText.removeClass("active");
+//                                 scope.btnTextClass='icon-caret-down';
                             }
                         }
                         scope.showMessagePhoto = function(){
@@ -176,6 +189,7 @@ angular.module('sz.client.directives', [])
                                 if(scope.textHeight<scope.messageText.height()){
                                     scope.messageText.animate({maxHeight:scope.textHeight+'px'},500);
                                     scope.btnText.removeClass("active")
+//                                     scope.btnTextClass='icon-caret-down';
                                 }
                                 scope.messagePhoto.slideDown(500);
                             }
@@ -194,7 +208,6 @@ angular.module('sz.client.directives', [])
                     var winHeight = $(window).height();
                     var contentMarginL = 5;
                     var contentMargin = 10;
-                    var topmenuWidth = $("#menutop>ul").width();
                                   
                     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
                         scope.eq = 'phone'
@@ -211,13 +224,10 @@ angular.module('sz.client.directives', [])
 //                         var feedWidth = winWidth-contentMargin*2.5;
 //                         var feedMarginL = contentMargin;
 //                     }
-                    var feedWidth = winWidth-contentMargin*5;
-                    var feedMarginL = contentMargin*2;
-                    var contentWidth = feedWidth - contentMarginL*2;                    
-                    var menutopMarginL = feedMarginL+(feedWidth-topmenuWidth)*0.5;
-                    $("#menutop").width(winWidth);
-                    $("#menutop>ul").css({marginLeft:menutopMarginL});
-                    $("#searchWindowInner").height(winHeight-90)
+                    var menuWidth = 385;
+                    var menuMargin = (winWidth-menuWidth)*0.5;
+                    $("#dropdownMenu").css({marginLeft:menuMargin});
+//                     $("#searchWindowInner").height(winHeight-90)
                 }
             }
         })

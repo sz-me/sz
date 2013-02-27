@@ -107,7 +107,7 @@ szClient.factory('shmotCategoryService', function($resource){
         });
 
 szClient.factory('placeService', function($resource){
-                var id = '4f5c11d0e4b0a4baa31f481b'
+                var id = '5003c692e4b0946792cb335e'
                 return $resource('../../api/places/'+id,{}, {
                         query: { method:'GET' } 
                 });

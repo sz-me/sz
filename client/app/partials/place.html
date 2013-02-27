@@ -1,21 +1,55 @@
-<div ng-init='place = {"meta":{"code":200},"data":{
-"id":"aaaa","name": "Benetton","address": "Большая Садовая, 302-бис, пятый этаж, кв. № 50)"
-}}'></div>
-<div ng-init='messages = {
-"results": [
-{"username": "1Дуня Кулакова", "id": 90, "date": "2013-01-03T15:38:17.029Z", "text": "Человек царь зверей, оглянись, не робей. Создан весь этот мир для утехи твоей. Чем угодно ты можешь себя ублажать, но послушай меня и не трогай ежа. Ёжик самый в лесу неебабельный зверь, у него не бывает открытых дверей, у него нету незащищенных щелей, весь в иголках по самые дырки ноздрей. У козы томный взгляд, у овцы добрый нрав, на лошадку кто с верху залез - тот и прав,если хочешь экзотики - вот и удав, только ежика,брат, ты в покое оставь. Лишь ежа никогда не сумеешь уметь, лишь ежа никогда тебе не поиметь, носом к собственной жопе с испугу прирос, ёжик - это колючий ураварос. К тигру нужен подход и к любому коту, у пираньи есть зубы, но только во рту, при желании можно впердолить кроту, только ёжика ты обходи за версту.", "things": ["понедельник","вторник","бездельник","дворник","штаны","полоска","трава","жилетка","сигаретка","папироска","аристократ","сократ","тратуар","дамы","герлы","телка","метелка","метла","меняла",
-"туман","рубль","карман","бездельник","дворник","аристократ","сократ"]},
-{"username": "2Дуня Кулакова", "id": 90, "date": "2013-01-02T14:38:17.029Z", "text": "Даже ёжики ёжиков ", "things": ["понедельник","вторник","бездельник","дворник","штаны"]},
-{"username": "3Дуня Кулакова", "id": 90, "date": "2013-01-01T13:38:17.029Z", "text": " Пожалей свой батон - нафига тебе ёж? Ты ж батон добровольно в капкан не кладешь, ты ж его шутки ради в костер не суешь. Вот и ёж бесполезная трата хуёж. Если живность обходит тебя за версту, даже куры попрятались в дальнем лесу - две руки и смекалка героя спасут. А из ёжика выйдет наваристый суп. Можно ёжика стукнуть, а можно и пнуть, можно тросточкой ёжика в пузико ткнуть, можно в ёжика из револьвера пальнуть, но впихнуть в него что-нибудь - думать забудь. У природы свое чувство юмора есть, чтобы сбить с человека напрасную спесь. Заруби на носу: пусть хитер ты и смел, только маленький ежик тебя поимел. ", "things": ["понедельник","вторник","бездельник","дворник","штаны","полоска","трава","жилетка","сигаретка","папироска","аристократ","сократ","тратуар","дамы","герлы","телка","метелка","метла","меняла","туман","рубль","карман","бездельник","дворник","аристократ","сократ"]},
-{"username": "4Дуня Кулакова", "id": 90, "date": "2013-01-02T14:38:17.029Z", "text": "Даже ёжики ёжиков ", "things": ["понедельник","вторник","бездельник","дворник","штаны","полоска","трава","жилетка","сигаретка","папироска","аристократ","сократ","тратуар","дамы","герлы","телка","метелка","метла","меняла","туман","рубль","карман","бездельник","дворник","аристократ","сократ"]}
-]}'>
-</div>
-<!-- <div ng-controller="PlaceController"> -->
-    <div style="text-align:right;" class="place_address">                                    
-        <strong style="line-height:12px;">{{place.data.name}}</strong><br>
-        <small style="line-height:10px;">{{place.data.address}}</small>    
+<div  class="place_header">
+    <div style="text-align:right;" >        
+        <h3>{{place.data.name}}</h3>
+        <small style="line-height:10px;">{{place.data.address}}</small>   
     </div> 
-    <!--<div ng-init="$emit('test',1)">
-        sss
-    </div>-->
-<!-- </div> -->
+    <div class="place_box_messages_tags" style="line-height:14px;text-align:right;" >
+        <div class="catDiv" style="background:green">
+            <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >
+        </div>                                        
+        <div class="catDiv" style="background:#7a43b6">
+            <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_284_pants.png">
+        </div>    
+        <div class="catDiv" style="background:#ffc40d">
+            <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_285_sweater.png">
+        </div>    
+        <div class="catDiv" style="background:#045fdb">
+            <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png">
+        </div>    
+    </div>
+    <ul class="nav nav-pills place_nav" >
+        <li >
+            <a ><i class="icon-rss" ng-class="'icon-3x'"></i></a>
+        </li>
+        <li>
+            <a ><i class="icon-picture" ng-class="'icon-3x'"></i></a>
+        </li>
+        <li>
+            <a ><i class="icon-map-marker" ng-class="'icon-3x'"></i></a>
+        </li>
+        <li>
+            <a ><i class="icon-group" ng-class="'icon-3x'"></i></a>
+        </li>
+    </ul>
+</div>
+<ul class="media-list" >
+    <li>
+        <ul  style="margin-left:0;list-style:none;text-align:center;padding-bottom:0" >
+            <li class=" place_box_messages_big_box" style="overflow:hidden;padding:15px;">
+                <div ng-repeat="message in item.messages.results | limitTo:placeMessagesLimit" style="text-align:left;margin-top:20px" class="place_box_message">
+                    <sz-feed-message-box message='message' categories="categories"></sz-feed-message-box>
+                </div>
+            </li>
+            <li class="btn-group" style="width:100%;border-top:1px solid #CCC; padding-top:10px" ng-show="item.messages.results.length-1" >
+                <button class="btn " data-toggle="button"  ng-click="placeMessagesLimit=showAllPlaceMessages(item.messages.results.length,placeMessagesLimit)" >
+                    {{showAllPlaceMessagesText(item.messages.results.length-1,placeMessagesLimit)}}
+                </button>
+            </li>
+        </ul>
+    </li>
+    <li style="text-align:center;margin-top:10px;">
+        <button class="btn  btn-large" ng-click="loadMoreMessage ()">
+            <img class="media-object" src="img/ico/blue/glyphicons_187_more.png">
+        </button>
+    </li>
+</ul>
