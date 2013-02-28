@@ -10,6 +10,11 @@ szClient.factory('newsFeedService', function($resource){
     });
 });
 
+szClient.factory('MessageService', function($resource){
+    return $resource('../../api/messages/:messageId', {}, {});
+});
+
+
 szClient.factory('geolocationService', function ($rootScope) {
     return {
         getCurrentPosition: function (onSuccess, onError, options) {
@@ -38,17 +43,10 @@ szClient.factory('geolocationService', function ($rootScope) {
 });
 
 szClient.factory('shmotCategoryService', function($resource){
-                return $resource('../../api/categories', {}, {
-                        query: { method:'GET' }
-                });
+                return $resource('../../api/categories', {}, {query: { method:'GET' }});
         });
 
-szClient.factory('placeService', function($resource){
-                var id = '5003c692e4b0946792cb335e'
-                return $resource('../../api/places/'+id,{}, {
-                        query: { method:'GET' } 
-                });
-        });
+
 
 szClient.factory('authService', function($resource){
     return $resource('../../api/auth/:action', {}, {

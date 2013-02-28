@@ -1,9 +1,9 @@
 <div  class="place_header">
-    <div style="text-align:right;" >        
-        <h3>{{feed.data.place.name}}</h3>
-        <small style="line-height:10px;">{{place.data.address}}</small>   
+    <div style="text-align:right;margin-bottom:10px;" >        
+        <h3 style="margin-bottom:0;;">{{feed.data.place.name}}</h3>
+        <small style="line-height:10px;">{{feed.data.place.address}}</small>   
     </div> 
-    <div class="place_box_messages_tags" style="line-height:14px;text-align:right;" >
+    <div class="place_box_messages_tags" style="line-height:14px;text-align:right;margin-bottom:10px;" >
         <div class="catDiv" style="background:green">
             <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >
         </div>                                        
@@ -17,37 +17,45 @@
             <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png">
         </div>    
     </div>
+    <div>
+        <a class="btn btn-large  btn-primary" type="button" href="#/new_message" >Ништякнуть</a>
+    </div>
     <ul class="nav nav-pills place_nav" >
         <li >
-            <a ><i class="icon-rss" ng-class="'icon-3x'"></i></a>
+            <a  ng-click="showPlaceMessagesClick()"><i class="icon-rss" ng-class="'icon-2x'"></i></a>
+        </li>
+        <li >
+            <a  ng-click="showPlacePhotoClick()"><i class="icon-picture" ng-class="'icon-2x'"></i></a>
         </li>
         <li>
-            <a ><i class="icon-picture" ng-class="'icon-3x'"></i></a>
+            <a ><i class="icon-star" ng-class="'icon-2x'"></i></a>
         </li>
         <li>
-            <a ><i class="icon-map-marker" ng-class="'icon-3x'"></i></a>
+            <a ><i class="icon-map-marker" ng-class="'icon-2x'"></i></a>
         </li>
         <li>
-            <a ><i class="icon-group" ng-class="'icon-3x'"></i></a>
+            <a ><i class="icon-group" ng-class="'icon-2x'"></i></a>
         </li>
     </ul>
 </div>
 <ul class="media-list" >
-    <li>
-        <ul  style="margin-left:0;list-style:none;text-align:center;padding-bottom:0" >
-            <li class=" place_box_messages_big_box" style="overflow:hidden;padding:15px;">
-                <div ng-repeat="message in item.messages.results | limitTo:placeMessagesLimit" style="text-align:left;margin-top:20px" class="place_box_message">
+    <li ng-show="showPlacePhoto">
+        <div style="text-align:center;margin-top:20px;">
+            <a ng-repeat="message in feed.data.messages.results | filter:{$:'photo'}" style="display:inline-block;cursor:pointer;" href="#/message/{{message.id}}">
+                <img src="{{message.photo.thumbnail}}">
+            </a>
+        </div>
+    </li>
+    <li ng-show="showPlaceMessages">
+        <ul  style="margin-left:0;list-style:none;text-align:center;" >
+            <li class=" place_box_messages_big_box" style="overflow:hidden;">
+                <div ng-repeat="message in feed.data.messages.results " style="text-align:left;margin-top:20px;padding:20px" class="place_box_message_box">
                     <sz-feed-message-box message='message' categories="categories"></sz-feed-message-box>
                 </div>
             </li>
-            <li class="btn-group" style="width:100%;border-top:1px solid #CCC; padding-top:10px" ng-show="item.messages.results.length-1" >
-                <button class="btn " data-toggle="button"  ng-click="placeMessagesLimit=showAllPlaceMessages(item.messages.results.length,placeMessagesLimit)" >
-                    {{showAllPlaceMessagesText(item.messages.results.length-1,placeMessagesLimit)}}
-                </button>
-            </li>
         </ul>
     </li>
-    <li style="text-align:center;margin-top:10px;">
+    <li style="text-align:center;margin-top:10px;"  >
         <button class="btn  btn-large" ng-click="loadMoreMessage ()">
             <img class="media-object" src="img/ico/blue/glyphicons_187_more.png">
         </button>

@@ -21,7 +21,7 @@
 <body ng-controller="MasterPageController"  sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()" sz-determ-eq="searchString">
 
     <div id="feed" >
-        <div class="navbar navbar-fixed-top "  ng-show="showMenuPanel" style="position:fixed">
+        <div class="navbar navbar-fixed-top "  ng-show="showMenuPanel" >
             <div class="navbar-inner" id="menutop" style="padding:0">     
                 <ul class="nav" > 
                     <li class="dropdown" id="dropdownMenu">
@@ -117,7 +117,7 @@
             </div>
         </div>-->
         
-        <div  ng-view class="content" id="content" ng-show="showContent" style="margin-top:95px;"></div>
+        <div  ng-view class="content" id="content" ng-show="showContent" style="margin-top:15px;"></div>
         
 <!--        <div class="navbar navbar-fixed-bottom navbar-inverse"  ng-show="showBotMenuPanel" >
             <div class="navbar-inner" id="menubottom" >

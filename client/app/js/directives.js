@@ -117,8 +117,10 @@ angular.module('sz.client.directives', [])
                             '<p class="place_box_messages_text">'+
                                 '{{text}}'+
                             '</p>'+                            
-                            '<div class="place_box_messages_photo" >'+
-                                '<img class="media-object" src={{photo}}>'+
+                            '<div class="place_box_messages_photo" style="text-align:center">'+
+                                '<a href="#/message/{{messageid}}" style="display:inline-block">'+
+                                    '<img class="media-object" src={{photo}}>'+
+                                '</a>'+
                             '</div>'+
                            '<div  style="text-align:center;margin:5px 0;" >'+
                                 '<span>'+
@@ -144,7 +146,7 @@ angular.module('sz.client.directives', [])
                         scope.time = time.slice(0,time.length-3)
                         scope.username = 'Генерал Плюшкин';
                         scope.text = msg.text;
-                        if(msg.photo){scope.photo = msg.photo.reduced;}
+                        if(msg.photo){scope.photo = msg.photo.reduced;scope.messageid=msg.id}
                         scope.categoriesname = []
                         $.each(msg.categories,function(index,id){
                             $.each(scope.categories,function(index,cat){
@@ -200,6 +202,7 @@ angular.module('sz.client.directives', [])
                 }
             };
         })
+
         .directive('szDetermEq',function(){
             return{
                 restrict:'EA',
@@ -227,6 +230,7 @@ angular.module('sz.client.directives', [])
                     var menuWidth = 385;
                     var menuMargin = (winWidth-menuWidth)*0.5;
                     $("#dropdownMenu").css({marginLeft:menuMargin});
+                    
 //                     $("#searchWindowInner").height(winHeight-90)
                 }
             }
