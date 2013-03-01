@@ -1,23 +1,45 @@
-<div class="box-border ">
-    <div>
-        Близость
+<ul class="ul-box text-center" >
+    <li class="media box-border padding-huge">
+        <div>
+            <input type="text" class="search-query" ng-model="filter.query"  placeholder="Искать" >
+        </div>
+        <div class="margin-top-huge" sz-collapse-categories="chCat">
+                <input type="text"  class="search-query" placeholder="Любая категория" id="categoryInput" ng-model="chCat.name">
+            <div id="categories">
+                <div id="categories-collapse">
+                    <div ng-repeat="cat in categories" class="category-string" ng-click="$emit('ChangeCategory',cat)">{{cat.name}}</div>
+                </div>
+            </div>
+            <div class="margin-top">
+                {{chCat.description}}
+            </div>
+        </div>
+        <div class="margin-top-huge">
+            <button class="btn disabled">Фото</button>
+        </div>
+    </li>
+    <li class="media box-border padding-huge" >
+        <div class="btn-group" data-toggle="buttons-radio" >
+            <button class="btn" type="radio" ng-model="nearby"  ng-click="filter.nearby='0.25'">250m</button>
+            <button class="btn" type="radio" ng-model="nearby" ng-click="filter.nearby='1'">1km</button>
+            <button class="btn" type="radio" ng-model="nearby" ng-click="filter.nearby='3'">3km</button>
+            <button class="btn active" type="radio" ng-model="nearby"  ng-click="filter.nearby=''" >city</button>
+        </div>
+    </li>
+<!--    <li class="media box-border padding-huge">
+        <div >
+            <input type="text" class="search-query" ng-model="filter.query"  placeholder="Название места" >
+        </div>
+    </li>-->
+    <div class="media">
+        <button class="btn btn-large pull-left">Сбросить</button>
+        <button class="btn btn-large pull-right">Искать</button>
     </div>
+</ul>
+<div>
+{{filter || json}}<br>
+{{chCat || json}}
 </div>
-<div class="box-border">
-    <div>
-        Строка
-    </div>
-    <div>
-        Категория
-    </div>
-</div>
-<div class="box-border">
-    <div>
-        Место
-    </div>
-</div>
-
-
 <!--        <div  id="searchWindow"  >
             <form id="searchWindowInner" style="text-align:center;padding-top:5px;" ng-show="showSearchWin">
                 <div style="width:100%;height:47px;" class="btn-group">

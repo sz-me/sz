@@ -68,10 +68,50 @@ textarea:focus{
 
 #logo>span>span{font-size:120%;}
 
+#collapseMenu{
+    overflow:hidden;
+    max-height:0;
+    box-shadow:0 0 4px #AAA;
+    background:#333;
+    padding:0 5px;
+    margin-top:-20px;
+    margin-right:-20px;
+    margin-left:-20px;
+    border-radius:0 0 5px 5px;
+    margin-bottom:20px;
+}
+
+#collapseMenu>ul{
+    margin-top:5px;
+}
+
+#collapseMenu>ul>li>a{color:#EEE;text-shadow:1px 0 2px #666}
+#collapseMenu>ul>li>a:hover{color:#333;text-shadow:none}
+
+/*#btn-category{
+    display:inline-block;
+    width:250px;
+    border:1px solid red;
+}*/
+
+#categories{
+    overflow:hidden;
+    max-height:0;
+}
+
+#categories-collapse{
+    display:inline-block;
+    box-shadow:0 0 4px #AAA;
+    width:auto;
+    padding: 0 5px 5px 5px;
+    margin-top:3px;
+    margin-bottom:3px;
+    border-radius:5px;
+}
+
+.category-string:hover{background:#EEE}
 
 .box-border{
-   /*  width:96%;
-    margin-left:2%;*/
     background:white;
     border:1px solid #CCC;
     border-radius:5px;
