@@ -1,33 +1,34 @@
 
 <ul class="media-list" >
-	<li ng-repeat="item in feed.data.results" class="media place_box" >
-            <a href="#/v/{{item.place.id}}" style="color:#333">
-                <div class="place_top">
+	<li ng-repeat="item in feed.data.results" class="media padding-bot-big box-border" >
+            <a href="#/v/{{item.place.id}}" class="graydark">
+                <div class="box-header">
 <!--                    <a style="float:right;" >
                         <i class=" icon-chevron-right"></i>
                     </a>-->
-                    <div style="text-align:right;" class="place_address"> 
-                        <strong >{{item.place.name}}</strong><br>
-                        <small >{{item.place.address}}</small>
-                    </div>      
+                    <strong >{{item.place.name}}</strong><br>
+                    <small >{{item.place.address}}</small>
                 </div>
             </a>
-            <ul  style="margin-left:0;list-style:none;text-align:center;padding-bottom:0" >
-                <li class=" place_box_messages_big_box" style="overflow:hidden;padding:15px;">
-                    <div ng-repeat="message in item.messages.results | limitTo:placeMessagesLimit" style="text-align:left;margin-top:20px" class="place_box_message">
+            <ul class="ul-box" >
+                <li class="padding-big">
+                    <div ng-repeat="message in item.messages.results | limitTo:placeMessagesLimit"  class=" media">
                         <sz-feed-message-box message='message' categories="categories"></sz-feed-message-box>
                     </div>
                 </li>
-                <li class="btn-group" style="width:100%;border-top:1px solid #CCC; padding-top:10px" ng-show="item.messages.results.length-1" >
+                <li class="btn-group box-footer" ng-show="item.messages.results.length-1" >
                     <button class="btn " data-toggle="button"  ng-click="placeMessagesLimit=showAllPlaceMessages(item.messages.results.length,placeMessagesLimit)" >
                         {{showAllPlaceMessagesText(item.messages.results.length-1,placeMessagesLimit)}}
                     </button>
                 </li>
             </ul>
 	</li>
-	<li style="text-align:center;margin-top:10px;">
-            <button class="btn  btn-large" ng-click="loadMorePlaces ()">
-                <img class="media-object" src="img/ico/blue/glyphicons_187_more.png">
+	<li class="text-center media" >
+            <button class="btn  btn-large " ng-click="loadMorePlaces ()">
+                <i class="icon-circle"></i>
+                <i class="icon-circle"></i>
+                <i class="icon-circle"></i>
+<!--                 <img class="media-object" src="img/ico/blue/glyphicons_187_more.png"> -->
             </button>
 	</li>
 </ul>

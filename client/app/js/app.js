@@ -6,6 +6,7 @@ angular.module('sz.client', ['sz.client.directives', 'sz.client.services'])
         .when('/v/:placeId', {templateUrl: 'partials/place.html', controller: PlaceController})
         .when('/message/:messageId', {templateUrl: 'partials/message.html', controller: MessageController})
         .when('/login', {templateUrl: 'partials/login.html', controller: LoginController})
+        .when('/search', {templateUrl: 'partials/search.html', controller: SearchController})
         .otherwise({redirectTo: '/newsfeed'});
         
 }])

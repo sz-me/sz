@@ -88,46 +88,46 @@ angular.module('sz.client.directives', [])
                 replace: true,
                 template:
                         '<div >'+   
-                            '<time style="line-height:9px;font-size:80%;text-align:center;"  >'+
+                            '<time>'+
                                 '{{date}}'+
                                 ' {{time}}'+                               
                             '</time>'+
                              
-                            '<div class="media-body place_box_messages_header" >'+                                
-                                '<div class="place_box_messages_tags" style="line-height:14px;" >'+
+                            '<div >'+                                
+                                '<div class="circle-parent">'+
 //                                     '<a ng-repeat="categoryname in categoriesname" style="margin-right:3px;display:inline-block;font-size:85%;color:#999">'+
 //                                         '{{categoryname}}'+
 //                                     '</a>'+
-                                        '<div class="catDiv" style="background:green">'+
+                                        '<div style="background:green">'+
                                             '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >'+
                                         '</div>'+                                        
-                                        '<div class="catDiv" style="background:#7a43b6">'+
+                                        '<div style="background:#7a43b6">'+
                                             '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_284_pants.png">'+
                                         '</div>'+    
-                                        '<div class="catDiv" style="background:#ffc40d">'+
+                                        '<div style="background:#ffc40d">'+
                                             '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_285_sweater.png">'+
                                         '</div>'+    
-                                        '<div class="catDiv" style="background:#045fdb">'+
+                                        '<div style="background:#045fdb">'+
                                             '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png">'+
                                         '</div>'+    
                                 '</div>'+
                                 '<span class="badge " >8</span>'+
-                                '<h6 class="place_box_messages_author" style="margin:0;display:inline;margin-left:3px;line-height:16px;">{{username}}</h6>'+
+                                '<strong class="margin-left">{{username}}</strong>'+
                             '</div>'+       
-                            '<p class="place_box_messages_text">'+
+                            '<p class="max-h" id="text">'+
                                 '{{text}}'+
                             '</p>'+                            
-                            '<div class="place_box_messages_photo" style="text-align:center">'+
-                                '<a href="#/message/{{messageid}}" style="display:inline-block">'+
+                            '<div class="box-hide" id="photo">'+
+                                '<a href="#/message/{{messageid}}" class="inline-block">'+
                                     '<img class="media-object" src={{photo}}>'+
                                 '</a>'+
                             '</div>'+
                            '<div  style="text-align:center;margin:5px 0;" >'+
                                 '<span>'+
-                                    '<button class="btn  " data-toggle="button"  id="btnText" ng-show="!hasText()" ng-click="showMessageTextFull()" style="color:#049cdb"">'+
+                                    '<button class="btn" data-toggle="button"  id="btnText" ng-show="!hasText()" ng-click="showMessageTextFull()" >'+
                                         '<i class="icon-2x" ng-class="btnTextClass"></i>'+
                                     '</button>'+
-                                    '<button class="btn " data-toggle="button"  id="btnPhoto" ng-show="photo" ng-click="showMessagePhoto()" style="color:#049cdb">'+
+                                    '<button class="btn" data-toggle="button"  id="btnPhoto" ng-show="photo" ng-click="showMessagePhoto()" >'+
                                         '<i class="icon-picture icon-2x" ></i>'+
                                     '</button>'+
                                 '</span>'+
@@ -156,10 +156,10 @@ angular.module('sz.client.directives', [])
                             })
                         });
                         scope.messageBox = $(element[0]);
-                        scope.messageText =  scope.messageBox.find(".place_box_messages_text");
+                        scope.messageText =  scope.messageBox.find("#text");
                         scope.textHeight = parseInt(scope.messageText.css('maxHeight'));
                         scope.textWidth = scope.messageBox.width();
-                        scope.messagePhoto =  scope.messageBox.find(".place_box_messages_photo");
+                        scope.messagePhoto =  scope.messageBox.find("#photo");
                         scope.btnText = scope.messageBox.find("#btnText");
                         scope.btnPhoto = scope.messageBox.find("#btnPhoto");
 //                         scope.btnTextClass='icon-caret-down';
@@ -203,38 +203,38 @@ angular.module('sz.client.directives', [])
             };
         })
 
-        .directive('szDetermEq',function(){
-            return{
-                restrict:'EA',
-                link:function(scope,elm,attr){
-                    var winWidth = $(window).width();
-                    var winHeight = $(window).height();
-                    var contentMarginL = 5;
-                    var contentMargin = 10;
-                                  
-                    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
-                        scope.eq = 'phone'
-                    }
-                    else{
-                        scope.eq = 'pc'
-                    }
-                    
-//                     if(scope.eq=='pc'){
-//                         var feedWidth = winWidth*0.4;
-//                         var feedMarginL = (winWidth - feedWidth)*0.5;
+//         .directive('szDetermEq',function(){
+//             return{
+//                 restrict:'EA',
+//                 link:function(scope,elm,attr){
+//                     var winWidth = $(window).width();
+//                     var winHeight = $(window).height();
+//                     var contentMarginL = 5;
+//                     var contentMargin = 10;
+//                                   
+//                     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+//                         scope.eq = 'phone'
 //                     }
 //                     else{
-//                         var feedWidth = winWidth-contentMargin*2.5;
-//                         var feedMarginL = contentMargin;
+//                         scope.eq = 'pc'
 //                     }
-                    var menuWidth = 385;
-                    var menuMargin = (winWidth-menuWidth)*0.5;
-                    $("#dropdownMenu").css({marginLeft:menuMargin});
-                    
-//                     $("#searchWindowInner").height(winHeight-90)
-                }
-            }
-        })
+//                     
+// //                     if(scope.eq=='pc'){
+// //                         var feedWidth = winWidth*0.4;
+// //                         var feedMarginL = (winWidth - feedWidth)*0.5;
+// //                     }
+// //                     else{
+// //                         var feedWidth = winWidth-contentMargin*2.5;
+// //                         var feedMarginL = contentMargin;
+// //                     }
+//                     var menuWidth = 385;
+//                     var menuMargin = (winWidth-menuWidth)*0.5;
+// //                     $("#dropdownMenu").css({marginLeft:menuMargin});
+//                     
+// //                     $("#searchWindowInner").height(winHeight-90)
+//                 }
+//             }
+//         })
       
         ;
         
