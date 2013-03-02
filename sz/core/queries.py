@@ -79,6 +79,7 @@ def place_messages(place, **kwargs):
         filtered_messages = filtered_messages.filter(stems__stem__in=[stem[0] for stem in stems])
     if category is not None:
         filtered_messages = filtered_messages.filter(categories__in=[category, ])
+    filtered_messages = filtered_messages.distinct()
     count = filtered_messages.aggregate(count=dj_models.Count('id'))['count']
     query = filtered_messages.order_by('-date')[offset:offset + limit]
     return query, count
