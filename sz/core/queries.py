@@ -5,30 +5,31 @@ from django.contrib.gis.geos import fromstr
 from django.contrib.gis.measure import D
 from django.utils import timezone
 from sz.core import models, utils
-from sz import settings
-
-DEFAULT_DISTANCE = settings.DEFAULT_RADIUS
-DEFAULT_PAGINATE_BY = settings.DEFAULT_PAGINATE_BY
+from sz.core.services.parameters import names as params_names
 
 
-def feed(latitude, longitude, **kwargs):
+def places_news_feed(**kwargs):
     """
     Возвращает ленту последний событий в городе или в близлежащих местах,
     если задан аргумент :radius:, то рассматриваются
     места в радиусе данного значения (в метрах).
     """
+    latitude = kwargs.get(params_names.LATITUDE)
+    longitude = kwargs.get(params_names.LONGITUDE)
+    limit = kwargs.get(params_names.LIMIT)
+    offset = kwargs.get(params_names.OFFSET)
+    max_id = kwargs.get(params_names.MAX_ID)
+    stems = kwargs.get(params_names.STEMS)
+    category = kwargs.get(params_names.CATEGORY)
     current_position = fromstr("POINT(%s %s)" % (longitude, latitude))
-    limit, offset, max_id = utils.get_paging_args(**kwargs)
-    stems = kwargs.get('stems', [])
-    radius = kwargs.get('radius', None)
-    category = kwargs.get('category', None)
+    radius = kwargs.get(params_names.RADIUS)
     filtered_places = models.Place.objects.annotate(last_message=dj_models.Max('message__id'))\
         .filter(last_message__isnull=False)
     if max_id is not None:
         filtered_places = filtered_places.filter(message__id__lte=max_id)
     if radius == 0 or radius is None:
         # TODO: определять город по координатам
-        city_id = kwargs.pop('city_id', None)
+        city_id = kwargs.get(params_names.CITY_ID)
         assert city_id, 'city_id is required'
         filtered_places = filtered_places.filter(city_id=city_id)
     else:
@@ -45,9 +46,13 @@ def feed(latitude, longitude, **kwargs):
 
 
 def messages(places, **kwargs):
-    limit, offset, max_id = utils.get_paging_args(**kwargs)
-    stems = kwargs.get('stems', [])
-    category = kwargs.get('category', None)
+    # getting params
+    limit = kwargs.get(params_names.LIMIT)
+    offset = kwargs.get(params_names.OFFSET)
+    max_id = kwargs.get(params_names.MAX_ID)
+    stems = kwargs.get(params_names.STEMS)
+    category = kwargs.get(params_names.CATEGORY)
+    # creating the query
     filtered_messages = models.Message.objects.filter(place__pk__in=[p.pk for p in places])
     if max_id is not None:
         filtered_messages = filtered_messages.filter(id__lte=max_id)
@@ -60,9 +65,13 @@ def messages(places, **kwargs):
 
 
 def place_messages(place, **kwargs):
-    limit, offset, max_id = utils.get_paging_args(**kwargs)
-    stems = kwargs.get('stems', [])
-    category = kwargs.get('category', None)
+    # getting params
+    limit = kwargs.get(params_names.LIMIT)
+    offset = kwargs.get(params_names.OFFSET)
+    max_id = kwargs.get(params_names.MAX_ID)
+    stems = kwargs.get(params_names.STEMS)
+    category = kwargs.get(params_names.CATEGORY)
+    # creating the query
     filtered_messages = models.Message.objects.filter(place__pk=place.pk)
     if max_id is not None:
         filtered_messages = filtered_messages.filter(id__lte=max_id)

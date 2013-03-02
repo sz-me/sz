@@ -2,8 +2,11 @@
 import datetime
 from django.utils import timezone
 from django.db.models import Max
+from sz import settings
 from sz.core import lists, models, queries, gis as gis_core, utils
 from sz.core.gis import venue
+from sz.core.services import parameters
+from sz.core.services.parameters import names as params_names
 
 
 class ModelCachingManager:
@@ -38,79 +41,64 @@ class ModelCachingManager:
 
 
 class PlaceService:
+
     def __init__(self, city_service, venue_service, categorization_service):
         self.venue_service = venue_service
         self.city_service = city_service
         self.categorization_service = categorization_service
 
-    def _get_ll(self, **kwargs):
-        latitude, longitude = utils.get_position_from_kwargs(**kwargs)
-        kwargs.pop('latitude')
-        kwargs.pop('longitude')
-        return latitude, longitude, kwargs
-
-    def _get_city(self, latitude, longitude):
-        city = self.city_service.get_city_by_position(longitude, latitude)
-        return city
-
-    def _make_result(self, items, count, latitude=None, longitude=None, **kwargs):
-        limit, offset, max_id = utils.get_paging_args(**kwargs)
-        query = kwargs.get('query', None)
-        category = kwargs.get('category', None)
-        params = dict(query=query, category=category,
-                      max_id=max_id, limit=limit, offset=offset)
-        if longitude is not None and latitude is not None:
-            params['latitude'] = latitude
-            params['longitude'] = longitude
-        if 'radius' in kwargs:
-            params['radius'] = kwargs.get('radius')
-            if params['radius'] is None:
-                params['radius'] = ""
+    def __make_result(self, items, count, params):
         return dict(count=count, items=items, params=params)
 
-    def _place_messages_first(self, place, **kwargs):
-        kwargs.pop('limit')
-        kwargs.pop('offset')
-        return self.get_place_messages(place, **kwargs)
+    def __get_max_id(self):
+        return models.Message.objects.aggregate(max_id=Max('id'))["max_id"]
 
-    def get_place_messages(self, place, **kwargs):
-        messages, count = queries.place_messages(place, **kwargs)
-        return self._make_result(messages, count, **kwargs)
-
-    def _make_kwargs_for_feed(self, kwargs):
-        latitude, longitude, kwargs = self._get_ll(**kwargs)
-        city = self._get_city(latitude, longitude)
-        kwargs['city_id'] = city['id']
-        query = kwargs.get('query', None)
-        kwargs['stems'] = self.categorization_service.detect_stems(query)
-        max_id = kwargs.get("max_id", None)
-        if max_id is None:
-            max_id = models.Message.objects.aggregate(max_id=Max('id'))["max_id"]
-            kwargs['max_id'] = max_id
-        return latitude, longitude, kwargs
-
-    def _make_feed_item(self, kwargs, latitude, longitude, place):
-        messages = self._place_messages_first(place, **kwargs.copy())
+    def __make_feed_item(self, place, params):
+        messages = self.get_place_messages(place, **params.get_api_params())
+        latitude, longitude = parameters.get_position_from_dict(params.get_api_params())
         distance = gis_core.calculate_distance(longitude, latitude, place.longitude(), place.latitude())
         item = dict(place=place, distance=distance, messages=messages)
         return item
 
+    def get_place_messages(self, place, current_max_id=None, default_limit=settings.DEFAULT_PAGINATE_BY, **kwargs):
+        if current_max_id is None:
+            current_max_id = self.__get_max_id()
+        params = parameters.PlaceMessagesParametersFactory.create(
+            kwargs, self.categorization_service, current_max_id, default_limit)
+        messages, count = queries.place_messages(place, **params.get_db_params())
+        return self.__make_result(messages, count, params.get_api_params())
+
     def get_news_feed(self, **kwargs):
-        latitude, longitude, kwargs = self._make_kwargs_for_feed(kwargs)
-        places, count = queries.feed(latitude=latitude, longitude=longitude, **kwargs)
-        feed = self._make_result(
-            [self._make_feed_item(kwargs, latitude, longitude, place)
-             for place in places], count, latitude, longitude, **kwargs)
+        current_max_id = self.__get_max_id()
+        default_limit = settings.DEFAULT_PAGINATE_BY
+        params = parameters.NewsFeedParametersFactory.create(
+            kwargs, self.categorization_service, self.city_service, current_max_id, default_limit)
+        places, count = queries.places_news_feed(**params.get_db_params())
+        kwargs.pop(params_names.LIMIT)
+        kwargs.pop(params_names.OFFSET)
+        item_params = parameters.PlaceNewsFeedParametersFactory.create(
+            kwargs, self.categorization_service, current_max_id, 3)
+        feed = self.__make_result(
+            [self.__make_feed_item(place, item_params)
+             for place in places], count, params.get_api_params())
         return feed
 
     def get_place_news_feed(self, place, **kwargs):
-        latitude, longitude, kwargs = self._make_kwargs_for_feed(kwargs)
-        item = self._make_feed_item(kwargs, latitude, longitude, place)
+        current_max_id = self.__get_max_id()
+        params = parameters.PlaceNewsFeedParametersFactory.create(
+            kwargs, self.categorization_service, current_max_id, 17)
+        item = self.__make_feed_item(place, params)
         return item
 
+    def __get_ll(self, params):
+        latitude, longitude = parameters.get_position_from_dict(params)
+        params.pop('latitude')
+        params.pop('longitude')
+        return latitude, longitude, params
+
     def search(self, **kwargs):
-        latitude, longitude = utils.get_position_from_kwargs(**kwargs)
-        city = self._get_city(**kwargs)
+        latitude, longitude, kwargs = self.__get_ll(kwargs)
+        city = self.city_service.get_city_by_position(longitude, latitude)
         query = kwargs.get('query', None)
         radius = kwargs.get('radius', None)
         result = venue.search({'latitude': latitude, 'longitude': longitude}, query, radius)
