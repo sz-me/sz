@@ -25,8 +25,8 @@ class Response(RestFrameworkResponse):
 class PlaceServiceResponseBuilder:
     def _convert_feed_service_result_to_response(self, result, url, items):
         params = result.get('params')
-        if result.get('category') is not None:
-            params['category'] = result.get('category').pk
+        if params.get('category', None) is not None:
+            params['category'] = params.get('category').pk
         else:
             params['category'] = ""
         return dict(url=url, params=result.get('params'), results=items,
