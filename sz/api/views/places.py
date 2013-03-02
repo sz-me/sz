@@ -87,13 +87,11 @@ class PlaceInstanceMessages(SzApiView):
             raise Http404
 
     def post(self, request, pk, format=None):
-        serializer = serializers.MessageSerializer(data=request.DATA)
+        serializer = serializers.MessageSerializer(data=request.DATA, files=request.FILES)
         if serializer.is_valid():
             message = serializer.object
             message.place = models.Place.objects.get(pk=pk)
-            print message.place
             message.user = request.user
-            print message.user
             message.save()
             categorization_service.assert_stems(message)
             return sz_api_response.Response(serializer.data, status=status.HTTP_201_CREATED)

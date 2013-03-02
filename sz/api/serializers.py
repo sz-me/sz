@@ -45,6 +45,19 @@ class MessageSerializer(serializers.ModelSerializer):
         read_only_fields = ('date',)
         exclude = ('place', 'user', 'stems',)
 
+    def validate(self, attrs):
+        """
+        Check that the start is before the stop.
+        """
+        text = attrs['text']
+        if text is None:
+            text = ""
+        else:
+            text = attrs['text'].strip()
+        if not (attrs['photo'] or text != "" or attrs['mark']):
+            raise serializers.ValidationError("Message don't must be empty")
+        return attrs
+
 
 class PlaceSerializer(serializers.ModelSerializer):
     longitude = serializers.Field()

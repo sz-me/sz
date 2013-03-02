@@ -156,7 +156,7 @@ class Message(models.Model):
 
     text = models.TextField(
         max_length=1024, null=False,
-        blank=False, verbose_name=u"сообщение")
+        blank=True, verbose_name=u"сообщение")
 
     user = models.ForeignKey(auth_models.User, verbose_name=u"пользователь")
 
