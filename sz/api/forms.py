@@ -38,3 +38,7 @@ class NearestCityRequestForm(forms.Form):
 
 class CategoriesDetectingRequestForm(forms.Form):
     text = forms.CharField(required=True, label=u'Текст')
+
+
+class AddPhotoForm(forms.Form):
+    photo = forms.ImageField(required=True, label=u'Фото')

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from rest_framework import status
 from sz.api import forms, serializers, response as sz_api_response
-from sz.api.views import SzApiView, FilteredListView, categorization_service
+from sz.api.views import SzApiView, categorization_service
 
 
 class CategoriesRoot(SzApiView):
@@ -13,13 +13,11 @@ class CategoriesRoot(SzApiView):
         return sz_api_response.Response(serializer.data)
 
 
-class CategoriesDetect(FilteredListView):
+class CategoriesDetect(SzApiView):
     """ Detect categories of clothes in a text """
 
-    request_form_class = forms.CategoriesDetectingRequestForm
-
     def get(self, request, format=None):
-        params = self.get_request_params(request)
+        params = self.validate_and_get_params(forms.CategoriesDetectingRequestForm, request.QUERY_PARAMS)
         categories = categorization_service.detect_categories(params['text'])
         serializer = serializers.CategorySerializer(instance=categories)
         return sz_api_response.Response(serializer.data)

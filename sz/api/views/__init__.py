@@ -14,39 +14,30 @@ venue_service = None
 place_service = services.PlaceService(city_service, None, categorization_service)
 
 
+class InvalidRequestException(Exception):
+
+    def __init__(self, errors):
+        self.errors = errors
+
+
 class SzApiView(APIView):
     """
         Base class for SZ Web API views
     """
 
     def handle_exception(self, exc):
+        if isinstance(exc, InvalidRequestException):
+            return sz_api_response.Response(self.request_form_errors, status=status.HTTP_400_BAD_REQUEST)
         base_response = APIView.handle_exception(self, exc)
         return sz_api_response.Response(base_response.data, status=base_response.status_code)
 
-
-class InvalidRequestException(Exception):
-    pass
-
-
-class FilteredListView(SzApiView):
-
-    request_form_class = None
-
-    request_form_errors = None
-
-    def handle_exception(self, exc):
-        if isinstance(exc, InvalidRequestException):
-            return sz_api_response.Response(self.request_form_errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return super(FilteredListView, self).handle_exception(exc)
-
-    def get_request_params(self, request):
-        request_form = self.request_form_class(request.QUERY_PARAMS)
+    def validate_and_get_params(self, form_class, data=None, files=None):
+        request_form = form_class(data=data, files=files)
         if request_form.is_valid():
             return request_form.cleaned_data
         else:
             self.request_form_errors = request_form.errors
-            raise InvalidRequestException()
+            raise InvalidRequestException(request_form.errors)
 
 
 class ApiRoot(SzApiView):
