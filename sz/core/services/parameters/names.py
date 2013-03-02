@@ -8,8 +8,3 @@ CATEGORY = 'category'
 QUERY = 'query'
 STEMS = 'stems'
 CITY_ID = 'city_id'
-
-
-
-
-

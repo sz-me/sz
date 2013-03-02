@@ -70,32 +70,45 @@ class PositionDecorator(ParametersGroupDecorator):
         return self.__get_params(params)
 
 
-class LocationDecorator(PositionDecorator):
+class LocationDecoratorBase(PositionDecorator):
 
     def __init__(self, params, city_service, component=None):
         PositionDecorator.__init__(self, params, component)
-        self.__radius = utils.safe_cast(params.get(params_names.RADIUS, None), int, None)
-        if self.__radius is not None:
-            if self.__radius <= 0:
-                self.__radius = None
         self.__city_service = city_service
+        self._radius = utils.safe_cast(params.get(params_names.RADIUS, None), int, None)
+        if self._radius is not None:
+            if self._radius <= 0:
+                self._radius = None
 
-    def __get_city(self):
+    def _get_city(self):
         city = self.__city_service.get_city_by_position(self._longitude, self._latitude)
         return city
 
+    def get_api_params(self):
+        params = PositionDecorator.get_api_params(self)
+        if self._radius is not None:
+            params[params_names.RADIUS] = self._radius
+        return params
+
+
+class LocationDecorator(LocationDecoratorBase):
+
     def get_db_params(self):
-        params = PositionDecorator.get_db_params(self)
-        params[params_names.RADIUS] = self.__radius
-        if self.__radius is None:
-            city = self.__get_city()
+        params = LocationDecoratorBase.get_db_params(self)
+        params[params_names.RADIUS] = self._radius
+        if self._radius is None:
+            city = self._get_city()
             params[params_names.CITY_ID] = city['id']
         return params
 
-    def get_api_params(self):
-        params = PositionDecorator.get_api_params(self)
-        if self.__radius is not None:
-            params[params_names.RADIUS] = self.__radius
+
+class LocationAlwaysWithCityDecorator(LocationDecoratorBase):
+
+    def get_db_params(self):
+        params = LocationDecoratorBase.get_db_params(self)
+        params[params_names.RADIUS] = self._radius
+        city = self._get_city()
+        params[params_names.CITY_ID] = city['id']
         return params
 
 
@@ -154,6 +167,23 @@ class ContentDecorator(ParametersGroupDecorator):
         return params
 
 
+class PlaceNameDecorator(ParametersGroupDecorator):
+
+    def __init__(self, params, component=None):
+        ParametersGroupDecorator.__init__(self, params, component)
+        self.__query = params.get(params_names.QUERY, None)
+
+    def get_db_params(self):
+        params = ParametersGroupDecorator.get_db_params(self)
+        params[params_names.QUERY] = self.__query
+        return params
+
+    def get_api_params(self):
+        params = ParametersGroupDecorator.get_api_params(self)
+        params[params_names.QUERY] = self.__query
+        return params
+
+
 class PlaceMessagesParametersFactory:
 
     @classmethod
@@ -181,3 +211,12 @@ class NewsFeedParametersFactory:
         location_group = LocationDecorator(params, city_service, content_group)
         paging_group = PagingDecorator(params, current_max_id, default_limit, location_group)
         return paging_group
+
+
+class PlaceSearchParametersFactory:
+
+    @classmethod
+    def create(cls, params, city_service):
+        location_group = LocationAlwaysWithCityDecorator(params, city_service)
+        place_name_group = PlaceNameDecorator(params, location_group)
+        return place_name_group

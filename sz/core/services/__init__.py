@@ -90,17 +90,13 @@ class PlaceService:
         item = self.__make_feed_item(place, params)
         return item
 
-    def __get_ll(self, params):
-        latitude, longitude = parameters.get_position_from_dict(params)
-        params.pop('latitude')
-        params.pop('longitude')
-        return latitude, longitude, params
-
     def search(self, **kwargs):
-        latitude, longitude, kwargs = self.__get_ll(kwargs)
-        city = self.city_service.get_city_by_position(longitude, latitude)
-        query = kwargs.get('query', None)
-        radius = kwargs.get('radius', None)
+        params = parameters.PlaceSearchParametersFactory.create(kwargs, self.city_service).get_db_params()
+        latitude = params.get(params_names.LATITUDE)
+        longitude = params.get(params_names.LONGITUDE)
+        city_id = params.get(params_names.CITY_ID)
+        query = params.get(params_names.QUERY)
+        radius = params.get(params_names.RADIUS)
         result = venue.search({'latitude': latitude, 'longitude': longitude}, query, radius)
         place_and_distance_list = \
             map(lambda l:
@@ -121,7 +117,6 @@ class PlaceService:
             caching_manager = ModelCachingManager(
                 [item['place'] for item in place_and_distance_list],
                 lambda e: e.date, datetime.timedelta(seconds=60 * 60 * 24 * 3))
-            city_id = city['id']
             if len(caching_manager.for_insert) > 0:
                 for e in caching_manager.for_insert:
                     e.city_id = city_id
