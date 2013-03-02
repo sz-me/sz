@@ -34,9 +34,9 @@ class MessageInstance(SzApiView):
         return sz_api_response.Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class MessageResumes(SzApiView):
-    """ List of available choices to resume a visit """
+class MessageMarks(SzApiView):
+    """ List of available choices to mark a place """
 
     def get(self, request, format=None):
-        response = [dict(value=choice[0], name=choice[1]) for choice in models.VISIT_RESUME_CHOICES]
+        response = [dict(value=choice[0], name=choice[1]) for choice in models.MARK_CHOICES]
         return sz_api_response.Response(response)

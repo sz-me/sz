@@ -141,7 +141,7 @@ class Stem(models.Model):
 
 
 # Entities
-VISIT_RESUME_CHOICES = (
+MARK_CHOICES = (
     (0, 'It happens...'),
     (1, "I'll be back."),
     (2, 'I made a purchase!'),
@@ -189,8 +189,8 @@ class Message(models.Model):
         else:
             return None
 
-    resume = models.PositiveIntegerField(verbose_name="Результат посещения", null=True,
-                                         blank=True, choices=VISIT_RESUME_CHOICES)
+    mark = models.PositiveIntegerField(verbose_name="Оценка", null=True,
+                                         blank=True, choices=MARK_CHOICES)
 
     categories = models.ManyToManyField(Category, null=True, blank=True)
 
