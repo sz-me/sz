@@ -62,7 +62,7 @@ class MessageInstancePhoto(SzApiView):
     def post(self, request, pk, format=None):
         params = self.validate_and_get_params(forms.AddPhotoForm, request.DATA, request.FILES)
         message = self.get_object(pk)
-        if message.user == request.user:
+        if message.user != request.user:
             return sz_api_response.Response(status=status.HTTP_403_FORBIDDEN)
         if message.photo:
             return sz_api_response.Response(status=status.HTTP_406_NOT_ACCEPTABLE, info="Already exist")
@@ -75,7 +75,7 @@ class MessageInstancePhoto(SzApiView):
 
     def delete(self, request, pk, format=None):
         message = self.get_object(pk)
-        if message.user == request.user:
+        if message.user != request.user:
             return sz_api_response.Response(status=status.HTTP_403_FORBIDDEN)
         if message.photo:
             message.reduced_photo.delete(save=False)
