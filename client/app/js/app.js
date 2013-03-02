@@ -7,6 +7,7 @@ angular.module('sz.client', ['sz.client.directives', 'sz.client.services'])
         .when('/message/:messageId', {templateUrl: 'partials/message.html', controller: MessageController})
         .when('/login', {templateUrl: 'partials/login.html', controller: LoginController})
         .when('/search', {templateUrl: 'partials/search.html', controller: SearchController})
+        .when('/errors/geolocation', {templateUrl: 'partials/errors-geolocation.html'})
         .otherwise({redirectTo: '/newsfeed'});
         
 }])
