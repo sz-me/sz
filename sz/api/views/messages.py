@@ -19,10 +19,12 @@ class MessageInstance(SzApiView):
     def get(self, request, pk, format=None):
         message = self.get_object(pk)
         serializer = serializers.MessageSerializer(instance=message)
+        place_serializer = serializers.PlaceSerializer(instance=message.place)
         data = serializer.data
         root_url = reverse('client-index', request=request)
         data['photo'] = message.get_photo_absolute_urls(root_url)
-        return sz_api_response.Response(serializer.data)
+        data['place'] = place_serializer.data
+        return sz_api_response.Response(data)
 
     def delete(self, request, pk, format=None):
         message = self.get_object(pk)
