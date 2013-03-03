@@ -4,14 +4,22 @@
 var szClient = angular.module('sz.client.services', ['ngResource']);
 
 /* Services */
+szClient.factory('placeService', function($resource){
+    return $resource('../../api/places/:placeId', {}, {
+        query: { method:'GET', params:{}, isArray:false }
+    });
+});
+
 szClient.factory('newsFeedService', function($resource){
     return $resource('../../api/places/:placeId/newsfeed', {}, {
         query: { method:'GET', params:{}, isArray:false }
     });
 });
 
-szClient.factory('MessageService', function($resource){
-    return $resource('../../api/messages/:messageId', {}, {});
+szClient.factory('messageService', function($resource){
+    return $resource('../../api/messages/:messageId', {}, {
+        marks: { method:'GET', params:{messageId: 'marks'}, isArray:false }
+    });
 });
 
 
