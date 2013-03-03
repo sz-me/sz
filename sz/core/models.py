@@ -169,7 +169,7 @@ class Message(models.Model):
         return os.path.join(directory, filename)
 
     photo = imagekit_models.ProcessedImageField(
-        upload_to=get_photo_path, verbose_name=u"фотография", null=True, blank=True,
+        upload_to=get_photo_path, verbose_name=u"фотография", null=False, blank=True,
         processors=[processors.ResizeToFit(1350, 1200), ], options={'quality': 85}
     )
 

@@ -41,7 +41,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class MessageSerializer(serializers.ModelSerializer):
     mark = serializers.IntegerField(min_value=0, max_value=2, required=False, blank=True)
-    photo = serializers.ImageField()
+    photo = serializers.ImageField(required=False, blank=True)
 
     class Meta:
         model = models.Message
@@ -52,12 +52,13 @@ class MessageSerializer(serializers.ModelSerializer):
         """
         Check that the start is before the stop.
         """
-        text = attrs['text']
+        text = attrs.get('text', '')
         if text is None:
             text = ""
         else:
             text = attrs['text'].strip()
-        if not (attrs['photo'] or text != "" or attrs['mark']):
+        photo = attrs.get('photo', None)
+        if not (photo or text != "" or attrs['mark']):
             raise serializers.ValidationError("Message don't must be empty")
         return attrs
 

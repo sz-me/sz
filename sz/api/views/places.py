@@ -88,11 +88,13 @@ class PlaceInstanceMessages(SzApiView):
 
     def post(self, request, pk, format=None):
         serializer = serializers.MessageSerializer(data=request.DATA, files=request.FILES)
+        print 'before validation!'
         if serializer.is_valid():
             message = serializer.object
             message.place = models.Place.objects.get(pk=pk)
             message.user = request.user
             message.save()
+            print 'has saved!'
             categorization_service.assert_stems(message)
             return sz_api_response.Response(serializer.data, status=status.HTTP_201_CREATED)
         return sz_api_response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
