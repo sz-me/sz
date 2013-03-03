@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import datetime
 from django.db import models as dj_models
+from django.db.models import Q
 from django.contrib.gis.geos import fromstr
 from django.contrib.gis.measure import D
 from django.utils import timezone
-from sz.core import models, utils
+from sz.core import models
 from sz.core.services.parameters import names as params_names
 
 
@@ -23,7 +24,9 @@ def places_news_feed(**kwargs):
     category = kwargs.get(params_names.CATEGORY)
     current_position = fromstr("POINT(%s %s)" % (longitude, latitude))
     radius = kwargs.get(params_names.RADIUS)
-    filtered_places = models.Place.objects.annotate(last_message=dj_models.Max('message__id'))\
+    filtered_places = models.Place.objects\
+        .exclude(Q(message__text='') & Q(message__photo=''))\
+        .annotate(last_message=dj_models.Max('message__id'))\
         .filter(last_message__isnull=False)
     if max_id is not None:
         filtered_places = filtered_places.filter(message__id__lte=max_id)
@@ -53,7 +56,8 @@ def messages(places, **kwargs):
     stems = kwargs.get(params_names.STEMS)
     category = kwargs.get(params_names.CATEGORY)
     # creating the query
-    filtered_messages = models.Message.objects.filter(place__pk__in=[p.pk for p in places])
+    filtered_messages = models.Message.objects.filter(place__pk__in=[p.pk for p in places])\
+        .exclude(Q(text='') & Q(photo=''))
     if max_id is not None:
         filtered_messages = filtered_messages.filter(id__lte=max_id)
     if len(stems) > 0:
@@ -72,7 +76,8 @@ def place_messages(place, **kwargs):
     stems = kwargs.get(params_names.STEMS)
     category = kwargs.get(params_names.CATEGORY)
     # creating the query
-    filtered_messages = models.Message.objects.filter(place__pk=place.pk)
+    filtered_messages = models.Message.objects.filter(place__pk=place.pk)\
+        .exclude(Q(text='') & Q(photo=''))
     if max_id is not None:
         filtered_messages = filtered_messages.filter(id__lte=max_id)
     if len(stems) > 0:
