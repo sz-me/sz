@@ -40,6 +40,9 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
+    mark = serializers.IntegerField(min_value=0, max_value=2, required=False, blank=True)
+    photo = serializers.ImageField()
+
     class Meta:
         model = models.Message
         read_only_fields = ('date',)

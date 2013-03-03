@@ -144,7 +144,7 @@ class Stem(models.Model):
 MARK_CHOICES = (
     (0, 'It happens...'),
     (1, "I'll be back."),
-    (2, 'I made a purchase!'),
+    (2, 'Have made a purchase!'),
 )
 
 
