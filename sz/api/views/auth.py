@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import auth
+from django.contrib.auth import models as auth_models
 from django.middleware import csrf
 from rest_framework import permissions, status
 from rest_framework.authtoken import serializers as authtoken_serializers
@@ -29,7 +30,9 @@ class AuthLogout(SzApiView):
 
     def post(self, request):
         auth.logout(request)
-        return sz_api_response.Response({})
+        user = auth_models.AnonymousUser()
+        serializer = serializers.AuthUserSerializer(instance=user)
+        return sz_api_response.Response(serializer.data)
 
 
 class AuthUser(SzApiView):
