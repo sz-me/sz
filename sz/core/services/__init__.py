@@ -53,11 +53,16 @@ class PlaceService:
     def __get_max_id(self):
         return models.Message.objects.aggregate(max_id=Max('id'))["max_id"]
 
-    def __make_feed_item(self, place, params):
-        messages = self.get_place_messages(place, **params.get_api_params())
+    def __make_place_distance_item(self, place, params):
         latitude, longitude = parameters.get_position_from_dict(params.get_api_params())
         distance = gis_core.calculate_distance(longitude, latitude, place.longitude(), place.latitude())
-        item = dict(place=place, distance=distance, messages=messages)
+        item = dict(place=place, distance=distance)
+        return item
+
+    def __make_feed_item(self, place, params):
+        messages = self.get_place_messages(place, **params.get_api_params())
+        item = self.__make_place_distance_item(place, params)
+        item['messages'] = messages
         return item
 
     def get_place_messages(self, place, current_max_id=None, default_limit=settings.DEFAULT_PAGINATE_BY, **kwargs):
@@ -91,6 +96,11 @@ class PlaceService:
         return item
 
     def search(self, **kwargs):
+        params = parameters.PlaceSearchParametersFactory.create(kwargs, self.city_service)
+        places = queries.places(**params.get_db_params())
+        return [self.__make_place_distance_item(place, params) for place in places]
+
+    def venue_search(self, **kwargs):
         params = parameters.PlaceSearchParametersFactory.create(kwargs, self.city_service).get_db_params()
         latitude = params.get(params_names.LATITUDE)
         longitude = params.get(params_names.LONGITUDE)

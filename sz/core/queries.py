@@ -9,6 +9,29 @@ from sz.core import models
 from sz.core.services.parameters import names as params_names
 
 
+def places(**kwargs):
+    latitude = kwargs.get(params_names.LATITUDE)
+    longitude = kwargs.get(params_names.LONGITUDE)
+    limit = 15 #kwargs.get(params_names.LIMIT)
+    query = kwargs.get(params_names.QUERY)
+    current_position = fromstr("POINT(%s %s)" % (longitude, latitude))
+    radius = kwargs.get(params_names.RADIUS)
+    filtered_places = models.Place.objects.annotate(messages_count=dj_models.Count('message__id'))\
+        .order_by('-messages_count')
+    if query:
+        filtered_places = filtered_places.filter(name__icontains=query)
+    if radius == 0 or radius is None:
+        # TODO: определять город по координатам
+        city_id = kwargs.get(params_names.CITY_ID)
+        assert city_id, 'city_id is required'
+        filtered_places = filtered_places.filter(city_id=city_id)
+    else:
+        distance_kwargs = {'m': '%i' % radius}
+        filtered_places = filtered_places.filter(position__distance_lte=(current_position, D(**distance_kwargs)))
+    filtered_places = filtered_places.distance(current_position).order_by('distance')[:limit]
+    return filtered_places
+
+
 def places_news_feed(**kwargs):
     """
     Возвращает ленту последний событий в городе или в близлежащих местах,

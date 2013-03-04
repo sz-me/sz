@@ -21,5 +21,5 @@ def search(position, query, radius):
         params['radius'] = radius
     if query:
         params['query'] = query.encode('utf8')
-    response = client.venues.search(params)
+    response = client.venues.venue_search(params)
     return response

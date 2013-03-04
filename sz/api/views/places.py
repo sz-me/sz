@@ -22,12 +22,30 @@ class PlaceRootNewsFeed(SzApiView):
         return sz_api_response.Response(serialized_news_feed)
 
 
-class PlaceSearch(SzApiView):
+class PlaceVenueSearch(SzApiView):
     """
     Wrapper for Venue search
-    For example, [places for location (50.2616113, 127.5266082)](?latitude=50.2616113&longitude=127.5266082).
+    For example, [places for position (50.2616113, 127.5266082)](?latitude=50.2616113&longitude=127.5266082).
     """
     permission_classes = (permissions.IsAuthenticated,)
+
+    def _serialize_item(self, item):
+        item_serializer = serializers.PlaceSerializer(instance=item[u'place'])
+        serialized_item = {"place": item_serializer.data, "distance": item["distance"]}
+        return serialized_item
+
+    def get(self, request, format=None):
+        params = self.validate_and_get_params(forms.PlaceSearchRequestForm, request.QUERY_PARAMS)
+        places = place_service.venue_search(**params)
+        response = [self._serialize_item(place) for place in places]
+        return sz_api_response.Response(response)
+
+
+class PlaceSearch(SzApiView):
+    """
+    Place search
+    For example, [places for position (50.2616113, 127.5266082)](?latitude=50.2616113&longitude=127.5266082).
+    """
 
     def _serialize_item(self, item):
         item_serializer = serializers.PlaceSerializer(instance=item[u'place'])
