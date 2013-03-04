@@ -91,7 +91,7 @@ class CategorizationService:
         return pattern
 
     def _has_matches(self, text, patterns):
-        matches = filter(lambda x: x.search(text), patterns)
+        matches = filter(lambda x: x.venue_search(text), patterns)
         return matches
 
     def detect_categories(self, text):
