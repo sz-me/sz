@@ -46,13 +46,15 @@
                         <span>Искать</span>
                     </a>
                 </li>
-                <li>
-                    <a href='#'  id="btn_char" ng-click="collapseTopMenu=false">
-                        <span>admin@admin.com/Выход</span>
+                <li ng-show="showBtnNewMessage">
+                    <a ng-click="collapseTopMenu=false;logout()" style="cursor:pointer" >
+                        <span>{{user.username}}/Выход</span>
                     </a>
                 </li>
             </ul>
         </div>
+        
+        {{user || json}}
         
         <div  ng-view class="content" id="content" ng-show="showContent" class="margin-top-huge"></div>
         
@@ -67,20 +69,31 @@
                             </a>
                         </li>
                     </ul>
-                    <ul class="nav" style="float:right">                    
+                    <ul class="nav" style="float:right" ng-show="showBtnNewMessage">                    
                         <li>
                             <a id="btn-user">
-                                <i class="icon-user icon-2x" style="margin-right:-8px;margin-top:5px;"></i>
-                                <div id="castle_info_val" class="pull-right">
-                                    <div><span class="badge badge-success">2</span></div>
-                                    <div><span class="badge badge-warning">4</span></div>
+                                <i class="icon-user icon-2x" ></i>
+<!--                                 <span>admin@admin.com</span> -->
+                                <div id="castle_info_val" style="margin-top:-15px;">
+                                    <span class="badge badge-success">2</span>
+                                    <span class="badge badge-warning">4</span>
                                 </div>
+                                
                             </a>
                         </li>
                         <li >
                             <a href="#/new_message" id="btn-newmessage" > 
                                 <button class="btn btn-primary " style="margin:0;">
                                     <i class="icon-edit icon-2x" ></i>
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav" style="float:right" ng-show="!showBtnNewMessage">
+                        <li>
+                            <a href="#/login" id="btn-signin" > 
+                                <button class="btn btn-primary " style="margin:0;">
+                                    <i class="icon-signin icon-2x" ></i>
                                 </button>
                             </a>
                         </li>

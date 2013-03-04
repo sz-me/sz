@@ -3,15 +3,24 @@
         <div>
             <input type="text" class="search-query" ng-model="filter.query"  placeholder="Искать" >
         </div>
-        <div class="margin-top-huge" sz-collapse-categories="chCat">
-                <input type="text"  class="search-query" placeholder="Любая категория" id="categoryInput" ng-model="chCat.name">
+        <!--<div class="margin-top-huge" sz-collapse-categories="chCat">
+                <input type="button"  class="btn " value="{{chCat.name}}" id="categoryInput" ng-model="chCat.name" ng-click="showCollapseCat=!showCollapseCat">
             <div id="categories">
                 <div id="categories-collapse">
+                    <div class="category-string" ng-click="ChangeCategory({'name':'Любая категория',description:'',id:''})">Любая категория</div>
                     <div ng-repeat="cat in categories" class="category-string" ng-click="$emit('ChangeCategory',cat)">{{cat.name}}</div>
                 </div>
             </div>
             <div class="margin-top">
                 {{chCat.description}}
+            </div>
+        </div>-->
+        <div class="margin-top-huge">
+            <select ng-model="shmot_cat" ng-options="c.name for c in categories" ng-click="setCategory()">
+                <option value="" >Любая категория</option>
+            </select>
+            <div class="margin-top">
+                {{shmot_cat.description}}
             </div>
         </div>
         <div class="margin-top-huge">
@@ -20,60 +29,19 @@
     </li>
     <li class="media box-border padding-huge" >
         <div class="btn-group" data-toggle="buttons-radio" >
-            <button class="btn" type="radio" ng-model="nearby"  ng-click="filter.nearby='0.25'">250m</button>
-            <button class="btn" type="radio" ng-model="nearby" ng-click="filter.nearby='1'">1km</button>
-            <button class="btn" type="radio" ng-model="nearby" ng-click="filter.nearby='3'">3km</button>
-            <button class="btn active" type="radio" ng-model="nearby"  ng-click="filter.nearby=''" >city</button>
+            <button class="btn" type="radio" ng-click="filter.radius='250'">250m</button>
+            <button class="btn" type="radio" ng-click="filter.radius='1000'">1km</button>
+            <button class="btn" type="radio" ng-click="filter.radius='3000'">3km</button>
+            <button class="btn active" type="radio" ng-click="filter.radius=''" >city</button>
         </div>
     </li>
-<!--    <li class="media box-border padding-huge">
+    <li class="media box-border padding-huge">
         <div >
             <input type="text" class="search-query" ng-model="filter.query"  placeholder="Название места" >
         </div>
-    </li>-->
+    </li>
     <div class="media">
         <button class="btn btn-large pull-left">Сбросить</button>
         <button class="btn btn-large pull-right">Искать</button>
     </div>
 </ul>
-<div>
-{{filter || json}}<br>
-{{chCat || json}}
-</div>
-<!--        <div  id="searchWindow"  >
-            <form id="searchWindowInner" style="text-align:center;padding-top:5px;" ng-show="showSearchWin">
-                <div style="width:100%;height:47px;" class="btn-group">
-                    <button class="btn btn-primary  btn-large " type="reset" ng-click="shmot_cat.description='';filter.category=100;filter.query='';filter.nearby=''">
-                        Сбросить
-                    </button>
-                </div>
-                <div style="margin:10px 0;" class="btn-group" data-toggle="buttons-radio">
-                    <button class="btn btn-primary" type="radio" ng-model="nearby"  ng-click="filter.nearby='0.25'">250m</button>
-                    <button class="btn btn-primary" type="radio" ng-model="nearby" ng-click="filter.nearby='1'">1km</button>
-                    <button class="btn btn-primary" type="radio" ng-model="nearby" ng-click="filter.nearby='3'">3km</button>
-                    <button class="btn btn-primary active" type="radio" ng-model="nearby"  ng-click="filter.nearby=''" >city</button>
-                </div>
-                <div style="width:100%;height:47px;margin-top:5px;" > 
-                    <input type="text" class="search-query" ng-model="filter.query"  placeholder="Искать" >
-                </div>
-                <div  id="shmotFilter" style="with:100%;height:100px;" >
-                    <select ng-model="shmot_cat" ng-options="c.name for c in categories" ng-click="setCategory()">
-                         <option value="" >Любая категория</option>
-                    </select>
-                </div>
-                <div id="shmot_category_info" style="font-size:80%">
-                    {{shmot_cat.description}}
-                </div>
-            </form>
-            <div style="height:47px;" >
-                <div id="logo" style="padding:0px 3px;float:left;color:#555" ng-show="showContent">
-                    <h5 style="line-height:16px">{{ user.username }}@shmotzhmot.me</h5>
-                </div>
-                <button class="btn btn-success  btn-large"  ng-show="showSearchWin" style="float:left;">
-                    <img class="media-object" src="img/ico/white/glyphicons_206_ok_2.png">
-                </button>
-                <button ng-click="setFilter()" class="btn btn-large " style="float:right;">
-                    <img class="media-object" src="img/ico/blue/glyphicons_027_search.png">
-                </button>
-            </div>
-        </div>-->
