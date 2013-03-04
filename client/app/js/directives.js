@@ -216,35 +216,30 @@ angular.module('sz.client.directives', [])
                 }
             }
         })
-        .directive('szCollapseCategories',function(){
-            return{
-                restrict:'EA',
-                link:function(scope,elm,attr){
-//                     var collapse = function(){
-//                         if(scope.collapseTopMenu){$("#collapseMenu").animate({maxHeight:scope.h+'px'},200)}
-//                         else{$("#collapseMenu").animate({maxHeight:0},200)}
+//         .directive('szCollapseCategories',function(){
+//             return{
+//                 restrict:'EA',
+//                 link:function(scope,elm,attr){
+// //                     var collapse = function(){
+// //                         if(scope.collapseTopMenu){$("#collapseMenu").animate({maxHeight:scope.h+'px'},200)}
+// //                         else{$("#collapseMenu").animate({maxHeight:0},200)}
+// //                     }
+// //                     scope.h = 96;
+// //                     scope.$watch('collapseTopMenu', collapse);
+//                     var showCollapse = function(){
+//                         var h = 400;
+//                         if(scope.showCollapseCat){
+//                             $("#categories").animate({maxHeight:h+'px'},200)
+//                         }
+//                         else{
+//                             $("#categories").animate({maxHeight:0},200)     
+//                         }
 //                     }
-//                     scope.h = 96;
-//                     scope.$watch('collapseTopMenu', collapse);
-                    var h = 400;
-                    $("#categoryInput")
-                        .focus(function(){
-                            $("#categories").animate({maxHeight:h+'px'},200)
-                        })
-                        .blur(function(){
-                            $("#categories").animate({maxHeight:0},200)     
-                        })
-                    var clearCat = function(){
-                        if(scope.chCat.name)
-                            {alert(1)}
-                        else{
-                            alert(2)
-                        }
-                    }
-                    scope.$watch('chCat', clearCat);
-                }
-            }
-        })
+//                     
+//                     scope.$watch('showCollapseCat', showCollapse);
+//                 }
+//             }
+//         })
 
 //         .directive('szDetermEq',function(){
 //             return{

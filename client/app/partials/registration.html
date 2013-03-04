@@ -1,0 +1,19 @@
+<form class="form-signin">
+<!--     <h2 class="form-signin-heading">Please sign in</h2> -->
+    <input type="text" class="input-block-level" placeholder="E-mail" ng-model="username">
+    <input type="password" class="input-block-level" placeholder="Пароль" ng-model="password">
+<!--    <select ng-model="race">
+        <option value="amadeus" >Амадеус</option>
+        <option value="futuri" >Футури</option>
+        <option value="???" >???</option>
+    </select>-->
+    <h5>Выберите расу</h5>
+    <p>Раса определит характеристики вашего персонажа. Выбор расы - он один и на всю жизнь</p>
+    <div class="btn-group" data-toggle="buttons-radio" >
+        <button class="btn" type="radio" ng-click="race='amadeus'">Амадеус</button>
+        <button class="btn" type="radio" ng-click="race='futuri'">Футури</button>
+        <button class="btn" type="radio" ng-click="race='united'">Юнайтед</button>
+    </div>
+    <p class="margin-top">Здесь описание расы</p>
+    <a class="btn btn-large btn-primary" ng-click="registration()" href="#">Регистрация</a>
+</form>
