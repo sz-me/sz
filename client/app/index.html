@@ -53,7 +53,7 @@
                 </li>
             </ul>
         </div>
-        
+        {{showBtnNewMessage}}<br>
         {{user || json}}
         
         <div  ng-view class="content" id="content" ng-show="showContent" class="margin-top-huge"></div>
@@ -82,7 +82,7 @@
                             </a>
                         </li>
                         <li >
-                            <a href="#/new_message" id="btn-newmessage" > 
+                            <a href="#/place_list" id="btn-newmessage" > 
                                 <button class="btn btn-primary " style="margin:0;">
                                     <i class="icon-edit icon-2x" ></i>
                                 </button>

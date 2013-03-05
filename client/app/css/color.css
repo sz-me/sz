@@ -159,7 +159,7 @@ textarea:focus{
     margin-top:5px;
     overflow: hidden;
     text-overflow:ellipsis;
-    max-height:70px;
+/*     max-height:90px; */
 }
 
 .circle-parent>div{
@@ -195,6 +195,17 @@ textarea:focus{
     list-style:none;
     padding-bottom:0;
     margin-top:10px;
+}
+
+.foursquare-icon{
+    float:left;
+    margin-right:5px;
+    width:64px;
+    height:64px;
+    border:2px solid white;
+    box-shadow: 0 0 4px #666;
+    background:#666;
+    border-radius:5px;
 }
 
 .padding-big{padding:10px;}

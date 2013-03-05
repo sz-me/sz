@@ -2,7 +2,7 @@
 angular.module('sz.client', ['sz.client.directives', 'sz.client.services', 'ng-upload', 'ngCookies'])
 	.config(['$routeProvider', function($routeProvider) {$routeProvider
         .when('/newsfeed', {templateUrl: 'partials/newsfeed.html', controller: NewsFeedController})
-        .when('/new_message:query', {templateUrl: 'partials/new_message.html', controller: NewMessageController})
+        .when('/place_list', {templateUrl: 'partials/place_list.html', controller: PlaceListController})
         .when('/v/:placeId', {templateUrl: 'partials/place.html', controller: PlaceController})
         .when('/message/:messageId', {templateUrl: 'partials/message.html', controller: MessageController})
         .when('/login', {templateUrl: 'partials/login.html', controller: LoginController})

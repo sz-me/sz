@@ -1,19 +1,32 @@
-<form class="form-signin">
-<!--     <h2 class="form-signin-heading">Please sign in</h2> -->
+<form class="form-signin box-border padding-huge">
+    <h2 class="form-signin-heading text-right">Регистрация</h2>
+    <h5>Основные данные</h5>
+    <p>Все основные данные будут видны только вам (и нам) - все остальные пользователи их не увидят.</p>
     <input type="text" class="input-block-level" placeholder="E-mail" ng-model="username">
     <input type="password" class="input-block-level" placeholder="Пароль" ng-model="password">
-<!--    <select ng-model="race">
+    <p>Пожалуйста, укажите свой пол - тогда мы, возможно, смогли бы порекомендовать вам что-нибудь стоящее.</p>
+    <ul class="text-center ul-box">
+        <li class="btn-group " data-toggle="buttons-radio" >
+            <button class="btn" type="radio" ng-click="gender='female'">Женский</button>
+            <button class="btn" type="radio" ng-click="gender='male'">Мужской</button>
+        </li>
+    </ul>
+    <h5>Выбор расы</h5>
+    <p>Раса определит характеристики вашего персонажа. Выбор расы - он один и на всю жизнь.</p>
+    <!--    <select ng-model="race">
         <option value="amadeus" >Амадеус</option>
         <option value="futuri" >Футури</option>
         <option value="???" >???</option>
     </select>-->
-    <h5>Выберите расу</h5>
-    <p>Раса определит характеристики вашего персонажа. Выбор расы - он один и на всю жизнь</p>
-    <div class="btn-group" data-toggle="buttons-radio" >
-        <button class="btn" type="radio" ng-click="race='amadeus'">Амадеус</button>
-        <button class="btn" type="radio" ng-click="race='futuri'">Футури</button>
-        <button class="btn" type="radio" ng-click="race='united'">Юнайтед</button>
-    </div>
+    <ul class="text-center ul-box">
+        <li class="btn-group " data-toggle="buttons-radio" >
+            <button class="btn" type="radio" ng-click="race='amadeus'">Амадеус</button>
+            <button class="btn" type="radio" ng-click="race='futuri'">Футури</button>
+            <button class="btn" type="radio" ng-click="race='united'">Юнайтед</button>
+        </li>
+    </ul>
     <p class="margin-top">Здесь описание расы</p>
-    <a class="btn btn-large btn-primary" ng-click="registration()" href="#">Регистрация</a>
+    <div class="text-center">
+        <a class="btn btn-large btn-primary" ng-click="registration()" href="#">Регистрация</a>
+    </div>
 </form>
