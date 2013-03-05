@@ -58,7 +58,7 @@ class NewsFeedItemResponseBuilder(PlaceServiceResponseBuilder):
         serialized_messages = self.messages_response_builder.build(item["place"], item["messages"])
         place_serializer = serializers.PlaceSerializer(instance=item["place"])
         serialized_item = dict(
-            place=place_serializer.data, distance=item["distance"],
+            place=place_serializer.data, distance=int(item["distance"]),
             messages=serialized_messages)
         return serialized_item
 
