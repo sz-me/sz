@@ -1,11 +1,24 @@
-<h1>{{ place.name }}</h1>
-<address>{{ place.address }}</address>
-<form method="POST" action="../../api/places/{{ place.id }}/messages?format=json" ng-upload="results()">
-    <select ng-model="mark" ng-options="m.name for m in marks" name="mark">
-        <option value="">---------</option>
-    </select><br/>
-    <textarea name=text></textarea>
-    <input type="file" name="photo"><br/>
-    <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrftoken }}' />
-    <input type="submit">
-</form>
+<div class="box-border">
+    <div class="box-header">
+        <h3 style="margin-bottom:0;;">{{place.name}}</h3>
+        <small style="line-height:10px;">{{place.address}}</small>  
+    </div>
+    <div class="padding-huge">
+        <form method="POST" action="../../api/places/{{ place.id }}/messages?format=json" ng-upload="results()" >
+            <div>
+                <textarea name=text placeholder="Для отправки сообщения необходимо ввести пару слов или прикрепить фото" class="margin-Y-big"></textarea>
+                <input type="file" name="photo"><br/>
+<!--                 <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrftoken }}' /> -->
+     <!--           <ul class="text-center ul-box">
+                    <button class="btn btn-large btn-primary" type="submit">Дальше</button>
+                </ul>-->
+            </div>
+            <div>
+                <ul class="text-center ul-box">
+                    <button class="btn btn-large btn-primary" type="submit">Отправить</button>
+                </ul>
+            </div>
+        </form>
+<!--         <iframe id=hiddenframe name=hiddenframe style="width:0px; height:0px; border:0px"></iframe> -->
+    </div>
+</div>

@@ -2,32 +2,39 @@
 <ul class="ul-box">
     <li>
         <div  ng-repeat="place in placeList" class="box-border margin-top-huge padding-huge">
-            <h5 class="text-right">{{place.distance}} м</h5>
-            <div class="foursquare-icon">
-                <img src={{place.place.foursquare_icon_prefix+'64'+place.place.foursquare_icon_suffix}}>
-            </div>
-            <div >        
-                <h3 style="margin-bottom:0;;">{{place.place.name}}</h3>
-                <small style="line-height:10px;">{{place.place.address}}</small>   
-            </div> 
-            <div class="text-right margin-bottom-big circle-parent" >
-                <div class="catDiv" style="background:green">
-                    <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >
-                </div>                                        
-                <div class="catDiv" style="background:#7a43b6">
-                    <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_284_pants.png">
-                </div>    
-                <div class="catDiv" style="background:#ffc40d">
-                    <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_285_sweater.png">
-                </div>    
-                <div class="catDiv" style="background:#045fdb">
-                    <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png">
-                </div>    
-            </div>
-            <div>
-                <strong>Князь Мышкин</strong><span class="badge badge-success margin-left">2372</span><br>
-                <small>Я</small><span class="badge  margin-left">120</span><br>
-            </div>
+<!--         <a class="btn btn-large  btn-primary" type="button" href="#/places/{{ feed.data.place.id }}/messages/add" >Ништякнуть</a> -->
+            <a style="color:#333" href="#/places/{{ place.place.id }}/messages/add" class="place-list-box">
+                <div class="distance">
+                    <div>
+                        {{place.distance}} м
+                    </div>
+                </div>
+                <div class="foursquare-icon">
+                    <img src={{place.place.foursquare_icon_prefix+'64'+place.place.foursquare_icon_suffix}}>
+                </div>
+                <div >        
+                    <h3 style="margin-bottom:0;margin-top:0px;">{{place.place.name}}</h3>
+                    <small style="line-height:10px;">{{place.place.address}}</small>   
+                </div> 
+                <div class="text-right margin-bottom-big circle-parent" >
+                    <div class="catDiv" style="background:green">
+                        <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >
+                    </div>                                        
+                    <div class="catDiv" style="background:#7a43b6">
+                        <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_284_pants.png">
+                    </div>    
+                    <div class="catDiv" style="background:#ffc40d">
+                        <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_285_sweater.png">
+                    </div>    
+                    <div class="catDiv" style="background:#045fdb">
+                        <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png">
+                    </div>    
+                </div>
+                <div>
+                    <strong>Князь Мышкин</strong><span class="badge badge-success margin-left">2372</span><br>
+                    <small>Я</small><span class="badge  margin-left">120</span><br>
+                </div>
+            </a>
         </div>
     </li>
 </ul>
