@@ -17,12 +17,12 @@ szClient.factory('newsFeedService', function($resource){
 });
 
 szClient.factory('venueService', function($resource){
-//     return $resource('../../api/places/venues/search', {}, {
-//         query: { method:'GET', params:{}, isArray:false }
-//     });
-    return $resource('../../api/places/search', {}, {
+    return $resource('../../api/places/venues/search', {}, {
         query: { method:'GET', params:{}, isArray:false }
     });
+//     return $resource('../../api/places/search', {}, {
+//         query: { method:'GET', params:{}, isArray:false }
+//     });
 });
 
 szClient.factory('messageService', function($resource){
