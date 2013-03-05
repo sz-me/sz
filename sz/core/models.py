@@ -189,9 +189,6 @@ class Message(models.Model):
         else:
             return None
 
-    mark = models.PositiveIntegerField(verbose_name="Оценка", null=True,
-                                         blank=True, choices=MARK_CHOICES)
-
     categories = models.ManyToManyField(Category, null=True, blank=True)
 
     stems = models.ManyToManyField(Stem, null=True, blank=True)
@@ -203,3 +200,14 @@ class Message(models.Model):
 
     def __unicode__(self):
         return u"%s" % self.text
+
+class Mark(models.Model):
+    date = models.DateTimeField(
+        auto_now_add=True, null=True, blank=True,
+        editable=False, verbose_name=u"дата добавления")
+
+    user = models.ForeignKey(auth_models.User, verbose_name=u"пользователь")
+
+    place = models.ForeignKey(Place, verbose_name=u"место")
+
+    value = models.PositiveIntegerField(verbose_name="Оценка", null=True, blank=True, choices=MARK_CHOICES)

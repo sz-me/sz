@@ -40,7 +40,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    mark = serializers.IntegerField(min_value=0, max_value=2, required=False, blank=True)
     photo = serializers.ImageField(required=False, blank=True)
 
     class Meta:
@@ -58,7 +57,7 @@ class MessageSerializer(serializers.ModelSerializer):
         else:
             text = attrs['text'].strip()
         photo = attrs.get('photo', None)
-        if not (photo or text != "" or attrs['mark']):
+        if not (photo or text != ""):
             raise serializers.ValidationError("Message don't must be empty")
         return attrs
 
