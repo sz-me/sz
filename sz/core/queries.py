@@ -47,9 +47,7 @@ def places_news_feed(**kwargs):
     category = kwargs.get(params_names.CATEGORY)
     current_position = fromstr("POINT(%s %s)" % (longitude, latitude))
     radius = kwargs.get(params_names.RADIUS)
-    filtered_places = models.Place.objects\
-        .exclude(Q(message__text='') & Q(message__photo=''))\
-        .annotate(last_message=dj_models.Max('message__id'))\
+    filtered_places = models.Place.objects.annotate(last_message=dj_models.Max('message__id'))\
         .filter(last_message__isnull=False)
     if max_id is not None:
         filtered_places = filtered_places.filter(message__id__lte=max_id)
@@ -79,8 +77,7 @@ def messages(places, **kwargs):
     stems = kwargs.get(params_names.STEMS)
     category = kwargs.get(params_names.CATEGORY)
     # creating the query
-    filtered_messages = models.Message.objects.filter(place__pk__in=[p.pk for p in places])\
-        .exclude(Q(text='') & Q(photo=''))
+    filtered_messages = models.Message.objects.filter(place__pk__in=[p.pk for p in places])
     if max_id is not None:
         filtered_messages = filtered_messages.filter(id__lte=max_id)
     if len(stems) > 0:
@@ -99,8 +96,7 @@ def place_messages(place, **kwargs):
     stems = kwargs.get(params_names.STEMS)
     category = kwargs.get(params_names.CATEGORY)
     # creating the query
-    filtered_messages = models.Message.objects.filter(place__pk=place.pk)\
-        .exclude(Q(text='') & Q(photo=''))
+    filtered_messages = models.Message.objects.filter(place__pk=place.pk)
     if max_id is not None:
         filtered_messages = filtered_messages.filter(id__lte=max_id)
     if len(stems) > 0:
