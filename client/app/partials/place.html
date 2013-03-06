@@ -30,15 +30,16 @@
 <!--        <li>
             <a ><i class="icon-star" ng-class="'icon-2x'"></i></a>
         </li>-->
-        <li>
+<!--        <li>
             <a ><i class="icon-map-marker" ng-class="'icon-2x'"></i></a>
         </li>
         <li>
             <a ><i class="icon-group" ng-class="'icon-2x'"></i></a>
-        </li>
+        </li>-->
     </ul>
 </div>
 <ul class="media-list" >
+{{feed.data.messages.params}}
     <li ng-show="showPlacePhoto">
         <div style="margin-top:20px;" class="text-center">
             <a ng-repeat="message in feed.data.messages.results | filter:{$:'photo'}" class="inline-block" href="#/message/{{message.id}}">
@@ -47,13 +48,6 @@
         </div>
     </li>
     <li ng-show="showPlaceMessages">
-<!--        <ul class="ul-box" >
-            <li>
-                <div ng-repeat="message in feed.data.messages.results "  class="box-border media">
-                    <sz-feed-message-box message='message' categories="categories"></sz-feed-message-box>
-                </div>
-            </li>
-        </ul>-->
         <ul  class="ul-box" >
             <li>
                 <div ng-repeat="message in feed.data.messages.results "  class="box-border margin-top-huge padding-huge">
@@ -63,7 +57,7 @@
         </ul>
     </li>
     <li  class="text-center media"  >
-        <button class="btn  btn-large" ng-click="loadMoreMessage ()">
+        <button class="btn  btn-large" ng-click="loadMore ()">
             <i class="icon-circle"></i>
             <i class="icon-circle"></i>
             <i class="icon-circle"></i>

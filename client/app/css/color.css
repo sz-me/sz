@@ -80,15 +80,16 @@ textarea:focus{
 }
 
 #collapseMenu{
+    text-align:left;
     overflow:hidden;
     max-height:0;
     box-shadow:0 0 4px #AAA;
     background:#333;
     padding:0 5px;
+    padding-left:20px;
     margin-top:-20px;
     margin-right:-20px;
     margin-left:-20px;
-    border-radius:0 0 5px 5px;
     margin-bottom:20px;
 }
 
@@ -289,5 +290,13 @@ textarea:focus{
 
 
 
-
+@media screen and (min-width: 1600px) and (min-height: 800px) {
+    body{text-align:center}
+    #content{
+        text-align:justify;
+        display:inline-block;
+        width:700px;
+/*         margin-left:30%; */
+    }
+}
 
