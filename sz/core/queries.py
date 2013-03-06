@@ -47,8 +47,13 @@ def places_news_feed(**kwargs):
     category = kwargs.get(params_names.CATEGORY)
     current_position = fromstr("POINT(%s %s)" % (longitude, latitude))
     radius = kwargs.get(params_names.RADIUS)
-    filtered_places = models.Place.objects.annotate(last_message=dj_models.Max('message__id'))\
-        .filter(last_message__isnull=False)
+    photo = kwargs.get(params_names.PHOTO)
+    # creating the query
+    if photo:
+        filtered_places = models.Place.objects.filter(message__id__isnull=False, message__photo__istartswith='photo')
+    else:
+        filtered_places = models.Place.objects.filter(message__id__isnull=False)
+    filtered_places = filtered_places.annotate(last_message=dj_models.Max('message__id'))
     if max_id is not None:
         filtered_places = filtered_places.filter(message__id__lte=max_id)
     if radius == 0 or radius is None:
@@ -69,25 +74,6 @@ def places_news_feed(**kwargs):
     return query, count
 
 
-def messages(places, **kwargs):
-    # getting params
-    limit = kwargs.get(params_names.LIMIT)
-    offset = kwargs.get(params_names.OFFSET)
-    max_id = kwargs.get(params_names.MAX_ID)
-    stems = kwargs.get(params_names.STEMS)
-    category = kwargs.get(params_names.CATEGORY)
-    # creating the query
-    filtered_messages = models.Message.objects.filter(place__pk__in=[p.pk for p in places])
-    if max_id is not None:
-        filtered_messages = filtered_messages.filter(id__lte=max_id)
-    if len(stems) > 0:
-        filtered_messages = filtered_messages.filter(stems__stem__in=[stem[0] for stem in stems])
-    if category is not None:
-        filtered_messages = filtered_messages.filter(categories__in=[category,])
-    query = filtered_messages.order_by('-date')[offset:offset + limit]
-    return query
-
-
 def place_messages(place, **kwargs):
     # getting params
     limit = kwargs.get(params_names.LIMIT)
@@ -95,6 +81,7 @@ def place_messages(place, **kwargs):
     max_id = kwargs.get(params_names.MAX_ID)
     stems = kwargs.get(params_names.STEMS)
     category = kwargs.get(params_names.CATEGORY)
+    photo = kwargs.get(params_names.PHOTO)
     # creating the query
     filtered_messages = models.Message.objects.filter(place__pk=place.pk)
     if max_id is not None:
@@ -103,6 +90,8 @@ def place_messages(place, **kwargs):
         filtered_messages = filtered_messages.filter(stems__stem__in=[stem[0] for stem in stems])
     if category is not None:
         filtered_messages = filtered_messages.filter(categories__in=[category, ])
+    if photo:
+        filtered_messages = filtered_messages.exclude(photo='')
     filtered_messages = filtered_messages.distinct()
     count = filtered_messages.aggregate(count=dj_models.Count('id'))['count']
     query = filtered_messages.order_by('-date')[offset:offset + limit]
@@ -111,8 +100,7 @@ def place_messages(place, **kwargs):
 
 def categories(place):
     last_day = timezone.now() - datetime.timedelta(days=56)
-    query = models.Category.objects\
-    .filter(thing__message__place_id=place.id, thing__message__date__gte=last_day)\
+    query = models.Category.objects.filter(thing__message__place_id=place.id, thing__message__date__gte=last_day)\
     .values('name').annotate(
         count=dj_models.Count('thing__message'),
         last=dj_models.Max('thing__message__date'))\

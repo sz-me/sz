@@ -142,6 +142,7 @@ class ContentDecorator(ParametersGroupDecorator):
         self.__categorization_service = categorization_service
         self.__category = params.get(params_names.CATEGORY, None)
         self.__query = params.get(params_names.QUERY, None)
+        self.__photo = params.get(params_names.PHOTO, None)
 
     def get_db_params(self):
         params = ParametersGroupDecorator.get_db_params(self)
@@ -153,6 +154,10 @@ class ContentDecorator(ParametersGroupDecorator):
             params[params_names.CATEGORY] = self.__category
         else:
             params[params_names.CATEGORY] = None
+        if self.__photo:
+            params[params_names.PHOTO] = True
+        else:
+            params[params_names.PHOTO] = None
         return params
 
     def get_api_params(self):
@@ -164,6 +169,8 @@ class ContentDecorator(ParametersGroupDecorator):
             params[params_names.CATEGORY] = self.__category
         else:
             params[params_names.CATEGORY] = None
+        if self.__photo:
+            params[params_names.PHOTO] = True
         return params
 
 

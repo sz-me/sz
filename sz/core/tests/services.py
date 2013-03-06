@@ -3,6 +3,10 @@ from sz.core.services import parameters
 from sz.core.services import gis
 
 
+class CategorizationServiceMock:
+    def detect_stems(self):
+        return set([])
+
 class DecoratorsTest(TestCase):
 
     def test_location_decorator(self):
@@ -56,4 +60,28 @@ class DecoratorsTest(TestCase):
         self.assertDictEqual(
             positionDecorator2.get_db_params(),
             {'limit': 17, 'max_id': 300, 'offset': 0}
+        )
+
+    def test_content_decorator(self):
+        params1 = {'photo': True}
+        params2 = {'photo': False}
+        categorizationService = CategorizationServiceMock()
+        contentDecorator1 = parameters.ContentDecorator(params1, categorizationService)
+        contentDecorator2 = parameters.ContentDecorator(params2, categorizationService)
+        print contentDecorator2.get_api_params()
+        self.assertDictEqual(
+            contentDecorator1.get_api_params(),
+            {'category': None, 'photo': True}
+        )
+        self.assertDictEqual(
+            contentDecorator1.get_db_params(),
+            {'category': None, 'photo': True, 'stems': []}
+        )
+        self.assertDictEqual(
+            contentDecorator2.get_api_params(),
+            {'category': None}
+        )
+        self.assertDictEqual(
+            contentDecorator2.get_db_params(),
+            {'category': None, 'photo': None, 'stems': []}
         )
