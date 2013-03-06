@@ -66,7 +66,15 @@ textarea:focus{
     font-size:90%;
 }
 
+
 #logo>span>span{font-size:120%;}
+
+/*#logo>span:hover {
+  text-shadow: -1px 0    1px #333,
+               0    -1px 1px #333,
+               1px  0    1px #333,
+               0    1px  1px #333;
+}*/
 
 #btn-user{
 /*     max-width:100%; */
@@ -87,10 +95,7 @@ textarea:focus{
     background:#333;
     padding:0 5px;
     padding-left:20px;
-    margin-top:-20px;
-    margin-right:-20px;
-    margin-left:-20px;
-    margin-bottom:20px;
+/*     margin-top:-20px; */
 }
 
 #collapseMenu>ul{
@@ -99,6 +104,111 @@ textarea:focus{
 
 #collapseMenu>ul>li>a{color:#EEE;text-shadow:1px 0 2px #666}
 #collapseMenu>ul>li>a:hover{color:#333;text-shadow:none}
+
+#emotionsParent{
+    text-align:center
+}
+
+.emotion{
+    display:inline-block;
+    margin-left:5px;
+    margin-right:5px;
+    width:40px;
+    height:40px;
+    background:green;
+}
+
+#angry{}
+#indifferent{}
+#happy{}
+
+.foursquare-icon{
+    float:left;
+    margin-right:10px;
+    width:64px;
+    height:64px;
+    border:2px solid white;
+    box-shadow: 0 0 4px #666;
+    background:#666;
+    border-radius:5px;
+}
+
+.distance{
+    text-align:right;
+    line-height:20px;
+    font-weight:bold;
+}
+.distance>div{
+    padding:5px 7px;
+    display:inline-block;
+    border-radius:20px;
+    box-shadow:0 0 4px #AAA;
+    border:2px solid white;
+/*     background:#ffc40d; */
+    background:green;
+    color:white;
+    text-shadow:1px 0px rgba(0, 0, 0, 0.25);
+}
+
+.place-list-box:hover{
+    text-decoration:none;
+}
+
+/*.fileform { 
+    cursor:pointer;
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius: 2px;
+    cursor: pointer;
+    height: 26px;
+    overflow: hidden;
+    padding: 2px;
+    position: relative;
+    text-align: left;
+    vertical-align: middle;
+    width: 230px;
+}
+ 
+.fileform .selectbutton { 
+    background-color: #A2A3A3;
+    border: 1px solid #939494;
+    border-radius: 2px;
+    color: #FFFFFF;
+    float: right;
+    font-size: 16px;
+    height: 20px;
+    line-height: 20px;
+    overflow: hidden;
+    padding: 2px 6px;
+    text-align: center;
+    vertical-align: middle;
+    width: 50px;
+}
+ 
+.fileform #upload{
+    position:absolute; 
+    top:0; 
+    left:0; 
+    width:100%; 
+    -moz-opacity: 0; 
+    filter: alpha(opacity=0); 
+    opacity: 0; 
+    font-size: 150px; 
+    height: 30px; 
+    z-index:20;
+}
+
+.fileform #fileformlabel { 
+    background-color: #FFFFFF;
+    float: left;
+    height: 22px;
+    line-height: 22px;
+    overflow: hidden;
+    padding: 2px;
+    text-align: left;
+    vertical-align: middle;
+    width:160px;
+}*/
 
 /*#btn-category{
     display:inline-block;
@@ -198,37 +308,7 @@ textarea:focus{
     margin-top:10px;
 }
 
-.foursquare-icon{
-    float:left;
-    margin-right:10px;
-    width:64px;
-    height:64px;
-    border:2px solid white;
-    box-shadow: 0 0 4px #666;
-    background:#666;
-    border-radius:5px;
-}
 
-.distance{
-    text-align:right;
-    line-height:20px;
-    font-weight:bold;
-}
-.distance>div{
-    padding:5px 7px;
-    display:inline-block;
-    border-radius:20px;
-    box-shadow:0 0 4px #AAA;
-    border:2px solid white;
-/*     background:#ffc40d; */
-    background:green;
-    color:white;
-    text-shadow:1px 0px rgba(0, 0, 0, 0.25);
-}
-
-.place-list-box:hover{
-    text-decoration:none;
-}
 
 .padding-big{padding:10px;}
 
@@ -288,15 +368,24 @@ textarea:focus{
 
 
 
+body{text-align:center;}
+#content{
+    text-align:justify;
+    display:inline-block;
+    width:100%;
+    max-width:1080px;
+    margin-top:20px;
+}
 
+@media screen and (max-width: 1090px) and (min-width: 767px) {
+    #content{width:90%;}
+}
 
-@media screen and (min-width: 1600px) and (min-height: 800px) {
-    body{text-align:center}
-    #content{
-        text-align:justify;
-        display:inline-block;
-        width:700px;
-/*         margin-left:30%; */
+@media screen and (max-width:766px) {
+    #collapseMenu{
+        margin-right:-20px;
+        margin-left:-20px;
     }
 }
+
 

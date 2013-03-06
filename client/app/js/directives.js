@@ -216,6 +216,26 @@ angular.module('sz.client.directives', [])
                 }
             }
         })
+//         .directive('szChoosePhoto',function(){
+//             return{
+//                 restrict:'EA',
+//                 link:function(scope,elm,attr){
+//                     var choosePhoto = function(){
+//                         if (scope.photo.lastIndexOf('\\')){
+//                             var i = scope.photo.lastIndexOf('\\')+1;
+//                         }
+//                         else{
+//                             var i = scope.photo.lastIndexOf('/')+1;
+//                         }                                           
+//                         var filename = scope.photo.slice(i);                        
+//                         var uploaded = document.getElementById("fileformlabel");
+//                         uploaded.innerHTML = filename;
+//                     }
+//                     scope.$watch('photo', choosePhoto);
+//                     
+//                 }
+//             }
+//         })
 //         .directive('szCollapseCategories',function(){
 //             return{
 //                 restrict:'EA',

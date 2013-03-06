@@ -39,7 +39,6 @@
     </ul>
 </div>
 <ul class="media-list" >
-{{feed.data.messages.params}}
     <li ng-show="showPlacePhoto">
         <div style="margin-top:20px;" class="text-center">
             <a ng-repeat="message in feed.data.messages.results | filter:{$:'photo'}" class="inline-block" href="#/message/{{message.id}}">

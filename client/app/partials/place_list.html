@@ -1,5 +1,18 @@
 <!-- {{placeList || json}} -->
 <ul class="ul-box">
+    <div class="box-border padding-huge text-center">
+        <span>
+            <div class="btn-group" data-toggle="buttons-radio" >
+                <button class="btn" type="radio" ng-click="filter.radius='250'">250m</button>
+                <button class="btn" type="radio" ng-click="filter.radius='1000'">1km</button>
+                <button class="btn" type="radio" ng-click="filter.radius='3000'">3km</button>
+                <button class="btn active" type="radio" ng-click="filter.radius=''" >city</button>
+            </div>
+        </span>
+        <div class="media">
+            <input type="text" class="search-query" ng-model="filter.query"  placeholder="Искать" >
+        </div>
+    </div>
     <li>
         <div  ng-repeat="place in placeList" class="box-border margin-top-huge padding-huge">
 <!--         <a class="btn btn-large  btn-primary" type="button" href="#/places/{{ feed.data.place.id }}/messages/add" >Ништякнуть</a> -->
