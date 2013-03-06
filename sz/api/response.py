@@ -60,6 +60,10 @@ class NewsFeedItemResponseBuilder(PlaceServiceResponseBuilder):
         serialized_item = dict(
             place=place_serializer.data, distance=int(item["distance"]),
             messages=serialized_messages)
+        photos = item.get('photos', None)
+        if photos is not None:
+            serialized_photos = self.messages_response_builder.build(item["place"], photos)
+            serialized_item['photos'] = serialized_photos
         return serialized_item
 
 

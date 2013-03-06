@@ -65,6 +65,15 @@ class PlaceService:
         item['messages'] = messages
         return item
 
+    def __make_feed_item_with_photo(self, place, params):
+        item = self.__make_feed_item(place, params)
+        kwargs = params.get_api_params()
+        kwargs[params_names.PHOTO] = True
+        kwargs[params_names.LIMIT] = 7
+        photos = self.get_place_messages(place, **kwargs)
+        item['photos'] = photos
+        return item
+
     def get_place_messages(self, place, current_max_id=None, default_limit=settings.DEFAULT_PAGINATE_BY, **kwargs):
         if current_max_id is None:
             current_max_id = self.__get_max_id()
@@ -92,7 +101,7 @@ class PlaceService:
         current_max_id = self.__get_max_id()
         params = parameters.PlaceNewsFeedParametersFactory.create(
             kwargs, self.categorization_service, current_max_id, 17)
-        item = self.__make_feed_item(place, params)
+        item = self.__make_feed_item_with_photo(place, params)
         return item
 
     def search(self, **kwargs):
