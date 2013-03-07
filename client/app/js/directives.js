@@ -220,25 +220,40 @@ angular.module('sz.client.directives', [])
             return{
                 restrict:'EA',
                 link:function(scope,elm,attr){
+//                     var placeID = scope.placeID
+                    
+                    function stateChange(event) {
+                        if (event.target.readyState == 4) {
+                            if (event.target.status == 200) {
+                                $("#res").text('Загрузка успешно завершена!');
+                            } else {
+                                $("#res").text('Произошла ошибка!');
+                            }
+                        }
+                    }
+                    
                     function handleFileSelect(evt) {
                         var files = evt.target.files;
-                        for (var i = 0, f; f = files[i]; i++) {
-                        if (!f.type.match('image.*')) {
-                            continue;
-                        }
-                        var reader = new FileReader();
-                        reader.onload = (function(theFile) {
-                            return function(e) {
-                                var span = document.getElementById('photoPrev');
-                                span.innerHTML = ['<img class="thumb" src="', e.target.result,
-                                                    '" title="', escape(theFile.name), '"/>'].join('');
-//                                 scope.messagePhotoIco = 'icon-remove'
-                                $("#message-photo-remove-ico").show();
-                            };
-//                             document.getElementById('message-photo-ico').style.display = 'none';
-                            
-                        })(f);      
-                        reader.readAsDataURL(f);
+                        var photo = evt.target.files[0]
+                        var photoName = photo.name;
+                        if (photo.type.match('image.*')) {
+                            var reader = new FileReader();
+                            reader.onload = (function(theFile) {
+                                return function(e) {
+                                    var span = document.getElementById('photoPrev');
+                                    span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                                                        '" title="', escape(photoName), '"/>'].join('');
+                                    $("#message-photo-remove-ico").show();
+                                    var xhr = new XMLHttpRequest();
+//                                      xhr.upload.addEventListener('progress', uploadProgress, false);
+                                    xhr.onreadystatechange = stateChange;
+                                    xhr.open('POST', '../../api/places/'+scope.place.id+'/messages?format=json');
+                                    xhr.setRequestHeader('X-FILE-NAME', photoName);
+                                    xhr.send(photo);
+                                };
+                                
+                            })(photo);      
+                            reader.readAsDataURL(photo);
                         }
                     }
                     document.getElementById('files').addEventListener('change', handleFileSelect, false);
