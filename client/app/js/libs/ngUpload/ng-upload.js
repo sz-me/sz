@@ -29,10 +29,11 @@ angular.module('ng-upload', [])
       restrict: 'A',
       link: function(scope, element, attrs) {
         // build iframe
-        var iframe = angular.element("<iframe id='upload_iframe' name='upload_iframe' width=0 height=0 border=0 style='width: 0; height: 0; border: none;'></iframe>");
+//         var iframe = angular.element("<iframe id='upload_iframe' name='upload_iframe' width=0 height=0 border=0 style='width: 0; height: 0; border: none;'></iframe>");
         // add iframe to app
-        element.parent().append(iframe);
+//         element.parent().append(iframe);
         // attach function to load event
+        var iframe=$("#hiddenframe")
         iframe.bind('load', function() {
           // remove listener
           iframe.unbind('load');
@@ -45,13 +46,13 @@ angular.module('ng-upload', [])
             scope.$apply(function() { scope[fn](content); });
           }
           // remove iframe
-          setTimeout(function() { iframe.remove() }, 250);
+//           setTimeout(function() { iframe.remove() }, 250);
         });
         // add file attributes to form
-        element.attr("target", "upload_iframe");
-        element.attr("method", "post");
-        element.attr("enctype", "multipart/form-data");
-        element.attr("encoding", "multipart/form-data");
+//         element.attr("target", "upload_iframe");
+//         element.attr("method", "post");
+//         element.attr("enctype", "multipart/form-data");
+//         element.attr("encoding", "multipart/form-data");
       }
     }
 });

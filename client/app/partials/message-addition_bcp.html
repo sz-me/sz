@@ -1,0 +1,53 @@
+<div class="box-border">
+    <div class="box-header">
+<!--        <div class="distance">
+            <div>
+                {{place.distance}} м
+            </div>
+        </div>-->
+        <h3 style="margin-bottom:0;;">{{place.name}}</h3>
+        <small style="line-height:10px;">{{place.address}}</small>  
+    </div>
+    <div class="padding-huge">
+        <form method="POST" action="../../api/places/{{ place.id }}/messages?format=json"  ng-submit="messageSubmit()"  target="hiddenframe" method="post" encoding="multipart/form-data" enctype="multipart/form-data">
+            <div id="emotionsParent">
+                <div class="emotion">
+                </div>
+                <div class="emotion">
+                </div>
+                <div class="emotion">
+                </div>
+            </div>
+            <div sz-choose-photo="">
+                <textarea name='text' id="messageText" class="margin-Y-big"></textarea>
+                <!--sz-choose-photo="photo"-->
+<!--                <div class="fileform" >
+                    <div id="fileformlabel">{{photo}}</div>
+                    <div class="selectbutton">Обзор</div>
+                    <input id="upload" type="file" name="photo" ng-model="photo"/>
+                    <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrftoken }}' />
+                </div>-->
+                
+                <input  type="file" name="photo" />
+                <input type='hidden' name='MAX_FILE_SIZE' value='64000'>
+                <input type='hidden' name='csrfmiddlewaretoken' value='{{ csrftoken }}' />
+    
+<!--                 <input  type="file" name="photo" ng-model="photo"/> -->
+                
+     <!--           <ul class="text-center ul-box">
+                    <button class="btn btn-large btn-primary" type="submit">Дальше</button>
+                </ul>-->
+            </div>
+            <div>
+                <ul class="text-center ul-box">
+                    <button class="btn btn-large btn-primary" type="submit" >Отправить</button>
+                </ul>
+            </div>
+        </form>
+        <iframe id="hiddenframe" name=hiddenframe ng-model="frameMessage"></iframe>
+    </div>
+</div>
+<div>
+{{frameMessage}}
+{{frameMessage|| json}}
+</div>

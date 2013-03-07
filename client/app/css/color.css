@@ -47,7 +47,6 @@ textarea:focus{
 }
 
 .btn:checked,.btn:active,.btn:focus{
-    outline: none;
     -moz-appearance: none;
     outline:none;
 }
@@ -154,61 +153,44 @@ textarea:focus{
     text-decoration:none;
 }
 
-/*.fileform { 
+.thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
+
+
+.fileform { 
+    display:inline-block;
     cursor:pointer;
-    background-color: #FFFFFF;
-    border: 1px solid #CCCCCC;
-    border-radius: 2px;
-    cursor: pointer;
-    height: 26px;
+    background-color: white;
+/*     border: 1px solid #CCCCCC; */
+/*     border-radius: 2px; */
     overflow: hidden;
-    padding: 2px;
+/*     padding: 2px; */
     position: relative;
-    text-align: left;
     vertical-align: middle;
-    width: 230px;
+  /*  width: 110px;
+    height: 110px;*/
 }
  
-.fileform .selectbutton { 
-    background-color: #A2A3A3;
-    border: 1px solid #939494;
-    border-radius: 2px;
-    color: #FFFFFF;
-    float: right;
-    font-size: 16px;
-    height: 20px;
-    line-height: 20px;
-    overflow: hidden;
-    padding: 2px 6px;
-    text-align: center;
-    vertical-align: middle;
-    width: 50px;
-}
+
  
-.fileform #upload{
+.fileform #files{
+    cursor:pointer;
     position:absolute; 
     top:0; 
     left:0; 
-    width:100%; 
+    width:100%;
+    height: 100%; 
     -moz-opacity: 0; 
+    outline:none;
     filter: alpha(opacity=0); 
     opacity: 0; 
     font-size: 150px; 
-    height: 30px; 
     z-index:20;
 }
 
-.fileform #fileformlabel { 
-    background-color: #FFFFFF;
-    float: left;
-    height: 22px;
-    line-height: 22px;
-    overflow: hidden;
-    padding: 2px;
-    text-align: left;
-    vertical-align: middle;
-    width:160px;
-}*/
 
 /*#btn-category{
     display:inline-block;

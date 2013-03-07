@@ -216,6 +216,53 @@ angular.module('sz.client.directives', [])
                 }
             }
         })
+        .directive('szPrevPhoto',function(){
+            return{
+                restrict:'EA',
+                link:function(scope,elm,attr){
+                    function handleFileSelect(evt) {
+                        var files = evt.target.files;
+                        for (var i = 0, f; f = files[i]; i++) {
+                        if (!f.type.match('image.*')) {
+                            continue;
+                        }
+                        var reader = new FileReader();
+                        reader.onload = (function(theFile) {
+                            return function(e) {
+                                var span = document.getElementById('photoPrev');
+                                span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                                                    '" title="', escape(theFile.name), '"/>'].join('');
+//                                 scope.messagePhotoIco = 'icon-remove'
+                                $("#message-photo-remove-ico").show();
+                            };
+//                             document.getElementById('message-photo-ico').style.display = 'none';
+                            
+                        })(f);      
+                        reader.readAsDataURL(f);
+                        }
+                    }
+                    document.getElementById('files').addEventListener('change', handleFileSelect, false);
+                }
+            }
+        })
+        .directive('szRemovePhoto',function(){
+            return{
+                restrict:'EA',
+                link:function(scope,elm,attr){
+                       var remove = function(){
+                            if(scope.removePhoto){
+                                var span = document.getElementById('photoPrev');
+                                span.innerHTML = [''].join('');
+                                $("#message-photo-remove-ico").hide();
+                                scope.removePhoto = false;
+                            }
+                    }
+                    scope.$watch('removePhoto', remove);
+                    
+                }
+            }
+        })
+        
 //         .directive('szChoosePhoto',function(){
 //             return{
 //                 restrict:'EA',
