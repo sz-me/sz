@@ -14,10 +14,10 @@
         <textarea name='text'
                   id="messageText"
                   placeholder="Напишите пару строк или прикрепите изображение, а лучше и то, и другое"
-                  class="margin-Y-big" ng-model="text" ng-init="text=''"></textarea>
-        <input type="file" name="photo" sz-file-model="photo" ng-init="photo=null"/>
+                  class="margin-Y-big" ng-model="text" ng-init="text=''" ng-disabled="inProgress"></textarea>
+        <input type="file" name="photo" sz-file-model="photo" ng-init="photo=null" ng-disabled="inProgress"/>
         <ul class="text-center ul-box">
-            <button class="btn btn-large btn-primary" ng-click="send()">Отправить</button>
+            <button class="btn btn-large btn-primary" ng-click="send()" ng-disabled="inProgress">Отправить</button>
         </ul>
     </div>
 </div>
