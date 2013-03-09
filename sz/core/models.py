@@ -141,14 +141,43 @@ class Stem(models.Model):
 
 
 # Entities
-MARK_CHOICES = (
-    (0, 'It happens...'),
-    (1, "I'll be back."),
-    (2, 'Have made a purchase!'),
+
+
+class Style(models.Model):
+    name = models.CharField(max_length=32, verbose_name=u"название")
+    description = models.CharField(
+        verbose_name=u"описание", max_length=256,
+        null=True, blank=True)
+
+    def __unicode__(self):
+        return u"%s" % self.name
+
+    class Meta:
+        verbose_name = u"стиль"
+        verbose_name_plural = u"стили"
+
+
+EMOTION_CHOICES = (
+    ('smile', 'Smile'),
+    ('lol', "LOL"),
+    ('bad', 'Bad'),
+    ('indifferent', 'Indifferent')
 )
 
 
-class Message(models.Model):
+class Smile(models.Model):
+    emotion = models.CharField(max_length=16, verbose_name=u"Эмоция", choices=EMOTION_CHOICES)
+    style = models.ForeignKey(Style, verbose_name=u"стиль")
+
+    def __unicode__(self):
+        return u"%s_%s" % (self.emotion, self.style.name)
+
+    class Meta:
+        verbose_name = u"смайл"
+        verbose_name_plural = u"смайлы"
+
+
+class MessageBase(models.Model):
 
     date = models.DateTimeField(
         auto_now_add=True, null=True, blank=True,
@@ -191,23 +220,30 @@ class Message(models.Model):
 
     categories = models.ManyToManyField(Category, null=True, blank=True)
 
-    stems = models.ManyToManyField(Stem, null=True, blank=True)
+    smile = models.ForeignKey(Smile)
 
     class Meta:
+        abstract = True
         verbose_name = u"сообщение"
         verbose_name_plural = u"сообщения"
-        ordering = ["-date"]
 
     def __unicode__(self):
         return u"%s" % self.text
 
-class Mark(models.Model):
-    date = models.DateTimeField(
-        auto_now_add=True, null=True, blank=True,
-        editable=False, verbose_name=u"дата добавления")
 
-    user = models.ForeignKey(auth_models.User, verbose_name=u"пользователь")
+class Message(MessageBase):
+    stems = models.ManyToManyField(Stem, null=True, blank=True)
 
-    place = models.ForeignKey(Place, verbose_name=u"место")
 
-    value = models.PositiveIntegerField(verbose_name="Оценка", null=True, blank=True, choices=MARK_CHOICES)
+class CensorBox(models.Model):
+
+    smile = models.ForeignKey(Smile)
+
+    x = models.FloatField()
+    y = models.FloatField()
+    r = models.FloatField()
+
+
+class MessagePreview(MessageBase):
+
+    censor_boxes = models.ManyToManyField(CensorBox, null=True, blank=True)
