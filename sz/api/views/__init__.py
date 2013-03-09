@@ -43,11 +43,12 @@ class SzApiView(APIView):
 class ApiRoot(SzApiView):
     def get(self, request, format=None):
         return sz_api_response.Response({
-            'city-nearest': reverse('city-nearest'),
-            'categories': reverse('category-list'),
-            'places-newsfeed': reverse('place-newsfeed'),
-            'places-search': reverse('place-search'),
-            'login': reverse('auth-login'),
-            'logout': reverse('auth-logout'),
-            'current-user': reverse('auth-user'),
+            'city-nearest': reverse('city-nearest', request=request),
+            'categories': reverse('category-list', request=request),
+            'places-newsfeed': reverse('place-newsfeed', request=request),
+            'places-search': reverse('place-search', request=request),
+            'places-venues-search': reverse('place-venue-search', request=request),
+            'login': reverse('auth-login', request=request),
+            'logout': reverse('auth-logout', request=request),
+            'current-user': reverse('auth-user', request=request),
             })
