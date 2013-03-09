@@ -25,10 +25,16 @@ szClient.factory('venueService', function($resource){
 //     });
 });
 
-szClient.factory('messageService', function($resource){
-    return $resource('../../api/messages/:messageId', {}, {
-        marks: { method:'GET', params:{messageId: 'marks'}, isArray:false }
-    });
+szClient.factory('messagePreviewService', function($http){
+    var create = function(params, success, error){
+        $http.post('../../api/places/'+ params.placeId +'/messages', params.message, {
+            headers: { 'Content-Type': false },
+            transformRequest: angular.identity,
+            params: {format: 'json'}
+        }).success(success).error(error);
+    }
+
+    return { create: create }
 });
 
 

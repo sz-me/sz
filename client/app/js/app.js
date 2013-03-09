@@ -1,5 +1,5 @@
 'use strict';
-angular.module('sz.client', ['sz.client.directives', 'sz.client.services', 'ng-upload', 'ngCookies'])
+angular.module('sz.client', ['sz.client.directives', 'sz.client.services', 'ngResource', 'ngCookies'])
 	.config(['$routeProvider', function($routeProvider) {$routeProvider
         .when('/newsfeed', {templateUrl: 'partials/newsfeed.html', controller: NewsFeedController})
         .when('/place_list', {templateUrl: 'partials/place_list.html', controller: PlaceListController})
