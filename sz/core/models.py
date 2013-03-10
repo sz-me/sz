@@ -235,15 +235,16 @@ class Message(MessageBase):
     stems = models.ManyToManyField(Stem, null=True, blank=True)
 
 
+class MessagePreview(MessageBase):
+    pass
+
+
 class CensorBox(models.Model):
 
-    smile = models.ForeignKey(Smile)
+    message_preview = models.ForeignKey(MessagePreview)
 
     x = models.FloatField()
     y = models.FloatField()
     r = models.FloatField()
 
 
-class MessagePreview(MessageBase):
-
-    censor_boxes = models.ManyToManyField(CensorBox, null=True, blank=True)
