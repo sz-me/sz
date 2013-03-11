@@ -231,6 +231,8 @@ class MessageBase(models.Model):
         return u"%s" % self.text
 
     def save(self, force_insert=False, force_update=False, using=None):
+        if self.text is None:
+            self.text = ''
         self.text = self.text.strip()
         models.Model.save(self, force_insert=force_insert, force_update=force_update, using=using)
 
