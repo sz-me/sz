@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from sz.core import models
 from sz.api import serializers, response as sz_api_response, forms
-from sz.api.views import SzApiView
+from sz.api.views import SzApiView, categorization_service
 
 
 class MessageInstance(SzApiView):
@@ -123,6 +123,7 @@ class MessagePreviewInstancePublish(SzApiView):
                                  smile=message_preview.smile, user=message_preview.user)
         message.save()
         message_preview.delete()
+        categorization_service.assert_stems(message)
         serializer = serializers.MessageSerializer(instance=message)
         place_serializer = serializers.PlaceSerializer(instance=message.place)
         data = serializer.data
