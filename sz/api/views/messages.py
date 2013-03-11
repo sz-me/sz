@@ -75,3 +75,58 @@ class MessageInstancePhoto(SzApiView):
             message.photo.delete(save=False)
             message.save()
         return sz_api_response.Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class MessagePreviewInstance(SzApiView):
+    """ Retrieve or delete a message preview. """
+
+    def get_object(self, pk):
+        try:
+            return models.MessagePreview.objects.get(pk=pk)
+        except models.MessagePreview.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        message_preview = self.get_object(pk)
+        if message_preview.user != request.user:
+            return sz_api_response.Response(status=status.HTTP_403_FORBIDDEN)
+        serializer = serializers.MessagePreviewSerializer(instance=message_preview)
+        place_serializer = serializers.PlaceSerializer(instance=message_preview.place)
+        data = serializer.data
+        root_url = reverse('client-index', request=request)
+        data['photo'] = message_preview.get_photo_absolute_urls(root_url)
+        data['place'] = place_serializer.data
+        return sz_api_response.Response(data)
+
+    def delete(self, request, pk, format=None):
+        message_preview = self.get_object(pk)
+        if message_preview.user != request.user:
+            return sz_api_response.Response(status=status.HTTP_403_FORBIDDEN)
+        message_preview.delete()
+        return sz_api_response.Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class MessagePreviewInstancePublish(SzApiView):
+    """ Publishes a message preview. """
+
+    def get_object(self, pk):
+        try:
+            return models.MessagePreview.objects.get(pk=pk)
+        except models.MessagePreview.DoesNotExist:
+            raise Http404
+
+    def post(self, request, pk, format=None):
+        message_preview = self.get_object(pk)
+        if message_preview.user != request.user:
+            return sz_api_response.Response(status=status.HTTP_403_FORBIDDEN)
+        message = models.Message(text=message_preview.text, photo=message_preview.photo, place=message_preview.place,
+                                 smile=message_preview.smile, user=message_preview.user)
+        message.save()
+        message_preview.delete()
+        serializer = serializers.MessageSerializer(instance=message)
+        place_serializer = serializers.PlaceSerializer(instance=message.place)
+        data = serializer.data
+        root_url = reverse('client-index', request=request)
+        data['photo'] = message.get_photo_absolute_urls(root_url)
+        data['place'] = place_serializer.data
+        return sz_api_response.Response(data)

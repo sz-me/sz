@@ -15,6 +15,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Category, CategoryAdmin)
 
+
 def index_message_text(model_admin, request, queryset):
     [categorization_service.assert_stems(message) for message in queryset]
 index_message_text.short_description = u"Индексировать текст"
@@ -30,9 +31,9 @@ class MessageAdmin(admin.ModelAdmin):
     stems_to_str.short_description = u'Основы'
 
     admin_thumbnail = AdminThumbnail(image_field='thumbnail')
-    list_display = ('date', 'user', 'text', 'admin_thumbnail', 'place',
+    list_display = ('date', 'text', 'admin_thumbnail', 'place',
                     'categories_to_str', 'stems_to_str')
-    list_display_links = ('text',)
+    list_display_links = ('date',)
     list_filter = ('categories',)
     list_per_page = 25
     ordering = ('-date',)
@@ -41,6 +42,20 @@ class MessageAdmin(admin.ModelAdmin):
     date_hierarchy = 'date'
 
 admin.site.register(models.Message, MessageAdmin)
+
+
+class StyleAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description',)
+    ordering = ('name',)
+
+admin.site.register(models.Style, StyleAdmin)
+
+
+class SmileAdmin(admin.ModelAdmin):
+    list_display = ('style', 'emotion',)
+    ordering = ('style',)
+
+admin.site.register(models.Smile, SmileAdmin)
 '''
 from django.contrib.gis import admin as gis_admin
 class PlaceAdmin(gis_admin.OSMGeoAdmin):

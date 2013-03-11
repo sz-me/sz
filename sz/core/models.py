@@ -3,7 +3,6 @@ import os, uuid
 from time import strftime
 from django.contrib.auth import models as auth_models
 from django.contrib.gis.db import models
-from django.contrib.sites.models import Site
 from imagekit import models as imagekit_models
 from imagekit import processors
 
@@ -141,14 +140,44 @@ class Stem(models.Model):
 
 
 # Entities
-MARK_CHOICES = (
-    (0, 'It happens...'),
-    (1, "I'll be back."),
-    (2, 'Have made a purchase!'),
+
+
+class Style(models.Model):
+    name = models.CharField(max_length=32, verbose_name=u"название")
+    description = models.CharField(
+        verbose_name=u"описание", max_length=256,
+        null=True, blank=True)
+
+    def __unicode__(self):
+        return u"%s" % self.name
+
+    class Meta:
+        verbose_name = u"стиль"
+        verbose_name_plural = u"стили"
+
+
+EMOTION_CHOICES = (
+    ('smile', 'Smile'),
+    ('lol', "LOL"),
+    ('bad', 'Bad'),
+    ('indifferent', 'Indifferent')
 )
 
 
-class Message(models.Model):
+class Smile(models.Model):
+    emotion = models.CharField(max_length=16, verbose_name=u"Эмоция", choices=EMOTION_CHOICES)
+    style = models.ForeignKey(Style, verbose_name=u"стиль", blank=True, null=True)
+
+    def __unicode__(self):
+        style_name = self.style and self.style.name or 'all'
+        return u"%s_%s" % (self.emotion, style_name)
+
+    class Meta:
+        verbose_name = u"смайл"
+        verbose_name_plural = u"смайлы"
+
+
+class MessageBase(models.Model):
 
     date = models.DateTimeField(
         auto_now_add=True, null=True, blank=True,
@@ -191,23 +220,37 @@ class Message(models.Model):
 
     categories = models.ManyToManyField(Category, null=True, blank=True)
 
-    stems = models.ManyToManyField(Stem, null=True, blank=True)
+    smile = models.ForeignKey(Smile)
 
     class Meta:
+        abstract = True
         verbose_name = u"сообщение"
         verbose_name_plural = u"сообщения"
-        ordering = ["-date"]
 
     def __unicode__(self):
         return u"%s" % self.text
 
-class Mark(models.Model):
-    date = models.DateTimeField(
-        auto_now_add=True, null=True, blank=True,
-        editable=False, verbose_name=u"дата добавления")
+    def save(self, force_insert=False, force_update=False, using=None):
+        if self.text is None:
+            self.text = ''
+        self.text = self.text.strip()
+        models.Model.save(self, force_insert=force_insert, force_update=force_update, using=using)
 
-    user = models.ForeignKey(auth_models.User, verbose_name=u"пользователь")
 
-    place = models.ForeignKey(Place, verbose_name=u"место")
+class Message(MessageBase):
+    stems = models.ManyToManyField(Stem, null=True, blank=True)
 
-    value = models.PositiveIntegerField(verbose_name="Оценка", null=True, blank=True, choices=MARK_CHOICES)
+
+class MessagePreview(MessageBase):
+    pass
+
+
+class CensorBox(models.Model):
+
+    message_preview = models.ForeignKey(MessagePreview)
+
+    x = models.FloatField()
+    y = models.FloatField()
+    r = models.FloatField()
+
+
