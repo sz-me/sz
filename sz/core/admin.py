@@ -32,7 +32,7 @@ class MessageAdmin(admin.ModelAdmin):
     admin_thumbnail = AdminThumbnail(image_field='thumbnail')
     list_display = ('date', 'user', 'text', 'admin_thumbnail', 'place',
                     'categories_to_str', 'stems_to_str')
-    list_display_links = ('date',)
+    list_display_links = ('text',)
     list_filter = ('categories',)
     list_per_page = 25
     ordering = ('-date',)
@@ -41,20 +41,6 @@ class MessageAdmin(admin.ModelAdmin):
     date_hierarchy = 'date'
 
 admin.site.register(models.Message, MessageAdmin)
-
-
-class StyleAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description',)
-    ordering = ('name',)
-
-admin.site.register(models.Style, StyleAdmin)
-
-
-class SmileAdmin(admin.ModelAdmin):
-    list_display = ('style', 'emotion',)
-    ordering = ('style',)
-
-admin.site.register(models.Smile, SmileAdmin)
 '''
 from django.contrib.gis import admin as gis_admin
 class PlaceAdmin(gis_admin.OSMGeoAdmin):
