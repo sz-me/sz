@@ -113,7 +113,7 @@ class PlaceInstanceMessages(SzApiView):
         return sz_api_response.Response(response_builder.build(place, messages))
 
 
-class PlaceInstanceMessagePreview(SzApiView):
+class PlaceInstanceMessagePreviews(SzApiView):
 
     def post(self, request, pk, format=None):
         serializer = serializers.MessagePreviewSerializer(data=request.DATA, files=request.FILES)
@@ -129,5 +129,8 @@ class PlaceInstanceMessagePreview(SzApiView):
                     for category in categories:
                         message_preview.categories.add(category)
             #categorization_service.assert_stems(message_preview)
+            serialized_preview = serializers.MessagePreviewSerializer(instance=message_preview).data
+            root_url = reverse('client-index', request=request)
+            serialized_preview['photo'] = message_preview.get_photo_absolute_urls(root_url)
             return sz_api_response.Response(serializer.data, status=status.HTTP_201_CREATED)
         return sz_api_response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
