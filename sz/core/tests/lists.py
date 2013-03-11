@@ -2,14 +2,15 @@
 from django.test import TestCase
 from sz.core import lists
 
+
 class ListsTest(TestCase):
     def test_any(self):
         self.assertFalse(lists.any(lambda x: x < 0, [1, 2, 3]))
-        self.assertFalse(lists.any(lambda x: x != None, [None, None, None]))
+        self.assertFalse(lists.any(lambda x: x is not None, [None, None, None]))
         self.assertTrue(lists.any(lambda x: x > 1, [0, 1, 2]))
     def test_all(self):
         self.assertTrue(lists.all(lambda x: x > 0, [1, 2, 3]))
-        self.assertFalse(lists.all(lambda x: x == None, set([None, 1])))
+        self.assertFalse(lists.all(lambda x: x is None, set([None, 1])))
         self.assertFalse(lists.all(lambda x: x > 1, [0, 1, 2]))
     def test_first(self):
         self.assertEquals(lists.first([4, 2, 3]), 4)
