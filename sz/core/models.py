@@ -167,10 +167,11 @@ EMOTION_CHOICES = (
 
 class Smile(models.Model):
     emotion = models.CharField(max_length=16, verbose_name=u"Эмоция", choices=EMOTION_CHOICES)
-    style = models.ForeignKey(Style, verbose_name=u"стиль")
+    style = models.ForeignKey(Style, verbose_name=u"стиль", blank=True, null=True)
 
     def __unicode__(self):
-        return u"%s_%s" % (self.emotion, self.style.name)
+        style_name = self.style and self.style.name or 'all'
+        return u"%s_%s" % (self.emotion, style_name)
 
     class Meta:
         verbose_name = u"смайл"

@@ -15,6 +15,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Category, CategoryAdmin)
 
+
 def index_message_text(model_admin, request, queryset):
     [categorization_service.assert_stems(message) for message in queryset]
 index_message_text.short_description = u"Индексировать текст"
@@ -30,7 +31,7 @@ class MessageAdmin(admin.ModelAdmin):
     stems_to_str.short_description = u'Основы'
 
     admin_thumbnail = AdminThumbnail(image_field='thumbnail')
-    list_display = ('date', 'user', 'text', 'admin_thumbnail', 'place',
+    list_display = ('date', 'text', 'admin_thumbnail', 'place',
                     'categories_to_str', 'stems_to_str')
     list_display_links = ('date',)
     list_filter = ('categories',)
