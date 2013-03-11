@@ -39,11 +39,10 @@ class CategorySerializer(serializers.ModelSerializer):
         exclude = ('keywords',)
 
 
-class MessageSerializer(serializers.ModelSerializer):
+class MessageBaseSerializer(serializers.ModelSerializer):
     photo = serializers.ImageField(required=False, blank=True)
 
     class Meta:
-        model = models.Message
         read_only_fields = ('date',)
         exclude = ('place', 'user', 'stems',)
 
@@ -60,6 +59,21 @@ class MessageSerializer(serializers.ModelSerializer):
         if not (photo or text != ""):
             raise serializers.ValidationError("Message don't must be empty")
         return attrs
+
+
+class MessageSerializer(MessageBaseSerializer):
+
+    class Meta:
+        model = models.Message
+        read_only_fields = ('date',)
+        exclude = ('place', 'user', 'stems',)
+
+
+class MessagePreviewSerializer(MessageBaseSerializer):
+
+    class Meta:
+        model = models.MessagePreview
+        exclude = ('place', 'user')
 
 
 class PlaceSerializer(serializers.ModelSerializer):
