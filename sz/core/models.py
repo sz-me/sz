@@ -3,7 +3,6 @@ import os, uuid
 from time import strftime
 from django.contrib.auth import models as auth_models
 from django.contrib.gis.db import models
-from django.contrib.sites.models import Site
 from imagekit import models as imagekit_models
 from imagekit import processors
 
@@ -230,6 +229,10 @@ class MessageBase(models.Model):
 
     def __unicode__(self):
         return u"%s" % self.text
+
+    def save(self, force_insert=False, force_update=False, using=None):
+        self.text = self.text.strip()
+        models.Model.save(self, force_insert=force_insert, force_update=force_update, using=using)
 
 
 class Message(MessageBase):
