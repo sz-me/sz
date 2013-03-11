@@ -1,18 +1,18 @@
 <ul class="media-list" >
 	<li ng-repeat="item in feed.data.results" class="media padding-bot-big box-border" >
-            <a href="#/v/{{item.place.id}}" class="graydark">
+            <a href="#/places/{{item.place.id}}" class="graydark">
                 <div class="box-header">
 <!--                    <a style="float:right;" >
                         <i class=" icon-chevron-right"></i>
                     </a>-->
-                    <strong >{{item.place.name}}</strong><br>
+                    <h4 style="margin:0px;margin-top:3px;" >{{item.place.name}}</h4>
                     <small >{{item.place.address}}</small>
                 </div>
             </a>
             <ul class="ul-box" >
                 <li class="padding-big">
-                    <div ng-repeat="message in item.messages.results | limitTo:placeMessagesLimit"  class=" media">
-                        <sz-feed-message-box message='message' categories="categories"></sz-feed-message-box>
+                    <div ng-repeat="message in item.messages.results | limitTo:placeMessagesLimit"  class=" media" ng-class="{'messageBox':!$last}">
+                        <sz-news-feed-message-box message='message' categories="categories"></sz-news-feed-message-box>
                     </div>
                 </li>
                 <li class="btn-group box-footer" ng-show="item.messages.results.length-1" >
@@ -22,7 +22,7 @@
                 </li>
             </ul>
 	</li>
-	<li class="text-center media" >
+	<li class="text-center media margin-bottom-huge" >
             <button class="btn  btn-large " ng-click="loadMorePlaces ()">
                 <i class="icon-circle"></i>
                 <i class="icon-circle"></i>

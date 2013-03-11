@@ -47,8 +47,13 @@
                     </a>
                 </li>
                 <li ng-show="showBtnNewMessage">
+                    <a ng-click="collapseTopMenu=false;" href="">
+                        <span>{{user.username}}</span>
+                    </a>
+                </li>
+                <li ng-show="showBtnNewMessage">
                     <a ng-click="collapseTopMenu=false;logout()" style="cursor:pointer" >
-                        <span>{{user.username}}/Выход</span>
+                        <span>Выход</span>
                     </a>
                 </li>
             </ul>
@@ -70,11 +75,10 @@
                     <ul class="nav" style="float:right" ng-show="showBtnNewMessage">                    
                         <li>
                             <a id="btn-user">
-                                <div id="castle_info_val" >
-                                    <span class="badge badge-success">200</span>
-                                    <span class="badge badge-warning">4</span>
+                                <div id="castle_info_val" style="margin-top:-2px;">
+                                    <div><span class="badge badge-success">200</span></div>
+                                    <div><span class="badge badge-warning">4</span></div>
                                 </div>
-                                <span>admin@admin.com</span>
 <!--                                 <i class="icon-user icon-2x" style="margin-top:3px;margin-right:-3px;"></i> -->
                             </a>
                         </li>

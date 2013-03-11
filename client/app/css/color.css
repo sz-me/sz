@@ -121,6 +121,8 @@ textarea:focus{
 #indifferent{}
 #happy{}
 
+
+
 .foursquare-icon{
     float:left;
     margin-right:10px;
@@ -160,23 +162,19 @@ textarea:focus{
   }
 
 
-.fileform { 
+
+/*.fileform { 
     display:inline-block;
     cursor:pointer;
     background-color: white;
-/*     border: 1px solid #CCCCCC; */
-/*     border-radius: 2px; */
     overflow: hidden;
-/*     padding: 2px; */
     position: relative;
     vertical-align: middle;
-  /*  width: 110px;
-    height: 110px;*/
-}
+}*/
  
 
  
-.fileform #files{
+/*.fileform #files{
     cursor:pointer;
     position:absolute; 
     top:0; 
@@ -189,7 +187,7 @@ textarea:focus{
     opacity: 0; 
     font-size: 150px; 
     z-index:20;
-}
+}*/
 
 
 /*#btn-category{
@@ -217,6 +215,10 @@ textarea:focus{
     padding:5px 0;
 }
 .category-string:hover{background:#EEE}*/
+
+.messageBox{
+    border-bottom:1px solid #CCC;
+}
 
 .box-border{
     background:white;
@@ -255,7 +257,7 @@ textarea:focus{
 /*     max-height:90px; */
 }
 
-.circle-parent>div{
+.catDiv{
     margin-top:4px;
     margin-right:6px;
     display:inline-block;
@@ -267,7 +269,7 @@ textarea:focus{
     cursor:pointer;
 }
 
-.circle-parent>div:hover{
+.catDiv:hover{
     box-shadow: 0 0 4px black;
 }
 
@@ -320,11 +322,13 @@ textarea:focus{
 
 .margin-top{margin-top:5px;}
 
-/* .margin-top-big{margin-top:10px;} */
+.margin-top-big{margin-top:10px;}
 
 .margin-top-huge{margin-top:20px;}
 
 .margin-bottom-big{margin-bottom:10px;}
+
+.margin-bottom-huge{margin-bottom:20px;}
 
 .margin-left{margin-left:5px;}
 

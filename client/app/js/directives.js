@@ -81,7 +81,140 @@ angular.module('sz.client.directives', [])
                     }
             }
         })
+                .directive('szNewsFeedMessageBox', function () {
+            return {
+                restrict: 'EA',
+                replace: true,
+                template:
+                        '<div >'+   
+                            '<time >'+
+                                '{{date}}'+
+                                ' {{time}}'+                               
+                            '</time>'+
+                            '<span class="badge margin-top-big" >8</span>'+
+                            '<strong class="margin-left">{{username}}</strong>'+
+                            '<div >'+                                
+                                '<div ng-show="photo" id="photo" style="text-align:center;overflow:hidden;margin-bottom:-60px;margin-top:5px;min-height:60px;">'+
+                                    '<a href="#/message/{{messageid}}" class="inline-block" id="photoA">'+
+                                        '<img class="media-object" src={{photo}} id="photoFile" ng-style={marginTop:"-33%"}>'+
+                                    '</a>'+
+                                '</div>'+
+                                '<div class="circle-parent"  >'+
+//                                     '<a ng-repeat="categoryname in categoriesname" style="margin-right:3px;display:inline-block;font-size:85%;color:#999">'+
+//                                         '{{categoryname}}'+
+//                                     '</a>'+
+                                        '<div style="background:green" class="catDiv">'+
+                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >'+
+                                        '</div>'+                                        
+                                        '<div style="background:#7a43b6" class="catDiv">'+
+                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_284_pants.png">'+
+                                        '</div>'+    
+                                        '<div style="background:#ffc40d" class="catDiv">'+
+                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_285_sweater.png">'+
+                                        '</div>'+    
+                                        '<div style="background:#045fdb" class="catDiv">'+
+                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png">'+
+                                        '</div>'+    
+                                '</div>'+
+                                
+                               
+                            '</div>'+       
+                            '<p class="max-h  margin-top-big" id="text">'+
+                                '{{text}}'+
+                            '</p>'+                            
 
+                           '<div  style="text-align:center;margin:5px 0;" >'+
+                                '<span>'+
+                                    '<button class="btn" data-toggle="button"  id="btnText" ng-show="!hasText()" ng-click="showMessageTextFull()" >'+
+                                        '<i class="icon-2x" ng-class="btnTextClass"></i>'+
+                                    '</button>'+
+//                                     '<button class="btn" data-toggle="button"  id="btnPhoto" ng-show="photo" ng-click="showMessagePhoto()" >'+
+//                                         '<i class="icon-picture icon-2x" ></i>'+
+//                                     '</button>'+
+                                '</span>'+
+                            '</div>'+
+                        '</div>',
+                scope: {
+                    message:'=',
+                    categories:'='
+                },
+                link: function (scope, element, attrs) {
+//                     alert(scope.categories)
+                        var msg = scope.message;
+                        var datetime = msg.date.split('T');
+                        scope.date = datetime[0];
+                        var time = datetime[1].split('.')[0];
+                        scope.time = time.slice(0,time.length-3)
+                        scope.username = 'Генерал Плюшкин';
+                        scope.text = msg.text;
+                        if(msg.photo){
+                            scope.photo = msg.photo.full;
+                            scope.messageid=msg.id
+                        
+                        }
+                        scope.categoriesname = []
+                        $.each(msg.categories,function(index,id){
+                            $.each(scope.categories,function(index,cat){
+                                if(cat.id==id){
+                                    scope.categoriesname.push(cat.name)
+                                }
+                            })
+                        });
+                        scope.messageBox = $(element[0]);
+                        scope.messageText =  scope.messageBox.find("#text");
+                        scope.textHeight = parseInt(scope.messageText.css('maxHeight'));
+                        scope.textWidth = scope.messageBox.width();
+                        scope.messagePhoto =  scope.messageBox.find("#photo");
+                        scope.photoMaxH = 150;
+                        var photoH = scope.messagePhoto.height();
+                        scope.messagePhoto.css({maxHeight:scope.photoMaxH})
+//                         scope.photoMarginTop = -1*(photoH-scope.photoMaxH)*0.5+'px';
+                        scope.photoMarginTop = function(){
+//                             return '-200px'
+                               return 0
+                        }
+                        scope.btnText = scope.messageBox.find("#btnText");
+                        scope.btnPhoto = scope.messageBox.find("#btnPhoto");
+//                         scope.btnTextClass='icon-caret-down';
+                        scope.btnTextClass='icon-reorder';
+                        scope.hasText = function(){
+                            return scope.textHeight>scope.messageText.height()
+                        }
+                        scope.showMessageTextFull = function(){
+                            if(scope.textHeight==scope.messageText.height()){
+//                                 scope.messagePhoto.slideUp(500);
+//                                 scope.messageText.css({maxHeight:'none'});
+                                var $textClone = scope.messageText.clone();
+                                $textClone.css({maxHeight:'none',width:scope.textWidth+'px',display:'none'});
+                                $("#content").prepend($textClone);
+                                var h = $textClone.height();
+                                $textClone.remove();
+                                var newHeight = h;
+                                scope.messageText.animate({maxHeight:newHeight+'px'},500);
+                                scope.btnPhoto.removeClass("active");
+//                                 scope.btnTextClass='icon-caret-up';
+                            }
+                            else{
+                                scope.messageText.animate({maxHeight:scope.textHeight+'px'},500);
+//                                 scope.btnTextClass='icon-caret-down';
+                            }
+                        }
+//                         scope.showMessagePhoto = function(){
+//                             if (scope.messagePhoto.is(":hidden")){
+//                                 if(scope.textHeight<scope.messageText.height()){
+//                                     scope.messageText.animate({maxHeight:scope.textHeight+'px'},500);
+//                                     scope.btnText.removeClass("active")
+// //                                     scope.btnTextClass='icon-caret-down';
+//                                 }
+//                                 scope.messagePhoto.slideDown(500);
+//                             }
+//                             else{scope.messagePhoto.slideUp(500)}
+//                         }
+                        
+                    
+                }
+            };
+        })
         .directive('szFeedMessageBox', function () {
             return {
                 restrict: 'EA',
@@ -98,16 +231,16 @@ angular.module('sz.client.directives', [])
 //                                     '<a ng-repeat="categoryname in categoriesname" style="margin-right:3px;display:inline-block;font-size:85%;color:#999">'+
 //                                         '{{categoryname}}'+
 //                                     '</a>'+
-                                        '<div style="background:green">'+
+                                        '<div style="background:green" class="catDiv">'+
                                             '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >'+
                                         '</div>'+                                        
-                                        '<div style="background:#7a43b6">'+
+                                        '<div style="background:#7a43b6" class="catDiv">'+
                                             '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_284_pants.png">'+
                                         '</div>'+    
-                                        '<div style="background:#ffc40d">'+
+                                        '<div style="background:#ffc40d" class="catDiv">'+
                                             '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_285_sweater.png">'+
                                         '</div>'+    
-                                        '<div style="background:#045fdb">'+
+                                        '<div style="background:#045fdb" class="catDiv">'+
                                             '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png">'+
                                         '</div>'+    
                                 '</div>'+
@@ -210,118 +343,95 @@ angular.module('sz.client.directives', [])
                         if(scope.collapseTopMenu){$("#collapseMenu").animate({maxHeight:scope.h+'px'},200)}
                         else{$("#collapseMenu").animate({maxHeight:0},200)}
                     }
-                    scope.h = 96;
+                    scope.h = 110;
                     scope.$watch('collapseTopMenu', collapse);
                     
                 }
             }
         })
-        .directive('szPrevPhoto',function(){
-            return{
-                restrict:'EA',
-                link:function(scope,elm,attr){
-//                     var placeID = scope.placeID
-                    
-                    function stateChange(event) {
-                        if (event.target.readyState == 4) {
-                            if (event.target.status == 200) {
-                                $("#res").text('Загрузка успешно завершена!');
-                            } else {
-                                $("#res").text('Произошла ошибка!');
-                            }
-                        }
-                    }
-                    
-                    function handleFileSelect(evt) {
-                        var files = evt.target.files;
-                        var photo = evt.target.files[0]
-                        var photoName = photo.name;
-                        if (photo.type.match('image.*')) {
-                            var reader = new FileReader();
-                            reader.onload = (function(theFile) {
-                                return function(e) {
-                                    var span = document.getElementById('photoPrev');
-                                    span.innerHTML = ['<img class="thumb" src="', e.target.result,
-                                                        '" title="', escape(photoName), '"/>'].join('');
-                                    $("#message-photo-remove-ico").show();
-                                    var xhr = new XMLHttpRequest();
-//                                      xhr.upload.addEventListener('progress', uploadProgress, false);
-                                    xhr.onreadystatechange = stateChange;
-                                    xhr.open('POST', '../../api/places/'+scope.place.id+'/messages?format=json');
-                                    xhr.setRequestHeader('X-FILE-NAME', photoName);
-                                    xhr.send(photo);
-                                };
-                                
-                            })(photo);      
-                            reader.readAsDataURL(photo);
-                        }
-                    }
-                    document.getElementById('files').addEventListener('change', handleFileSelect, false);
-                }
-            }
-        })
-        .directive('szRemovePhoto',function(){
-            return{
-                restrict:'EA',
-                link:function(scope,elm,attr){
-                       var remove = function(){
-                            if(scope.removePhoto){
-                                var span = document.getElementById('photoPrev');
-                                span.innerHTML = [''].join('');
-                                $("#message-photo-remove-ico").hide();
-                                scope.removePhoto = false;
-                            }
-                    }
-                    scope.$watch('removePhoto', remove);
-                    
-                }
-            }
-        })
+//         .directive('szNewMessageCategories',function(){
+//             return{
+//                 restrict:'EA',
+//                 template:
+//                     '<ul class="class="media-list"">'+
+//                         '<li >'+
+//                             'Добавить категорию'
+//                         '</li>'+
+//                     '</ul>',
+//                 link:function(scope,elm,attr){
+//                     var collapse = function(){
+//                         if(scope.collapseTopMenu){$("#collapseMenu").animate({maxHeight:scope.h+'px'},200)}
+//                         else{$("#collapseMenu").animate({maxHeight:0},200)}
+//                     }
+//                     scope.h = 110;
+//                     scope.$watch('collapseTopMenu', collapse);
+//                     
+//                 }
+//             }
+//         })
         
-//         .directive('szChoosePhoto',function(){
+//         .directive('szPrevPhoto',function(){
 //             return{
 //                 restrict:'EA',
 //                 link:function(scope,elm,attr){
-//                     var choosePhoto = function(){
-//                         if (scope.photo.lastIndexOf('\\')){
-//                             var i = scope.photo.lastIndexOf('\\')+1;
+// //                     var placeID = scope.placeID
+//                     
+//                     function stateChange(event) {
+//                         if (event.target.readyState == 4) {
+//                             if (event.target.status == 200) {
+//                                 $("#res").text('Загрузка успешно завершена!');
+//                             } else {
+//                                 $("#res").text('Произошла ошибка!');
+//                             }
 //                         }
-//                         else{
-//                             var i = scope.photo.lastIndexOf('/')+1;
-//                         }                                           
-//                         var filename = scope.photo.slice(i);                        
-//                         var uploaded = document.getElementById("fileformlabel");
-//                         uploaded.innerHTML = filename;
 //                     }
-//                     scope.$watch('photo', choosePhoto);
+//                     
+//                     function handleFileSelect(evt) {
+//                         var files = evt.target.files;
+//                         var photo = evt.target.files[0]
+//                         var photoName = photo.name;
+//                         if (photo.type.match('image.*')) {
+//                             var reader = new FileReader();
+//                             reader.onload = (function(theFile) {
+//                                 return function(e) {
+//                                     var span = document.getElementById('photoPrev');
+//                                     span.innerHTML = ['<img class="thumb" src="', e.target.result,
+//                                                         '" title="', escape(photoName), '"/>'].join('');
+//                                     $("#message-photo-remove-ico").show();
+//                                     var xhr = new XMLHttpRequest();
+// //                                      xhr.upload.addEventListener('progress', uploadProgress, false);
+//                                     xhr.onreadystatechange = stateChange;
+//                                     xhr.open('POST', '../../api/places/'+scope.place.id+'/messages?format=json');
+//                                     xhr.setRequestHeader('X-FILE-NAME', photoName);
+//                                     xhr.send(photo);
+//                                 };
+//                                 
+//                             })(photo);      
+//                             reader.readAsDataURL(photo);
+//                         }
+//                     }
+//                     document.getElementById('files').addEventListener('change', handleFileSelect, false);
+//                 }
+//             }
+//         })
+//         .directive('szRemovePhoto',function(){
+//             return{
+//                 restrict:'EA',
+//                 link:function(scope,elm,attr){
+//                        var remove = function(){
+//                             if(scope.removePhoto){
+//                                 var span = document.getElementById('photoPrev');
+//                                 span.innerHTML = [''].join('');
+//                                 $("#message-photo-remove-ico").hide();
+//                                 scope.removePhoto = false;
+//                             }
+//                     }
+//                     scope.$watch('removePhoto', remove);
 //                     
 //                 }
 //             }
 //         })
-//         .directive('szCollapseCategories',function(){
-//             return{
-//                 restrict:'EA',
-//                 link:function(scope,elm,attr){
-// //                     var collapse = function(){
-// //                         if(scope.collapseTopMenu){$("#collapseMenu").animate({maxHeight:scope.h+'px'},200)}
-// //                         else{$("#collapseMenu").animate({maxHeight:0},200)}
-// //                     }
-// //                     scope.h = 96;
-// //                     scope.$watch('collapseTopMenu', collapse);
-//                     var showCollapse = function(){
-//                         var h = 400;
-//                         if(scope.showCollapseCat){
-//                             $("#categories").animate({maxHeight:h+'px'},200)
-//                         }
-//                         else{
-//                             $("#categories").animate({maxHeight:0},200)     
-//                         }
-//                     }
-//                     
-//                     scope.$watch('showCollapseCat', showCollapse);
-//                 }
-//             }
-//         })
+
 
 //         .directive('szDetermEq',function(){
 //             return{

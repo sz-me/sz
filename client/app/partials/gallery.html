@@ -1,0 +1,30 @@
+
+<div  class="box-border padding-X-big padding-Y text-center">
+    <div style="float:left;margin-top:10px;">
+        <a class="btn btn-large  btn-primary" type="button" href="#/places/{{ place.id }}/messages/add" ><i class="icon-plus icon-2x" ></i></a>
+    </div>
+    <a href="#/places/{{ place.id }}/" class="graydark">
+        <div style="text-align:right;margin-bottom:10px" >        
+            <h3 style="margin-bottom:0;;">{{place.name}}</h3>
+            <small style="line-height:10px;">{{place.address}}</small>   
+        </div> 
+    </a>
+
+</div>
+
+<ul class="media-list " >
+    <li >
+        <div class="margin-top-huge text-center padding-big box-border">
+            <a ng-repeat="message in feedPhoto.results " class="inline-block" href="#/places/{{ place.id }}/messages/message.id ">
+                <img src="{{message.photo.thumbnail}}">
+            </a>
+        </div>
+    </li>
+    <li  class="text-center media margin-bottom-huge"  >
+        <button class="btn  btn-large" ng-click="loadMore()">
+            <i class="icon-circle"></i>
+            <i class="icon-circle"></i>
+            <i class="icon-circle"></i>
+        </button>
+    </li>
+</ul>

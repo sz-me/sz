@@ -1,6 +1,6 @@
 
 
-<div class="box-border">
+<div class="box-border" id="firstStage" ng-show="showFirstStage">
     <div class="box-header">
 <!--        <div class="distance">
             <div>
@@ -20,5 +20,40 @@
             <button class="btn btn-large btn-primary" ng-click="send()" ng-disabled="inProgress">Отправить</button>
         </ul>
     </div>
+</div>
+<div class="box-border padding-huge margin-bottom-huge" id="secondStage" ng-show="showSecondStage">
+    <div class="text-center" style="max-height:300px;overflow:hidden;">
+        <div class="inline-block">
+            <img class="media-object" src={{photoURL}} style="margin-top:-33%">
+        </div>
+    </div>
+    <select class="margin-top" multiple="multiple" ng-model="new_message_categories" ng-options="c.name for c in categories" ng-click="setCategory()" ng-disabled="inProgress">
+        <option value="" >Добавить категорию</option>
+    </select>
+    <ul class="media-list margin-top" >
+        <li ng-repeat="messageCat in new_message_categories" >
+            <div class="inline-block">
+                <div class="catDiv" style="background:green;float:left;margin-top:-4px" ng-disabled="inProgress">
+                    <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >
+                </div>  
+                <button class="btn" style="float:right;margin-top:3px;" ng-click="removeCat(messageCat)" ng-disabled="inProgress"><i class="icon-remove"></i></button>
+                <p style="font-size:110%;margin-left:5px;padding-top:7px;padding-bottom:7px;white-space:nowrap;overflow:hidden;">{{messageCat.name}}</p>
+            </div>
+        </li>
+    </ul>
+    <ul class="text-center ul-box">
+        <button class="btn btn-large btn-primary" ng-click="ok()" ng-disabled="inProgress">Готово!</button>
+    </ul>
+<!--    <ul class="media-list">
+        <li ng-repead="messageCat in messageCategories">
+        </li>
+        <li ng-click="shMesCatDialog=true">
+            Добавить категорию
+        </li>
+    </ul>
+    <div ng-show="shMesCatDialog" id="MesCatDialog">
+        
+    </div>-->
+<!--     <sz-new-message-categories></sz-new-message-categories> -->
 </div>
 
