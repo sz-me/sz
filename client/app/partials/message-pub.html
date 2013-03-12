@@ -1,30 +1,7 @@
-
-
-<div class="box-border" id="firstStage" ng-show="showFirstStage">
-    <div class="box-header">
-<!--        <div class="distance">
-            <div>
-                {{place.distance}} м
-            </div>
-        </div>-->
-        <h3 style="margin-bottom:0;;">{{place.name}}</h3>
-        <small style="line-height:10px;">{{place.address}}</small>  
-    </div>
-    <div class="padding-huge">
-        <textarea name='text'
-                  id="messageText"
-                  placeholder="Напишите пару строк или прикрепите изображение, а лучше и то, и другое"
-                  class="margin-Y-big" ng-model="text" ng-init="text=''" ng-disabled="inProgress"></textarea>
-        <input type="file" name="photo" sz-file-model="photo" ng-init="photo=null" ng-disabled="inProgress"/>
-        <ul class="text-center ul-box">
-            <button class="btn btn-large btn-primary" ng-click="send()" ng-disabled="inProgress">Отправить</button>
-        </ul>
-    </div>
-</div>
-<div class="box-border padding-huge margin-bottom-huge" id="secondStage" ng-show="showSecondStage">
+<div class="box-border padding-huge margin-bottom-huge" id="secondStage">
     <div class="text-center" style="max-height:300px;overflow:hidden;">
         <div class="inline-block">
-            <img class="media-object" src={{photoURL}} style="margin-top:-33%">
+            <img ng-src="{{ photoUrl }}" style="margin-top:-33%"/>
         </div>
     </div>
     <select class="margin-top" multiple="multiple" ng-model="new_message_categories" ng-options="c.name for c in categories" ng-click="setCategory()" ng-disabled="inProgress">

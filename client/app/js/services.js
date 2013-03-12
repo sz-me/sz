@@ -5,8 +5,8 @@ var szClient = angular.module('sz.client.services', ['ngResource']);
 
 /* Services */
 szClient.factory('placeService', function($resource){
-    return $resource('../../api/places/:placeId', {}, {
-        query: { method:'GET', params:{}, isArray:false }
+    return $resource('../../api/places/:placeId/:ctrl', {placeId: '@data.id'}, {
+        newsfeed: { method:'GET', params:{ctrl: 'newsfeed' }, isArray:false }
     });
 });
 
@@ -25,16 +25,31 @@ szClient.factory('venueService', function($resource){
 //     });
 });
 
-szClient.factory('messagePreviewService', function($http){
-    var create = function(params, success, error){
-        $http.post('../../api/places/'+ params.placeId +'/messages', params.message, {
+
+szClient.factory('messagePreviewService', function($http, $resource){
+
+    var create = function(message, success, error){
+        $http.post('../../api/messages/previews', message, {
+            headers: { 'Content-Type': false },
+            transformRequest: angular.identity,
+            params: {format: 'json'}
+        }).success(success).error(error);
+    }
+    var update = function(previewId, message, success, error){
+        $http.put('../../api/messages/previews/' + previewId, message, {
             headers: { 'Content-Type': false },
             transformRequest: angular.identity,
             params: {format: 'json'}
         }).success(success).error(error);
     }
 
-    return { create: create }
+    var resource = $resource('../../api/messages/previews/:previewId', {previewId: '@data.id'}, {
+        query: { method:'GET', params:{}, isArray:false }
+    });
+
+    resource.create = create;
+    resource.update = update;
+    return resource;
 });
 
 
