@@ -16,6 +16,12 @@ szClient.factory('newsFeedService', function($resource){
     });
 });
 
+szClient.factory('messageService', function($resource){
+    return $resource('../../api/messages/:messageId', {}, {
+        query: { method:'GET', params:{}, isArray:false }
+    });
+});
+
 szClient.factory('venueService', function($resource){
     return $resource('../../api/places/venues/search', {}, {
         query: { method:'GET', params:{}, isArray:false }

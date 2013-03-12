@@ -6,7 +6,7 @@ angular.module('sz.client', ['sz.client.directives', 'sz.client.services', 'ngRe
         .when('/places/:placeId', {templateUrl: 'partials/place.html', controller: PlaceController})
         .when('/places/:placeId/messages/add', {templateUrl: 'partials/message-addition.html', controller: MessageAdditionController})
         .when('/places/:placeId/gallery', {templateUrl: 'partials/gallery.html', controller: GalleryController})
-        .when('/message/:messageId', {templateUrl: 'partials/message.html', controller: MessageController})
+        .when('/places/:placeId/messages/:messageId', {templateUrl: 'partials/message.html', controller: MessageController})
         .when('/login', {templateUrl: 'partials/login.html', controller: LoginController})
         .when('/registration', {templateUrl: 'partials/registration.html', controller: RegistrationController})
         .when('/search', {templateUrl: 'partials/search.html', controller: SearchController})

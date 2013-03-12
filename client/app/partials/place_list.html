@@ -1,12 +1,13 @@
-<!-- {{placeList || json}} -->
-<ul class="ul-box">
+{{isGetInProgress}}
+
+<ul class="ul-box margin-bottom-huge">
     <div class="box-border padding-huge text-center">
         <span>
             <div class="btn-group" data-toggle="buttons-radio" >
-                <button class="btn" type="radio" ng-click="filter.radius='250'">250m</button>
-                <button class="btn" type="radio" ng-click="filter.radius='1000'">1km</button>
-                <button class="btn" type="radio" ng-click="filter.radius='3000'">3km</button>
-                <button class="btn active" type="radio" ng-click="filter.radius=''" >city</button>
+                <button class="btn" type="radio" ng-click="filter.radius=250;newList()" >250m</button>
+                <button class="btn" type="radio" ng-click="filter.radius=1000;newList()">1km</button>
+                <button class="btn" type="radio" ng-click="filter.radius=3000;newList()">3km</button>
+                <button class="btn active" type="radio" ng-click="filter.radius=0;newList()" >city</button>
             </div>
         </span>
         <div class="media">
@@ -25,7 +26,7 @@
                 <div class="foursquare-icon">
                     <img src={{place.place.foursquare_icon_prefix+'64'+place.place.foursquare_icon_suffix}}>
                 </div>
-                <div >        
+                <div style="min-height:66px;">        
                     <h3 style="margin-bottom:0;margin-top:0px;">{{place.place.name}}</h3>
                     <small style="line-height:10px;">{{place.place.address}}</small>   
                 </div> 
@@ -51,3 +52,4 @@
         </div>
     </li>
 </ul>
+
