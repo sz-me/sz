@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.http import Http404
-from rest_framework import permissions, status
+from rest_framework import permissions
 from rest_framework.reverse import reverse
 from sz.api import serializers, forms, response as sz_api_response
 from sz.core import models
-from sz.api.views import SzApiView, place_service, categorization_service
+from sz.api.views import SzApiView, place_service
 
 
 class PlaceRootNewsFeed(SzApiView):
@@ -111,26 +111,3 @@ class PlaceInstanceMessages(SzApiView):
         photo_host = reverse('client-index', request=request)
         response_builder = sz_api_response.PlaceMessagesResponseBuilder(photo_host)
         return sz_api_response.Response(response_builder.build(place, messages))
-
-
-class PlaceInstanceMessagePreviews(SzApiView):
-
-    def post(self, request, pk, format=None):
-        serializer = serializers.MessagePreviewSerializer(data=request.DATA, files=request.FILES)
-        if serializer.is_valid():
-            message_preview = serializer.object
-            message_preview.place = models.Place.objects.get(pk=pk)
-            message_preview.user = request.user
-            message_preview.save()
-            if message_preview.text is not None:
-                if message_preview.text != '':
-                    categories = categorization_service.detect_categories(message_preview.text)
-                    message_preview.categories.clear()
-                    for category in categories:
-                        message_preview.categories.add(category)
-            #categorization_service.assert_stems(message_preview)
-            serialized_preview = serializers.MessagePreviewSerializer(instance=message_preview).data
-            root_url = reverse('client-index', request=request)
-            serialized_preview['photo'] = message_preview.get_photo_absolute_urls(root_url)
-            return sz_api_response.Response(serializer.data, status=status.HTTP_201_CREATED)
-        return sz_api_response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -73,7 +73,7 @@ class MessagePreviewSerializer(MessageBaseSerializer):
 
     class Meta:
         model = models.MessagePreview
-        exclude = ('place', 'user')
+        exclude = ('user',)
 
 
 class PlaceSerializer(serializers.ModelSerializer):

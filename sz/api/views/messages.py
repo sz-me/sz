@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.http import Http404
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework.reverse import reverse
 from sz.core import models
 from sz.api import serializers, response as sz_api_response, forms
@@ -77,6 +77,36 @@ class MessageInstancePhoto(SzApiView):
         return sz_api_response.Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class MessagePreviewRoot(SzApiView):
+
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
+        previews = models.MessagePreview.objects.filter(user=request.user)
+        serializer = serializers.MessagePreviewSerializer(instance=previews)
+        return sz_api_response.Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = serializers.MessagePreviewSerializer(data=request.DATA, files=request.FILES)
+        print request.DATA
+        if serializer.is_valid():
+            message_preview = serializer.object
+            message_preview.user = request.user
+            message_preview.save()
+            if message_preview.text is not None:
+                if message_preview.text != '':
+                    categories = categorization_service.detect_categories(message_preview.text)
+                    message_preview.categories.clear()
+                    for category in categories:
+                        message_preview.categories.add(category)
+                #categorization_service.assert_stems(message_preview)
+            serialized_preview = serializers.MessagePreviewSerializer(instance=message_preview).data
+            root_url = reverse('client-index', request=request)
+            serialized_preview['photo'] = message_preview.get_photo_absolute_urls(root_url)
+            return sz_api_response.Response(serializer.data, status=status.HTTP_201_CREATED)
+        return sz_api_response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class MessagePreviewInstance(SzApiView):
     """ Retrieve or delete a message preview. """
 
@@ -104,6 +134,17 @@ class MessagePreviewInstance(SzApiView):
             return sz_api_response.Response(status=status.HTTP_403_FORBIDDEN)
         message_preview.delete()
         return sz_api_response.Response(status=status.HTTP_204_NO_CONTENT)
+
+    def put(self, request, pk, format=None):
+        message_preview = self.get_object(pk)
+        if message_preview.user != request.user:
+            return sz_api_response.Response(status=status.HTTP_403_FORBIDDEN)
+        serializer = serializers.MessagePreviewSerializer(message_preview, data=request.DATA, files=request.FILES)
+        if serializer.is_valid():
+            serializer.save()
+            return sz_api_response.Response(serializer.data)
+        else:
+            return sz_api_response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MessagePreviewInstancePublish(SzApiView):

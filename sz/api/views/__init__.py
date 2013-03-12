@@ -51,4 +51,5 @@ class ApiRoot(SzApiView):
             'login': reverse('auth-login', request=request),
             'logout': reverse('auth-logout', request=request),
             'current-user': reverse('auth-user', request=request),
+            'message-previews': reverse('message-preview-list', request=request),
             })
