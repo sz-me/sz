@@ -75,6 +75,7 @@ class PlaceService:
         kwargs = params.get_api_params()
         kwargs[params_names.PHOTO] = True
         kwargs[params_names.LIMIT] = self.photos_default_limit
+        kwargs[params_names.OFFSET] = 0
         photos = self.get_place_messages(place, **kwargs)
         item['photos'] = photos
         return item
