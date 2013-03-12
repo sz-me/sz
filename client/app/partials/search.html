@@ -29,19 +29,26 @@
     </li>
     <li class="media box-border padding-huge" >
         <div class="btn-group" data-toggle="buttons-radio" >
-            <button class="btn" type="radio" ng-click="filter.radius='250'">250m</button>
-            <button class="btn" type="radio" ng-click="filter.radius='1000'">1km</button>
-            <button class="btn" type="radio" ng-click="filter.radius='3000'">3km</button>
-            <button class="btn active" type="radio" ng-click="filter.radius=''" >city</button>
+            <button class="btn" type="radio" ng-click="filter.radius=250">250m</button>
+            <button class="btn" type="radio" ng-click="filter.radius=1000">1km</button>
+            <button class="btn" type="radio" ng-click="filter.radius=3000">3km</button>
+            <button class="btn active" type="radio" ng-click="filter.radius=0" >city</button>
         </div>
     </li>
     <li class="media box-border padding-huge">
         <div >
-            <input type="text" class="search-query" ng-model="filter.query"  placeholder="Название места" >
+            <input type="text"  ng-model="filter.place.name"  placeholder="Название места" style="margin-bottom:0;border-radius:0">
+        </div>
+        <div class="text-center" ng-show="showSearchPlaceList">
+            <div id="search-place-list" >
+                <div ng-repeat="item in placeList | limitTo:5" ng-class="{'messageBox':!$last}" ng-click="filter.place=item.place;showSearchPlaceList=false">
+                    {{item.place.name}}
+                </div>
+            </div>
         </div>
     </li>
     <div class="media">
-        <button class="btn btn-large pull-left">Сбросить</button>
-        <button class="btn btn-large pull-right">Искать</button>
+        <button class="btn btn-large pull-left" ng-click="clearFilter()">Сбросить</button>
+        <button class="btn btn-large pull-right" ng-click="isSearch()">Искать</button>
     </div>
 </ul>

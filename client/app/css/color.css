@@ -142,7 +142,16 @@ textarea:focus{
 #indifferent{}
 #happy{}
 
+#search-place-list{
+    display:inline-block;
+    border:1px solid #CCC;
+    min-width:218px;
+}
 
+#search-place-list>div{
+    padding:3px 5px;
+}
+#search-place-list>div:hover{background:#EEE}
 
 .foursquare-icon{
     float:left;
