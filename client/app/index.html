@@ -20,8 +20,11 @@
         <script src="js/controllers.js"></script>
         <script src="js/app.js"></script>
 </head>
-<body ng-controller="MasterPageController"  sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()" sz-determ-eq="searchString" sz-collapse-top-menu="collapseTopMenu">
-
+<body ng-controller="MasterPageController"  sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()" sz-determ-eq="searchString" sz-collapse-top-menu="collapseTopMenu" >
+<div id="overflow" class="overflow" ng-show="isGetInProgress"></div>
+<div id="spinner" class="overflow" ng-show="isGetInProgress">
+    <i class="icon-spinner icon-spin icon-2x "></i>
+</div>
 
         <div class="navbar navbar-static-top " >
             <div class="navbar-inner" >   
@@ -58,7 +61,6 @@
                 </li>
             </ul>
         </div>
-
         <div  ng-view class="content" id="content" ng-show="showContent" class="margin-top-huge"></div>
         
         <div class="navbar navbar-fixed-bottom navbar-inverse"  ng-show="showBotMenuPanel" style="position:fixed">
@@ -103,7 +105,7 @@
             </div>
         </div>
  
- 
+
  
 
  

@@ -95,7 +95,7 @@ angular.module('sz.client.directives', [])
                             '<strong class="margin-left">{{username}}</strong>'+
                             '<div >'+                                
                                 '<div ng-show="photo" id="photo" style="text-align:center;overflow:hidden;margin-bottom:-60px;margin-top:5px;min-height:60px;">'+
-                                    '<a href="#/message/{{messageid}}" class="inline-block" id="photoA">'+
+                                    '<a href="#/places/{{place.id}}/messages/{{messageid}}" class="inline-block" id="photoA">'+
                                         '<img class="media-object" src={{photo}} id="photoFile" ng-style={marginTop:"-33%"}>'+
                                     '</a>'+
                                 '</div>'+
@@ -136,7 +136,8 @@ angular.module('sz.client.directives', [])
                         '</div>',
                 scope: {
                     message:'=',
-                    categories:'='
+                    categories:'=',
+                    place:'='
                 },
                 link: function (scope, element, attrs) {
 //                     alert(scope.categories)
@@ -251,7 +252,7 @@ angular.module('sz.client.directives', [])
                                 '{{text}}'+
                             '</p>'+                            
                             '<div class="box-hide" id="photo">'+
-                                '<a href="#/message/{{messageid}}" class="inline-block">'+
+                                '<a href="#/places/{{place.id}}/messages/{{messageid}}" class="inline-block">'+
                                     '<img class="media-object" src={{photo}}>'+
                                 '</a>'+
                             '</div>'+
@@ -268,7 +269,8 @@ angular.module('sz.client.directives', [])
                         '</div>',
                 scope: {
                     message:'=',
-                    categories:'='
+                    categories:'=',
+                    place:'='
                 },
                 link: function (scope, element, attrs) {
 //                     alert(scope.categories)
@@ -349,6 +351,7 @@ angular.module('sz.client.directives', [])
                 }
             }
         })
+        
 //         .directive('szNewMessageCategories',function(){
 //             return{
 //                 restrict:'EA',

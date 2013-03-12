@@ -12,7 +12,7 @@
             <ul class="ul-box" >
                 <li class="padding-big">
                     <div ng-repeat="message in item.messages.results | limitTo:placeMessagesLimit"  class=" media" ng-class="{'messageBox':!$last}">
-                        <sz-news-feed-message-box message='message' categories="categories"></sz-news-feed-message-box>
+                        <sz-news-feed-message-box message='message' categories="categories" place="item.place"></sz-news-feed-message-box>
                     </div>
                 </li>
                 <li class="btn-group box-footer" ng-show="item.messages.results.length-1" >

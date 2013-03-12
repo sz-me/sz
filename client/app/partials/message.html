@@ -1,3 +1,53 @@
-<div>
-{{message || json}}
+<div  class="box-border padding-X-big padding-Y text-center">
+    <div style="float:left;margin-top:6px;">
+        <a class="btn btn-large  btn-primary" type="button" href="#/places/{{message.place.id }}/messages/add" ><i class="icon-plus icon-2x" ></i></a>
+    </div>
+    <a href="#/places/{{ place.id }}/" class="graydark">
+        <div style="text-align:right;margin-bottom:10px;min-height:62px;" >        
+            <h3 style="margin-bottom:0;margin-top:0;">{{message.place.name}}</h3>
+            <small style="line-height:10px;">{{message.place.address}}</small>   
+        </div> 
+    </a>
+</div>
+<ul class="ul-box box-border padding-huge margin-top-big">
+    <li>
+        <time>
+            {{message.date}}
+        </time>
+    </li>
+    <li>
+        <span class="badge margin-top-big" >8</span>
+        <strong class="margin-left">Герцог Орехов</strong>
+    </li>
+    <li class="text-center margin-top">
+        <div class="inline-block" style="margin-bottom:-60px;min-height:60px;">
+            <img class="media-object" src={{message.photo.full}}>
+        </div>
+    </li>
+    <li>
+        <div class="circle-parent"  >
+            <div style="background:green" class="catDiv">
+                <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >
+            </div>                                        
+            <div style="background:#7a43b6" class="catDiv">
+                <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_284_pants.png">
+            </div>    
+            <div style="background:#ffc40d" class="catDiv">
+                <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_285_sweater.png">
+            </div>    
+            <div style="background:#045fdb" class="catDiv">
+                <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png">
+            </div>    
+        </div>
+    </li>
+    <li class="margin-top">
+        <p>{{message.text}}</p>
+    </li>
+    <li class="text-center">
+        <button class="btn  btn-large margin-top-big" >
+            <i class="icon-arrow-left"></i>
+        </button>
+    </li>
+</ul>
+<div style="height:60px;">
 </div>
