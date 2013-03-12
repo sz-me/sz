@@ -42,6 +42,11 @@ class ModelCachingManager:
 
 class PlaceService:
 
+    news_feed_items_default_limit = 17
+    news_feed_item_messages_default_limit = 3
+    messages_default_limit = 9
+    photos_default_limit = 9
+
     def __init__(self, city_service, venue_service, categorization_service):
         self.venue_service = venue_service
         self.city_service = city_service
@@ -69,7 +74,7 @@ class PlaceService:
         item = self.__make_feed_item(place, params)
         kwargs = params.get_api_params()
         kwargs[params_names.PHOTO] = True
-        kwargs[params_names.LIMIT] = 7
+        kwargs[params_names.LIMIT] = self.photos_default_limit
         photos = self.get_place_messages(place, **kwargs)
         item['photos'] = photos
         return item
@@ -84,14 +89,13 @@ class PlaceService:
 
     def get_news_feed(self, **kwargs):
         current_max_id = self.__get_max_id()
-        default_limit = settings.DEFAULT_PAGINATE_BY
         params = parameters.NewsFeedParametersFactory.create(
-            kwargs, self.categorization_service, self.city_service, current_max_id, default_limit)
+            kwargs, self.categorization_service, self.city_service, current_max_id, self.news_feed_items_default_limit)
         places, count = queries.places_news_feed(**params.get_db_params())
         kwargs.pop(params_names.LIMIT)
         kwargs.pop(params_names.OFFSET)
         item_params = parameters.PlaceNewsFeedParametersFactory.create(
-            kwargs, self.categorization_service, current_max_id, 3)
+            kwargs, self.categorization_service, current_max_id, self.news_feed_item_messages_default_limit)
         feed = self.__make_result(
             [self.__make_feed_item(place, item_params)
              for place in places], count, params.get_api_params())
@@ -100,7 +104,7 @@ class PlaceService:
     def get_place_news_feed(self, place, **kwargs):
         current_max_id = self.__get_max_id()
         params = parameters.PlaceNewsFeedParametersFactory.create(
-            kwargs, self.categorization_service, current_max_id, 17)
+            kwargs, self.categorization_service, current_max_id, self.messages_default_limit)
         item = self.__make_feed_item_with_photo(place, params)
         return item
 
