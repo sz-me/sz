@@ -28,8 +28,13 @@ class MessageInstance(SzApiView):
 
     def delete(self, request, pk, format=None):
         message = self.get_object(pk)
-        if message.user == request.user:
+        if message.user != request.user:
             return sz_api_response.Response(status=status.HTTP_403_FORBIDDEN)
+        if message.photo:
+            message.reduced_photo.delete(save=False)
+            message.thumbnail.delete(save=False)
+            message.photo.delete(save=False)
+            message.save()
         message.delete()
         return sz_api_response.Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -58,7 +63,6 @@ class MessageInstancePhoto(SzApiView):
             return sz_api_response.Response(status=status.HTTP_403_FORBIDDEN)
         if message.photo:
             return sz_api_response.Response(status=status.HTTP_406_NOT_ACCEPTABLE, info="Already exist")
-        print params['photo']
         message.photo = params['photo']
         message.save()
         root_url = reverse('client-index', request=request)
@@ -88,7 +92,6 @@ class MessagePreviewRoot(SzApiView):
 
     def post(self, request, format=None):
         serializer = serializers.MessagePreviewSerializer(data=request.DATA, files=request.FILES)
-        print request.DATA
         if serializer.is_valid():
             message_preview = serializer.object
             message_preview.user = request.user
@@ -163,6 +166,8 @@ class MessagePreviewInstancePublish(SzApiView):
         message = models.Message(text=message_preview.text, photo=message_preview.photo, place=message_preview.place,
                                  smile=message_preview.smile, user=message_preview.user)
         message.save()
+        for category  in message_preview.categories.all():
+            message.categories.add(category)
         message_preview.delete()
         categorization_service.assert_stems(message)
         serializer = serializers.MessageSerializer(instance=message)
