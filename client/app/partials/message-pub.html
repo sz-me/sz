@@ -1,7 +1,10 @@
 <div class="box-border padding-huge margin-bottom-huge" id="secondStage">
     <div class="text-center" style="max-height:300px;overflow:hidden;">
         <div class="inline-block">
-            <img ng-src="{{ photoUrl }}" style="margin-top:-33%"/>
+            <img ng-src="{{ previewResource.data.photo.reduced }}" style="margin-top:-33%"/>
+        </div>
+        <div>
+            {{ previewResource.data.text }}
         </div>
     </div>
     <select class="margin-top" multiple="multiple" ng-model="new_message_categories" ng-options="c.name for c in categories" ng-click="setCategory()" ng-disabled="inProgress">

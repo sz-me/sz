@@ -49,8 +49,9 @@ szClient.factory('messagePreviewService', function($http, $resource){
         }).success(success).error(error);
     }
 
-    var resource = $resource('../../api/messages/previews/:previewId', {previewId: '@data.id'}, {
-        query: { method:'GET', params:{}, isArray:false }
+    var resource = $resource('../../api/messages/previews/:previewId/:docCtrl', {previewId: '@data.id'}, {
+        query: { method:'GET', params:{}, isArray:false },
+        publish: { method:'POST', params:{docCtrl: 'publish'}, isArray:false }
     });
 
     resource.create = create;
