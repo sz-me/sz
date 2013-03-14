@@ -192,7 +192,10 @@ textarea:focus{
   }
 
 
-
+#cat-select>option:active,#cat-select>option:focus,#cat-select>option:checked{
+    background:red;
+}
+  
 /*.fileform { 
     display:inline-block;
     cursor:pointer;
@@ -288,6 +291,7 @@ textarea:focus{
 }
 
 .catDiv{
+    float:left;
     margin-top:4px;
     margin-right:6px;
     display:inline-block;
@@ -297,11 +301,57 @@ textarea:focus{
     border:2px solid white;
     box-shadow: 0 0 4px #666;
     cursor:pointer;
+/*     text-align:center; */
+    overflow:hidden;
 }
 
-.catDiv:hover{
-    box-shadow: 0 0 4px black;
+.catDiv:hover{box-shadow: 0 0 4px black;}
+.catDivI{
+/*     vertical-align:-30%; */
+    display: inline-block;
+    margin-top:6px;
+    margin-left:6px;
+    width:23px;
+    height:23px;
+    background-size:100% 100%;
+/*     background-color:red; */
 }
+
+.skirts{background-color:#FF6666;}
+.skirts>i{background-image:url("../img/ico/categories/skirt.png" );}
+
+.head{background-color:green;}
+.head>i{background-image:url("../img/ico/categories/hat.png" );}
+
+.suits{background-color:gray;}
+.suits>i{background-image:url("../img/ico/categories/suit.png" );}
+
+.socks{background-color:#CC6600;}
+.socks>i{background-image:url("../img/ico/categories/socks.png" );}
+
+.top1{background-color:#045fdb;}
+.top1>i{background-image:url("../img/ico/categories/glyphicons_283_t-shirt.png" );}
+
+.top2{background-color:#339999;}
+.top2>i{background-image:url("../img/ico/categories/glyphicons_285_sweater.png" );}
+
+.shoes{background-color:#ffc40d;}
+.shoes>i{background-image:url("../img/ico/categories/shoes.png" );}
+
+.trousers{background-color:#666633;}
+.trousers>i{background-image:url("../img/ico/categories/glyphicons_284_pants.png" );}
+
+.outer{background-color:#7a43b6;}
+.outer>i{background-image:url("../img/ico/categories/outer.png" );}
+
+.accessories{background-color:#99CC00;}
+.accessories>i{background-image:url("../img/ico/categories/umbr.png" );}
+
+.under{background-color:#330066;}
+.under>i{background-image:url("../img/ico/categories/under.png" );}
+
+.bags{background-color:#990000;}
+.bags>i{background-image:url("../img/ico/categories/bags.png" );}
 
 /*.max-h-big{
     overflow: hidden;

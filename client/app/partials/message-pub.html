@@ -1,23 +1,29 @@
+
 <div class="box-border padding-huge margin-bottom-huge" id="secondStage">
     <div class="text-center" style="max-height:300px;overflow:hidden;">
         <div class="inline-block">
-            <img ng-src="{{ previewResource.data.photo.reduced }}" style="margin-top:-33%"/>
-        </div>
-        <div>
-            {{ previewResource.data.text }}
+            <img ng-src="{{ previewResource.data.photo.reduced }}" />
         </div>
     </div>
-    <select class="margin-top" multiple="multiple" ng-model="new_message_categories" ng-options="c.name for c in categories" ng-click="setCategory()" ng-disabled="inProgress">
+    <div ng-show="showPreviewText" class="margin-top-big">
+        {{previewResource.data.text}}
+    </div>
+    <div class="text-center margin-top-big">
+        <button class="btn" data-toggle="button"  id="btnText" ng-show="previewResource.data.text" ng-click="showPreviewText=!showPreviewText" >
+            <i class="icon-2x icon-reorder"></i>
+        </button>
+    </div>
+    <select class="margin-top" multiple="multiple" ng-model="new_message_categories" ng-options="c.name for c in categories"  ng-disabled="inProgress">
         <option value="" >Добавить категорию</option>
     </select>
-    <ul class="media-list margin-top" >
-        <li ng-repeat="messageCat in new_message_categories" >
-            <div class="inline-block">
-                <div class="catDiv" style="background:green;float:left;margin-top:-4px" ng-disabled="inProgress">
-                    <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >
+    <ul class="ul-box margin-top text-left" >
+        <li ng-repeat="messageCat in new_message_categories" style="display:inline;" >
+            <div style="padding:5px;display:inline-block;margin-bottom:5px;margin-right:5px;border:1px solid #CCC;border-radius:5px;">
+                <div class="catDiv" ng-class="messageCat.alias" ng-disabled="inProgress">
+                    <i class="catDivI"></i>
                 </div>  
-                <button class="btn" style="float:right;margin-top:3px;" ng-click="removeCat(messageCat)" ng-disabled="inProgress"><i class="icon-remove"></i></button>
-                <p style="font-size:110%;margin-left:5px;padding-top:7px;padding-bottom:7px;white-space:nowrap;overflow:hidden;">{{messageCat.name}}</p>
+                <button class="btn" style="float:right;margin-top:7px;margin-left:4px;" ng-click="removeCat(messageCat)" ng-disabled="inProgress"><i class="icon-remove"></i></button>
+                <div style="display:inline-block;font-size:110%;padding-top:12px;white-space:nowrap;">{{messageCat.name}}</div>
             </div>
         </li>
     </ul>

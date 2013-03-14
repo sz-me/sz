@@ -226,7 +226,7 @@ angular.module('sz.client.directives', [])
                                 '{{date}}'+
                                 ' {{time}}'+                               
                             '</time>'+
-                             
+//                             '<div> {{categoriesname}}<div>'+
                             '<div >'+                                
                                 '<div class="circle-parent">'+
 //                                     '<a ng-repeat="categoryname in categoriesname" style="margin-right:3px;display:inline-block;font-size:85%;color:#999">'+
