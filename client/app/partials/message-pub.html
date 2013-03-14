@@ -19,7 +19,7 @@
     <ul class="ul-box margin-top text-left" >
         <li ng-repeat="messageCat in new_message_categories" style="display:inline;" >
             <div style="padding:5px;display:inline-block;margin-bottom:5px;margin-right:5px;border:1px solid #CCC;border-radius:5px;">
-                <div class="catDiv" ng-class="messageCat.alias" ng-disabled="inProgress">
+                <div class="catDiv" ng-class="messageCat.alias" ng-disabled="inProgress" style="float:left">
                     <i class="catDivI"></i>
                 </div>  
                 <button class="btn" style="float:right;margin-top:7px;margin-left:4px;" ng-click="removeCat(messageCat)" ng-disabled="inProgress"><i class="icon-remove"></i></button>

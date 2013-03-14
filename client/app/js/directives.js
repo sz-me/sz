@@ -94,7 +94,7 @@ angular.module('sz.client.directives', [])
                             '<span class="badge margin-top-big" >8</span>'+
                             '<strong class="margin-left">{{username}}</strong>'+
                             '<div >'+                                
-                                '<div ng-show="photo" id="photo" style="text-align:center;overflow:hidden;margin-bottom:-60px;margin-top:5px;min-height:60px;">'+
+                                '<div ng-show="photo" id="photo" style="text-align:center;overflow:hidden;margin-bottom:-55px;margin-top:5px;min-height:55px;">'+
                                     '<a href="#/places/{{place.id}}/messages/{{messageid}}" class="inline-block" id="photoA">'+
                                         '<img class="media-object" src={{photo}} id="photoFile" ng-style={marginTop:"-33%"}>'+
                                     '</a>'+
