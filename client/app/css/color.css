@@ -203,6 +203,9 @@ textarea:focus{
     margin-top:5px;
     min-height:55px;
 }
+#photo>a{
+    max-width:100%;
+}
 /*.fileform { 
     display:inline-block;
     cursor:pointer;

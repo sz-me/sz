@@ -99,6 +99,7 @@ angular.module('sz.client.directives', [])
                                         '<img class="media-object" src={{photo}} id="photoFile" ng-style={marginTop:"-33%"}>'+
                                     '</a>'+
                                 '</div>'+
+                                '{{shmot_category}}'+
                                 '<div class="circle-parent" ng-show="message_categories" >'+
                                     '<div class="catDiv" ng-repeat="cat in message_categories" ng-class="cat.alias">'+
                                         '<i class="catDivI"></i>'+
