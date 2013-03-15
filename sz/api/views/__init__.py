@@ -11,7 +11,9 @@ categorization_service = morphology.CategorizationService(
     models.Category.objects.all(), morphology.RussianStemmingService())
 city_service = gis.BlagoveshchenskCityService()
 venue_service = None
-place_service = services.PlaceService(city_service, None, categorization_service)
+message_service = services.MessageService(city_service, categorization_service)
+news_feed_service = services.NewsFeedService(message_service)
+place_service = services.PlaceService(city_service)
 
 
 class InvalidRequestException(Exception):

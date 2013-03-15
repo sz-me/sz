@@ -17,7 +17,7 @@ class MessageRequestForm(PaginatedRequestForm):
     photo = forms.BooleanField(label=u'Только с фото', required=False)
 
 
-class NewsFeedRequestForm(MessageRequestForm):
+class MessageSearchRequestForm(MessageRequestForm):
     latitude = forms.FloatField(required=True, min_value=-90.0, max_value=90.0, label=u'Широта')
     longitude = forms.FloatField(required=True, min_value=-180.0, max_value=180.0, label=u'Долгота')
     radius = forms.IntegerField(

@@ -40,81 +40,102 @@ class ModelCachingManager:
         map(lambda e: e.save(force_update=True), self.for_update)
 
 
-class PlaceService:
-
-    news_feed_items_default_limit = 17
-    news_feed_item_messages_default_limit = 3
-    messages_default_limit = 9
-    photos_default_limit = 9
-
-    def __init__(self, city_service, venue_service, categorization_service):
-        self.venue_service = venue_service
-        self.city_service = city_service
-        self.categorization_service = categorization_service
-
-    def __make_result(self, items, count, params):
+class FeedService:
+    def _make_result(self, items, count, params):
         return dict(count=count, items=items, params=params)
 
-    def __get_max_id(self):
-        return models.Message.objects.aggregate(max_id=Max('id'))["max_id"]
-
-    def __make_place_distance_item(self, place, params):
+    def _make_place_distance_item(self, place, params):
         latitude, longitude = parameters.get_position_from_dict(params.get_api_params())
         distance = gis_core.calculate_distance(longitude, latitude, place.longitude(), place.latitude())
         item = dict(place=place, distance=distance)
         return item
 
-    def __make_feed_item(self, place, params):
-        messages = self.get_place_messages(place, **params.get_api_params())
-        item = self.__make_place_distance_item(place, params)
-        item['messages'] = messages
-        return item
+    def _get_max_id(self):
+        return models.Message.objects.aggregate(max_id=Max('id'))["max_id"]
 
-    def __make_feed_item_with_photo(self, place, params):
-        item = self.__make_feed_item(place, params)
-        kwargs = params.get_api_params()
-        kwargs[params_names.PHOTO] = True
-        kwargs[params_names.LIMIT] = self.photos_default_limit
-        kwargs[params_names.OFFSET] = 0
-        photos = self.get_place_messages(place, **kwargs)
-        item['photos'] = photos
-        return item
 
-    def get_place_messages(self, place, current_max_id=None, default_limit=settings.DEFAULT_PAGINATE_BY, **kwargs):
+class MessageService(FeedService):
+
+    default_limit = settings.DEFAULT_PAGINATE_BY
+
+    def __init__(self, city_service, categorization_service):
+        self.city_service = city_service
+        self.categorization_service = categorization_service
+
+    def get_place_messages(self, place, current_max_id=None, default_limit=None, **kwargs):
         if current_max_id is None:
-            current_max_id = self.__get_max_id()
+            current_max_id = self._get_max_id()
+        if default_limit is None:
+            default_limit = self.default_limit
         params = parameters.PlaceMessagesParametersFactory.create(
             kwargs, self.categorization_service, current_max_id, default_limit)
         messages, count = queries.place_messages(place, **params.get_db_params())
-        return self.__make_result(messages, count, params.get_api_params())
+        return self._make_result(messages, count, params.get_api_params())
 
-    def get_news_feed(self, **kwargs):
-        current_max_id = self.__get_max_id()
+    def search(self, place, current_max_id=None, default_limit=settings.DEFAULT_PAGINATE_BY, **kwargs):
+        pass
+
+
+class NewsFeedService(FeedService):
+
+    news_items_default_limit = 17
+    news_item_default_size = 3
+    place_news_default_limit = 9
+    gallery_preview_default_size = 9
+
+    def __init__(self, message_service):
+        self.message_service = message_service
+
+    def __make_feed_item(self, place, params):
+        messages = self.message_service.get_place_messages(place, **params.get_api_params())
+        item = self._make_place_distance_item(place, params)
+        item['messages'] = messages
+        return item
+
+    def __make_feed_item_with_gallery_preview(self, place, params):
+        item = self.__make_feed_item(place, params)
+        kwargs = params.get_api_params()
+        kwargs[params_names.PHOTO] = True
+        kwargs[params_names.LIMIT] = self.gallery_preview_default_size
+        kwargs[params_names.OFFSET] = 0
+        photos = self.message_service.get_place_messages(place, **kwargs)
+        item['photos'] = photos
+        return item
+
+    def get_news(self, **kwargs):
+        current_max_id = self._get_max_id()
         params = parameters.NewsFeedParametersFactory.create(
-            kwargs, self.categorization_service, self.city_service, current_max_id, self.news_feed_items_default_limit)
+            kwargs, self.message_service.categorization_service, self.message_service.city_service,
+            current_max_id, self.news_items_default_limit)
         places, count = queries.places_news_feed(**params.get_db_params())
         kwargs.pop(params_names.LIMIT)
         kwargs.pop(params_names.OFFSET)
         item_params = parameters.PlaceNewsFeedParametersFactory.create(
-            kwargs, self.categorization_service, current_max_id, self.news_feed_item_messages_default_limit)
-        feed = self.__make_result(
+            kwargs, self.message_service.categorization_service, current_max_id, self.news_item_default_size)
+        feed = self._make_result(
             [self.__make_feed_item(place, item_params)
              for place in places], count, params.get_api_params())
         return feed
 
-    def get_place_news_feed(self, place, **kwargs):
-        current_max_id = self.__get_max_id()
+    def get_place_news(self, place, **kwargs):
+        current_max_id = self._get_max_id()
         params = parameters.PlaceNewsFeedParametersFactory.create(
-            kwargs, self.categorization_service, current_max_id, self.messages_default_limit)
-        item = self.__make_feed_item_with_photo(place, params)
+            kwargs, self.message_service.categorization_service, current_max_id, self.place_news_default_limit)
+        item = self.__make_feed_item_with_gallery_preview(place, params)
         return item
+
+
+class PlaceService(FeedService):
+
+    def __init__(self, city_service):
+        self.city_service = city_service
 
     def search(self, **kwargs):
         params = parameters.PlaceSearchParametersFactory.create(kwargs, self.city_service)
         places = queries.places(**params.get_db_params())
-        return [self.__make_place_distance_item(place, params) for place in places]
+        return [self._make_place_distance_item(place, params) for place in places]
 
-    def venue_search(self, **kwargs):
+    def search_in_venues(self, **kwargs):
         params = parameters.PlaceSearchParametersFactory.create(kwargs, self.city_service).get_db_params()
         latitude = params.get(params_names.LATITUDE)
         longitude = params.get(params_names.LONGITUDE)
@@ -135,7 +156,7 @@ class PlaceService:
                     city_id=None,
                     foursquare_icon_suffix=utils.safe_get(l, lambda el: el[u'categories'][0][u'icon'][u'suffix']),
                     foursquare_icon_prefix=utils.safe_get(l, lambda el: el[u'categories'][0][u'icon'][u'prefix']), ),
-                    distance=l[u'location'].get(u'distance')),
+                     distance=l[u'location'].get(u'distance')),
                 result["venues"])
         if len(place_and_distance_list) > 0:
             caching_manager = ModelCachingManager(
@@ -150,4 +171,3 @@ class PlaceService:
                     e.city_id = stored_city.city_id
             caching_manager.save()
         return place_and_distance_list
-        #self.venue_service.search({'latitude':latitude, 'longitude': longitude}, **kwargs)

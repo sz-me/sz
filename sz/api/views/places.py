@@ -4,7 +4,7 @@ from rest_framework import permissions
 from rest_framework.reverse import reverse
 from sz.api import serializers, forms, response as sz_api_response
 from sz.core import models
-from sz.api.views import SzApiView, place_service
+from sz.api.views import SzApiView, news_feed_service, place_service, message_service
 
 
 class PlaceRootNewsFeed(SzApiView):
@@ -14,8 +14,8 @@ class PlaceRootNewsFeed(SzApiView):
     """
 
     def get(self, request, format=None):
-        params = self.validate_and_get_params(forms.NewsFeedRequestForm, request.QUERY_PARAMS)
-        news_feed = place_service.get_news_feed(**params)
+        params = self.validate_and_get_params(forms.MessageSearchRequestForm, request.QUERY_PARAMS)
+        news_feed = news_feed_service.get_news(**params)
         photo_host = reverse('client-index', request=request)
         response_builder = sz_api_response.NewsFeedResponseBuilder(photo_host)
         serialized_news_feed = response_builder.build(news_feed)
@@ -36,7 +36,7 @@ class PlaceVenueSearch(SzApiView):
 
     def get(self, request, format=None):
         params = self.validate_and_get_params(forms.PlaceSearchRequestForm, request.QUERY_PARAMS)
-        places = place_service.venue_search(**params)
+        places = place_service.search_in_venues(**params)
         response = [self._serialize_item(place) for place in places]
         return sz_api_response.Response(response)
 
@@ -88,9 +88,9 @@ class PlaceInstanceNewsFeed(SzApiView):
             raise Http404
 
     def get(self, request, pk, format=None):
-        params = self.validate_and_get_params(forms.NewsFeedRequestForm, request.QUERY_PARAMS)
+        params = self.validate_and_get_params(forms.MessageSearchRequestForm, request.QUERY_PARAMS)
         place = self.get_object(pk)
-        news_feed_item = place_service.get_place_news_feed(place, **params)
+        news_feed_item = news_feed_service.get_place_news(place, **params)
         photo_host = reverse('client-index', request=request)
         response_builder = sz_api_response.NewsFeedItemResponseBuilder(photo_host)
         return sz_api_response.Response(response_builder.build(news_feed_item))
@@ -107,7 +107,7 @@ class PlaceInstanceMessages(SzApiView):
     def get(self, request, pk, format=None):
         params = self.validate_and_get_params(forms.MessageRequestForm, request.QUERY_PARAMS)
         place = self.get_object(pk)
-        messages = place_service.get_place_messages(place, **params)
+        messages = message_service.get_place_messages(place, **params)
         photo_host = reverse('client-index', request=request)
         response_builder = sz_api_response.PlaceMessagesResponseBuilder(photo_host)
         return sz_api_response.Response(response_builder.build(place, messages))
