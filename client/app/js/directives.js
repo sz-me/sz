@@ -93,28 +93,16 @@ angular.module('sz.client.directives', [])
                             '</time>'+
                             '<span class="badge margin-top-big" >8</span>'+
                             '<strong class="margin-left">{{username}}</strong>'+
-                            '<div >'+                                
-                                '<div ng-show="photo" id="photo" style="text-align:center;overflow:hidden;margin-bottom:-55px;margin-top:5px;min-height:55px;">'+
-                                    '<a href="#/places/{{place.id}}/messages/{{messageid}}" class="inline-block" id="photoA">'+
+                            '<div >'+                               
+                                '<div ng-show="photo" id="photo" ng-style="{marginBottom:photoStyle}">'+
+                                    '<a href="#/messages/{{messageid}}" class="inline-block" id="photoA">'+
                                         '<img class="media-object" src={{photo}} id="photoFile" ng-style={marginTop:"-33%"}>'+
                                     '</a>'+
                                 '</div>'+
-                                '<div class="circle-parent"  >'+
-//                                     '<a ng-repeat="categoryname in categoriesname" style="margin-right:3px;display:inline-block;font-size:85%;color:#999">'+
-//                                         '{{categoryname}}'+
-//                                     '</a>'+
-                                        '<div style="background:green" class="catDiv">'+
-                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >'+
-                                        '</div>'+                                        
-                                        '<div style="background:#7a43b6" class="catDiv">'+
-                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_284_pants.png">'+
-                                        '</div>'+    
-                                        '<div style="background:#ffc40d" class="catDiv">'+
-                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_285_sweater.png">'+
-                                        '</div>'+    
-                                        '<div style="background:#045fdb" class="catDiv">'+
-                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png">'+
-                                        '</div>'+    
+                                '<div class="circle-parent" ng-show="message_categories" >'+
+                                    '<div class="catDiv" ng-repeat="cat in message_categories" ng-class="cat.alias">'+
+                                        '<i class="catDivI"></i>'+
+                                    '</div>'+ 
                                 '</div>'+
                                 
                                
@@ -128,9 +116,6 @@ angular.module('sz.client.directives', [])
                                     '<button class="btn" data-toggle="button"  id="btnText" ng-show="!hasText()" ng-click="showMessageTextFull()" >'+
                                         '<i class="icon-2x" ng-class="btnTextClass"></i>'+
                                     '</button>'+
-//                                     '<button class="btn" data-toggle="button"  id="btnPhoto" ng-show="photo" ng-click="showMessagePhoto()" >'+
-//                                         '<i class="icon-picture icon-2x" ></i>'+
-//                                     '</button>'+
                                 '</span>'+
                             '</div>'+
                         '</div>',
@@ -153,14 +138,18 @@ angular.module('sz.client.directives', [])
                             scope.messageid=msg.id
                         
                         }
-                        scope.categoriesname = []
+                        scope.message_categories = []
                         $.each(msg.categories,function(index,id){
                             $.each(scope.categories,function(index,cat){
                                 if(cat.id==id){
-                                    scope.categoriesname.push(cat.name)
+                                    scope.message_categories.push(cat)
                                 }
                             })
                         });
+                        scope.photoStyle = function(){
+                            if(scope.message_categories[0]){return "-55px";}
+                            else{return 0}
+                        }
                         scope.messageBox = $(element[0]);
                         scope.messageText =  scope.messageBox.find("#text");
                         scope.textHeight = parseInt(scope.messageText.css('maxHeight'));
@@ -200,19 +189,6 @@ angular.module('sz.client.directives', [])
 //                                 scope.btnTextClass='icon-caret-down';
                             }
                         }
-//                         scope.showMessagePhoto = function(){
-//                             if (scope.messagePhoto.is(":hidden")){
-//                                 if(scope.textHeight<scope.messageText.height()){
-//                                     scope.messageText.animate({maxHeight:scope.textHeight+'px'},500);
-//                                     scope.btnText.removeClass("active")
-// //                                     scope.btnTextClass='icon-caret-down';
-//                                 }
-//                                 scope.messagePhoto.slideDown(500);
-//                             }
-//                             else{scope.messagePhoto.slideUp(500)}
-//                         }
-                        
-                    
                 }
             };
         })
@@ -228,22 +204,10 @@ angular.module('sz.client.directives', [])
                             '</time>'+
 //                             '<div> {{categoriesname}}<div>'+
                             '<div >'+                                
-                                '<div class="circle-parent">'+
-//                                     '<a ng-repeat="categoryname in categoriesname" style="margin-right:3px;display:inline-block;font-size:85%;color:#999">'+
-//                                         '{{categoryname}}'+
-//                                     '</a>'+
-                                        '<div style="background:green" class="catDiv">'+
-                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >'+
-                                        '</div>'+                                        
-                                        '<div style="background:#7a43b6" class="catDiv">'+
-                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_284_pants.png">'+
-                                        '</div>'+    
-                                        '<div style="background:#ffc40d" class="catDiv">'+
-                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_285_sweater.png">'+
-                                        '</div>'+    
-                                        '<div style="background:#045fdb" class="catDiv">'+
-                                            '<img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png">'+
-                                        '</div>'+    
+                                '<div class="circle-parent" ng-show="message_categories">'+
+                                    '<div class="catDiv" ng-repeat="cat in message_categories" ng-class="cat.alias">'+
+                                        '<i class="catDivI"></i>'+
+                                    '</div>'+
                                 '</div>'+
                                 '<span class="badge " >8</span>'+
                                 '<strong class="margin-left">{{username}}</strong>'+
@@ -252,7 +216,7 @@ angular.module('sz.client.directives', [])
                                 '{{text}}'+
                             '</p>'+                            
                             '<div class="box-hide" id="photo">'+
-                                '<a href="#/places/{{place.id}}/messages/{{messageid}}" class="inline-block">'+
+                                '<a href="#/messages/{{messageid}}" class="inline-block">'+
                                     '<img class="media-object" src={{photo}}>'+
                                 '</a>'+
                             '</div>'+
@@ -282,11 +246,11 @@ angular.module('sz.client.directives', [])
                         scope.username = 'Генерал Плюшкин';
                         scope.text = msg.text;
                         if(msg.photo){scope.photo = msg.photo.reduced;scope.messageid=msg.id}
-                        scope.categoriesname = []
+                        scope.message_categories = []
                         $.each(msg.categories,function(index,id){
                             $.each(scope.categories,function(index,cat){
                                 if(cat.id==id){
-                                    scope.categoriesname.push(cat.name)
+                                    scope.message_categories.push(cat)
                                 }
                             })
                         });

@@ -1,8 +1,9 @@
+
 <div  class="box-border padding-X-big padding-Y text-center">
     <div style="float:left;margin-top:6px;">
-        <a class="btn btn-large  btn-primary" type="button" href="#/places/{{message.place.id }}/messages/add" ><i class="icon-plus icon-2x" ></i></a>
+        <a class="btn btn-large  btn-primary" type="button" href="#/places/{{message.place.id}}/messages/add" ><i class="icon-plus icon-2x" ></i></a>
     </div>
-    <a href="#/places/{{ place.id }}/" class="graydark">
+    <a href="#/places/{{message.place.id }}/" class="graydark">
         <div style="text-align:right;margin-bottom:10px;min-height:62px;" >        
             <h3 style="margin-bottom:0;margin-top:0;">{{message.place.name}}</h3>
             <small style="line-height:10px;">{{message.place.address}}</small>   
@@ -26,21 +27,12 @@
     </li>
     <li>
         <div class="circle-parent"  >
-            <div style="background:green" class="catDiv">
-                <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >
-            </div>                                        
-            <div style="background:#7a43b6" class="catDiv">
-                <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_284_pants.png">
-            </div>    
-            <div style="background:#ffc40d" class="catDiv">
-                <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_285_sweater.png">
-            </div>    
-            <div style="background:#045fdb" class="catDiv">
-                <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png">
-            </div>    
+            <div class="catDiv" ng-repeat="cat in message_categories" ng-class="cat.alias">
+                <i class="catDivI"></i>
+            </div> 
         </div>
     </li>
-    <li class="margin-top">
+    <li class="margin-top-big">
         <p>{{message.text}}</p>
     </li>
     <li class="text-center">
