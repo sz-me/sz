@@ -74,24 +74,59 @@ def places_news_feed(**kwargs):
     return query, count
 
 
-def place_messages(place, **kwargs):
-    # getting params
-    limit = kwargs.get(params_names.LIMIT)
-    offset = kwargs.get(params_names.OFFSET)
-    max_id = kwargs.get(params_names.MAX_ID)
+def filter_messages(filtered_messages, **kwargs):
     stems = kwargs.get(params_names.STEMS)
     category = kwargs.get(params_names.CATEGORY)
     photo = kwargs.get(params_names.PHOTO)
-    # creating the query
-    filtered_messages = models.Message.objects.filter(place__pk=place.pk)
-    if max_id is not None:
-        filtered_messages = filtered_messages.filter(id__lte=max_id)
     if len(stems) > 0:
         filtered_messages = filtered_messages.filter(stems__stem__in=[stem[0] for stem in stems])
     if category is not None:
         filtered_messages = filtered_messages.filter(categories__in=[category, ])
     if photo:
         filtered_messages = filtered_messages.exclude(photo='')
+    return filtered_messages
+
+
+def place_messages(place, **kwargs):
+    # getting params
+    max_id = kwargs.get(params_names.MAX_ID)
+    limit = kwargs.get(params_names.LIMIT)
+    offset = kwargs.get(params_names.OFFSET)
+    # creating the query
+    filtered_messages = models.Message.objects.filter(place__pk=place.pk)
+    if max_id is not None:
+        filtered_messages = filtered_messages.filter(id__lte=max_id)
+    filtered_messages = filter_messages(filtered_messages, **kwargs)
+    filtered_messages = filtered_messages.distinct()
+    count = filtered_messages.aggregate(count=dj_models.Count('id'))['count']
+    query = filtered_messages.order_by('-date')[offset:offset + limit]
+    return query, count
+
+
+def search_messages(**kwargs):
+    # getting params
+    latitude = kwargs.get(params_names.LATITUDE)
+    longitude = kwargs.get(params_names.LONGITUDE)
+    radius = kwargs.get(params_names.RADIUS)
+
+    max_id = kwargs.get(params_names.MAX_ID)
+    limit = kwargs.get(params_names.LIMIT)
+    offset = kwargs.get(params_names.OFFSET)
+
+    # creating the query
+    if radius == 0 or radius is None:
+        # TODO: определять город по координатам
+        city_id = kwargs.get(params_names.CITY_ID)
+        assert city_id, 'city_id is required'
+        filtered_messages = models.Message.objects.filter(place__city_id=city_id)
+    else:
+        current_position = fromstr("POINT(%s %s)" % (longitude, latitude))
+        distance_kwargs = {'m': '%i' % radius}
+        filtered_messages = models.Message.objects.filter(
+            place__position__distance_lte=(current_position, D(**distance_kwargs)))
+    if max_id is not None:
+        filtered_messages = filtered_messages.filter(id__lte=max_id)
+    filtered_messages = filter_messages(filtered_messages, **kwargs)
     filtered_messages = filtered_messages.distinct()
     count = filtered_messages.aggregate(count=dj_models.Count('id'))['count']
     query = filtered_messages.order_by('-date')[offset:offset + limit]

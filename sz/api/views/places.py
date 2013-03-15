@@ -7,7 +7,7 @@ from sz.core import models
 from sz.api.views import SzApiView, news_feed_service, place_service, message_service
 
 
-class PlaceRootNewsFeed(SzApiView):
+class PlaceRootNews(SzApiView):
     """
     News feed that represents a list of places of whom somebody recently left a message
     For example, [news feed for location (50.2616113, 127.5266082)](?latitude=50.2616113&longitude=127.5266082).
@@ -17,7 +17,7 @@ class PlaceRootNewsFeed(SzApiView):
         params = self.validate_and_get_params(forms.NewsRequestForm, request.QUERY_PARAMS)
         news_feed = news_feed_service.get_news(**params)
         photo_host = reverse('client-index', request=request)
-        response_builder = sz_api_response.NewsFeedResponseBuilder(photo_host)
+        response_builder = sz_api_response.NewsFeedResponseBuilder(photo_host, request)
         serialized_news_feed = response_builder.build(news_feed)
         return sz_api_response.Response(serialized_news_feed)
 
@@ -92,7 +92,7 @@ class PlaceInstanceNewsFeed(SzApiView):
         place = self.get_object(pk)
         news_feed_item = news_feed_service.get_place_news(place, **params)
         photo_host = reverse('client-index', request=request)
-        response_builder = sz_api_response.NewsFeedItemResponseBuilder(photo_host)
+        response_builder = sz_api_response.NewsFeedItemResponseBuilder(photo_host, request)
         return sz_api_response.Response(response_builder.build(news_feed_item))
 
 
@@ -109,5 +109,5 @@ class PlaceInstanceMessages(SzApiView):
         place = self.get_object(pk)
         messages = message_service.get_place_messages(place, **params)
         photo_host = reverse('client-index', request=request)
-        response_builder = sz_api_response.PlaceMessagesResponseBuilder(photo_host)
+        response_builder = sz_api_response.PlaceMessagesResponseBuilder(photo_host, request)
         return sz_api_response.Response(response_builder.build(place, messages))

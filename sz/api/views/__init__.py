@@ -47,11 +47,12 @@ class ApiRoot(SzApiView):
         return sz_api_response.Response({
             'city-nearest': reverse('city-nearest', request=request),
             'categories': reverse('category-list', request=request),
-            'places-newsfeed': reverse('place-newsfeed', request=request),
+            'places-news': reverse('place-news', request=request),
             'places-search': reverse('place-search', request=request),
-            'places-venues-search': reverse('place-venue-search', request=request),
+            'places-search-in-venues': reverse('place-search-in-venues', request=request),
             'login': reverse('auth-login', request=request),
             'logout': reverse('auth-logout', request=request),
             'current-user': reverse('auth-user', request=request),
-            'message-previews': reverse('message-preview-list', request=request),
+            'messages-previews': reverse('message-preview-list', request=request),
+            'messages-search': reverse('message-search', request=request),
             })

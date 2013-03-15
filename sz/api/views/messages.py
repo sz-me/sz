@@ -4,7 +4,7 @@ from rest_framework import status, permissions
 from rest_framework.reverse import reverse
 from sz.core import models
 from sz.api import serializers, response as sz_api_response, forms
-from sz.api.views import SzApiView, categorization_service
+from sz.api.views import SzApiView, categorization_service, message_service
 
 
 class MessageInstance(SzApiView):
@@ -166,7 +166,7 @@ class MessagePreviewInstancePublish(SzApiView):
         message = models.Message(text=message_preview.text, photo=message_preview.photo, place=message_preview.place,
                                  smile=message_preview.smile, user=message_preview.user)
         message.save()
-        for category  in message_preview.categories.all():
+        for category in message_preview.categories.all():
             message.categories.add(category)
         message_preview.delete()
         categorization_service.assert_stems(message)
@@ -177,3 +177,18 @@ class MessagePreviewInstancePublish(SzApiView):
         data['photo'] = message.get_photo_absolute_urls(root_url)
         data['place'] = place_serializer.data
         return sz_api_response.Response(data)
+
+
+class MessageRootSearch(SzApiView):
+    """
+    Message search for current location
+    For example, [messages for position (50.2616113, 127.5266082)](?latitude=50.2616113&longitude=127.5266082).
+    """
+    def get(self, request, format=None):
+        params = self.validate_and_get_params(forms.NewsRequestForm, request.QUERY_PARAMS)
+        result = message_service.search(**params)
+        root_url = reverse('client-index', request=request)
+        response_builder = sz_api_response.SearchMessageResponseBuilder(root_url, request)
+        data = response_builder.build(result)
+        return sz_api_response.Response(data)
+

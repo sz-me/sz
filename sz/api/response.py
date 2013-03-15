@@ -22,20 +22,26 @@ class Response(RestFrameworkResponse):
         self.data = {'data': data, 'meta': {'code': status, 'info': info}}
 
 
-class PlaceServiceResponseBuilder:
-    def _convert_feed_service_result_to_response(self, result, url, items):
+class FeedServiceResponseBuilder:
+    def __init__(self, request=None):
+        self.request = request
+
+    def _convert_feed_service_result_to_response(self, result, items,
+                                                 viewname, args=None, kwargs=None, format=None, **extra):
         params = result.get('params')
         if params.get('category', None) is not None:
             params['category'] = params.get('category').pk
         else:
             params['category'] = ""
+        url = reverse(viewname, args, kwargs, request=self.request, format=format, **extra)
         return dict(url=url, params=result.get('params'), results=items,
                     count=result.get('count'))
 
 
-class PlaceMessagesResponseBuilder(PlaceServiceResponseBuilder):
-    def __init__(self, photo_host_url=""):
+class PlaceMessagesResponseBuilder(FeedServiceResponseBuilder):
+    def __init__(self, photo_host_url="", request=None):
         self.photo_host_url = photo_host_url
+        FeedServiceResponseBuilder.__init__(self, request)
 
     def build(self, place, messages):
         photos = [(message.id, message.get_photo_absolute_urls(self.photo_host_url))
@@ -46,13 +52,14 @@ class PlaceMessagesResponseBuilder(PlaceServiceResponseBuilder):
         for serialized_message in serialized_messages:
             serialized_message['photo'] = photo_by_id(serialized_message['id'])
         serialized_messages = self._convert_feed_service_result_to_response(
-            messages, reverse('place-detail-messages', (place.pk,)), serialized_messages)
+            messages, serialized_messages, 'place-detail-messages', (place.pk,))
         return serialized_messages
 
 
-class NewsFeedItemResponseBuilder(PlaceServiceResponseBuilder):
-    def __init__(self, photo_host_url=""):
-        self.messages_response_builder = PlaceMessagesResponseBuilder(photo_host_url)
+class NewsFeedItemResponseBuilder(FeedServiceResponseBuilder):
+    def __init__(self, photo_host_url="", request=None):
+        self.messages_response_builder = PlaceMessagesResponseBuilder(photo_host_url, request)
+        FeedServiceResponseBuilder.__init__(self, request)
 
     def build(self, item):
         serialized_messages = self.messages_response_builder.build(item["place"], item["messages"])
@@ -67,14 +74,31 @@ class NewsFeedItemResponseBuilder(PlaceServiceResponseBuilder):
         return serialized_item
 
 
-class NewsFeedResponseBuilder(PlaceServiceResponseBuilder):
-    def __init__(self, photo_host_url=""):
-        self.item_response_builder = NewsFeedItemResponseBuilder(photo_host_url)
+class NewsFeedResponseBuilder(FeedServiceResponseBuilder):
+    def __init__(self, photo_host_url="", request=None):
+        self.item_response_builder = NewsFeedItemResponseBuilder(photo_host_url, request)
+        FeedServiceResponseBuilder.__init__(self, request)
 
     def build(self, feed):
         serialized_feed = self._convert_feed_service_result_to_response(
-            feed, reverse('place-newsfeed'), [self.item_response_builder.build(item) for item in feed['items']])
+            feed, [self.item_response_builder.build(item) for item in feed['items']], 'place-news')
         return serialized_feed
 
 
+class SearchMessageResponseBuilder(FeedServiceResponseBuilder):
+    def __init__(self, photo_host_url="", request=None):
+        self.photo_host_url = photo_host_url
+        FeedServiceResponseBuilder.__init__(self, request)
 
+    def __serialize_item(self, item):
+        message_serializer = serializers.MessageSerializer(instance=item['message'])
+        serialized_message = message_serializer.data
+        serialized_message['photo'] = item['message'].get_photo_absolute_urls(self.photo_host_url)
+        place_serializer = serializers.PlaceSerializer(instance=item['place'])
+        serialized_place = place_serializer.data
+        return dict(message=serialized_message, place=serialized_place, distance=int(item['distance']))
+
+    def build(self, items):
+        serialized_items = self._convert_feed_service_result_to_response(
+            items, [self.__serialize_item(item) for item in items['items']], 'message-search')
+        return serialized_items

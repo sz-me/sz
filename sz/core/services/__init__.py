@@ -42,7 +42,7 @@ class ModelCachingManager:
 
 class FeedService:
     def _make_result(self, items, count, params):
-        return dict(count=count, items=items, params=params)
+        return dict(count=count, items=items, params=params.get_api_params())
 
     def _make_place_distance_item(self, place, params):
         latitude, longitude = parameters.get_position_from_dict(params.get_api_params())
@@ -70,10 +70,24 @@ class MessageService(FeedService):
         params = parameters.PlaceMessagesParametersFactory.create(
             kwargs, self.categorization_service, current_max_id, default_limit)
         messages, count = queries.place_messages(place, **params.get_db_params())
-        return self._make_result(messages, count, params.get_api_params())
+        return self._make_result(messages, count, params)
 
-    def search(self, place, current_max_id=None, default_limit=settings.DEFAULT_PAGINATE_BY, **kwargs):
-        pass
+    def __get_search_item(self, message, params):
+        item = self._make_place_distance_item(message.place, params)
+        item['message'] = message
+        return item
+
+    def search(self, current_max_id=None, default_limit=None, **kwargs):
+        if current_max_id is None:
+            current_max_id = self._get_max_id()
+        if default_limit is None:
+            default_limit = self.default_limit
+        params = parameters.NewsParametersFactory.create(
+            kwargs, self.categorization_service, self.city_service,
+            current_max_id, default_limit)
+        messages, count = queries.search_messages(**params.get_db_params())
+        items = [self.__get_search_item(message, params) for message in messages]
+        return self._make_result(items, count, params)
 
 
 class NewsFeedService(FeedService):
@@ -104,22 +118,22 @@ class NewsFeedService(FeedService):
 
     def get_news(self, **kwargs):
         current_max_id = self._get_max_id()
-        params = parameters.NewsFeedParametersFactory.create(
+        params = parameters.NewsParametersFactory.create(
             kwargs, self.message_service.categorization_service, self.message_service.city_service,
             current_max_id, self.news_items_default_limit)
         places, count = queries.places_news_feed(**params.get_db_params())
         kwargs.pop(params_names.LIMIT)
         kwargs.pop(params_names.OFFSET)
-        item_params = parameters.PlaceNewsFeedParametersFactory.create(
+        item_params = parameters.PlaceNewsParametersFactory.create(
             kwargs, self.message_service.categorization_service, current_max_id, self.news_item_default_size)
         feed = self._make_result(
             [self.__make_feed_item(place, item_params)
-             for place in places], count, params.get_api_params())
+             for place in places], count, params)
         return feed
 
     def get_place_news(self, place, **kwargs):
         current_max_id = self._get_max_id()
-        params = parameters.PlaceNewsFeedParametersFactory.create(
+        params = parameters.PlaceNewsParametersFactory.create(
             kwargs, self.message_service.categorization_service, current_max_id, self.place_news_default_limit)
         item = self.__make_feed_item_with_gallery_preview(place, params)
         return item
