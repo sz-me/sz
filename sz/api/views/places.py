@@ -14,7 +14,7 @@ class PlaceRootNewsFeed(SzApiView):
     """
 
     def get(self, request, format=None):
-        params = self.validate_and_get_params(forms.MessageSearchRequestForm, request.QUERY_PARAMS)
+        params = self.validate_and_get_params(forms.NewsRequestForm, request.QUERY_PARAMS)
         news_feed = news_feed_service.get_news(**params)
         photo_host = reverse('client-index', request=request)
         response_builder = sz_api_response.NewsFeedResponseBuilder(photo_host)
@@ -88,7 +88,7 @@ class PlaceInstanceNewsFeed(SzApiView):
             raise Http404
 
     def get(self, request, pk, format=None):
-        params = self.validate_and_get_params(forms.MessageSearchRequestForm, request.QUERY_PARAMS)
+        params = self.validate_and_get_params(forms.NewsRequestForm, request.QUERY_PARAMS)
         place = self.get_object(pk)
         news_feed_item = news_feed_service.get_place_news(place, **params)
         photo_host = reverse('client-index', request=request)

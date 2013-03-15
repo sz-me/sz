@@ -200,7 +200,7 @@ class PlaceMessagesParametersFactory:
         return paging_group
 
 
-class PlaceNewsFeedParametersFactory:
+class PlaceNewsParametersFactory:
 
     @classmethod
     def create(cls, params, categorization_service, current_max_id, default_limit):
@@ -210,7 +210,7 @@ class PlaceNewsFeedParametersFactory:
         return paging_group
 
 
-class NewsFeedParametersFactory:
+class NewsParametersFactory:
 
     @classmethod
     def create(cls, params, categorization_service, city_service, current_max_id, default_limit):
