@@ -23,7 +23,7 @@ szClient.factory('messageService', function($resource){
 });
 
 szClient.factory('venueService', function($resource){
-    return $resource('../../api/places/venues/search', {}, {
+    return $resource('../../api/places/search-in-venues', {}, {
         query: { method:'GET', params:{}, isArray:false }
     });
 //     return $resource('../../api/places/search', {}, {
