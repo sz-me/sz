@@ -10,9 +10,9 @@
                 <button class="btn active" type="radio" ng-click="filter.radius=0;newList()" >city</button>
             </div>
         </span>
-        <div class="media">
+        <form class="media" ng-submit="refresh()">
             <input type="text" class="search-query" ng-model="filter.query"  placeholder="Искать" ngChange="newList()">
-        </div>
+        </form>
     </div>
     <li>
         <div  ng-repeat="option in options" class="box-border margin-top-huge padding-huge">

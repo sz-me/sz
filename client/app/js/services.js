@@ -6,14 +6,10 @@ var szServices = angular.module('sz.client.services', ['ngResource']);
 /* Services */
 szServices.factory('placeService', function($resource){
     return $resource('../../api/places/:listCtrl:placeId/:docCtrl', {placeId: '@id'}, {
-        newsfeed: { method:'GET', params:{docCtrl: 'newsfeed' }, isArray:false },
-        search: { method:'GET', params:{listCtrl: 'search' }, isArray:false }
-    });
-});
-
-szServices.factory('newsFeedService', function($resource){
-    return $resource('../../api/places/:placeId/newsfeed', {}, {
-        query: { method:'GET', params:{}, isArray:false }
+        $newsfeed: { method:'GET', params:{docCtrl: 'newsfeed' }, isArray:false },
+        newsfeed: { method:'GET', params:{listCtrl: 'newsfeed', placeId: '' }, isArray:false },
+        search: { method:'GET', params:{listCtrl: 'search' }, isArray:true },
+        searchInVenues: { method:'GET', params:{listCtrl: 'search-in-venues' }, isArray:true }
     });
 });
 
@@ -22,11 +18,6 @@ szServices.factory('messageService', function($resource){
         query: { method:'GET', params:{}, isArray:false }
     });
 });
-
-szServices.factory('venueService', function($resource){
-    return $resource('../../api/places/search-in-venues', {}, {});
-});
-
 
 szServices.factory('messagePreviewService', function($http, $resource){
 
