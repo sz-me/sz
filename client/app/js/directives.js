@@ -96,7 +96,7 @@ angular.module('sz.client.directives', [])
                             '<div >'+                               
                                 '<div ng-show="photo" id="photo" ng-style="{marginBottom:photoStyle}">'+
                                     '<a href="#/messages/{{messageid}}" class="inline-block" id="photoA">'+
-                                        '<img class="media-object" src={{photo}} id="photoFile" ng-style={marginTop:"-33%"}>'+
+                                        '<img class="media-object" ng-src={{photo}} id="photoFile" ng-style={marginTop:"-33%"}>'+
                                     '</a>'+
                                 '</div>'+
                                 '{{shmot_category}}'+
@@ -218,7 +218,7 @@ angular.module('sz.client.directives', [])
                             '</p>'+                            
                             '<div class="box-hide" id="photo">'+
                                 '<a href="#/messages/{{messageid}}" class="inline-block">'+
-                                    '<img class="media-object" src={{photo}}>'+
+                                    '<img class="media-object" ng-src={{photo}}>'+
                                 '</a>'+
                             '</div>'+
                            '<div  style="text-align:center;margin:5px 0;" >'+
