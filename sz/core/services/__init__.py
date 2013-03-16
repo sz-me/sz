@@ -146,7 +146,7 @@ class PlaceService(FeedService):
 
     def search(self, **kwargs):
         params = parameters.PlaceSearchParametersFactory.create(kwargs, self.city_service)
-        places = queries.places(**params.get_db_params())
+        places = queries.search_places(**params.get_db_params())
         return [self._make_place_distance_item(place, params) for place in places]
 
     def search_in_venues(self, **kwargs):

@@ -8,10 +8,11 @@ position = {
     'longitude': 127.5266082,
     'accuracy': 50
 }
-'''
+
+
 class GeoServicesTest(TestCase):
     def test_search_venues(self):
-        result = venue.search(position, None, None)
+        result = venue.search(position, u'амур', None)
         print u'МЕСТА (%s)' % len(result[u'venues'])
         i = 1
         print ";\n".join(["%s, %s (%s, %s)" %
@@ -20,9 +21,11 @@ class GeoServicesTest(TestCase):
                               v[u'location'].get(u'address'),
                               v[u'location'].get(u'lat'),
                               v[u'location'].get(u'lng'),
-                              ) for v in result[u'venues']])
+                          ) for v in result[u'venues']])
         self.assertTrue(result)
 
+
+'''
 class GeoNamesTest(TestCase):
     def setUp(self):
         self.geoNamesApi = geonames.GeoNamesApi(GEONAMES_API_CONFIG)

@@ -13,7 +13,7 @@ def search(position, query, radius):
     params = {
         'll': ('%s,%s' % (position['latitude'], position['longitude'])),
         'categoryId': '4d4b7105d754a06378d81259',
-        'limit': 15,
+        'limit': 10,
     }
     if position.get('accuracy'):
         params['llAcc'] = position['accuracy']

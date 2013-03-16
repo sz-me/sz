@@ -9,10 +9,10 @@ from sz.core import models
 from sz.core.services.parameters import names as params_names
 
 
-def places(**kwargs):
+def search_places(**kwargs):
     latitude = kwargs.get(params_names.LATITUDE)
     longitude = kwargs.get(params_names.LONGITUDE)
-    limit = 15 #kwargs.get(params_names.LIMIT)
+    limit = 10 #kwargs.get(params_names.LIMIT)
     query = kwargs.get(params_names.QUERY)
     current_position = fromstr("POINT(%s %s)" % (longitude, latitude))
     radius = kwargs.get(params_names.RADIUS)
