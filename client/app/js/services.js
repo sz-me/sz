@@ -1,28 +1,28 @@
 'use strict';
 
 
-var szClient = angular.module('sz.client.services', ['ngResource']);
+var szServices = angular.module('sz.client.services', ['ngResource']);
 
 /* Services */
-szClient.factory('placeService', function($resource){
-    return $resource('../../api/places/:placeId/:ctrl', {placeId: '@data.id'}, {
+szServices.factory('placeService', function($resource){
+    return $resource('../../api/places/:placeId/:ctrl', {placeId: '@id'}, {
         newsfeed: { method:'GET', params:{ctrl: 'newsfeed' }, isArray:false }
     });
 });
 
-szClient.factory('newsFeedService', function($resource){
+szServices.factory('newsFeedService', function($resource){
     return $resource('../../api/places/:placeId/newsfeed', {}, {
         query: { method:'GET', params:{}, isArray:false }
     });
 });
 
-szClient.factory('messageService', function($resource){
-    return $resource('../../api/messages/:messageId', {}, {
+szServices.factory('messageService', function($resource){
+    return $resource('../../api/messages/:messageId', {messageId: '@id'}, {
         query: { method:'GET', params:{}, isArray:false }
     });
 });
 
-szClient.factory('venueService', function($resource){
+szServices.factory('venueService', function($resource){
     return $resource('../../api/places/search-in-venues', {}, {
         query: { method:'GET', params:{}, isArray:false }
     });
@@ -32,7 +32,7 @@ szClient.factory('venueService', function($resource){
 });
 
 
-szClient.factory('messagePreviewService', function($http, $resource){
+szServices.factory('messagePreviewService', function($http, $resource){
 
     var create = function(message, success, error){
         $http.post('../../api/messages/previews', message, {
@@ -49,7 +49,7 @@ szClient.factory('messagePreviewService', function($http, $resource){
         }).success(success).error(error);
     }
 
-    var resource = $resource('../../api/messages/previews/:previewId/:docCtrl', {previewId: '@data.id'}, {
+    var resource = $resource('../../api/messages/previews/:previewId/:docCtrl', {previewId: '@id'}, {
         query: { method:'GET', params:{}, isArray:false },
         publish: { method:'POST', params:{docCtrl: 'publish'}, isArray:false }
     });
@@ -60,7 +60,7 @@ szClient.factory('messagePreviewService', function($http, $resource){
 });
 
 
-szClient.factory('geolocationService', function ($rootScope) {
+szServices.factory('geolocationService', function ($rootScope) {
     return {
         getCurrentPosition: function (onSuccess, onError, options) {
             navigator.geolocation.getCurrentPosition(function () {
@@ -87,17 +87,17 @@ szClient.factory('geolocationService', function ($rootScope) {
     };
 });
 
-szClient.factory('shmotCategoryService', function($resource){
-                return $resource('../../api/categories', {}, {query: { method:'GET' }});
+
+szServices.factory('categoryService', function($resource){
+                return $resource('../../api/categories', {}, {});
         });
 
 
-
-szClient.factory('authService', function($resource){
+szServices.factory('sessionService', function($resource){
     return $resource('../../api/auth/:action', {}, {
         login: { method:'POST', params:{action: 'login'}, isArray:false },
         logout: { method:'POST', params:{action: 'logout'}, isArray:false },
-        user: { method:'GET', params:{action: 'user'}, isArray:false }
+        current: { method:'GET', params:{action: 'user'}, isArray:false }
     });
 });
 

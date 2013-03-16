@@ -2,11 +2,11 @@
 <div class="box-border padding-huge margin-bottom-huge" id="secondStage">
     <div class="text-center" style="max-height:300px;overflow:hidden;">
         <div class="inline-block">
-            <img ng-src="{{ previewResource.data.photo.reduced }}" />
+            <img ng-src="{{ preview.photo.reduced }}" />
         </div>
     </div>
   <!--  <div class="text-center margin-top-big">
-        <button class="btn" data-toggle="button"  id="btnText" ng-show="previewResource.data.text" ng-click="showPreviewText=!showPreviewText" >
+        <button class="btn" data-toggle="button"  id="btnText" ng-show="preview.text" ng-click="showPreviewText=!showPreviewText" >
             <i class="icon-2x icon-reorder"></i>
         </button>
     </div>-->
@@ -26,7 +26,7 @@
         <button class="btn btn-large btn-primary" ng-click="ok()" ng-disabled="inProgress">Готово!</button>
     </ul>
     <div class="margin-top-big">
-        {{previewResource.data.text}}
+        {{preview.text}}
     </div>
 <!--    <ul class="media-list">
         <li ng-repead="messageCat in messageCategories">

@@ -2,7 +2,7 @@
 <ul class="media-list" >
         <div class="text-center margin-top-big" >
             <div >
-                <select ng-model="shmot_category" ng-options="c.name for c in categories" style="margin:0">
+                <select ng-model="category" ng-options="c.name for c in categories" style="margin:0">
                     <option value="" >Любая категория</option>
                 </select>
             </div>
@@ -13,7 +13,7 @@
                 <button class="btn" type="radio" ng-click="setRadius(0)" ng-class="{'active':0==radiusActive}">city</button>
             </div>
         </div>
-	<li ng-repeat="item in feed.data.results" class="media padding-bot-big box-border" >
+	<li ng-repeat="item in feed.results" class="media padding-bot-big box-border" >
             <a href="#/places/{{item.place.id}}" class="graydark">
                 <div class="box-header">
 <!--                    <a style="float:right;" >

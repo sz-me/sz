@@ -49,19 +49,18 @@
                         <span>Искать</span>
                     </a>
                 </li>
-                <li ng-show="showBtnNewMessage">
+                <li ng-show="session.is_authenticated">
                     <a ng-click="collapseTopMenu=false;" href="">
-                        <span>{{user.username}}</span>
+                        <span>{{session.username}}</span>
                     </a>
                 </li>
-                <li ng-show="showBtnNewMessage">
-                    <a ng-click="collapseTopMenu=false;logout()" style="cursor:pointer" >
+                <li ng-show="session.is_authenticated">
+                    <a ng-click="collapseTopMenu=false;session.$logout()" style="cursor:pointer" >
                         <span>Выход</span>
                     </a>
                 </li>
             </ul>
         </div>
-
         
         <div  ng-view class="content" id="content" ng-show="showContent" class="margin-top-huge"></div>
         
@@ -76,7 +75,7 @@
                             </a>
                         </li>
                     </ul>
-                    <ul class="nav" style="float:right" ng-show="showBtnNewMessage">                    
+                    <ul class="nav" style="float:right" ng-show="session.is_authenticated">
                         <li>
                             <a id="btn-user">
                                 <div id="castle_info_val" style="margin-top:-2px;">
@@ -94,7 +93,7 @@
                             </a>
                         </li>
                     </ul>
-                    <ul class="nav" style="float:right" ng-show="!showBtnNewMessage">
+                    <ul class="nav" style="float:right" ng-show="!session.is_authenticated">
                         <li>
                             <a href="#/login" id="btn-signin" > 
                                 <button class="btn btn-primary " style="margin:0;">
