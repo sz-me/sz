@@ -50,9 +50,9 @@ class MessageBaseSerializer(serializers.ModelSerializer):
         """
         Check that the start is before the stop.
         """
-        text = attrs.get('text', '')
+        text = attrs.get('text', None)
         if text is None:
-            text = ""
+            text = ''
         else:
             text = attrs['text'].strip()
         photo = attrs.get('photo', None)
@@ -74,6 +74,13 @@ class MessagePreviewSerializer(MessageBaseSerializer):
     class Meta:
         model = models.MessagePreview
         exclude = ('user',)
+
+
+class MessagePreviewForPublicationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.MessagePreview
+        fields = ('categories',)
 
 
 class PlaceSerializer(serializers.ModelSerializer):

@@ -163,20 +163,26 @@ class MessagePreviewInstancePublish(SzApiView):
         message_preview = self.get_object(pk)
         if message_preview.user != request.user:
             return sz_api_response.Response(status=status.HTTP_403_FORBIDDEN)
-        message = models.Message(text=message_preview.text, photo=message_preview.photo, place=message_preview.place,
-                                 smile=message_preview.smile, user=message_preview.user)
-        message.save()
-        for category in message_preview.categories.all():
-            message.categories.add(category)
-        message_preview.delete()
-        categorization_service.assert_stems(message)
-        serializer = serializers.MessageSerializer(instance=message)
-        place_serializer = serializers.PlaceSerializer(instance=message.place)
-        data = serializer.data
-        root_url = reverse('client-index', request=request)
-        data['photo'] = message.get_photo_absolute_urls(root_url)
-        data['place'] = place_serializer.data
-        return sz_api_response.Response(data)
+        serializer = serializers.MessagePreviewForPublicationSerializer(message_preview, data=request.DATA)
+        if serializer.is_valid():
+            serializer.save()
+            message = models.Message(text=message_preview.text, photo=message_preview.photo,
+                                     place=message_preview.place, smile=message_preview.smile,
+                                     user=message_preview.user)
+            message.save()
+            for category in message_preview.categories.all():
+                message.categories.add(category)
+            message_preview.delete()
+            categorization_service.assert_stems(message)
+            message_serializer = serializers.MessageSerializer(instance=message)
+            place_serializer = serializers.PlaceSerializer(instance=message.place)
+            data = message_serializer.data
+            root_url = reverse('client-index', request=request)
+            data['photo'] = message.get_photo_absolute_urls(root_url)
+            data['place'] = place_serializer.data
+            return sz_api_response.Response(data)
+        else:
+            return sz_api_response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MessageRootSearch(SzApiView):

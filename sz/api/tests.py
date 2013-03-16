@@ -37,14 +37,14 @@ class MessageSerializerTest(TestCase):
             u"accuracy": 10.0,
             u"city_id": 2026609,
             u"place_id": u"4c636f6f79d1e21e62cbd815",
+            u"smile": 1,
             }
 
-    def validation_test(self):
+    def test_validation(self):
         serializer = serializers.MessageSerializer(data=self.not_valid_message_data)
         self.assertFalse(serializer.is_valid(), 'Empty message addition is allow!!!')
         serializer = serializers.MessageSerializer(data=self.valid_message_data)
         self.assertTrue(serializer.is_valid(), msg = serializer.errors)
-
 
 
 
