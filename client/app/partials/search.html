@@ -1,8 +1,5 @@
-<ul class="ul-box text-center" >
-    <li class="media box-border padding-huge">
-        <div>
-            <input type="text" class="search-query" ng-model="filter.query"  placeholder="Искать" >
-        </div>
+<ul class="ul-box text-center box-border padding-huge" >
+    <li class="media ">        
         <!--<div class="margin-top-huge" sz-collapse-categories="chCat">
                 <input type="button"  class="btn " value="{{chCat.name}}" id="categoryInput" ng-model="chCat.name" ng-click="showCollapseCat=!showCollapseCat">
             <div id="categories">
@@ -15,27 +12,30 @@
                 {{chCat.description}}
             </div>
         </div>-->
-        <div class="margin-top-huge">
-            <select ng-model="shmot_cat" ng-options="c.name for c in categories" ng-click="setCategory()">
+        <div >
+            <select ng-model="filter.category" ng-options="c.name for c in categories" ng-click="newList()" style="margin:0" ng-disabled="isSearch">
                 <option value="" >Любая категория</option>
             </select>
             <div class="margin-top">
                 {{shmot_cat.description}}
             </div>
         </div>
-        <div class="margin-top-huge">
-            <button class="btn disabled">Фото</button>
+        <div class="margin-top-big" >
+            <button class="btn disabled"  ng-disabled="isSearch">Фото</button>
         </div>
     </li>
-    <li class="media box-border padding-huge" >
+    <li class="media margin-top-big" >
         <div class="btn-group" data-toggle="buttons-radio" >
-            <button class="btn" type="radio" ng-click="filter.radius=250">250m</button>
-            <button class="btn" type="radio" ng-click="filter.radius=1000">1km</button>
-            <button class="btn" type="radio" ng-click="filter.radius=3000">3km</button>
-            <button class="btn active" type="radio" ng-click="filter.radius=0" >city</button>
+            <button class="btn" type="radio" ng-disabled="isSearch" ng-click="filter.radius=250;newList()" ng-class="{'active':250==filter.radius}">250m</button>
+            <button class="btn" type="radio" ng-disabled="isSearch" ng-click="filter.radius=1000;newList()" ng-class="{'active':1000==filter.radius}">1km</button>
+            <button class="btn" type="radio" ng-disabled="isSearch" ng-click="filter.radius=3000;newList()" ng-class="{'active':3000==filter.radius}">3km</button>
+            <button class="btn" type="radio" ng-disabled="isSearch" ng-click="filter.radius=0;newList()"  ng-class="{'active':!filter.radius}">city</button>
         </div>
     </li>
-    <li class="media box-border padding-huge">
+    <div class="margin-top-big">
+        <input type="text" autofocus="autofocus" ng-disabled="isSearch" class="search-query" ng-model="filter.query"  placeholder="Искать" ng-change="newList()">
+    </div>
+<!--    <li class="media box-border padding-huge">
         <div >
             <input type="text"  ng-model="filter.place.name"  placeholder="Название места" style="margin-bottom:0;border-radius:0">
         </div>
@@ -46,9 +46,56 @@
                 </div>
             </div>
         </div>
-    </li>
+    </li>-->
     <div class="media">
-        <button class="btn btn-large pull-left" ng-click="clearFilter()">Сбросить</button>
-        <button class="btn btn-large pull-right" ng-click="isSearch()">Искать</button>
+        <button class="btn pull-left" ng-click="clearFilter()" ng-disabled="isSearch">Сбросить</button>
+<!--         <button class="btn btn-large pull-right" ng-click="isSearch()">Искать</button> -->
     </div>
 </ul>
+<ul class="ul-box" >
+{{filter}}
+<br>
+<br>
+{{searchFeed.params}}
+</ul>
+<ul class="media-list" >
+    <li ng-repeat="item in searchFeed.results" class="media padding-bot-big box-border" >
+        <a href="#/places/{{item.place.id}}" class="graydark">            
+            <div class="box-header margin-X margin-top">
+<!--                    <a style="float:right;" >
+                    <i class=" icon-chevron-right"></i>
+                </a>-->
+                <h4 style="margin:0px;margin-top:3px;" >{{item.place.name}}</h4>
+                <small >{{item.place.address}}</small>
+            </div>
+        </a>
+        <ul class="ul-box" >
+            <li class="padding-big">
+<!--                 <div ng-repeat="message in item.messages.results "  class=" media" > -->
+                    <sz-news-feed-message-box message='item.message' categories="categories" place="item.place"></sz-news-feed-message-box>
+<!--                 </div> -->
+            </li>
+        </ul>
+<!--        <div class="margin-X margin-top text-right">
+            <small>{{item.distance}} м</small>
+        </div>-->
+    </li>
+    <li class="text-center media margin-bottom-huge" >
+        <button class="btn  btn-large " ng-click="loadMore()">
+            <i class="icon-circle"></i>
+            <i class="icon-circle"></i>
+            <i class="icon-circle"></i>
+<!--                 <img class="media-object" src="img/ico/blue/glyphicons_187_more.png"> -->
+        </button>
+    </li>
+</ul>
+<!--<input name="frameworks" list="frameworks" />
+<datalist id="frameworks">
+    <option value="MooTools">
+    <option value="Moobile">
+    <option value="Dojo Toolkit">
+    <option value="jQuery">
+    <option value="YUI">
+</datalist>-->
+<!--{{searchFeed}}
+<>-->

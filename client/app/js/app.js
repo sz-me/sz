@@ -13,7 +13,8 @@ szApp.config(['$routeProvider', function($routeProvider) {
         .when('/messages/:messageId', {templateUrl: 'partials/message.html', controller: MessageController})
         .when('/login', {templateUrl: 'partials/login.html', controller: LoginController})
         .when('/registration', {templateUrl: 'partials/registration.html', controller: RegistrationController})
-        .when('/search', {templateUrl: 'partials/search.html', controller: SearchController})
+        .when('/search', {templateUrl: 'partials/search.html', controller: SearchController,reloadOnSearch:false})
+//         .when('/search:query', {templateUrl: 'partials/search.html', controller: SearchController})
         .when('/errors/geolocation', {templateUrl: 'partials/geolocation-error.html'})
         .otherwise({redirectTo: '/newsfeed'});
 }]);

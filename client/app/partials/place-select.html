@@ -4,24 +4,22 @@
     <div class="box-border padding-huge text-center">
         <span>
             <div class="btn-group" data-toggle="buttons-radio" >
-                <button class="btn" type="radio" ng-click="filter.radius=250;newList()" >250m</button>
-                <button class="btn" type="radio" ng-click="filter.radius=1000;newList()">1km</button>
-                <button class="btn" type="radio" ng-click="filter.radius=3000;newList()">3km</button>
-                <button class="btn active" type="radio" ng-click="filter.radius=0;newList()" >city</button>
+                <button class="btn" type="radio" ng-click="filter.radius=250;newList()" ng-disabled="isSearch" ng-class="{'active':filter.radius==250}" >250m</button>
+                <button class="btn" type="radio" ng-click="filter.radius=1000;newList()" ng-disabled="isSearch" ng-class="{'active':filter.radius==1000}" >1km</button>
+                <button class="btn" type="radio" ng-click="filter.radius=3000;newList()" ng-disabled="isSearch" ng-class="{'active':filter.radius==3000}" >3km</button>
+                <button class="btn" type="radio" ng-click="filter.radius=0;newList()" ng-disabled="isSearch"  ng-class="{'active':!filter.radius}" >city</button>
             </div>
         </span>
         <form class="media" ng-submit="refresh()">
-            <input type="text" class="search-query" ng-model="filter.query"  placeholder="Искать" ngChange="newList()">
+            <input type="text" class="search-query" ng-disabled="isSearch" ng-model="filter.query"  placeholder="Искать" ngChange="newList()">
         </form>
+        <div class="media">
+            <button class="btn pull-left" ng-click="clearFilter()" ng-disabled="isSearch">Сбросить</button>
+        </div>
     </div>
     <li>
         <div  ng-repeat="option in options" class="box-border margin-top-huge padding-huge">
             <a style="color:#333" href="#/places/{{ option.place.id }}/messages/add" class="place-list-box">
-                <div class="distance">
-                    <div>
-                        {{option.distance}} м
-                    </div>
-                </div>
                 <div class="foursquare-icon">
                     <img ng-src="{{ option.place.foursquare_icon_prefix }}64{{ option.place.foursquare_icon_suffix }}">
                 </div>
@@ -29,6 +27,9 @@
                     <h3 style="margin-bottom:0;margin-top:0px;">{{option.place.name}}</h3>
                     <small style="line-height:10px;">{{option.place.address}}</small>
                 </div> 
+                <div class="margin-X margin-top text-right">
+                    <big>{{option.distance}} м</big>
+                </div>
                 <div class="text-right margin-bottom-big circle-parent" >
                     <div class="catDiv" style="background:green">
                         <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >

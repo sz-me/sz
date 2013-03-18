@@ -15,7 +15,8 @@ szServices.factory('placeService', function($resource){
 
 szServices.factory('messageService', function($resource){
     return $resource('../../api/messages/:messageId', {messageId: '@id'}, {
-        query: { method:'GET', params:{}, isArray:false }
+        query: { method:'GET', params:{}, isArray:false },
+        search: { method:'GET', params:{messageId:'search'}, isArray:false }
     });
 });
 
