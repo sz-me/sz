@@ -79,7 +79,10 @@ def filter_messages(filtered_messages, **kwargs):
     category = kwargs.get(params_names.CATEGORY)
     photo = kwargs.get(params_names.PHOTO)
     if len(stems) > 0:
-        filtered_messages = filtered_messages.filter(stems__stem__in=[stem[0] for stem in stems])
+        q = Q(stems__stem__startswith=stems[0][0])
+        for stem in stems[1:]:
+            q = q | Q(stems__stem__startswith=stem[0])
+        filtered_messages = filtered_messages.filter(q)
     if category is not None:
         filtered_messages = filtered_messages.filter(categories__in=[category, ])
     if photo:
@@ -122,8 +125,8 @@ def search_messages(**kwargs):
     else:
         current_position = fromstr("POINT(%s %s)" % (longitude, latitude))
         distance_kwargs = {'m': '%i' % radius}
-        filtered_messages = models.Message.objects.filter(
-            place__position__distance_lte=(current_position, D(**distance_kwargs)))
+        places = models.Place.objects.filter(position__distance_lte=(current_position, D(**distance_kwargs)))
+        filtered_messages = models.Message.objects.filter(place__in=places)
     if max_id is not None:
         filtered_messages = filtered_messages.filter(id__lte=max_id)
     filtered_messages = filter_messages(filtered_messages, **kwargs)
