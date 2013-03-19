@@ -65,7 +65,7 @@ class NewsFeedItemResponseBuilder(FeedServiceResponseBuilder):
         serialized_messages = self.messages_response_builder.build(item["place"], item["messages"])
         place_serializer = serializers.PlaceSerializer(instance=item["place"])
         serialized_item = dict(
-            place=place_serializer.data, distance=int(item["distance"]),
+            place=place_serializer.data, azimuth=int(item["azimuth"]), distance=int(item["distance"]),
             messages=serialized_messages)
         photos = item.get('photos', None)
         if photos is not None:

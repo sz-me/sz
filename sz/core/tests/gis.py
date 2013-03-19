@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+import math
 from django.test import TestCase
-from sz.core.gis import geonames, venue
+from sz.core.gis import geonames, venue, azimuth
 from sz.settings import GEONAMES_API_CONFIG
 
 position = {
@@ -10,6 +11,15 @@ position = {
 }
 
 
+class AzimuthCalculationTest(TestCase):
+    def test_calc(self):
+        az = azimuth(position['longitude'], position['latitude'], 127.535060167, 50.2606711694)
+        self.assertEqual(int(az), 99)
+        az = azimuth(position['longitude'], position['latitude'], 127.519693, 50.29192)
+        self.assertEqual(int(az), 351)
+
+
+'''
 class GeoServicesTest(TestCase):
     def test_search_venues(self):
         result = venue.search(position, u'амур', None)
@@ -25,7 +35,7 @@ class GeoServicesTest(TestCase):
         self.assertTrue(result)
 
 
-'''
+
 class GeoNamesTest(TestCase):
     def setUp(self):
         self.geoNamesApi = geonames.GeoNamesApi(GEONAMES_API_CONFIG)

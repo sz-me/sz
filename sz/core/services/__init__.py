@@ -46,8 +46,9 @@ class FeedService:
 
     def _make_place_distance_item(self, place, params):
         latitude, longitude = parameters.get_position_from_dict(params.get_api_params())
-        distance = gis_core.calculate_distance(longitude, latitude, place.longitude(), place.latitude())
-        item = dict(place=place, distance=distance)
+        distance = gis_core.distance(longitude, latitude, place.longitude(), place.latitude())
+        azimuth = gis_core.azimuth(longitude, latitude, place.longitude(), place.latitude())
+        item = dict(place=place, distance=distance, azimuth=azimuth)
         return item
 
     def _get_max_id(self):
@@ -159,7 +160,7 @@ class PlaceService(FeedService):
         result = venue.search({'latitude': latitude, 'longitude': longitude}, query, radius)
         place_and_distance_list = \
             map(lambda l:
-                dict(place=models.Place(
+                {'place': models.Place(
                     id=l[u'id'],
                     name=l[u'name'],
                     contact=l.get(u'contact'),
@@ -170,7 +171,9 @@ class PlaceService(FeedService):
                     city_id=None,
                     foursquare_icon_suffix=utils.safe_get(l, lambda el: el[u'categories'][0][u'icon'][u'suffix']),
                     foursquare_icon_prefix=utils.safe_get(l, lambda el: el[u'categories'][0][u'icon'][u'prefix']), ),
-                     distance=l[u'location'].get(u'distance')),
+                 'distance': l[u'location'].get(u'distance'),
+                 'azimuth': gis_core.azimuth(longitude, latitude,
+                                             l[u'location'].get(u'lng'), l[u'location'].get(u'lat'))},
                 result["venues"])
         if len(place_and_distance_list) > 0:
             caching_manager = ModelCachingManager(

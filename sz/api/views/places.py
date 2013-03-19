@@ -49,7 +49,9 @@ class PlaceSearch(SzApiView):
 
     def _serialize_item(self, item):
         item_serializer = serializers.PlaceSerializer(instance=item[u'place'])
-        serialized_item = {"place": item_serializer.data, "distance": int(item["distance"])}
+        serialized_item = {
+            "place": item_serializer.data, "distance": int(item["distance"]), "azimuth": int(item["azimuth"])
+        }
         return serialized_item
 
     def get(self, request, format=None):
