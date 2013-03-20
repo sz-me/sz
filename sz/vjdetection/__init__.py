@@ -17,7 +17,7 @@ def get_haar_cascade_path(haar_cascade_filename):
     return os.path.join(HAAR_CASCADES_DIRECTORY, haar_cascade_filename)
 
 
-def detect_face(uploaded_photo, haar_cascade):
+def detect_object(uploaded_photo, haar_cascade):
     array = bytearray(uploaded_photo.read())
     buffer = np.asarray(array, dtype=np.uint8)
     # http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html
@@ -30,7 +30,7 @@ def detect_face(uploaded_photo, haar_cascade):
         rectangles[:,2:] += rectangles[:,:2]
         for x1, y1, x2, y2 in rectangles:
             cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
-    result, encoded_image = cv2.imencode('.jpg', img)
+    result, encoded_image = cv2.imencode('.jpg', img, None)
     if result:
         return encoded_image.data
     else:
