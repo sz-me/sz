@@ -1,11 +1,13 @@
 
-<div class="box-border">
+<div class="box-page-header padding-X-big padding-Y text-right">
     <a ng-href="#/places/{{ place.id }}" class="graydark">
-        <div class="box-header">
+        <div >
             <h3 style="margin-bottom:0;;">{{place.name}}</h3>
             <small style="line-height:10px;">{{place.address}}</small>
         </div>
     </a>
+</div>
+<div class="box-border margin-top-huge">
     <div class="padding-huge">
         <textarea name='text'
                   id="messageText"
