@@ -1,5 +1,13 @@
+<div class="box-page-header padding-X-big padding-Y text-right">
+    <a ng-href="#/places/{{ preview.place.id }}" class="graydark">
+        <div >
+            <h3 style="margin-bottom:0;;">{{preview.place.name}}</h3>
+            <small style="line-height:10px;">{{preview.place.address}}</small>
+        </div>
+    </a>
+</div>
 
-<div class="box-border padding-huge margin-bottom-huge" id="secondStage">
+<div class="box-border padding-huge margin-bottom-huge margin-top-huge" id="secondStage">
     <div class="text-center" style="max-height:300px;overflow:hidden;">
         <div class="inline-block">
             <img ng-src="{{ preview.photo.reduced }}" />

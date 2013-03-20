@@ -235,7 +235,7 @@ textarea:focus{
     border-bottom:1px solid #CCC;
 }
 
-.box-border,.page-header{
+.box-border,.box-page-header{
     background:white;
     border:1px solid #CCC;
     border-radius:5px;
@@ -243,7 +243,7 @@ textarea:focus{
     cursor:pointer;
 }
 
-.page-header{
+.box-page-header{
 /*     background:#99CCCC; */
 /*     box-shadow:none; */
     border-radius:0;
