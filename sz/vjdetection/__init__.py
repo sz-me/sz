@@ -30,8 +30,7 @@ def detect_face(uploaded_photo, haar_cascade):
         rectangles[:,2:] += rectangles[:,:2]
         for x1, y1, x2, y2 in rectangles:
             cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
-    encode_param=[int(cv2.IMWRITE_JPEG_QUALITY), 90]
-    result, encoded_image = cv2.imencode('.jpg', img, encode_param)
+    result, encoded_image = cv2.imencode('.jpg', img)
     if result:
         return encoded_image.data
     else:
