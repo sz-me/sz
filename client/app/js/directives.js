@@ -316,6 +316,51 @@ angular.module('sz.client.directives', [])
                 }
             }
         })
+        .directive('szAutoCompleteSearch',function(){
+            return{
+                restrict:'EA',
+                template:
+                    '<div id="autoCompleteParent">'+
+                        '<div id="autoComplete">'+
+                            '<div ng-repeat="hint in autoCompleteList | filter:filter.query | limitTo:6" ng-click="filter.query = hint">{{hint}}</div>'+
+                        '</div>'+
+                    '</div>',
+                link:function(scope,elm,attr){
+                    var searchAutoComplete = function(){
+                        if(scope.filter.query){
+                            if(scope.query.is( ":focus" )){
+                                $("#autoCompleteParent").show()
+                                var children = $("#autoComplete").children()
+                                if(children.length<2){
+                                    if(children.text()==scope.filter.query){
+                                        $("#autoCompleteParent").hide()
+                                    }
+                                }
+                            }
+                        }
+                        else{$("#autoCompleteParent").hide()}
+                    }
+                    
+                    scope.query = $("#searchFiletrQuery");
+                    scope.query
+                        .blur(function(){
+                            setTimeout(function() { $("#autoCompleteParent").hide() }, 100)
+                        })
+                        .keydown(function(e){
+                            if(e.keyCode==27){scope.query.blur()}
+                            if(e.keyCode==13){
+                                $("#autoCompleteParent").hide()
+                                scope.newList()
+                            }
+                        })
+                    scope.newQuery = function(hint){
+                        scope.filter.query = hint;
+                        $("#autoCompleteParent").hide()
+                    }
+                    scope.$watch('filter.query', searchAutoComplete);
+                }
+            }
+        })
         
 //         .directive('szNewMessageCategories',function(){
 //             return{

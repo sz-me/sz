@@ -1,5 +1,10 @@
-<ul class="ul-box text-center box-border padding-huge" >
-    <li class="media ">        
+<ul class="ul-box text-center page-header padding-huge" style="margin-top:0">
+    <li class="media ">  
+        <div >
+            <input type="text" class="search-query" ng-model="filter.query"  placeholder="Искать" style="width:90%;margin:0;" id="searchFiletrQuery" >
+        </div>
+        <sz-auto-complete-search></sz-auto-complete-search>
+        
         <!--<div class="margin-top-huge" sz-collapse-categories="chCat">
                 <input type="button"  class="btn " value="{{chCat.name}}" id="categoryInput" ng-model="chCat.name" ng-click="showCollapseCat=!showCollapseCat">
             <div id="categories">
@@ -12,16 +17,13 @@
                 {{chCat.description}}
             </div>
         </div>-->
-        <div >
-            <select ng-model="filter.category" ng-options="c.name for c in categories" ng-click="newList()" style="margin:0" ng-disabled="isSearch">
+        <div class="margin-top-big">
+            <select ng-model="filter.category" ng-options="c.name for c in categories" style="margin:0" ng-disabled="isSearch">
                 <option value="" >Любая категория</option>
             </select>
             <div class="margin-top">
                 {{shmot_cat.description}}
             </div>
-        </div>
-        <div class="margin-top-big" >
-            <button class="btn disabled"  ng-disabled="isSearch">Фото</button>
         </div>
     </li>
     <li class="media margin-top-big" >
@@ -32,8 +34,8 @@
             <button class="btn" type="radio" ng-disabled="isSearch" ng-click="filter.radius=0;newList()"  ng-class="{'active':!filter.radius}">city</button>
         </div>
     </li>
-    <div class="margin-top-big">
-        <input type="text" autofocus="autofocus" ng-disabled="isSearch" class="search-query" ng-model="filter.query"  placeholder="Искать" ng-change="newList()">
+    <div class="margin-top-big" >
+        <button class="btn disabled"  ng-disabled="isSearch">Фото</button>
     </div>
 <!--    <li class="media box-border padding-huge">
         <div >
@@ -48,16 +50,19 @@
         </div>
     </li>-->
     <div class="media">
-        <button class="btn pull-left" ng-click="clearFilter()" ng-disabled="isSearch">Сбросить</button>
+        <button class="btn pull-left" ng-click="clearFilter()" ng-disabled="isSearch">
+            <i class="icon-remove icon-2x" ></i>
+        </button>
 <!--         <button class="btn btn-large pull-right" ng-click="isSearch()">Искать</button> -->
     </div>
 </ul>
-<ul class="ul-box" >
+{{c}}
+<!--<ul class="ul-box" >
 {{filter}}
 <br>
 <br>
 {{searchFeed.params}}
-</ul>
+</ul>-->
 <ul class="media-list" >
     <li ng-repeat="item in searchFeed.results" class="media padding-bot-big box-border" >
         <a href="#/places/{{item.place.id}}" class="graydark">            
