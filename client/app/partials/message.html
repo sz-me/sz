@@ -1,45 +1,57 @@
-
-<div  class="box-page-header padding-X-big padding-Y text-center">
-    <div style="float:left;margin-top:6px;">
-        <a class="btn btn-large  btn-primary" type="button" href="#/places/{{message.place.id}}/messages/add" ><i class="icon-plus icon-2x" ></i></a>
-    </div>
-    <a href="#/places/{{message.place.id }}/" class="graydark">
-        <div style="text-align:right;margin-bottom:10px;min-height:62px;" >        
-            <h3 style="margin-bottom:0;margin-top:0;">{{message.place.name}}</h3>
-            <small style="line-height:10px;">{{message.place.address}}</small>   
-        </div> 
-    </a>
+<div>
+    <ul id="contentHeader">
+        <li class="contentHeader-inner">
+            <ul class="noList">
+                <li >
+                    <div id="place-add-btn">
+                        <a class="btn btn-large  btn-primary" type="button" href="#/places/{{message.place.id}}/messages/add" ><i class="icon-plus icon-2x" ></i></a>
+                    </div>
+                    <a href="#/places/{{message.place.id }}/" class="graydark">
+                        <div id="place-name-address">        
+                            <h3 id="place-name-h">{{message.place.name}}</h3>
+                            <small id="place-address">{{message.place.address}}</small>   
+                        </div> 
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </div>
-<ul class="ul-box box-border padding-huge margin-top-big">
-    <li>
-        <time>
-            {{message.date}}
-        </time>
-    </li>
-    <li>
-        <span class="badge margin-top-big" >8</span>
-        <strong class="margin-left">Герцог Орехов</strong>
-    </li>
-    <li class="text-center margin-top">
-        <div class="inline-block" style="min-height:60px;width:100%;" ng-style="photoStyle">
-            <img class="media-object" src={{message.photo.full}}>
-        </div>
-    </li>
-    <li>
-        <div class="circle-parent"  >
-            <div class="catDiv" ng-repeat="cat in message_categories" ng-class="cat.alias" >
-                <i class="catDivI"></i>
-            </div> 
-        </div>
-    </li>
-    <li class="margin-top-big">
-        <p>{{message.text}}</p>
-    </li>
-    <li class="text-center">
-        <button class="btn  btn-large margin-top-big" >
-            <i class="icon-arrow-left"></i>
-        </button>
+<ul class="media-list"  id="contentBody">
+    <li class="media padding-huge box-border" >
+        <ul class="noList">
+            <li>
+                <time>
+                    {{message.date}}
+                </time>
+            </li>
+            <li class="margin-top-big">
+                <span class="badge ">8</span>
+                <strong class="margin-left">Герцог Орехов</strong>
+            </li>
+            <li class="margin-top-big text-center">
+                <div ng-style="photoStyle" id="message-photo">
+                    <img class="media-object" src={{message.photo.full}}>
+                </div>
+            </li>
+            <li class="margin-top-big">
+                <div class="circle-parent"  >
+                    <div class="catDiv" ng-repeat="cat in message_categories" ng-class="cat.alias" >
+                        <i class="catDivI"></i>
+                    </div> 
+                </div>
+            </li>
+            <li class="margin-top-big">
+                <p>{{message.text}}</p>
+            </li>
+            <li class="margin-top-big">
+                <button class="btn  btn-large margin-top-big" >
+                    <i class="icon-arrow-left"></i>
+                </button>
+            </li>
+        </ul>
     </li>
 </ul>
+
 <div style="height:60px;">
 </div>

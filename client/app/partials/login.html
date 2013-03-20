@@ -1,18 +1,30 @@
-<!-- <div class=""> -->
+<div>
+    <ul id="contentHeader">
+        <li class="contentHeader-inner">
+            <ul class="noList">
+                <li>
+                    <h2 class="form-signin-heading text-right">Вход</h2>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
 
-    <form class="form-signin box-border padding-huge margin-top-huge">
-        <h2 class="form-signin-heading text-right">Вход</h2>
-        <input type="text" class="input-block-level" placeholder="Логин" ng-model="username">
-        <input type="password" class="input-block-level" placeholder="Пароль" ng-model="password">
-        <label class="checkbox margin-Y-big">
-            <input type="checkbox" value="remember-me"> Запомнить
-        </label>
-        <div class="margin-top-huge">
-            <a class="btn btn-large btn-primary" ng-click="login(username, password)" href="#">Войти</a>
-            <a class="btn btn-large btn-warning margin-left" href="#/registration">Новый</a>
-        </div>
-        <div class="margin-top-huge">
-            <a >Забыли пароль?</a>
-        </div>
-    </form>
-<!-- </div> -->
+<ul class="media-list "  id="contentBody">
+    <li class="box-border padding-huge margin-top-huge">
+        <form class="form-signin ">
+            <input type="text" class="input-block-level" placeholder="Логин" ng-model="username">
+            <input type="password" class="input-block-level" placeholder="Пароль" ng-model="password">
+            <label class="checkbox margin-Y-big">
+                <input type="checkbox" value="remember-me"> Запомнить
+            </label>
+            <div class="margin-top-huge">
+                <a class="btn btn-large btn-primary" ng-click="login(username, password)" href="#">Войти</a>
+                <a class="btn btn-large btn-warning margin-left" href="#/registration">Новый</a>
+            </div>
+            <div class="margin-top-huge">
+                <a >Забыли пароль?</a>
+            </div>
+        </form>
+    </li>
+</ul>

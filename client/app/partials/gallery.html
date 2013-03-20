@@ -1,29 +1,31 @@
-
-<div  class="box-page-header padding-X-big padding-Y text-center">
-    <div style="float:left;margin-top:6px;">
-        <a class="btn btn-large  btn-primary" type="button" href="#/places/{{ place.id }}/messages/add" ><i class="icon-plus icon-2x" ></i></a>
-    </div>
-    <a href="#/places/{{ place.id }}/" class="graydark">
-        <div style="text-align:right;margin-bottom:10px;min-height:62px;" >        
-            <h3 style="margin-bottom:0;margin-top:0;">{{place.name}}</h3>
-            <small style="line-height:10px;">{{place.address}}</small>   
-        </div> 
-<!--        <div class="margin-X margin-top text-right">
-            <i><small>{{distance}} м</small></i>
-        </div>-->
-    </a>
+<div>
+    <ul id="contentHeader">
+        <li class="contentHeader-inner">
+            <ul class="noList">
+                <li >
+                    <div id="place-add-btn">
+                        <a class="btn btn-large  btn-primary" type="button" href="#/places/{{place.id}}/messages/add" ><i class="icon-plus icon-2x" ></i></a>
+                    </div>
+                    <a href="#/places/{{place.id }}/" class="graydark">
+                        <div id="place-name-address">        
+                            <h3 id="place-name-h">{{place.name}}</h3>
+                            <small id="place-address">{{place.address}}</small>   
+                        </div> 
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </div>
-{{feedPhoto.count}}<br>
-{{feedPhoto.params}}<br>
-<ul class="margin-top-big text-center margin-bottom-huge media-list" >
-    <li >
+<ul class="media-list "  id="contentBody">
+    <li class="text-center">
         <div>
             <a ng-repeat="message in feedPhoto.results " class="inline-block" href="#/messages/{{message.id }}" >
                 <img src="{{message.photo.thumbnail}}">
             </a>
         </div>
     </li>
-    <li>
+    <li class="text-center">
         <button class="btn  btn-large margin-top-big" ng-click="loadMore()">
             <i class="icon-circle"></i>
             <i class="icon-circle"></i>
@@ -31,3 +33,6 @@
         </button>
     </li>
 </ul>
+
+<div style="height:60px;">
+</div>

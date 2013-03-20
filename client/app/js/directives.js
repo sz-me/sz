@@ -87,10 +87,12 @@ angular.module('sz.client.directives', [])
                 replace: true,
                 template:
                         '<div >'+   
-                            '<time >'+
-                                '{{date}}'+
-                                ' {{time}}'+                               
-                            '</time>'+
+                            '<a href="#/messages/{{messageid}}" class="graydark">'+
+                                '<time >'+
+                                    '{{date}}'+
+                                    ' {{time}}'+                               
+                                '</time>'+
+                            '</a>'+
                             '<span class="badge margin-top-big" >8</span>'+
                             '<strong class="margin-left">{{username}}</strong>'+
                             '<div >'+                               
@@ -199,11 +201,12 @@ angular.module('sz.client.directives', [])
                 replace: true,
                 template:
                         '<div >'+   
-                            '<time>'+
-                                '{{date}}'+
-                                ' {{time}}'+                               
-                            '</time>'+
-//                             '<div> {{categoriesname}}<div>'+
+                            '<a href="#/messages/{{messageid}}" class="graydark">'+
+                                '<time>'+
+                                    '{{date}}'+
+                                    ' {{time}}'+                               
+                                '</time>'+
+                            '</a>'+
                             '<div >'+                                
                                 '<div class="circle-parent" ng-show="message_categories">'+
                                     '<div class="catDiv" ng-repeat="cat in message_categories" ng-class="cat.alias">'+
@@ -320,11 +323,13 @@ angular.module('sz.client.directives', [])
             return{
                 restrict:'EA',
                 template:
-                    '<div id="autoCompleteParent">'+
-                        '<div id="autoComplete">'+
-                            '<div ng-repeat="hint in autoCompleteList | filter:filter.query | limitTo:6" ng-click="filter.query = hint">{{hint}}</div>'+
-                        '</div>'+
-                    '</div>',
+//                         '<div style="display:inline-block;background:red;">'+
+                            '<div id="autoCompleteParent">'+
+                                '<div id="autoComplete">'+
+                                    '<div ng-repeat="hint in autoCompleteList | filter:filter.query | limitTo:6" ng-click="filter.query = hint">{{hint}}</div>'+
+                                '</div>'+
+//                             '</div>'+
+                        '<div>',
                 link:function(scope,elm,attr){
                     var searchAutoComplete = function(){
                         if(scope.filter.query){
@@ -362,26 +367,7 @@ angular.module('sz.client.directives', [])
             }
         })
         
-//         .directive('szNewMessageCategories',function(){
-//             return{
-//                 restrict:'EA',
-//                 template:
-//                     '<ul class="class="media-list"">'+
-//                         '<li >'+
-//                             'Добавить категорию'
-//                         '</li>'+
-//                     '</ul>',
-//                 link:function(scope,elm,attr){
-//                     var collapse = function(){
-//                         if(scope.collapseTopMenu){$("#collapseMenu").animate({maxHeight:scope.h+'px'},200)}
-//                         else{$("#collapseMenu").animate({maxHeight:0},200)}
-//                     }
-//                     scope.h = 110;
-//                     scope.$watch('collapseTopMenu', collapse);
-//                     
-//                 }
-//             }
-//         })
+
         
 //         .directive('szPrevPhoto',function(){
 //             return{
