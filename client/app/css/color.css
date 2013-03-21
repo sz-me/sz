@@ -232,16 +232,41 @@ textarea:focus{
     line-height:10px;
 }
 
-#message-photo{
+#message-photo,#photoPrev{
     display:inline-block;
     min-height:60px;
     max-width:100%;
 }
 
+#photoPrev>img{
+    max-height:200px;
+}
 
+#photoPrevName{
+    font-size:80%;
+    font-weight:bold;
+    font-style:oblique;
+}
 
 .messageBox{
     border-bottom:1px solid #CCC;
+}
+
+#mySearch{
+    height:40px;
+    font-style:oblique;
+    color:#666;
+    border-bottom:1px solid #CCC;
+/*     border-top:1px solid #CCC; */
+}
+
+.liveSearchLi{
+    cursor:pointer;
+    padding:5px;
+}
+
+.liveSearchLi:hover{
+    background:#EEE;
 }
 
 .box-border{

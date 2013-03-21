@@ -24,7 +24,13 @@
                   ng-model="text" ng-init="text=''" ng-disabled="inProgress"></textarea>
             </li>
             <li class="margin-top-big text-left">
-                <input type="file" name="photo" sz-file-model="photo" ng-init="photo=null" ng-disabled="inProgress"/>
+                <input type="file" name="photo" sz-file-model="photo" ng-init="photo=null" ng-disabled="inProgress" id="message-edit-photo"/>
+            </li>
+            <li class="margin-top-big ">
+                <sz-prev-photo></sz-prev-photo>
+                <div id="photoPrevName"></div>
+                <span id="photoPrev">
+                </span>
             </li>
             <li class="margin-top-big ">
                 <button class="btn btn-large btn-primary" ng-click="send()" ng-disabled="inProgress">Отправить</button>

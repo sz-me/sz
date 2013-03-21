@@ -319,100 +319,142 @@ angular.module('sz.client.directives', [])
                 }
             }
         })
-        .directive('szAutoCompleteSearch',function(){
-            return{
-                restrict:'EA',
-                template:
-//                         '<div style="display:inline-block;background:red;">'+
-                            '<div id="autoCompleteParent">'+
-                                '<div id="autoComplete">'+
-                                    '<div ng-repeat="hint in autoCompleteList | filter:filter.query | limitTo:6" ng-click="filter.query = hint">{{hint}}</div>'+
-                                '</div>'+
-//                             '</div>'+
-                        '<div>',
-                link:function(scope,elm,attr){
-                    var searchAutoComplete = function(){
-                        if(scope.filter.query){
-                            if(scope.query.is( ":focus" )){
-                                $("#autoCompleteParent").show()
-                                var children = $("#autoComplete").children()
-                                if(children.length<2){
-                                    if(children.text()==scope.filter.query){
-                                        $("#autoCompleteParent").hide()
-                                    }
-                                }
-                            }
-                        }
-                        else{$("#autoCompleteParent").hide()}
-                    }
-                    
-                    scope.query = $("#searchFiletrQuery");
-                    scope.query
-                        .blur(function(){
-                            setTimeout(function() { $("#autoCompleteParent").hide() }, 100)
-                        })
-                        .keydown(function(e){
-                            if(e.keyCode==27){scope.query.blur()}
-                            if(e.keyCode==13){
-                                $("#autoCompleteParent").hide()
-                                scope.newList()
-                            }
-                        })
-                    scope.newQuery = function(hint){
-                        scope.filter.query = hint;
-                        $("#autoCompleteParent").hide()
-                    }
-                    scope.$watch('filter.query', searchAutoComplete);
-                }
-            }
-        })
-        
-
-        
-//         .directive('szPrevPhoto',function(){
+//         .directive('szLiveSearch',function(){
 //             return{
 //                 restrict:'EA',
+//                 template:
+//                         '<ul class="noList">'+
+//                             '<li id="mySearch" class="liveSearchLi">'+
+//                                 '<i class="icon-remove-sign icon-3x pull-right"  style="vertical-align:-50%" ng-click="removeQuery()"></i>'+
+//                                 '<div ng-click="newQuery(filter.query)">'+
+//                                     '<i class="icon-search icon-2x"  style="vertical-align:-50%"></i>'+
+//                                     '<span class="margin-left" style="vertical-align:-60%">'+
+//                                         '{{filter.query}}'+
+//                                     '</span>'+
+//                                 '</div>'+
+//                             '</li>'+
+//                             '<li class="liveSearchLi" ng-repeat="(hint,cat) in autoCompleteList | filter:{hint:filter.query}" ng-class="liveSearchLiClass($last)" ng-click="newQuery(hint)">'+
+//                                 '<div style="height:45px;">'+
+//                                     '<div class="catDiv pull-right" ng-class="cat" >'+
+//                                         '<i class="catDivI"></i>'+
+//                                     '</div> '+
+//                                     '<i class="icon-search icon-2x" class="graydark" style="vertical-align:-50%"></i>'+
+//                                     '<span class="margin-left" style="vertical-align:-60%">'+
+//                                         '{{hint}}'+
+//                                     '</span>'+
+//                                 '</div>'+
+//                             '</li>'+
+//                         '</ul>',
 //                 link:function(scope,elm,attr){
-// //                     var placeID = scope.placeID
-//                     
-//                     function stateChange(event) {
-//                         if (event.target.readyState == 4) {
-//                             if (event.target.status == 200) {
-//                                 $("#res").text('Загрузка успешно завершена!');
-//                             } else {
-//                                 $("#res").text('Произошла ошибка!');
+//                     var liveSearch = function(){
+//                         if(scope.filter.query){
+//                             if(scope.query.is( ":focus" )){
+//                                 scope.showSearchResults = false;
 //                             }
 //                         }
-//                     }
-//                     
-//                     function handleFileSelect(evt) {
-//                         var files = evt.target.files;
-//                         var photo = evt.target.files[0]
-//                         var photoName = photo.name;
-//                         if (photo.type.match('image.*')) {
-//                             var reader = new FileReader();
-//                             reader.onload = (function(theFile) {
-//                                 return function(e) {
-//                                     var span = document.getElementById('photoPrev');
-//                                     span.innerHTML = ['<img class="thumb" src="', e.target.result,
-//                                                         '" title="', escape(photoName), '"/>'].join('');
-//                                     $("#message-photo-remove-ico").show();
-//                                     var xhr = new XMLHttpRequest();
-// //                                      xhr.upload.addEventListener('progress', uploadProgress, false);
-//                                     xhr.onreadystatechange = stateChange;
-//                                     xhr.open('POST', '../../api/places/'+scope.place.id+'/messages?format=json');
-//                                     xhr.setRequestHeader('X-FILE-NAME', photoName);
-//                                     xhr.send(photo);
-//                                 };
-//                                 
-//                             })(photo);      
-//                             reader.readAsDataURL(photo);
+//                         else{
+//                             scope.showSearchResults = true;
 //                         }
 //                     }
-//                     document.getElementById('files').addEventListener('change', handleFileSelect, false);
+//                     scope.query = $("#searchFiletrQuery");
+//                     scope.removeQuery = function(){
+//                         scope.filter.query = ''
+//                     }
+//                     scope.newQuery = function(hint){
+//                         scope.filter.query = hint;
+//                         scope.showSearchResults = true;
+//                     }
+//                     
+//                     scope.liveSearchLiClass = function(last){
+//                         if(!last){
+//                             return 'messageBox'
+//                         }
+//                     }
+//                     scope.$watch('filter.query', liveSearch);
+//                     
 //                 }
 //             }
 //         })
+//         .directive('szAutoCompleteSearch',function(){
+//             return{
+//                 restrict:'EA',
+//                 template:
+// //                         '<div style="display:inline-block;background:red;">'+
+//                             '<div id="autoCompleteParent">'+
+//                                 '<div id="autoComplete">'+
+//                                     '<div ng-repeat="hint in autoCompleteList | filter:filter.query | limitTo:6" ng-click="filter.query = hint">{{hint}}</div>'+
+//                                 '</div>'+
+// //                             '</div>'+
+//                         '<div>',
+//                 link:function(scope,elm,attr){
+//                     var searchAutoComplete = function(){
+//                         if(scope.filter.query){
+//                             if(scope.query.is( ":focus" )){
+//                                 $("#autoCompleteParent").show()
+//                                 var children = $("#autoComplete").children()
+//                                 if(children.length<2){
+//                                     if(children.text()==scope.filter.query){
+//                                         $("#autoCompleteParent").hide()
+//                                     }
+//                                 }
+//                             }
+//                         }
+//                         else{$("#autoCompleteParent").hide()}
+//                     }
+//                     
+//                     scope.query = $("#searchFiletrQuery");
+//                     scope.query
+//                         .blur(function(){
+//                             setTimeout(function() { $("#autoCompleteParent").hide() }, 100)
+//                         })
+//                         .keydown(function(e){
+//                             if(e.keyCode==27){scope.query.blur()}
+//                             if(e.keyCode==13){
+//                                 $("#autoCompleteParent").hide()
+//                                 scope.newList()
+//                             }
+//                         })
+//                     scope.newQuery = function(hint){
+//                         scope.filter.query = hint;
+//                         $("#autoCompleteParent").hide()
+//                     }
+//                     scope.$watch('filter.query', searchAutoComplete);
+//                 }
+//             }
+//         })
+        
+
+        
+        .directive('szPrevPhoto',function(){
+            return{
+                restrict:'EA',
+                link:function(scope,elm,attr){
+                    function handleFileSelect(evt) {
+                        var files = evt.target.files;
+                        var photo = evt.target.files[0]
+                        var photoName = photo.name;
+                        var photoNameCont = document.getElementById('photoPrevName');
+                        if (photo.type.match('image.*')) {
+                            var reader = new FileReader();
+                            reader.onload = (function(theFile) {
+                                return function(e) {
+                                    var photoCont = document.getElementById('photoPrev');
+                                    photoCont.innerHTML = ['<img  src="', e.target.result,
+                                                        '" title="', escape(photoName), '"/>'].join('');
+                                    photoNameCont.innerHTML = [photoName].join('');
+                                };
+                                
+                            })(photo);      
+                            reader.readAsDataURL(photo);
+                        }
+                        else{
+                            photoNameCont.innerHTML = ['Недопустимый формат'].join('');
+                        }
+                    }
+                    document.getElementById('message-edit-photo').addEventListener('change', handleFileSelect, false);
+                }
+            }
+        })
 //         .directive('szRemovePhoto',function(){
 //             return{
 //                 restrict:'EA',

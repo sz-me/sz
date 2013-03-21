@@ -20,6 +20,7 @@ szServices.factory('messageService', function($resource){
     });
 });
 
+
 szServices.factory('messagePreviewService', function($http, $resource){
 
     var create = function(message, success, error){
