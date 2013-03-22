@@ -76,12 +76,12 @@ class ObjectDetector:
         normalized_image = self.__normalize_image(image)
         min_size = (int(self.__rate * 0.05), int(self.__rate * 0.05))
         rectangles = self.__cascade.detectMultiScale(
-            normalized_image, scaleFactor=1.1, minNeighbors=1, minSize=min_size, flags=cv.CV_HAAR_SCALE_IMAGE)
+            normalized_image, minSize=min_size, flags=cv.CV_HAAR_SCALE_IMAGE)
         if len(rectangles) > 0:
             circles = [self.__incircle(rectangle) for rectangle in rectangles]
             return [self.__n_array(circle) for circle in circles]
         else:
-            return None
+            return []
 
 
 def detect_object(uploaded_photo, cascade_path):
@@ -92,11 +92,13 @@ def detect_object(uploaded_photo, cascade_path):
     circles = detector.detect(buffer)
     image = cv2.imdecode(buffer, flags=cv2.CV_LOAD_IMAGE_UNCHANGED)
     side1, side2, color_depth = image.shape
-    size = side1 and side1 > side2 or side2
+    size = side1
+    if side2 > side1:
+        size = side2
     if len(circles) > 0:
         for circle in circles:
-            center = [int(coord * size) for coord in circle[:2]]
-            cv2.circle(image, tuple(center), int(circle[2] * size), (0, 0, 255))
+            center = tuple([int(coord * size) for coord in circle[:2]])
+            cv2.circle(image, center, int(circle[2] * size), (0, 0, 255))
     result, encoded_image = cv2.imencode('.jpg', image, None)
     if result:
         return encoded_image.data
