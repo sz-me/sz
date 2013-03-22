@@ -47,8 +47,14 @@ class ObjectDetector:
 
     __rate = 512
 
-    def __init__(self, cascade_filename):
+    def __init__(self, cascade_filename, min_size=None, max_size=None):
         self.__cascade = cv2.CascadeClassifier(cascade_filename)
+        if min_size is not None and max_size is not None:
+            if min_size > max_size:
+                raise ValueError('min_size must be less then max_size')
+        self.__min_size = min_size
+        self.__max_size = max_size
+
 
     def __normalize_image(self, image):
         factor = ResizingFactor(self.__rate).calc(image)
@@ -61,7 +67,7 @@ class ObjectDetector:
         return value / float(self.__rate)
 
     def __n_array(self, array):
-        return [ self.__n(el) for el in array]
+        return [self.__n(el) for el in array]
 
     def __incircle(self, rectangle):
         x, y = rectangle[:2]
@@ -74,9 +80,12 @@ class ObjectDetector:
     def detect(self, image_buf):
         image = cv2.imdecode(image_buf, flags=cv2.CV_LOAD_IMAGE_UNCHANGED)
         normalized_image = self.__normalize_image(image)
-        min_size = (int(self.__rate * 0.05), int(self.__rate * 0.05))
-        rectangles = self.__cascade.detectMultiScale(
-            normalized_image, minSize=min_size, flags=cv.CV_HAAR_SCALE_IMAGE)
+        kwargs = dict(flags=cv.CV_HAAR_SCALE_IMAGE)
+        if self.__min_size is not None:
+            kwargs['minSize'] = (int(self.__rate * self.__min_size), int(self.__rate * self.__min_size))
+        if self.__max_size is not None:
+            kwargs['maxSize'] = (int(self.__rate * self.__max_size), int(self.__rate * self.__max_size))
+        rectangles = self.__cascade.detectMultiScale(normalized_image, **kwargs)
         if len(rectangles) > 0:
             circles = [self.__incircle(rectangle) for rectangle in rectangles]
             return [self.__n_array(circle) for circle in circles]
@@ -87,7 +96,7 @@ class ObjectDetector:
 def detect_object(uploaded_photo, cascade_path):
     array = bytearray(uploaded_photo.read())
     buffer = np.asarray(array, dtype=np.uint8)
-    detector = ObjectDetector(cascade_path)
+    detector = ObjectDetector(cascade_path, min_size=0.01)
     # http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html
     circles = detector.detect(buffer)
     image = cv2.imdecode(buffer, flags=cv2.CV_LOAD_IMAGE_UNCHANGED)
