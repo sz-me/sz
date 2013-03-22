@@ -1,25 +1,34 @@
 {{isGetInProgress}}
-
-<div class="box-page-header padding-huge text-center">
-    <span>
-        <div class="btn-group" data-toggle="buttons-radio" >
-            <button class="btn" type="radio" ng-click="filter.radius=250;newList()" ng-disabled="isSearch" ng-class="{'active':filter.radius==250}" >250m</button>
-            <button class="btn" type="radio" ng-click="filter.radius=1000;newList()" ng-disabled="isSearch" ng-class="{'active':filter.radius==1000}" >1km</button>
-            <button class="btn" type="radio" ng-click="filter.radius=3000;newList()" ng-disabled="isSearch" ng-class="{'active':filter.radius==3000}" >3km</button>
-            <button class="btn" type="radio" ng-click="filter.radius=0;newList()" ng-disabled="isSearch"  ng-class="{'active':!filter.radius}" >city</button>
-        </div>
-    </span>
-    <form class="media" ng-submit="refresh()">
-        <input type="text" class="search-query" ng-disabled="isSearch" ng-model="filter.query"  placeholder="Искать" ngChange="newList()">
-    </form>
-    <div class="media">
-        <button class="btn pull-left" ng-click="clearFilter()" ng-disabled="isSearch">Сбросить</button>
-    </div>
+<div>
+    <ul id="contentHeader">
+        <li class="contentHeader-inner">
+            <ul class="noList">
+                <li>
+                    <div class="btn-group" data-toggle="buttons-radio" >
+                        <button class="btn" type="radio" ng-click="filter.radius=250;newList()" ng-disabled="isSearch" ng-class="{'active':filter.radius==250}" >250m</button>
+                        <button class="btn" type="radio" ng-click="filter.radius=1000;newList()" ng-disabled="isSearch" ng-class="{'active':filter.radius==1000}" >1km</button>
+                        <button class="btn" type="radio" ng-click="filter.radius=3000;newList()" ng-disabled="isSearch" ng-class="{'active':filter.radius==3000}" >3km</button>
+                        <button class="btn" type="radio" ng-click="filter.radius=0;newList()" ng-disabled="isSearch"  ng-class="{'active':!filter.radius}" >city</button>
+                    </div>
+                </li>
+               <li class="margin-top-big">
+                    <form class="media" ng-submit="refresh()">
+                        <input type="text" class="search-query" ng-disabled="isSearch" ng-model="filter.query"  placeholder="Искать" ngChange="newList()">
+                    </form>
+               </li>
+               <li class="margin-top-big text-left">
+                    <button class="btn" ng-click="clearFilter()" ng-disabled="isSearch">
+                        <i class="icon-remove icon-2x" ></i>
+                    </button>
+               </li>
+            </ul>
+        </li>
+    </ul>
 </div>
 
-<ul class="ul-box margin-bottom-huge">    
+<ul class="media-list" id="contentBody">    
     <li>
-        <div  ng-repeat="option in options" class="box-border margin-top-huge padding-huge">
+        <div  ng-repeat="option in options" class="box-border margin-bottom-huge padding-huge">
             <a style="color:#333" href="#/places/{{ option.place.id }}/messages/add" class="place-list-box">
                 <div class="foursquare-icon">
                     <img ng-src="{{ option.place.foursquare_icon_prefix }}64{{ option.place.foursquare_icon_suffix }}">

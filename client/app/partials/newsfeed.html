@@ -1,18 +1,27 @@
+<div>
+    <ul id="contentHeader">
+        <li class="contentHeader-inner">
+            <ul class="noList">
+                <li>
+                    <select ng-model="category" ng-options="c.name for c in categories" style="margin:0">
+                        <option value="" >Любая категория</option>
+                    </select>
+                </li>
+                <li class="margin-top-big">
+                    <div class="btn-group" data-toggle="buttons-radio" >
+                        <button class="btn" type="radio" ng-click="setRadius(250)" ng-class="{'active':250==radiusActive}">250m</button>
+                        <button class="btn" type="radio" ng-click="setRadius(1000)" ng-class="{'active':1000==radiusActive}">1km</button>
+                        <button class="btn" type="radio" ng-click="setRadius(3000)" ng-class="{'active':3000==radiusActive}">3km</button>
+                        <button class="btn" type="radio" ng-click="setRadius(0)" ng-class="{'active':0==radiusActive}">city</button>
+                    </div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
 
-<ul class="media-list" >
-        <div class="text-center box-page-header padding-big" >
-            <div >
-                <select ng-model="category" ng-options="c.name for c in categories" style="margin:0">
-                    <option value="" >Любая категория</option>
-                </select>
-            </div>
-            <div class="btn-group margin-top-big" data-toggle="buttons-radio" >
-                <button class="btn" type="radio" ng-click="setRadius(250)" ng-class="{'active':250==radiusActive}">250m</button>
-                <button class="btn" type="radio" ng-click="setRadius(1000)" ng-class="{'active':1000==radiusActive}">1km</button>
-                <button class="btn" type="radio" ng-click="setRadius(3000)" ng-class="{'active':3000==radiusActive}">3km</button>
-                <button class="btn" type="radio" ng-click="setRadius(0)" ng-class="{'active':0==radiusActive}">city</button>
-            </div>
-        </div>
+
+<ul class="media-list" id="contentBody">
 	<li ng-repeat="item in feed.results" class="media padding-bot-big box-border" >
             <div class="box-header">
                 <a href="#/places/{{item.place.id}}" class="graydark">
@@ -46,7 +55,6 @@
                 <i class="icon-circle"></i>
                 <i class="icon-circle"></i>
                 <i class="icon-circle"></i>
-<!--                 <img class="media-object" src="img/ico/blue/glyphicons_187_more.png"> -->
             </button>
 	</li>
 </ul>

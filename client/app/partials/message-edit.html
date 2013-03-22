@@ -1,23 +1,41 @@
-
-<div class="box-page-header padding-X-big padding-Y text-right">
-    <a ng-href="#/places/{{ place.id }}" class="graydark">
-        <div >
-            <h3 style="margin-bottom:0;;">{{place.name}}</h3>
-            <small style="line-height:10px;">{{place.address}}</small>
-        </div>
-    </a>
+<div>
+    <ul id="contentHeader">
+        <li class="contentHeader-inner">
+            <ul class="noList">
+                <li >
+                    <a href="#/places/{{place.id }}/" class="graydark">
+                        <div id="place-name-address">        
+                            <h3 id="place-name-h">{{place.name}}</h3>
+                            <small id="place-address">{{place.address}}</small>   
+                        </div> 
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
 </div>
-<div class="box-border margin-top-huge">
-    <div class="padding-huge">
-        <textarea name='text'
+<ul class="media-list" id="contentBody">
+    <li class="box-border padding-big">
+        <ul class="noList text-center" >
+            <li>
+                <textarea name='text'
                   id="messageText"
                   placeholder="Напишите пару строк или прикрепите изображение, а лучше и то, и другое"
-                  class="margin-Y-big" ng-model="text" ng-init="text=''" ng-disabled="inProgress"></textarea>
-        <input type="file" name="photo" sz-file-model="photo" ng-init="photo=null" ng-disabled="inProgress"/>
-        <img ng-src="{{ photoUrl }}" ng-show="{{ photoUrl }}"/>
-        <ul class="text-center ul-box">
-            <button class="btn btn-large btn-primary" ng-click="send()" ng-disabled="inProgress">Отправить</button>
+                  ng-model="text" ng-init="text=''" ng-disabled="inProgress"></textarea>
+            </li>
+            <li class="margin-top-big text-left">
+                <input type="file" name="photo" sz-file-model="photo" ng-init="photo=null" ng-disabled="inProgress" id="message-edit-photo"/>
+            </li>
+            <li class="margin-top-big ">
+                <sz-prev-photo></sz-prev-photo>
+                <div id="photoPrevName"></div>
+                <span id="photoPrev">
+                </span>
+            </li>
+            <li class="margin-top-big ">
+                <button class="btn btn-large btn-primary" ng-click="send()" ng-disabled="inProgress">Отправить</button>
+            </li>
         </ul>
-    </div>
-</div>
+    </li>
+</ul>
 
