@@ -215,7 +215,7 @@ function MessageController($scope, $routeParams, messageService){
 }
 
 
-function SearchController($scope, $location,$routeParams, $timeout,messageService){
+function SearchController($scope, $location,$routeParams, $timeout,messageService,placeService){
     $scope.autoCompleteList = [
     {'name':'балетки','category':'shoes'},{'name':'бахилы','category':'shoes'},{'name':'башмак','category':'shoes'},{'name':'берцы','category':'shoes'},{'name':'болотники','category':'shoes'},{'name':'босоножки','category':'shoes'},{'name':'ботильоны','category':'shoes'},{'name':'ботинки','category':'shoes'},{'name':'ботинки','category':'shoes'},{'name':'ботфорты','category':'shoes'},{'name':'боты','category':'shoes'},{'name':'броги','category':'shoes'},{'name':'бродни','category':'shoes'},{'name':'бурки','category':'shoes'},{'name':'бутсы','category':'shoes'},{'name':'валенки','category':'shoes'},{'name':'вьетнамки','category':'shoes'},{'name':'галоши','category':'shoes'},{'name':'гриндерс','category':'shoes'},{'name':'гэта','category':'shoes'},{'name':'дезерты','category':'shoes'},{'name':'дерби','category':'shoes'},{'name':'джазовки','category':'shoes'},{'name':'доктор мартинс','category':'shoes'},{'name':'калоши','category':'shoes'},{'name':'кеды','category':'shoes'},{'name':'конверс','category':'shoes'},{'name':'кроссовки','category':'shoes'},{'name':'лодочки','category':'shoes'},{'name':'лоферы','category':'shoes'},{'name':'мартинсы','category':'shoes'},{'name':'мокасины','category':'shoes'},{'name':'монки','category':'shoes'},{'name':'мюли','category':'shoes'},{'name':'оксфорды','category':'shoes'},{'name':'пимы','category':'shoes'},{'name':'пинетки','category':'shoes'},{'name':'полуботинки','category':'shoes'},{'name':'полукеды','category':'shoes'},{'name':'пуанты','category':'shoes'},{'name':'сабо','category':'shoes'},{'name':'сандалии','category':'shoes'},{'name':'сапоги','category':'shoes'},{'name':'сланцы','category':'shoes'},{'name':'слипоны','category':'shoes'},{'name':'сникерсы','category':'shoes'},{'name':'таби','category':'shoes'},{'name':'тапки','category':'shoes'},{'name':'трикони','category':'shoes'},{'name':'туфли','category':'shoes'},{'name':'тэйлорс','category':'shoes'},{'name':'угги','category':'shoes'},{'name':'унты','category':'shoes'},{'name':'унты','category':'shoes'},{'name':'шлепанцы','category':'shoes'},{'name':'шлепки','category':'shoes'},{'name':'штиблеты','category':'shoes'},
     {'name':'бабочка','category':'accessories'},{'name':'бижутерия','category':'accessories'},{'name':'боа','category':'accessories'},{'name':'браслеты','category':'accessories'},{'name':'брелок','category':'accessories'},{'name':'варежки','category':'accessories'},{'name':'галстук','category':'accessories'},{'name':'горжетка','category':'accessories'},{'name':'зонт','category':'accessories'},{'name':'камербанд','category':'accessories'},{'name':'кашне','category':'accessories'},{'name':'ключница','category':'accessories'},{'name':'кошелек','category':'accessories'},{'name':'краги','category':'accessories'},{'name':'маска','category':'accessories'},{'name':'митенки','category':'accessories'},{'name':'монокль','category':'accessories'},{'name':'муфта','category':'accessories'},{'name':'шарф','category':'accessories'},{'name':'напульсник','category':'accessories'},{'name':'оби','category':'accessories'},{'name':'очки','category':'accessories'},{'name':'палстрон','category':'accessories'},{'name':'перчатки','category':'accessories'},{'name':'платок','category':'accessories'},{'name':'подтяжки','category':'accessories'},{'name':'портупея','category':'accessories'},{'name':'варежки','category':'accessories'},{'name':'пояс','category':'accessories'},{'name':'ремень','category':'accessories'},{'name':'руковицы','category':'accessories'},{'name':'рэйбан','category':'accessories'},{'name':'рэйбэн','category':'accessories'},{'name':'стельки','category':'accessories'},{'name':'торк','category':'accessories'},{'name':'торквес','category':'accessories'},{'name':'фенечки','category':'accessories'},{'name':'четки','category':'accessories'},{'name':'шаль','category':'accessories'},{'name':'шнурки','category':'accessories'},
@@ -232,9 +232,18 @@ function SearchController($scope, $location,$routeParams, $timeout,messageServic
     ]
     
     $scope.isSearch = false;
+    $scope.isLocation = false;
     $scope.showSearchResults = true;
+    $scope.$watch('showSearchResults',function(){
+        if(!$scope.showSearchResults){
+            $scope.changeScrollToDown()
+        }
+        else{
+            $scope.changeScrollToUp()
+        }
+    })
  
-    $scope.filter = {category:{}};
+    $scope.filter = {category:{},place:{}};
     
     var params = {}
     if($routeParams.query){
@@ -255,13 +264,39 @@ function SearchController($scope, $location,$routeParams, $timeout,messageServic
             }
         }
     }
+    
+    $scope.showSearchDisplayFilter = function(){
+        if($scope.filter.category.id){return true}
+        if($scope.filter.place.name){return true}
+        if($scope.filter.radius){return true}
+        if($scope.filter.query){return true}
+    }
+    
     $scope.$watch('coordinates', function(newValue, oldValue) {
+        if (angular.isDefined($scope.coordinates)){
+            if($scope.filter.query){
+                params.latitude = $scope.coordinates.latitude,
+                params.longitude = $scope.coordinates.longitude
+                $scope.searchFeed = messageService.search(
+                    params,
+                    function(){$scope.isSearch = false;}
+                );
+            }
+        }
+    }); 
+    $scope.getSearchPlaceList = function(place){
+        $scope.isSearch = true;
+        var params = {}
+        if(place){params.query = place}
         if (angular.isDefined($scope.coordinates)){
             params.latitude = $scope.coordinates.latitude,
             params.longitude = $scope.coordinates.longitude
-            $scope.searchFeed = messageService.search(params,function(){$scope.isSearch = false;})
+            $scope.searchPlaceList=placeService.searchInVenues(
+                params,
+                function(){$scope.isSearch = false;}
+            );
         }
-    }); 
+    }
     $scope.newList = function(){
         $scope.isSearch = true;
         var params = {}
@@ -272,23 +307,65 @@ function SearchController($scope, $location,$routeParams, $timeout,messageServic
         if (angular.isDefined($scope.coordinates)){
             params.latitude = $scope.coordinates.latitude,
             params.longitude = $scope.coordinates.longitude
-            $scope.searchFeed = messageService.search(params,function(){$scope.isSearch = false;})
+            $scope.searchFeed = messageService.search(params,
+                                                      function(){
+                                                          $scope.isSearch = false;
+                                                          $scope.showSearchResults = true;
+                                                    })
         }
     }
-    var refresh = null;
-    $scope.$watch('filter.query', function(newValue, oldValue){
-        if (newValue != oldValue && (newValue.length > 3 || newValue == '')){
-            if (refresh != null)
-                $timeout.cancel(refresh);
-            refresh = $timeout($scope.newList, 2000)
+    $scope.newLocation = function(place){
+        $scope.filter.radius = 0;
+        $scope.filter.place = place;
+        $scope.myLocation = place.name;
+//         $scope.isLocation = false;
+        $scope.isLocation = true;
+        $scope.showSearchPlaceList = false
+    }
+    $scope.newQuery = function(query){
+        $scope.filter.query = query;
+        $scope.newList();
+    }
+    $scope.setRadius = function(radius){
+        $scope.isLocation = false;
+        $scope.myLocation = '';
+        if($scope.filter.place.name){$scope.filter.place={}} 
+        $scope.filter.radius = radius;
+    }
+    
+    $scope.radioLocation = function(){
+        $scope.isLocation=!$scope.isLocation;
+        if(!$scope.isLocation){
+            $scope.showSearchPlaceList = false
+        }
+        
+    }
+    
+    var refreshLoc = null;
+    $scope.$watch('filter.place.name', function(newValue, oldValue){
+        if (newValue != oldValue && (newValue.length > 3 || newValue == '') && $scope.showSearchPlaceList){
+            if (refreshLoc != null)
+                $timeout.cancel(refreshLoc);
+            refreshLoc = $timeout($scope.getSearchPlaceList($scope.filter.place.name), 200)
         }
     });
-    $scope.$watch('filter.category', function(){
-        $scope.newList()
-    })
+    var refreshQuery = null;
+    $scope.$watch('filter.query', function(newValue, oldValue){
+        if (newValue != oldValue && (newValue.length > 1 || newValue == '') && !$scope.showSearchResults){
+            if (refreshQuery != null)
+                $timeout.cancel(refreshQuery);
+            refreshQuery = $timeout($scope.getSearchPlaceList($scope.filter.query), 200)
+        }
+        if(newValue == ''){
+            $scope.showSearchResults = false;
+            $scope.searchFeed = []
+        }
+    });
+
     $scope.clearFilter = function(){
-        $scope.filter = {category:{}};
-        $scope.newList()
+        $scope.isLocation = false;
+        $scope.filter = {category:{},place:{}};
+        $scope.searchFeed = [];
     }
      $scope.loadMore = function(){
         if ($scope.searchFeed.params.offset + $scope.searchFeed.params.limit < $scope.searchFeed.count)

@@ -379,6 +379,20 @@ textarea:focus{
     max-height:70px;
 }*/
 
+.btnSmall{
+    padding-left:5px;
+    padding-right:5px;
+}
+
+.searchDisplayFilter{
+    padding-top:10px;
+    margin-top:7px;
+    margin-right:10px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
 .max-h{
     max-height:63px;
     overflow: hidden;
@@ -392,6 +406,15 @@ textarea:focus{
     margin-top:10px;
 }
 
+.hover-no-dec>a:hover,.hover-no-dec:hover{
+    text-decoration:none;
+}
+
+.overflow-hidden{
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
 
 /* .padding{padding:5px;} */
 
@@ -401,11 +424,14 @@ textarea:focus{
 
 /* .padding-top{padding-top:5px;} */
 
-/* .padding-left-big{padding-left:10px;} */
+.padding-top-big{padding-top:10px;}
+
+.padding-left-big{padding-left:10px;}
 
 /* .padding-bot{padding-bottom:5px;} */
 
 .padding-bot-big{padding-bottom:10px;}
+.padding-bot-huge{padding-bottom:20px;}
 
 /* .padding-right-big{padding-right:10px;} */
 

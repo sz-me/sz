@@ -7,77 +7,129 @@
                         <li >
                             <input type="text" class="search-query" ng-model="filter.query"  placeholder="Искать"  id="searchFiletrQuery" ng-click="showSearchResults=false">                    
                         </li>    
-                        <li class="margin-top-big text-left">
-                            <button class="btn" ng-click="clearFilter()" ng-disabled="isSearch">
+                        <li class="margin-top-big text-left" ng-show="showSearchDisplayFilter()">
+                            <button class="btn pull-left" ng-click="clearFilter()" ng-disabled="isSearch" style="margin-right:5px;">
                                 <i class="icon-remove icon-2x" ></i>
                             </button>
-                            <div class="catDiv pull-right" ng-class="filter.category.alias" ng-show="filter.category.alias">
-                                <i class="catDivI"></i>
-                            </div>
-                            <div class="pull-right" ng-show="filter.radius" style="height:35px;margin-top:7px;margin-right:10px;">
-                                <i class="icon-screenshot"  style="vertical-align:-40%"></i>
-                                <span style="vertical-align:-30%">
-                                    {{filter.radius}}
-                                </span>
+                            <div class="text-right" style="height:40px;">
+                                <div class="catDiv pull-right " ng-class="filter.category.alias" ng-show="filter.category.alias" style="text-align:justify;margin-top:0;margin-left:10px;">
+                                    <i class="catDivI"></i>
+                                </div>
+                                <div ng-show="filter.radius" class="searchDisplayFilter">
+                                    <i class="icon-screenshot"></i>
+                                    <span >
+                                        {{filter.radius}}
+                                    </span>
+                                </div>
+                                <div ng-show="myLocation" class="searchDisplayFilter">
+                                    <i class="icon-map-marker" ></i>
+                                    <span>
+                                        {{myLocation}}
+                                    </span>
+                                </div>
                             </div>
                         </li>
                     </ul>
                 </li>
-                <li class=" margin-top-big text-left" ng-show="!showSearchResults">
+                <li class=" margin-top-big text-left " ng-show="!showSearchResults">
                     <ul class="noList">
                             <li>
-                                <ul class="noList text-center padding-bot-big" style="border:1px solid #AAA;border-left:none;border-right:none;">
-                                    <li class="margin-top-big messageBox padding-Y-big">
-                                        <i class="icon-tags icon-3x pull-right" style="margin-right:5px;color:#666"></i>
-                                        <select ng-model="filter.category" ng-options="c.name for c in categories" style="margin:0" ng-disabled="isSearch">
+                                <ul class="noList text-center  " style="border:1px solid #888;border-left:none;border-right:none;">
+                                    <li class="margin-top-big messageBox padding-top-big padding-left-big">
+                                        <select ng-model="filter.category" ng-options="c.name for c in categories" ng-disabled="isSearch">
                                             <option value="" >Любая категория</option>
                                         </select>
                                         <div class="margin-top">
                                             {{filter.category.description}}
                                         </div>
                                     </li>
-                                <!--    <li class="messageBox padding-Y-big">
-                                        <button class="btn disabled"  ng-disabled="isSearch">Фото</button>
-                                    </li>-->
-                                    <li class="margin-top-big padding-Y-big">
-                                        <i class="icon-screenshot icon-3x pull-right" style="margin-right:5px;color:#666"></i>
-                                        <div class="btn-group" data-toggle="buttons-radio" >
-                                            <button class="btn" type="radio" ng-disabled="isSearch" ng-click="" ng-class="">
-                                                <i class="icon-map-marker" ></i>
-                                            </button>
-                                            <button class="btn" type="radio" ng-disabled="isSearch" ng-click="filter.radius=250;newList()" ng-class="{'active':250==filter.radius}">250m</button>
-                                            <button class="btn" type="radio" ng-disabled="isSearch" ng-click="filter.radius=1000;newList()" ng-class="{'active':1000==filter.radius}">1km</button>
-                                            <button class="btn" type="radio" ng-disabled="isSearch" ng-click="filter.radius=3000;newList()" ng-class="{'active':3000==filter.radius}">3km</button>
-                                            <button class="btn" type="radio" ng-disabled="isSearch" ng-click="filter.radius=0;newList()"  ng-class="{'active':!filter.radius}">city</button>
+                                    <li class="padding-Y-big">
+                                        <button class="btn btn-success" ng-disabled="isSearch" ng-click="radioLocation()" ng-class="{'active':isLocation}">
+                                            <i class="icon-map-marker margin-X" ></i>
+                                        </button>
+                                        <div class="btn-group " data-toggle="buttons-radio"  ng-show="!isLocation" style="margin-left:5px;">                                            
+                                            <button class="btn btnSmall" type="radio" ng-disabled="isSearch" ng-click="setRadius(250)" ng-class="{'active':250==filter.radius}">250m</button>
+                                            <button class="btn btnSmall" type="radio" ng-disabled="isSearch" ng-click="setRadius(1000)" ng-class="{'active':1000==filter.radius}">1km</button>
+                                            <button class="btn btnSmall" type="radio" ng-disabled="isSearch" ng-click="setRadius(3000)" ng-class="{'active':3000==filter.radius}">3km</button>
+                                            <button class="btn btnSmall" type="radio" ng-disabled="isSearch" ng-click="setRadius(0)"  ng-class="{'active':!filter.radius}">city</button>
                                         </div>
+                                        <div class="inline-block" ng-show="isLocation" style="margin-left:5px;">
+                                            <input type="text" class="search-query" placeholder="Место" ng-model="filter.place.name" ng-click="showSearchPlaceList=true;getSearchPlaceList()"  style="width:126px;" > 
+                                        </div>
+                                    </li>
+<!--                                     <li class="margin-top-big padding-top-big padding-bot-huge " > -->
+                                        
+<!--                                     </li> -->
+                                    <li class="" ng-show="showSearchPlaceList">
+                                        <ul  class="noList  ">
+                                            <!--<li class="margin-bottom-huge">
+                                                
+                                            </li>-->
+                                            <li class="text-left" >
+                                                <ul class="noList">
+                                                    <li class="liveSearchLi hover-no-dec" ng-repeat="item in searchPlaceList | limitTo:4" style="border-top:1px solid #CCC">
+                                                        <a class="graydark pull-right" href="#/places/{{item.place.id}}" >
+                                                            <button class="btn " ng-disabled="isSearch"  >
+                                                                <i class="icon-external-link icon-2x "></i>
+                                                            </button>
+                                                        </a>
+                                                        <div style="height:42px;" ng-click="newLocation(item.place)">
+                                                            <i class="icon-search icon-2x graydark pull-left" ></i>
+                                                            <div  >
+                                                                <div class="overflow-hidden"><b>{{item.place.name}}</b><div>
+                                                                <div class="overflow-hidden"><small >{{item.place.address}}</small></div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
                                     </li>
                                 </ul>
                             </li>
                             <li>
                                 <ul class="noList">
-                                    <li id="mySearch" class="liveSearchLi margin-top-big" ng-show="filter.query">
-                                        <i class="icon-remove-sign icon-3x pull-right"  style="vertical-align:-50%" ng-click="filter.query = '';"></i>
-                                        <div ng-click="showSearchResults=true">
-                                            <i class="icon-search icon-2x"  style="vertical-align:-50%"></i>
-                                            <span class="margin-left" style="vertical-align:-60%">
+                                    <li id="mySearch" class="liveSearchLi " ng-show="filter.query">
+                                        <i class="icon-remove-sign icon-3x pull-right"   ng-click="filter.query = '';"></i>
+                                        <div ng-click="newQuery(filter.query)">
+                                            <i class="icon-search icon-2x"  ></i>
+                                            <span class="margin-left" >
                                                 {{filter.query}}
                                             </span>
                                         </div>
                                     </li>
-                                    <li class="liveSearchLi" ng-repeat="hint in autoCompleteList | filter:filter.query | limitTo:5" ng-class="{'messageBox':!$last}" ng-click="filter.query = hint.name;$emit(showSearchResults=true);">
+                                    <li class="liveSearchLi" ng-repeat="hint in autoCompleteList | filter:filter.query | limitTo:3" ng-class="{'messageBox':!$last}" ng-click="newQuery(hint.name)" ng-style="{}">
                                         <div style="height:45px;">
                                             <div class="catDiv pull-right" ng-class="hint.category" >
                                                 <i class="catDivI"></i>
                                             </div>
-                                            <i class="icon-search icon-2x" class="graydark" style="vertical-align:-50%"></i>
-                                            <span class="margin-left" style="vertical-align:-60%">
+                                            <i class="icon-search icon-2x pull-left" class="graydark" style="margin-top:7px;"></i>
+                                            <div class="margin-left padding-top-big overflow-hidden">
                                                 {{hint.name}}
-                                            </span>
+                                            </div>
                                         </div>
                                     </li>
                                 </ul>
                             </li>
-                    </ul>
+                            <li ng-show="!isLocation">
+                                <ul class="noList" style="border-top:1px solid #888">
+                                    <li class="liveSearchLi hover-no-dec" ng-repeat="item in searchPlaceList | limitTo:3" ng-class="{'messageBox':!$last}" >
+                                        <button class="btn pull-right " ng-disabled="isSearch"  ng-click="newLocation(item.place)">
+                                            <i class="icon-search icon-2x "></i>
+                                        </button>
+                                        <a class="graydark hover-no-dec" href="#/places/{{item.place.id}}" >
+                                            <div style="height:42px;">
+                                                <i class="icon-external-link icon-2x graydark pull-left " style="margin-top:7px;" ></i>
+                                                <div  >
+                                                    <div class="overflow-hidden"><b>{{item.place.name}}</b><div>
+                                                    <div class="overflow-hidden"><small >{{item.place.address}}</small></div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </li>
             </ul>
         </li>
