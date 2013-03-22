@@ -245,25 +245,29 @@ function SearchController($scope, $location,$routeParams, $timeout,messageServic
  
     $scope.filter = {category:{},place:{}};
     
-    var params = {}
-    if($routeParams.query){
-        params.query=$routeParams.query;
-        $scope.filter.query=$routeParams.query;
-    }
-    if($routeParams.radius){
-        params.radius=$routeParams.radius;
-        $scope.filter.radius=$routeParams.radius;
-    }
-    if($routeParams.category){
-        params.category=$routeParams.category;
-        for(i in $scope.categories){
-            var cat = $scope.categories[i]
-            if(cat.id==$routeParams.category){
-                $scope.filter.category=cat;
-                break
-            }
-        }
-    }
+//     var params = {}
+//     if($routeParams.query){
+//         params.query=$routeParams.query;
+//         $scope.filter.query=$routeParams.query;
+//     }
+//     if($routeParams.radius){
+//         params.radius=$routeParams.radius;
+//         $scope.filter.radius=$routeParams.radius;
+//     }
+//     if($routeParams.radius){
+//         params.place=$routeParams.place;
+//         $scope.filter.place.id=$routeParams.place;
+//     }
+//     if($routeParams.category){
+//         params.category=$routeParams.category;
+//         for(i in $scope.categories){
+//             var cat = $scope.categories[i]
+//             if(cat.id==$routeParams.category){
+//                 $scope.filter.category=cat;
+//                 break
+//             }
+//         }
+//     }
     
     $scope.showSearchDisplayFilter = function(){
         if($scope.filter.category.id){return true}
@@ -272,18 +276,18 @@ function SearchController($scope, $location,$routeParams, $timeout,messageServic
         if($scope.filter.query){return true}
     }
     
-    $scope.$watch('coordinates', function(newValue, oldValue) {
-        if (angular.isDefined($scope.coordinates)){
-            if($scope.filter.query){
-                params.latitude = $scope.coordinates.latitude,
-                params.longitude = $scope.coordinates.longitude
-                $scope.searchFeed = messageService.search(
-                    params,
-                    function(){$scope.isSearch = false;}
-                );
-            }
-        }
-    }); 
+//     $scope.$watch('coordinates', function(newValue, oldValue) {
+//         if (angular.isDefined($scope.coordinates)){
+//             if($scope.filter.query){
+//                 params.latitude = $scope.coordinates.latitude,
+//                 params.longitude = $scope.coordinates.longitude
+//                 $scope.searchFeed = messageService.search(
+//                     params,
+//                     function(){$scope.isSearch = false;}
+//                 );
+//             }
+//         }
+//     }); 
     $scope.getSearchPlaceList = function(place){
         $scope.isSearch = true;
         var params = {}
@@ -291,7 +295,7 @@ function SearchController($scope, $location,$routeParams, $timeout,messageServic
         if (angular.isDefined($scope.coordinates)){
             params.latitude = $scope.coordinates.latitude,
             params.longitude = $scope.coordinates.longitude
-            $scope.searchPlaceList=placeService.searchInVenues(
+            $scope.searchPlaceList=placeService.search(
                 params,
                 function(){$scope.isSearch = false;}
             );
@@ -302,6 +306,7 @@ function SearchController($scope, $location,$routeParams, $timeout,messageServic
         var params = {}
         if($scope.filter.category){if($scope.filter.category.id){params.category=$scope.filter.category.id}}
         if($scope.filter.radius){params.radius=$scope.filter.radius}
+        if($scope.filter.place.id){params.place=$scope.filter.place.id}
         if($scope.filter.query){params.query=$scope.filter.query}
         $location.path('/search').search(params)
         if (angular.isDefined($scope.coordinates)){
@@ -351,7 +356,7 @@ function SearchController($scope, $location,$routeParams, $timeout,messageServic
     });
     var refreshQuery = null;
     $scope.$watch('filter.query', function(newValue, oldValue){
-        if (newValue != oldValue && (newValue.length > 1 || newValue == '') && !$scope.showSearchResults){
+        if (newValue != oldValue && (newValue.length > 3 || newValue == '') && !$scope.showSearchResults){
             if (refreshQuery != null)
                 $timeout.cancel(refreshQuery);
             refreshQuery = $timeout($scope.getSearchPlaceList($scope.filter.query), 200)
