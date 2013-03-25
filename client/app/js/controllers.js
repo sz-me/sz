@@ -1,11 +1,19 @@
 function MasterPageController($scope,$cookies, $http, $location, geolocation, categoryService, session) {
-    $scope.navbarInnerUrl = 'partials/navbar-inner-default.html'
-    $scope.setNavbarInner = function(url){
+    $scope.$on('$routeChangeSuccess', function(event, routeData){
+        $scope.headerUrl = 'partials/header/header.html';
+        $scope.navbarInnerUrl = 'partials/header/navbar-inner-default.html';
+        $scope.topMenuUrl = 'partials/header/top-menu-default.html'
+        $scope.whitehatUrl = false
+    });
+    
+    $scope.setNavbarInnerUrl = function(url){
         $scope.navbarInnerUrl = url;
     }
-    $scope.topMenuUrl = 'partials/top-menu-default.html'
-    $scope.setTopMenu = function(url){
+    $scope.setTopMenuUrl = function(url){
         $scope.topMenuUrl = url;
+    }
+    $scope.setWhiteHatUrl = function(url){
+        $scope.whitehatUrl = url;
     }
     $scope.isGeolocationInProgress = false;
     $scope.$watch('session.username', function(newValue, oldValue) {
@@ -35,6 +43,10 @@ function MasterPageController($scope,$cookies, $http, $location, geolocation, ca
 }
 
 MasterPageController.$inject = ['$scope','$cookies', '$http', '$location', 'geolocationService', 'categoryService', 'sessionService'];
+
+function HeaderController($scope){
+
+}
 
 
 function LoginController($scope) {
@@ -224,8 +236,10 @@ function MessageController($scope, $routeParams, messageService){
 
 
 function SearchController($scope, $location,$routeParams, $timeout,messageService,placeService){
-    $scope.setNavbarInner('partials/navbar-inner-search.html');
-    $scope.setTopMenu('partials/top-menu-search.html');
+    $scope.setNavbarInnerUrl('partials/header/navbar-inner-search.html');
+    $scope.setTopMenuUrl('partials/header/top-menu-search.html');
+    $scope.setWhiteHatUrl('partials/header/white-hat-search.html');
+    
     $scope.autoCompleteList = [
     {'name':'балетки','category':'shoes'},{'name':'бахилы','category':'shoes'},{'name':'башмак','category':'shoes'},{'name':'берцы','category':'shoes'},{'name':'болотники','category':'shoes'},{'name':'босоножки','category':'shoes'},{'name':'ботильоны','category':'shoes'},{'name':'ботинки','category':'shoes'},{'name':'ботинки','category':'shoes'},{'name':'ботфорты','category':'shoes'},{'name':'боты','category':'shoes'},{'name':'броги','category':'shoes'},{'name':'бродни','category':'shoes'},{'name':'бурки','category':'shoes'},{'name':'бутсы','category':'shoes'},{'name':'валенки','category':'shoes'},{'name':'вьетнамки','category':'shoes'},{'name':'галоши','category':'shoes'},{'name':'гриндерс','category':'shoes'},{'name':'гэта','category':'shoes'},{'name':'дезерты','category':'shoes'},{'name':'дерби','category':'shoes'},{'name':'джазовки','category':'shoes'},{'name':'доктор мартинс','category':'shoes'},{'name':'калоши','category':'shoes'},{'name':'кеды','category':'shoes'},{'name':'конверс','category':'shoes'},{'name':'кроссовки','category':'shoes'},{'name':'лодочки','category':'shoes'},{'name':'лоферы','category':'shoes'},{'name':'мартинсы','category':'shoes'},{'name':'мокасины','category':'shoes'},{'name':'монки','category':'shoes'},{'name':'мюли','category':'shoes'},{'name':'оксфорды','category':'shoes'},{'name':'пимы','category':'shoes'},{'name':'пинетки','category':'shoes'},{'name':'полуботинки','category':'shoes'},{'name':'полукеды','category':'shoes'},{'name':'пуанты','category':'shoes'},{'name':'сабо','category':'shoes'},{'name':'сандалии','category':'shoes'},{'name':'сапоги','category':'shoes'},{'name':'сланцы','category':'shoes'},{'name':'слипоны','category':'shoes'},{'name':'сникерсы','category':'shoes'},{'name':'таби','category':'shoes'},{'name':'тапки','category':'shoes'},{'name':'трикони','category':'shoes'},{'name':'туфли','category':'shoes'},{'name':'тэйлорс','category':'shoes'},{'name':'угги','category':'shoes'},{'name':'унты','category':'shoes'},{'name':'унты','category':'shoes'},{'name':'шлепанцы','category':'shoes'},{'name':'шлепки','category':'shoes'},{'name':'штиблеты','category':'shoes'},
     {'name':'бабочка','category':'accessories'},{'name':'бижутерия','category':'accessories'},{'name':'боа','category':'accessories'},{'name':'браслеты','category':'accessories'},{'name':'брелок','category':'accessories'},{'name':'варежки','category':'accessories'},{'name':'галстук','category':'accessories'},{'name':'горжетка','category':'accessories'},{'name':'зонт','category':'accessories'},{'name':'камербанд','category':'accessories'},{'name':'кашне','category':'accessories'},{'name':'ключница','category':'accessories'},{'name':'кошелек','category':'accessories'},{'name':'краги','category':'accessories'},{'name':'маска','category':'accessories'},{'name':'митенки','category':'accessories'},{'name':'монокль','category':'accessories'},{'name':'муфта','category':'accessories'},{'name':'шарф','category':'accessories'},{'name':'напульсник','category':'accessories'},{'name':'оби','category':'accessories'},{'name':'очки','category':'accessories'},{'name':'палстрон','category':'accessories'},{'name':'перчатки','category':'accessories'},{'name':'платок','category':'accessories'},{'name':'подтяжки','category':'accessories'},{'name':'портупея','category':'accessories'},{'name':'варежки','category':'accessories'},{'name':'пояс','category':'accessories'},{'name':'ремень','category':'accessories'},{'name':'руковицы','category':'accessories'},{'name':'рэйбан','category':'accessories'},{'name':'рэйбэн','category':'accessories'},{'name':'стельки','category':'accessories'},{'name':'торк','category':'accessories'},{'name':'торквес','category':'accessories'},{'name':'фенечки','category':'accessories'},{'name':'четки','category':'accessories'},{'name':'шаль','category':'accessories'},{'name':'шнурки','category':'accessories'},

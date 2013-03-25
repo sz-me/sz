@@ -25,15 +25,9 @@
 <div id="spinner" class="overflow" ng-show="isGetInProgress">
     <i class="icon-spinner icon-spin icon-2x "></i>
 </div>
-        <div class="navbar navbar-static-top " >
-            <div class="navbar-inner" ng-include src='navbarInnerUrl'>
-            </div>
-        </div>
+    <span ng-include src='headerUrl' ng-controller="HeaderController">
         
-        <div  id="collapseMenu" sz-collapsible-menu="isTopMenuCollapsed" ng-include src='topMenuUrl'>
-
-        </div>
-        
+    </span>    
         <div  ng-view class="content" id="content" ng-show="showContent" ></div>
         
         <div class="navbar navbar-fixed-bottom navbar-inverse"  ng-show="showBotMenuPanel" style="position:fixed">
@@ -77,7 +71,7 @@
                </div>
             </div>
         </div>
- 
+    
 
  
 
