@@ -328,11 +328,15 @@ function SearchController($scope, $location,$routeParams, $timeout,messageServic
     $scope.newLocation = function(place){
         $scope.filter.radius = 0;
     }
+    $scope.filterQuery = function(query){
+        $scope.filter.query = query;
+    }
     $scope.newQuery = function(query){
         $scope.filter.query = query;
         $scope.newList();
     }
     $scope.setRadius = function(radius){
+        alert(radius)
         $scope.filter.radius = radius;
     }
 

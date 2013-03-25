@@ -1,8 +1,8 @@
-<div class="container " style="height:49px;text-align:center;" >
+<div class="container " style="height:49px;text-align:center;" ng-controller="SearchController">
     <button type="button" class="btn btn-navbar" style="margin-top:2px;" ng-click="toggleTopMenu()">
         <i class="icon-reorder icon-2x" ></i>
     </button>
     <div id="navSearch" style="margin-top:8px;">
-        <input type="text" class="search-query" ng-model="filter.query"  placeholder="Искать"  id="searchFiletrQuery" ng-click="showSearchResults=false" style="width:100%;max-width:none;"> 
+        <input type="text" class="search-query" ng-model="query" ng-change="filterQuery(query)" placeholder="Искать"  id="searchFiletrQuery" ng-click="showSearchResults=false" style="width:100%;max-width:none;"> 
     </div>
 </div>
