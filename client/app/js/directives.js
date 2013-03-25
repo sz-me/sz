@@ -300,24 +300,19 @@ angular.module('sz.client.directives', [])
                             }
                             else{scope.messagePhoto.slideUp(500)}
                         }
-                        
-                    
                 }
             };
         })
-        .directive('szCollapseTopMenu',function(){
-            return{
-                restrict:'EA',
-                link:function(scope,elm,attr){
-                    var collapse = function(){
-                        if(scope.collapseTopMenu){$("#collapseMenu").animate({maxHeight:scope.h+'px'},200)}
-                        else{$("#collapseMenu").animate({maxHeight:0},200)}
-                    }
-                    scope.h = 110;
-                    scope.$watch('collapseTopMenu', collapse);
-                    
-                }
-            }
+
+        .directive('szCollapsibleMenu', function() {
+            return function(scope, element, attrs) {
+                scope.$watch(attrs.szCollapsibleMenu, function(value) {
+                    if (value)
+                        $(element[0]).animate({maxHeight:0}, 200);
+                    else
+                        $(element[0]).animate({maxHeight:'110px'}, 200);
+                });
+            };
         })
 //         .directive('szLiveSearch',function(){
 //             return{
