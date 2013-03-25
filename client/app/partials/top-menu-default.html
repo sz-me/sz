@@ -1,0 +1,20 @@
+<ul class="nav nav-pills nav-stacked" ng-click="toggleTopMenu()">
+    <!--            <li class="active">
+                        <a href="#/newsfeed">Лента</a>
+                    </li>-->
+    <li>
+        <a href='#/search' id="btn_search">
+            <span>Искать</span>
+        </a>
+    </li>
+    <li ng-show="session.is_authenticated">
+        <a href="">
+            <span>{{session.username}}</span>
+        </a>
+    </li>
+    <li ng-show="session.is_authenticated">
+        <a ng-click="session.$logout()" style="cursor:pointer" >
+            <span>Выход</span>
+        </a>
+    </li>
+</ul>

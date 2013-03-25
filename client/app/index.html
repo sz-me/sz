@@ -20,46 +20,18 @@
         <script src="js/controllers.js"></script>
         <script src="js/app.js"></script>
 </head>
-<body ng-controller="MasterPageController"  sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()" sz-determ-eq="searchString" sz-collapse-top-menu="collapseTopMenu" >
+<body ng-controller="MasterPageController"  sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()" sz-determ-eq="searchString">
 <div id="overflow" class="overflow" ng-show="isGetInProgress"></div>
 <div id="spinner" class="overflow" ng-show="isGetInProgress">
     <i class="icon-spinner icon-spin icon-2x "></i>
 </div>
-
         <div class="navbar navbar-static-top " >
-            <div class="navbar-inner" >   
-                <div class="container" style="height:49px;">
-                    <button type="button" class="btn btn-navbar" style="margin-top:2px;" ng-click="collapseTopMenu=!collapseTopMenu">
-                        <i class="icon-reorder icon-2x" ></i>
-                    </button>
-                    <a class="brand " href="#/newsfeed" style="margin-top:3px;">
-                        <span>shmotzhmot.me</span>
-                    </a>
-                </div>
+            <div class="navbar-inner" ng-include src='navbarInnerUrl'>
             </div>
         </div>
         
-        <div  id="collapseMenu" >
-            <ul class="nav nav-pills nav-stacked" >
-<!--            <li class="active">
-                    <a href="#/newsfeed">Лента</a>
-                </li>-->
-                <li>
-                    <a href='#/search' id="btn_search"  ng-click="collapseTopMenu=false">
-                        <span>Искать</span>
-                    </a>
-                </li>
-                <li ng-show="session.is_authenticated">
-                    <a ng-click="collapseTopMenu=false;" href="">
-                        <span>{{session.username}}</span>
-                    </a>
-                </li>
-                <li ng-show="session.is_authenticated">
-                    <a ng-click="collapseTopMenu=false;session.$logout()" style="cursor:pointer" >
-                        <span>Выход</span>
-                    </a>
-                </li>
-            </ul>
+        <div  id="collapseMenu" sz-collapsible-menu="isTopMenuCollapsed" ng-include src='topMenuUrl'>
+
         </div>
         
         <div  ng-view class="content" id="content" ng-show="showContent" ></div>
