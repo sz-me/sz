@@ -1,5 +1,5 @@
 from django import forms
-from sz.vjdetection import CascadeFileManager
+from sz.vjdetection.detectors import CascadeFileManager
 
 
 class UploadPhotoForm(forms.Form):

@@ -1,7 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from sz.vjdetection import forms, detect_object, CascadeFileManager
+from sz.vjdetection import forms, detect_object
+from sz.vjdetection.detectors import CascadeFileManager
+
 
 def index(request):
     if request.method == 'POST':
