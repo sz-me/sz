@@ -2,5 +2,7 @@
     <button type="button" class="btn btn-navbar" style="margin-top:2px;" ng-click="toggleTopMenu()">
         <i class="icon-reorder icon-2x" ></i>
     </button>
-    <div class="navbar-search"><input type="text"/></div>
+    <div class="navbar-search text-center" style="margin-top:8px;">
+        <input type="text" class="search-query" ng-model="filter.query"  placeholder="Искать"  id="searchFiletrQuery" ng-click="showSearchResults=false"> 
+    </div>
 </div>
