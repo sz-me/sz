@@ -20,17 +20,61 @@
         <script src="js/controllers.js"></script>
         <script src="js/app.js"></script>
 </head>
-<body ng-controller="MasterPageController"  sz-change-scroll-to-up="changeScrollToUp()" sz-change-scroll-to-down="changeScrollToDown()" sz-determ-eq="searchString">
-<div id="overflow" class="overflow" ng-show="isGetInProgress"></div>
-<div id="spinner" class="overflow" ng-show="isGetInProgress">
-    <i class="icon-spinner icon-spin icon-2x "></i>
+<body ng-controller="MasterPageController"
+      sz-change-scroll-to-up="changeScrollToUp()"
+      sz-change-scroll-to-down="changeScrollToDown()"
+      sz-determ-eq="searchString">
+
+    <div id="overflow" class="overflow" ng-show="false"></div>
+    <div id="spinner" class="overflow" ng-show="false"><i class="icon-spinner icon-spin icon-2x"></i></div>
+
+    <span ng-show="isSiteHeaderShown">
+        <div class="navbar navbar-static-top " >
+            <div class="navbar-inner">
+                <div class="container" style="height:49px;">
+                    <button type="button" class="btn btn-navbar" style="margin-top:2px;" ng-click="toggleTopMenu()">
+                        <i class="icon-reorder icon-2x" ></i>
+                    </button>
+                    <a class="brand " href="#/newsfeed" style="margin-top:3px;">
+                        <span>shmotzhmot.me</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div  id="collapseMenu" sz-collapsible-menu="isTopMenuCollapsed">
+    <ul class="nav nav-pills nav-stacked" ng-click="toggleTopMenu()">
+        <li>
+            <a href='#/newsfeed'>
+                <span>Новости</span>
+            </a>
+        </li>
+        <li>
+            <a href='#'>
+                <span>Интересное</span>
+            </a>
+        </li>
+        <li>
+            <a href='#/search' id="btn_search">
+                <span>Поиск</span>
+            </a>
+        </li>
+        <li ng-show="session.is_authenticated">
+            <a href="#">
+                <span>{{session.username}}</span>
+            </a>
+        </li>
+        <li ng-show="session.is_authenticated">
+            <a ng-click="session.$logout()" style="cursor:pointer" >
+                <span>Выход</span>
+            </a>
+        </li>
+    </ul>
 </div>
-    <span ng-include src='headerUrl' ng-controller="HeaderController">
-        
-    </span>    
-        <div  ng-view class="content" id="content" ng-show="showContent" ></div>
-        
-        <div class="navbar navbar-fixed-bottom navbar-inverse"  ng-show="showBotMenuPanel" style="position:fixed">
+    </span>
+
+    <div  ng-view class="content" id="content" ng-show="showContent" ></div>
+
+    <div class="navbar navbar-fixed-bottom navbar-inverse"  ng-show="showBotMenuPanel" style="position:fixed">
             <div class="navbar-inner ">
                 <div class="padding-X-big">
                     <ul class="nav " >
@@ -71,10 +115,6 @@
                </div>
             </div>
         </div>
-    
 
- 
-
- 
 </body>
 </html>
