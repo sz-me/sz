@@ -1,4 +1,48 @@
 <div ng-include src="'partials/search-filter.html'"></div>
+<ul id="contentHeader" ng-show="showAutoComplete()">                             
+    <li class="text-left " >
+        <ul class="noList">
+            <li id="mySearch" class="liveSearchLi " ng-show="filter.query">
+           <!--     <button class="btn pull-right" ng-click="filter.query = ''" ng-disabled="isSearch" >
+                    <i class="icon-remove-sign icon-2x "></i>
+                </button>-->
+                <div ng-click="newQuery(filter.query)" style="color:#999">
+                    <i class="icon-search icon-2x" style="color:#AAA" ></i>
+                    <span class="margin-left" >
+                        {{filter.query}}
+                    </span>
+                </div>
+            </li>
+            <li class="liveSearchLi" ng-repeat="hint in autoCompleteList | filter:filter.query | limitTo:3" ng-class="{'messageBox':!$last}" ng-click="newQuery(hint.name)" ng-style="{}">
+                <div style="height:45px;">
+                    <div class="catDiv pull-right" ng-class="hint.category" >
+                        <i class="catDivI"></i>
+                    </div>
+                    <i class="icon-search icon-2x pull-left" class="graydark" style="margin-top:7px;"></i>
+                    <div class="margin-left padding-top-big overflow-hidden">
+                        {{hint.name}}
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <ul class="noList" style="border-top:1px solid #888">
+            <li class="liveSearchLi hover-no-dec" ng-repeat="item in searchPlaceList | limitTo:3" ng-class="{'messageBox':!$last}" >
+                <a class="graydark hover-no-dec" href="#/places/{{item.place.id}}" >
+                    <div style="height:42px;">
+                        <i class="icon-external-link icon-2x graydark pull-left " style="margin-top:7px;" ></i>
+                        <div>
+                            <div class="overflow-hidden"><b>{{item.place.name}}</b><div>
+                            <div class="overflow-hidden"><small >{{item.place.address}}</small></div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul> 
+
 <ul class="media-list"  id="contentBody" ng-show="showSearchResults">
     <li ng-repeat="item in searchFeed.results" class="media padding-bot-big box-border" >
         <a href="#/places/{{item.place.id}}" class="graydark">            
