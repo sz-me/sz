@@ -1,22 +1,4 @@
-<div>
-    <ul id="contentHeader">
-        <li class="contentHeader-inner">
-            <ul class="noList">
-                <li >
-                    <div id="place-add-btn">
-                        <a class="btn btn-large  btn-primary" type="button" href="#/places/{{message.place.id}}/messages/add" ><i class="icon-plus icon-2x" ></i></a>
-                    </div>
-                    <a href="#/places/{{message.place.id }}/" class="graydark">
-                        <div id="place-name-address">        
-                            <h3 id="place-name-h">{{message.place.name}}</h3>
-                            <small id="place-address">{{message.place.address}}</small>   
-                        </div> 
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
-</div>
+<div ng-include src="'partials/headers/place-header.html'"></div>
 <ul class="media-list"  id="contentBody">
     <li class="media padding-huge box-border" >
         <ul class="noList">

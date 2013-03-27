@@ -185,8 +185,8 @@ function GalleryController($scope, $routeParams, placeService){
                 },
                 function(){
                     $scope.distance = feed.distance;
-                    $scope.place=feed.place;
                     $scope.feedPhoto=feed.messages;
+                    $scope.placeHeader = feed.place
                 });
     });
     $scope.loadMore = function(){
@@ -215,6 +215,7 @@ function MessageController($scope, $routeParams, messageService){
     var message = messageService.get({messageId:$routeParams.messageId},
         function(){
             $scope.message = message;
+            $scope.placeHeader = message.place
             $scope.message_categories = [];
             $.each($scope.message.categories,function(index,catID){
                 $.each($scope.categories,function(index,cat){
@@ -386,7 +387,7 @@ function SearchFilterController($scope, $timeout, $routeParams){
 
 function MessageEditorController($location, $scope, $routeParams, placeService, messagePreviewService) {
     if (angular.isDefined($routeParams.placeId))
-        placeService.get({placeId: $routeParams.placeId}, function(resp){ $scope.place = resp; })
+        placeService.get({placeId: $routeParams.placeId}, function(resp){ $scope.placeHeader = resp; })
     if (angular.isDefined($routeParams.previewId))
         messagePreviewService.get({previewId: $routeParams.previewId}, function(response){
             $scope.text = response.text;
@@ -439,6 +440,7 @@ function MessagePublisherController($location, $scope, $routeParams, messagePrev
     if (angular.isDefined($routeParams.previewId))
         var preview = messagePreviewService.get({previewId: $routeParams.previewId}, function(){
             $scope.preview = preview;
+            $scope.placeHeader = preview.place;
             $scope.add_categories = []
             $.each($scope.categories, function(index,cat){$scope.add_categories.push(cat)});
             $.each($scope.preview.categories, function(index,catID){

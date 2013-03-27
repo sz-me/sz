@@ -22,21 +22,8 @@
 
 
 <ul class="media-list" id="contentBody">
-	<li ng-repeat="item in feed.results" class="media padding-bot-big box-border" >
-            <div class="box-header">
-                <a href="#/places/{{item.place.id}}" class="graydark">
-                    <div>
-    <!--                    <a style="float:right;" >
-                            <i class=" icon-chevron-right"></i>
-                        </a>-->
-                        <h4 style="margin:0px;margin-top:3px;" >{{item.place.name}}</h4>
-                        <small >{{item.place.address}}</small>
-                    </div>
-     <!--               <div class="text-right">
-                        <i><small>{{item.distance}} м</small></i>
-                    </div>-->
-                </a>
-            </div>
+	<li ng-repeat="item in feed.results" class="media padding-bot-big box-border" ng-init="place=item.place" >
+            <span ng-include src="'partials/headers/message-box-header.html'"></span>
             <ul class="ul-box" >
                 <li class="padding-big">
                     <div ng-repeat="message in item.messages.results | limitTo:placeMessagesLimit"  class=" media" ng-class="{'messageBox':!$last}">

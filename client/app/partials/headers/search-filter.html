@@ -1,0 +1,32 @@
+<span ng-controller="SearchFilterController">
+    <div class="navbar navbar-static-top " >
+        <div class="navbar-inner">
+            <div class="container " style="height:49px;text-align:center;" >
+                <span class="pull-left">
+                    <a type="button" class="btn btn-navbar " style="margin-top:2px;" href='#'>
+                        <i class="icon-home icon-2x" ></i>
+                    </a>
+                </span>
+                <div id="navSearch" style="margin-top:8px;">
+                    <input type="search" class="search-query" placeholder="Искать" id="searchFiletrQuery"
+                           style="width:100%;max-width:none;"
+                           ng-model="query">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="contentHeader">
+        <div class="margin-Y-big ">
+            <button class="btn " ng-click="clearFilter()" ng-disabled="isSearch" style="margin-right:5px;">
+                <i class="icon-remove " ></i>
+            </button>
+            <div class="btn-group  margin-left" data-toggle="buttons-radio"  ng-show="!isLocation" style="margin-left:5px;">
+                <button class="btn " type="radio" ng-disabled="isSearch" ng-click="radius=250" ng-class="{'active':250==radius}">250m</button>
+                <button class="btn " type="radio" ng-disabled="isSearch" ng-click="radius=1000" ng-class="{'active':1000==radius}">1km</button>
+                <button class="btn " type="radio" ng-disabled="isSearch" ng-click="radius=3000" ng-class="{'active':3000==radius}">3km</button>
+                <button class="btn " type="radio" ng-disabled="isSearch" ng-click="radius=0"  ng-class="{'active':!radius}">city</button>
+            </div>
+        </div>
+    </div>
+</span>
+
