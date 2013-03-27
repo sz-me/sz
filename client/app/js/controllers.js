@@ -302,8 +302,13 @@ function SearchController($scope, $location, messageService,placeService){
         var query = filter.query;
         var radius = filter.radius;
         if(query && query==$scope.filter.query){
-            $scope.filter = filter;
-            newList()
+            if(radius==$scope.filter.radius){
+                $scope.filter = filter;
+            }
+            else{
+                $scope.filter = filter;
+                newList()
+            }
         }
         else{
             $scope.filter = filter;
@@ -343,8 +348,8 @@ function SearchController($scope, $location, messageService,placeService){
 
 function SearchFilterController($scope, $timeout, $routeParams){
     var initialize = function(){
-        $scope.query = $routeParams.query || null;
-        $scope.radius = $routeParams.radius || 0;
+        if($routeParams.query!=$scope.query){$scope.query = $routeParams.query || null;}
+        if($routeParams.radius!=$scope.radius){$scope.radius = $routeParams.radius || 0;}
     }
     initialize()
     var onChangedHandler = function(){
