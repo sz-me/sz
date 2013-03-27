@@ -301,7 +301,7 @@ function SearchController($scope, $location, messageService,placeService){
     $scope.$on(events.searchFilter.changed, function(name, filter){
         var query = filter.query;
         var radius = filter.radius;
-        if(query && query==$scope.filter.query && radius!=$scope.filter.radius && $scope.showSearchResults){
+        if(query && query==$scope.filter.query){
             $scope.filter = filter;
             newList()
         }
@@ -342,8 +342,11 @@ function SearchController($scope, $location, messageService,placeService){
 
 
 function SearchFilterController($scope, $timeout, $routeParams){
-    $scope.query = $routeParams.query || null;
-    $scope.radius = $routeParams.radius || 0;
+    var initialize = function(){
+        $scope.query = $routeParams.query || null;
+        $scope.radius = $routeParams.radius || 0;
+    }
+    initialize()
     var onChangedHandler = function(){
         $scope.$emit(events.searchFilter.changed, {query: $scope.query, radius: $scope.radius})
     }
@@ -371,10 +374,9 @@ function SearchFilterController($scope, $timeout, $routeParams){
     
     if($scope.query){onChangedHandler();}
     
-    $scope.clearFilter = function(){
-        $scope.radius = 0;
-        $scope.query = ''
-    }
+    $scope.$on('$routeUpdate', function(){
+        initialize();
+    });
 }
 
 function MessageEditorController($location, $scope, $routeParams, placeService, messagePreviewService) {
