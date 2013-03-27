@@ -351,7 +351,7 @@ function SearchFilterController($scope, $timeout, $routeParams){
         if($routeParams.query!=$scope.query){$scope.query = $routeParams.query || null;}
         if($routeParams.radius!=$scope.radius){$scope.radius = $routeParams.radius || 0;}
     }
-    initialize()
+    initialize();
     var onChangedHandler = function(){
         $scope.$emit(events.searchFilter.changed, {query: $scope.query, radius: $scope.radius})
     }
@@ -503,28 +503,37 @@ function MessagePublisherController($location, $scope, $routeParams, messagePrev
 
 
 function PlaceSelectionController($scope, $timeout, placeService){
+    $scope.showSiteHeader(false);
     $scope.isSearch = false;
     $scope.filter = { radius: 0, query: ''};
-
-    $scope.refresh = function(){
+    $scope.$on(events.searchFilter.changed, function(name, filter){
+        $scope.filter = filter
+        refresh()
+    })
+    var refresh = function(){
         $scope.isSearch = true;
-        if (angular.isDefined($scope.coordinates))
-            placeService.searchInVenues({
-                longitude: $scope.coordinates.longitude, latitude: $scope.coordinates.latitude,
-                radius: $scope.filter.radius, query: $scope.filter.query
-            }, function(options){ $scope.options = options; $scope.isSearch = false;});
-    };
-
-    $scope.$watch('coordinates', $scope.refresh);
-    $scope.$watch('filter.radius', $scope.refresh);
-    var refresh = null;
-    $scope.$watch('filter.query', function(newValue, oldValue){
-        if (newValue != oldValue && (newValue.length > 3 || newValue == '')){
-            if (refresh != null)
-                $timeout.cancel(refresh);
-            refresh = $timeout($scope.refresh, 2000)
+        var params = {}
+        if (angular.isDefined($scope.coordinates)){
+            if($scope.filter.query){params.query=$scope.filter.query}
+            if($scope.filter.radius){params.radius=$scope.filter.radius}
+            params.latitude = $scope.coordinates.latitude;
+            params.longitude = $scope.coordinates.longitude;
+            placeService.searchInVenues(
+                params,
+                function(options){ $scope.options = options; $scope.isSearch = false;}
+            );
         }
-    });
+    };
+    $scope.$watch('coordinates', refresh());
+//     $scope.$watch('filter.radius', $scope.refresh);
+//     var refresh = null;
+//     $scope.$watch('filter.query', function(newValue, oldValue){
+//         if (newValue != oldValue && (newValue.length > 3 || newValue == '')){
+//             if (refresh != null)
+//                 $timeout.cancel(refresh);
+//             refresh = $timeout($scope.refresh, 2000)
+//         }
+//     });
     $scope.clearFilter = function(){
         $scope.filter = { radius: 0, query: ''};
     }
