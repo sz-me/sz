@@ -457,19 +457,18 @@ angular.module('sz.client.directives', [])
                     if (angular.isUndefined(element[0].files))
                     {throw new Error("This browser does not support HTML5 File API.");}
                     if (element[0].files.length == 1){
-                        var photo = element[0].files[0]
+                        scope[attrs.szFileModel] = element[0].files[0]
+                        var photo = element[0].files[0];
+                        var $photoNameCont = $("#photoPrevName");
+                        var photoName = photo.name;
+                        $photoNameCont.text(photoName)
                         if (photo.type.match('image.*')) {
-                            scope[attrs.szFileModel] = element[0].files[0]
-                            var photoNameCont = document.getElementById('photoPrevName');
-                            var photoName = photo.name;
                             var reader = new FileReader();
                             reader.onload = (function(theFile) {
                                 return function(e) {
                                     var photoCont = document.getElementById('photoPrev');
                                     photoCont.innerHTML = ['<img  src="', e.target.result,
                                                         '" title="', escape(photoName), '"/>'].join('');
-                                    photoNameCont.innerHTML = [photoName].join('');
-                                    
                                 };                                
                             })(photo);      
                             reader.readAsDataURL(photo);
