@@ -420,84 +420,33 @@ angular.module('sz.client.directives', [])
         
 
         
-        .directive('szPrevPhoto',function(){
-            return{
-                restrict:'EA',
-                link:function(scope,elm,attr){
-                    function handleFileSelect(evt) {
-                        var files = evt.target.files;
-                        var photo = evt.target.files[0]
-                        var photoName = photo.name;
-                        var photoNameCont = document.getElementById('photoPrevName');
-                        if (photo.type.match('image.*')) {
-                            var reader = new FileReader();
-                            reader.onload = (function(theFile) {
-                                return function(e) {
-                                    var photoCont = document.getElementById('photoPrev');
-                                    photoCont.innerHTML = ['<img  src="', e.target.result,
-                                                        '" title="', escape(photoName), '"/>'].join('');
-                                    photoNameCont.innerHTML = [photoName].join('');
-                                };
-                                
-                            })(photo);      
-                            reader.readAsDataURL(photo);
-                        }
-                        else{
-                            photoNameCont.innerHTML = ['Недопустимый формат'].join('');
-                        }
-                    }
-                    document.getElementById('message-edit-photo').addEventListener('change', handleFileSelect, false);
-                }
-            }
-        })
-//         .directive('szRemovePhoto',function(){
+//         .directive('szPrevPhoto',function(){
 //             return{
 //                 restrict:'EA',
 //                 link:function(scope,elm,attr){
-//                        var remove = function(){
-//                             if(scope.removePhoto){
-//                                 var span = document.getElementById('photoPrev');
-//                                 span.innerHTML = [''].join('');
-//                                 $("#message-photo-remove-ico").hide();
-//                                 scope.removePhoto = false;
-//                             }
+//                     function handleFileSelect(evt) {
+//                         var files = evt.target.files;
+//                         var photo = evt.target.files[0]
+//                         var photoName = photo.name;
+//                         var photoNameCont = document.getElementById('photoPrevName');
+//                         if (photo.type.match('image.*')) {
+//                             var reader = new FileReader();
+//                             reader.onload = (function(theFile) {
+//                                 return function(e) {
+//                                     var photoCont = document.getElementById('photoPrev');
+//                                     photoCont.innerHTML = ['<img  src="', e.target.result,
+//                                                         '" title="', escape(photoName), '"/>'].join('');
+//                                     photoNameCont.innerHTML = [photoName].join('');
+//                                 };
+//                                 
+//                             })(photo);      
+//                             reader.readAsDataURL(photo);
+//                         }
+//                         else{
+//                             photoNameCont.innerHTML = ['Недопустимый формат'].join('');
+//                         }
 //                     }
-//                     scope.$watch('removePhoto', remove);
-//                     
-//                 }
-//             }
-//         })
-
-
-//         .directive('szDetermEq',function(){
-//             return{
-//                 restrict:'EA',
-//                 link:function(scope,elm,attr){
-//                     var winWidth = $(window).width();
-//                     var winHeight = $(window).height();
-//                     var contentMarginL = 5;
-//                     var contentMargin = 10;
-//                                   
-//                     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
-//                         scope.eq = 'phone'
-//                     }
-//                     else{
-//                         scope.eq = 'pc'
-//                     }
-//                     
-// //                     if(scope.eq=='pc'){
-// //                         var feedWidth = winWidth*0.4;
-// //                         var feedMarginL = (winWidth - feedWidth)*0.5;
-// //                     }
-// //                     else{
-// //                         var feedWidth = winWidth-contentMargin*2.5;
-// //                         var feedMarginL = contentMargin;
-// //                     }
-//                     var menuWidth = 385;
-//                     var menuMargin = (winWidth-menuWidth)*0.5;
-// //                     $("#dropdownMenu").css({marginLeft:menuMargin});
-//                     
-// //                     $("#searchWindowInner").height(winHeight-90)
+//                     document.getElementById('message-edit-photo').addEventListener('change', handleFileSelect, false);
 //                 }
 //             }
 //         })
@@ -506,9 +455,29 @@ angular.module('sz.client.directives', [])
             scope.$watch(attrs.szFileModel, function() {
                 angular.element(element[0]).bind('change', function(){
                     if (angular.isUndefined(element[0].files))
-                        throw new Error("This browser does not support HTML5 File API.");
-                    if (element[0].files.length == 1)
-                        scope[attrs.szFileModel] = element[0].files[0]
+                    {throw new Error("This browser does not support HTML5 File API.");}
+                    if (element[0].files.length == 1){
+                        var photo = element[0].files[0]
+                        if (photo.type.match('image.*')) {
+                            scope[attrs.szFileModel] = element[0].files[0]
+                            var photoNameCont = document.getElementById('photoPrevName');
+                            var photoName = photo.name;
+                            var reader = new FileReader();
+                            reader.onload = (function(theFile) {
+                                return function(e) {
+                                    var photoCont = document.getElementById('photoPrev');
+                                    photoCont.innerHTML = ['<img  src="', e.target.result,
+                                                        '" title="', escape(photoName), '"/>'].join('');
+                                    photoNameCont.innerHTML = [photoName].join('');
+                                    
+                                };                                
+                            })(photo);      
+                            reader.readAsDataURL(photo);
+                        }
+                        else{
+                            photoNameCont.innerHTML = ['Недопустимый формат'].join('');
+                        }
+                    }
                 });
 
             });

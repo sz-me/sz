@@ -395,13 +395,21 @@ function MessageEditorController($location, $scope, $routeParams, placeService, 
             $scope.place = response.place;
         });
     $scope.inProgress = false;
-    
+    $scope.showPhoto = true;
+ 
+    $scope.removePhoto = function(){
+        $scope.photo = null;
+//         $scope.showPhoto = false;
+    }
     $scope.send = function() {
         $scope.inProgress = true;
         var message = new FormData();
+        
         message.append( 'place', $routeParams.placeId);
         message.append( 'text', $scope.text);
-        message.append( 'photo', $scope.photo);
+//         if($scope.photo){
+            message.append( 'photo', $scope.photo);
+//         }
         message.append( 'smile', 1);
 
         var redirectToPublish = function(previewId){
