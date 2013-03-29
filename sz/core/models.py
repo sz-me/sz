@@ -1,8 +1,12 @@
 ﻿# -*- coding: utf-8 -*-
-import os, uuid
+import os
+import uuid
 from time import strftime
-from django.contrib.auth import models as auth_models
+from django.core import validators
+from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.gis.db import models
+from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 from imagekit import models as imagekit_models
 from imagekit import processors
 
@@ -36,8 +40,8 @@ class LowerCaseCharField(models.CharField):
 
 # Entities
 LANGUAGE_CHOICES = (
-    ('en', 'English'),
-    ('ru', 'Russian'),
+    ('en', _('English')),
+    ('ru', _('Russian')),
 )
 
 
@@ -139,9 +143,6 @@ class Stem(models.Model):
         unique_together = ('stem', 'language',)
 
 
-# Entities
-
-
 class Style(models.Model):
     name = models.CharField(max_length=32, verbose_name=u"название")
     description = models.CharField(
@@ -162,6 +163,26 @@ EMOTION_CHOICES = (
     ('bad', 'Bad'),
     ('indifferent', 'Indifferent')
 )
+
+
+GENDER_CHOICES = (
+    ('M', _('male')),
+    ('F', _('female')),
+)
+
+
+class User(AbstractBaseUser):
+    email = models.CharField(_('email address'), max_length=30, unique=True, validators=[validators.EmailValidator()])
+    USERNAME_FIELD = 'email'
+    style = models.ForeignKey(Style, verbose_name=u"стиль")
+    date_of_birth = models.DateField(_('birthday'), blank=True, null=True)
+    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    gender = models.CharField(_('gender'), max_length=1, blank=True, null=False, choices=GENDER_CHOICES)
+    REQUIRED_FIELDS = ['style']
+
+    class Meta:
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
 
 
 class Smile(models.Model):
@@ -187,7 +208,7 @@ class MessageBase(models.Model):
         max_length=1024, null=False,
         blank=True, verbose_name=u"сообщение")
 
-    user = models.ForeignKey(auth_models.User, verbose_name=u"пользователь")
+    user = models.ForeignKey(User, verbose_name=u"пользователь")
 
     place = models.ForeignKey(Place, verbose_name=u"место")
 

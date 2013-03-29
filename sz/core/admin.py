@@ -1,7 +1,10 @@
 ﻿from django.contrib import admin
-from sz.core import models
-from sz.core.services import morphology
+from django.utils.translation import ugettext_lazy as _
+from . import forms
+from . import models
+from .services import morphology
 from imagekit.admin import AdminThumbnail
+
 
 categorization_service = morphology.CategorizationService(
     models.Category.objects.all(),
@@ -56,6 +59,43 @@ class SmileAdmin(admin.ModelAdmin):
     ordering = ('style',)
 
 admin.site.register(models.Smile, SmileAdmin)
+
+
+class UserAdmin(admin.ModelAdmin):
+    form = forms.UserChangeForm
+    add_form = forms.UserCreationForm
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        (_('Personal info'), {'fields': (
+            'gender',
+            'date_of_birth'
+        )}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2')}
+        ),
+    )
+    list_display = ('email', 'last_login',)
+    ordering = ('email',)
+
+    def get_form(self, request, obj=None, **kwargs):
+        """
+        Use special form during user creation
+        """
+        defaults = {}
+        if obj is None:
+            defaults.update({
+                'form': self.add_form,
+                'fields': admin.util.flatten_fieldsets(self.add_fieldsets),
+                })
+        defaults.update(kwargs)
+        return super(UserAdmin, self).get_form(request, obj, **defaults)
+
+admin.site.register(models.User, UserAdmin)
+
 '''
 from django.contrib.gis import admin as gis_admin
 class PlaceAdmin(gis_admin.OSMGeoAdmin):
