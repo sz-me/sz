@@ -4,6 +4,7 @@ var szApp = angular.module('sz.client', ['sz.client.directives', 'sz.client.serv
 szApp.config(['$routeProvider', function($routeProvider) {
     $routeProvider
         .when('/newsfeed', {templateUrl: 'partials/newsfeed.html', controller: NewsFeedController})
+        .when('/user', {templateUrl: 'partials/user.html', controller: UserController})
         .when('/places/select', {templateUrl: 'partials/place-select.html', controller: PlaceSelectionController})
         .when('/places/:placeId', {templateUrl: 'partials/place.html', controller: PlaceController})
         .when('/places/:placeId/messages/add', {templateUrl: 'partials/message-edit.html', controller: MessageEditorController})

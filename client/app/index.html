@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         <script src="js/libs/jquery/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript"  src="js/libs/jquery/jquery.autoResize.js"></script> 
         <link rel="stylesheet" href="css/bootstrap/css/bootstrap.css">
 <!--          <script src="css/bootstrap/js/bootstrap.js"></script>  -->
         <link rel="stylesheet" href="css/color.css">
@@ -14,6 +15,7 @@
         <script src="js/libs/angularjs/1.0.5/angular.min.js"></script>
         <script src="js/libs/angularjs/1.0.5/angular-resource.min.js"></script>
         <script src="js/libs/angularjs/1.0.5/angular-cookies.min.js"></script>
+        
 
         <script src="js/services.js"></script>
         <script src="js/directives.js"></script>
@@ -42,30 +44,30 @@
             </div>
         </div>
         <div  id="collapseMenu" sz-collapsible-menu="isTopMenuCollapsed">
-    <ul class="nav nav-pills nav-stacked" ng-click="toggleTopMenu()">
+    <ul class="nav nav-pills nav-stacked " ng-click="toggleTopMenu()">
         <li>
-            <a href='#/newsfeed'>
-                <span>Новости</span>
+            <a href='#/newsfeed'  >
+                <div>Новости</div>
             </a>
         </li>
         <li>
             <a href='#'>
-                <span>Интересное</span>
+                <div>Интересное</div>
             </a>
         </li>
         <li>
             <a href='#/search' id="btn_search">
-                <span>Поиск</span>
+                <div>Поиск</div>
             </a>
         </li>
         <li ng-show="session.is_authenticated">
-            <a href="#">
-                <span>{{session.username}}</span>
+            <a href="#/user">
+                <div>{{session.username}}</div>
             </a>
         </li>
-        <li ng-show="session.is_authenticated">
-            <a ng-click="session.$logout()" style="cursor:pointer" >
-                <span>Выход</span>
+        <li ng-show="session.is_authenticated" >
+            <a ng-click="session.$logout()" >
+                <div>Выход</div>
             </a>
         </li>
     </ul>
@@ -87,7 +89,7 @@
                     </ul>
                     <ul class="nav" style="float:right" ng-show="session.is_authenticated">
                         <li>
-                            <a id="btn-user">
+                            <a id="btn-user" href="#/user">
                                 <div id="castle_info_val" style="margin-top:-2px;">
                                     <div><span class="badge badge-success">200</span></div>
                                     <div><span class="badge badge-warning">4</span></div>

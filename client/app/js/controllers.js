@@ -55,6 +55,9 @@ function RegistrationController($scope){
     $scope.registration = function(){}
 }
 
+function UserController($scope){
+     $scope.showSiteHeader(false);
+}
 
 function NewsFeedController($routeParams, $location, $scope, placeService) {
     $scope.category = '';

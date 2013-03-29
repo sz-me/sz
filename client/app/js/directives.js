@@ -306,12 +306,18 @@ angular.module('sz.client.directives', [])
 
         .directive('szCollapsibleMenu', function() {
             return function(scope, element, attrs) {
+                var maxH = 255
                 scope.$watch(attrs.szCollapsibleMenu, function(value) {
                     if (value)
                         $(element[0]).animate({maxHeight:0}, 200);
                     else
-                        $(element[0]).animate({maxHeight:'110px'}, 200);
+                        $(element[0]).animate({maxHeight:maxH+'px'}, 200);
                 });
+            };
+        })
+        .directive('szAutoResizeTextArea', function() {
+            return function(scope, element, attrs) {
+                $(element[0]).autoResize()
             };
         })
 //         .directive('szLiveSearch',function(){
