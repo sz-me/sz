@@ -56,7 +56,8 @@ function RegistrationController($scope){
 }
 
 function UserController($scope){
-     $scope.showSiteHeader(false);
+    $scope.showSiteHeader(false);
+    var id='4c636f6f79d1e21e62cbd815';
 }
 
 function NewsFeedController($routeParams, $location, $scope, placeService) {
@@ -190,6 +191,7 @@ function PlaceMapController($scope, $routeParams,placeService){
                 function(){
                     $scope.place = newsfeed.place;
                     $scope.placeHeader = newsfeed.place;
+                    $scope.distance = newsfeed.distance;
                     $scope.map = true
                     $scope.myMarker = true;
                 });
