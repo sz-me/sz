@@ -637,6 +637,11 @@ body{text-align:center;}
     text-overflow:ellipsis;
 }
 
+
+
+.miniMap { height: 100px;cursor:pointer }
+.maxMap{height:300px;}
+
 @media screen and (max-width: 1000px) {
    #navSearch{
         display:block;

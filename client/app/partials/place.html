@@ -35,7 +35,15 @@
     </ul>
 </div>
 
+
+
 <ul class="media-list" id="contentBody">
+    <li sz-leaflet-create-map="map" class="text-center box-border padding-Y-big  margin-bottom-huge">
+        <a id="mapCont" href="#/places/{{ place.id }}/map" >
+            <div id="map" class="miniMap">
+            </div>
+        </a>
+    </li>
     <li class="text-center box-border padding-Y-big  margin-bottom-huge">
         <div style="max-height:90px;overflow:hidden;" >
             <a ng-repeat="message in feedPhoto.results " class="inline-block" href="#/places/{{ place.id }}/gallery " >

@@ -320,142 +320,34 @@ angular.module('sz.client.directives', [])
                 $(element[0]).autoResize()
             };
         })
-//         .directive('szLiveSearch',function(){
-//             return{
-//                 restrict:'EA',
-//                 template:
-//                         '<ul class="noList">'+
-//                             '<li id="mySearch" class="liveSearchLi">'+
-//                                 '<i class="icon-remove-sign icon-3x pull-right"  style="vertical-align:-50%" ng-click="removeQuery()"></i>'+
-//                                 '<div ng-click="newQuery(filter.query)">'+
-//                                     '<i class="icon-search icon-2x"  style="vertical-align:-50%"></i>'+
-//                                     '<span class="margin-left" style="vertical-align:-60%">'+
-//                                         '{{filter.query}}'+
-//                                     '</span>'+
-//                                 '</div>'+
-//                             '</li>'+
-//                             '<li class="liveSearchLi" ng-repeat="(hint,cat) in autoCompleteList | filter:{hint:filter.query}" ng-class="liveSearchLiClass($last)" ng-click="newQuery(hint)">'+
-//                                 '<div style="height:45px;">'+
-//                                     '<div class="catDiv pull-right" ng-class="cat" >'+
-//                                         '<i class="catDivI"></i>'+
-//                                     '</div> '+
-//                                     '<i class="icon-search icon-2x" class="graydark" style="vertical-align:-50%"></i>'+
-//                                     '<span class="margin-left" style="vertical-align:-60%">'+
-//                                         '{{hint}}'+
-//                                     '</span>'+
-//                                 '</div>'+
-//                             '</li>'+
-//                         '</ul>',
-//                 link:function(scope,elm,attr){
-//                     var liveSearch = function(){
-//                         if(scope.filter.query){
-//                             if(scope.query.is( ":focus" )){
-//                                 scope.showSearchResults = false;
-//                             }
-//                         }
-//                         else{
-//                             scope.showSearchResults = true;
-//                         }
-//                     }
-//                     scope.query = $("#searchFiletrQuery");
-//                     scope.removeQuery = function(){
-//                         scope.filter.query = ''
-//                     }
-//                     scope.newQuery = function(hint){
-//                         scope.filter.query = hint;
-//                         scope.showSearchResults = true;
-//                     }
-//                     
-//                     scope.liveSearchLiClass = function(last){
-//                         if(!last){
-//                             return 'messageBox'
-//                         }
-//                     }
-//                     scope.$watch('filter.query', liveSearch);
-//                     
-//                 }
-//             }
-//         })
-//         .directive('szAutoCompleteSearch',function(){
-//             return{
-//                 restrict:'EA',
-//                 template:
-// //                         '<div style="display:inline-block;background:red;">'+
-//                             '<div id="autoCompleteParent">'+
-//                                 '<div id="autoComplete">'+
-//                                     '<div ng-repeat="hint in autoCompleteList | filter:filter.query | limitTo:6" ng-click="filter.query = hint">{{hint}}</div>'+
-//                                 '</div>'+
-// //                             '</div>'+
-//                         '<div>',
-//                 link:function(scope,elm,attr){
-//                     var searchAutoComplete = function(){
-//                         if(scope.filter.query){
-//                             if(scope.query.is( ":focus" )){
-//                                 $("#autoCompleteParent").show()
-//                                 var children = $("#autoComplete").children()
-//                                 if(children.length<2){
-//                                     if(children.text()==scope.filter.query){
-//                                         $("#autoCompleteParent").hide()
-//                                     }
-//                                 }
-//                             }
-//                         }
-//                         else{$("#autoCompleteParent").hide()}
-//                     }
-//                     
-//                     scope.query = $("#searchFiletrQuery");
-//                     scope.query
-//                         .blur(function(){
-//                             setTimeout(function() { $("#autoCompleteParent").hide() }, 100)
-//                         })
-//                         .keydown(function(e){
-//                             if(e.keyCode==27){scope.query.blur()}
-//                             if(e.keyCode==13){
-//                                 $("#autoCompleteParent").hide()
-//                                 scope.newList()
-//                             }
-//                         })
-//                     scope.newQuery = function(hint){
-//                         scope.filter.query = hint;
-//                         $("#autoCompleteParent").hide()
-//                     }
-//                     scope.$watch('filter.query', searchAutoComplete);
-//                 }
-//             }
-//         })
-        
+        .directive('szLeafletCreateMap', function () {
+            return function (scope, element, attrs) {
+                function createMap(){
+                    var latitude = scope.place.latitude;
+                    var longitude =  scope.place.longitude;
+                    var map = L.map('map').setView([latitude, longitude], 16);
 
-        
-//         .directive('szPrevPhoto',function(){
-//             return{
-//                 restrict:'EA',
-//                 link:function(scope,elm,attr){
-//                     function handleFileSelect(evt) {
-//                         var files = evt.target.files;
-//                         var photo = evt.target.files[0]
-//                         var photoName = photo.name;
-//                         var photoNameCont = document.getElementById('photoPrevName');
-//                         if (photo.type.match('image.*')) {
-//                             var reader = new FileReader();
-//                             reader.onload = (function(theFile) {
-//                                 return function(e) {
-//                                     var photoCont = document.getElementById('photoPrev');
-//                                     photoCont.innerHTML = ['<img  src="', e.target.result,
-//                                                         '" title="', escape(photoName), '"/>'].join('');
-//                                     photoNameCont.innerHTML = [photoName].join('');
-//                                 };
-//                                 
-//                             })(photo);      
-//                             reader.readAsDataURL(photo);
-//                         }
-//                         else{
-//                             photoNameCont.innerHTML = ['Недопустимый формат'].join('');
-//                         }
-//                     }
-//                     document.getElementById('message-edit-photo').addEventListener('change', handleFileSelect, false);
-//                 }
-//             }
-//         })
+                    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+                    if(scope.myMarker){
+                        L.marker([scope.coordinates.latitude, scope.coordinates.longitude])
+                         .addTo(map)
+                         .bindPopup('You are here')
+//                          .openPopup();
+
+                    }
+                    L.marker([latitude, longitude])
+                     .addTo(map)
+                     .bindPopup(scope.place.name)
+//                      .openPopup();
+                    
+                }
+                scope.$watch('map',function(){
+                    if(scope.map){createMap()}
+                })
+            };
+        })
     .directive('szFileModel', function() {
         return function(scope, element, attrs) {
             scope.$watch(attrs.szFileModel, function() {

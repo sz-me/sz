@@ -133,7 +133,7 @@ function NewsFeedController($routeParams, $location, $scope, placeService) {
 }
 
 
-function PlaceController($scope, $routeParams, placeService) {
+function PlaceController($scope, $routeParams,placeService) {
     $scope.$watch('coordinates', function(newValue, oldValue) {
         if (angular.isDefined($scope.coordinates)){
             var params = {
@@ -141,13 +141,13 @@ function PlaceController($scope, $routeParams, placeService) {
                 latitude: $scope.coordinates.latitude,
                 placeId: $routeParams.placeId
             }
-            if($routeParams.query) {params.query = $routeParams.query}
             var newsfeed = placeService.$newsfeed(
                 params,
                 function(){
                     $scope.distance = newsfeed.distance;
                     $scope.feed = newsfeed.messages;
                     $scope.place = newsfeed.place;
+                    $scope.map = true
                     $scope.feedPhoto = newsfeed.photos;
                 });
         }
@@ -175,6 +175,26 @@ function PlaceController($scope, $routeParams, placeService) {
             );
         }
     }
+}
+
+function PlaceMapController($scope, $routeParams,placeService){
+    $scope.$watch('coordinates', function(newValue, oldValue) {
+        if (angular.isDefined($scope.coordinates)){
+            var params = {
+                longitude: $scope.coordinates.longitude,
+                latitude: $scope.coordinates.latitude,
+                placeId: $routeParams.placeId
+            }
+            var newsfeed = placeService.$newsfeed(
+                params,
+                function(){
+                    $scope.place = newsfeed.place;
+                    $scope.placeHeader = newsfeed.place;
+                    $scope.map = true
+                    $scope.myMarker = true;
+                });
+        }
+    });
 }
 
 function GalleryController($scope, $routeParams, placeService){
