@@ -1,0 +1,19 @@
+<ul class="media-list "  id="contentBody" >
+    <li class="text-center" >
+        <div>
+            <a ng-repeat="message in feedPhoto.results " class="inline-block" href={{urlMessage(message.id)}} >
+                <img src="{{message.photo.thumbnail}}">
+            </a>
+        </div>
+    </li>
+    <li class="text-center" >
+        <button class="btn  btn-large margin-top-big" ng-click="loadMore()">
+            <i class="icon-circle"></i>
+            <i class="icon-circle"></i>
+            <i class="icon-circle"></i>
+        </button>
+    </li>
+</ul>
+
+<div style="height:60px;">
+</div>

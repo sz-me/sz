@@ -48,8 +48,13 @@ function MasterPageController($scope,$cookies, $http, $location, geolocation, ca
     $scope.urlPlaceMap = function(id){return "#/places/"+id+"/map" };
     $scope.urlPlaceGallery = function(id){return "#/places/"+id+"/gallery" };
     $scope.urlMessage = function(id){return "#/messages/"+id}
-//     $scope.$on('urlMessage',function(ev,id){var url="#/messages/"+id; return url })
     $scope.urlUser = "#/user";
+    $scope.urlUserGallery = "#/user/gallery";
+//     $scope.urlUserMessages = "#/user/messages";
+    $scope.urlUserPlaces = "#/user/places";
+    $scope.urlUserSkills = "#/user/skills";
+    $scope.urlUserTalents = "#/user/talents";
+    $scope.urlUserSettings = "#/user/settings";
     $scope.urlLogin = "#/login";
     $scope.urlRegistration = "#/registration";
     $scope.urlPassREcovery = "#"
@@ -59,6 +64,8 @@ function MasterPageController($scope,$cookies, $http, $location, geolocation, ca
     $scope.includePlaceHeaderGet = function(){return 'partials/headers/place-header.html';}
     $scope.includeMessageBoxHeaderGet = function(){return 'partials/headers/message-box-header.html';}
     $scope.includeMessageAdditionHeaderGet = function(){return 'partials/headers/message-addition-header.html';}
+    $scope.includeGalleryInnerGet = function(){return 'partials/headers/gallery-inner.html';}
+    $scope.includeMessagesAreaGet = function(){return 'partials/headers/messages-area.html';}
 }
 
 MasterPageController.$inject = ['$scope','$cookies', '$http', '$location', 'geolocationService', 'categoryService', 'sessionService'];
@@ -77,10 +84,46 @@ function RegistrationController($scope){
     $scope.registration = function(){}
 }
 
-function UserController($scope){
+function UserController($scope,placeService){
     $scope.includeUserHeader = $scope.includeUserHeaderGet();
+    $scope.includeMessagesArea = $scope.includeMessagesAreaGet();
     $scope.showSiteHeader(false);
-    var id='4c636f6f79d1e21e62cbd815';
+    $scope.test = 'test';
+    $scope.id='4c636f6f79d1e21e62cbd815';
+    $scope.$watch('coordinates', function(newValue, oldValue) {
+        if (angular.isDefined($scope.coordinates)){
+            var params = {
+                longitude: $scope.coordinates.longitude,
+                latitude: $scope.coordinates.latitude,
+                placeId: $scope.id
+            }
+            var newsfeed = placeService.$newsfeed(
+                params,
+                function(){
+                    $scope.feed = newsfeed.messages;
+                    $scope.message=$scope.feed.results[0]
+                    $scope.feedPhoto = newsfeed.photos;
+                });
+        }
+    });
+}
+
+function UserGalleryController($scope,placeService){
+    $scope.includeGalleryInner = $scope.includeGalleryInnerGet();
+    $scope.$watch('coordinates', function(newValue, oldValue) {
+        if (angular.isDefined($scope.coordinates))
+            var feed = placeService.$newsfeed({
+                    longitude: $scope.coordinates.longitude,
+                    latitude: $scope.coordinates.latitude,
+                    placeId: $scope.id,
+                    photo: true
+                },
+                function(){
+                    $scope.distance = feed.distance;
+                    $scope.feedPhoto=feed.messages;
+                    $scope.placeHeader = feed.place
+                });
+    });
 }
 
 function NewsFeedController($routeParams, $location, $scope, placeService) {
@@ -159,6 +202,7 @@ function NewsFeedController($routeParams, $location, $scope, placeService) {
 
 
 function PlaceController($scope, $routeParams,placeService) {
+    $scope.includeMessagesArea = $scope.includeMessagesAreaGet();
     $scope.$watch('coordinates', function(newValue, oldValue) {
         if (angular.isDefined($scope.coordinates)){
             var params = {
@@ -226,6 +270,7 @@ function PlaceMapController($scope, $routeParams,placeService){
 
 function GalleryController($scope, $routeParams, placeService){
     $scope.includePlaceHeader = $scope.includePlaceHeaderGet();
+    $scope.includeGalleryInner = $scope.includeGalleryInnerGet();
     $scope.$watch('coordinates', function(newValue, oldValue) {
         if (angular.isDefined($scope.coordinates))
             var feed = placeService.$newsfeed({
