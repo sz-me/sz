@@ -1,8 +1,8 @@
-<div ng-include src="'partials/headers/place-header.html'"></div>
+<div ng-include src='includePlaceHeader'></div>
 <ul class="media-list "  id="contentBody">
     <li class="text-center">
         <div>
-            <a ng-repeat="message in feedPhoto.results " class="inline-block" href="#/messages/{{message.id }}" >
+            <a ng-repeat="message in feedPhoto.results " class="inline-block" href={{urlMessage(message.id)}} >
                 <img src="{{message.photo.thumbnail}}">
             </a>
         </div>

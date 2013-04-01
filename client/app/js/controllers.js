@@ -37,6 +37,28 @@ function MasterPageController($scope,$cookies, $http, $location, geolocation, ca
     $scope.toggleTopMenu = function(){
         $scope.isTopMenuCollapsed = !$scope.isTopMenuCollapsed;
     }
+    
+    
+    $scope.urlFeed = "#/newsfeed";
+    $scope.urlIntFeed = "#/newsfeed";
+    $scope.urlSearch = "#/search";
+    $scope.urlPlaceSelect = "#/places/select";
+    $scope.urlPlace = function(id){return "#/places/" +id+"/"};
+    $scope.urlPlaceAddMessage = function(id){return "#/places/"+id+"/messages/add"};
+    $scope.urlPlaceMap = function(id){return "#/places/"+id+"/map" };
+    $scope.urlPlaceGallery = function(id){return "#/places/"+id+"/gallery" };
+    $scope.urlMessage = function(id){return "#/messages/"+id}
+//     $scope.$on('urlMessage',function(ev,id){var url="#/messages/"+id; return url })
+    $scope.urlUser = "#/user";
+    $scope.urlLogin = "#/login";
+    $scope.urlRegistration = "#/registration";
+    $scope.urlPassREcovery = "#"
+    
+    $scope.includeUserHeaderGet = function(){return 'partials/headers/user-header.html';}
+    $scope.includeSearchHeaderGet = function(){return 'partials/headers/search-filter.html';}
+    $scope.includePlaceHeaderGet = function(){return 'partials/headers/place-header.html';}
+    $scope.includeMessageBoxHeaderGet = function(){return 'partials/headers/message-box-header.html';}
+    $scope.includeMessageAdditionHeaderGet = function(){return 'partials/headers/message-addition-header.html';}
 }
 
 MasterPageController.$inject = ['$scope','$cookies', '$http', '$location', 'geolocationService', 'categoryService', 'sessionService'];
@@ -56,11 +78,13 @@ function RegistrationController($scope){
 }
 
 function UserController($scope){
+    $scope.includeUserHeader = $scope.includeUserHeaderGet();
     $scope.showSiteHeader(false);
     var id='4c636f6f79d1e21e62cbd815';
 }
 
 function NewsFeedController($routeParams, $location, $scope, placeService) {
+    $scope.includeMessageBoxHeader = $scope.includeMessageBoxHeaderGet();
     $scope.category = '';
     $scope.radiusActive = 0
     $scope.$watch('coordinates', function(newValue, oldValue) {
@@ -179,6 +203,7 @@ function PlaceController($scope, $routeParams,placeService) {
 }
 
 function PlaceMapController($scope, $routeParams,placeService){
+    $scope.includePlaceHeader = $scope.includePlaceHeaderGet();
     $scope.$watch('coordinates', function(newValue, oldValue) {
         if (angular.isDefined($scope.coordinates)){
             var params = {
@@ -200,6 +225,7 @@ function PlaceMapController($scope, $routeParams,placeService){
 }
 
 function GalleryController($scope, $routeParams, placeService){
+    $scope.includePlaceHeader = $scope.includePlaceHeaderGet();
     $scope.$watch('coordinates', function(newValue, oldValue) {
         if (angular.isDefined($scope.coordinates))
             var feed = placeService.$newsfeed({
@@ -237,6 +263,7 @@ function GalleryController($scope, $routeParams, placeService){
 }
 
 function MessageController($scope, $routeParams, messageService){
+    $scope.includePlaceHeader = $scope.includePlaceHeaderGet();
     var message = messageService.get({messageId:$routeParams.messageId},
         function(){
             $scope.message = message;
@@ -261,6 +288,8 @@ events.searchFilter.typing = 'searchFilterQueryIsBeingTyped';
 
 
 function SearchController($scope, $location, messageService,placeService){
+    $scope.includeSearchHeader = $scope.includeSearchHeaderGet();
+    $scope.includeMessageBoxHeader = $scope.includeMessageBoxHeaderGet();
     $scope.autoCompleteList = [
     {'name':'балетки','category':'shoes'},{'name':'бахилы','category':'shoes'},{'name':'башмак','category':'shoes'},{'name':'берцы','category':'shoes'},{'name':'болотники','category':'shoes'},{'name':'босоножки','category':'shoes'},{'name':'ботильоны','category':'shoes'},{'name':'ботинки','category':'shoes'},{'name':'ботинки','category':'shoes'},{'name':'ботфорты','category':'shoes'},{'name':'боты','category':'shoes'},{'name':'броги','category':'shoes'},{'name':'бродни','category':'shoes'},{'name':'бурки','category':'shoes'},{'name':'бутсы','category':'shoes'},{'name':'валенки','category':'shoes'},{'name':'вьетнамки','category':'shoes'},{'name':'галоши','category':'shoes'},{'name':'гриндерс','category':'shoes'},{'name':'гэта','category':'shoes'},{'name':'дезерты','category':'shoes'},{'name':'дерби','category':'shoes'},{'name':'джазовки','category':'shoes'},{'name':'доктор мартинс','category':'shoes'},{'name':'калоши','category':'shoes'},{'name':'кеды','category':'shoes'},{'name':'конверс','category':'shoes'},
 {'name':'кроссовки','category':'shoes'},{'name':'лодочки','category':'shoes'},{'name':'лоферы','category':'shoes'},{'name':'мартинсы','category':'shoes'},{'name':'мокасины','category':'shoes'},{'name':'монки','category':'shoes'},{'name':'мюли','category':'shoes'},{'name':'оксфорды','category':'shoes'},{'name':'пимы','category':'shoes'},{'name':'пинетки','category':'shoes'},{'name':'полуботинки','category':'shoes'},{'name':'полукеды','category':'shoes'},{'name':'пуанты','category':'shoes'},{'name':'сабо','category':'shoes'},{'name':'сандалии','category':'shoes'},{'name':'сапоги','category':'shoes'},{'name':'сланцы','category':'shoes'},{'name':'слипоны','category':'shoes'},{'name':'сникерсы','category':'shoes'},{'name':'таби','category':'shoes'},{'name':'тапки','category':'shoes'},{'name':'трикони','category':'shoes'},{'name':'туфли','category':'shoes'},{'name':'тэйлорс','category':'shoes'},{'name':'угги','category':'shoes'},{'name':'унты','category':'shoes'},{'name':'унты','category':'shoes'},{'name':'шлепанцы','category':'shoes'},{'name':'шлепки','category':'shoes'},{'name':'штиблеты','category':'shoes'},
@@ -411,6 +440,7 @@ function SearchFilterController($scope, $timeout, $routeParams){
 }
 
 function MessageEditorController($location, $scope, $routeParams, placeService, messagePreviewService) {
+    $scope.includeMessageAdditionHeader = $scope.includeMessageAdditionHeaderGet();
     if (angular.isDefined($routeParams.placeId))
         placeService.get({placeId: $routeParams.placeId}, function(resp){ $scope.placeHeader = resp; })
     if (angular.isDefined($routeParams.previewId))
@@ -419,12 +449,12 @@ function MessageEditorController($location, $scope, $routeParams, placeService, 
             $scope.photoUrl = response.photo.thumbnail;
             $scope.place = response.place;
         });
+    $scope.photo = null;
     $scope.inProgress = false;
     $scope.showPhoto = true;
- 
     $scope.removePhoto = function(){
         $scope.photo = null;
-//         $scope.showPhoto = false;
+//         $scope.showPhoto = false
     }
     $scope.send = function() {
         $scope.inProgress = true;
@@ -467,6 +497,7 @@ function MessageEditorController($location, $scope, $routeParams, placeService, 
 
 
 function MessagePublisherController($location, $scope, $routeParams, messagePreviewService) {
+    $scope.includeMessageAdditionHeader = $scope.includeMessageAdditionHeaderGet();
     $scope.inProgress = false;
     $scope.showPreviewTex = false;
     $scope.new_message_categories = [];
@@ -538,6 +569,7 @@ function MessagePublisherController($location, $scope, $routeParams, messagePrev
 
 
 function PlaceSelectionController($scope, $timeout, placeService){
+    $scope.includePlaceSelectHeader = $scope.includeSearchHeaderGet();
     $scope.showSiteHeader(false);
     $scope.isSearch = false;
     $scope.filter = { radius: 0, query: ''};

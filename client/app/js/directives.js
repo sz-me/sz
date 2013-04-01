@@ -87,7 +87,7 @@ angular.module('sz.client.directives', [])
                 replace: true,
                 template:
                         '<div >'+   
-                            '<a href="#/messages/{{messageid}}" class="graydark">'+
+                            '<a href={{urlMessage(messageid)}} class="graydark">'+
                                 '<time >'+
                                     '{{date}}'+
                                     ' {{time}}'+                               
@@ -201,7 +201,7 @@ angular.module('sz.client.directives', [])
                 replace: true,
                 template:
                         '<div >'+   
-                            '<a href="#/messages/{{messageid}}" class="graydark">'+
+                            '<a href={{url}} class="graydark">'+
                                 '<time>'+
                                     '{{date}}'+
                                     ' {{time}}'+                               
@@ -220,7 +220,7 @@ angular.module('sz.client.directives', [])
                                 '{{text}}'+
                             '</p>'+                            
                             '<div class="box-hide" id="photo">'+
-                                '<a href="#/messages/{{messageid}}" class="inline-block">'+
+                                '<a href={{url}} class="inline-block">'+
                                     '<img class="media-object" ng-src={{photo}}>'+
                                 '</a>'+
                             '</div>'+
@@ -238,10 +238,10 @@ angular.module('sz.client.directives', [])
                 scope: {
                     message:'=',
                     categories:'=',
-                    place:'='
+                    place:'=',
+                    url:'='
                 },
                 link: function (scope, element, attrs) {
-//                     alert(scope.categories)
                         var msg = scope.message;
                         var datetime = msg.date.split('T');
                         scope.date = datetime[0];

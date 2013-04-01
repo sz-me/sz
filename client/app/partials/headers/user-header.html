@@ -1,4 +1,4 @@
-<span ng-controller="SearchFilterController">
+<span ng-controller="UserController">
     <div class="navbar navbar-static-top " >
         <div class="navbar-inner">
             <div class="container " style="height:49px;text-align:center;" >
@@ -7,7 +7,7 @@
                         <i class="icon-home icon-2x" ></i>
                     </a>
                 </span>
-                <a href="#/user" id="user-header-name">
+                <a href={{urlUser}} id="user-header-name">
                     <div >
                         {{session.username}}
                     </div>

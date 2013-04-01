@@ -5,9 +5,9 @@
             <ul class="noList">
                 <li>
                     <div id="place-add-btn">
-                        <a class="btn btn-large  btn-primary" type="button" href="#/places/{{ place.id }}/messages/add" ><i class="icon-plus icon-2x" ></i></a>
+                        <a class="btn btn-large  btn-primary" type="button" href={{urlPlaceAddMessage(place.id)}} ><i class="icon-plus icon-2x" ></i></a>
                     </div>
-                    <a href="#/places/{{ place.id }}/" class="graydark">
+                    <a href={{urlPlace(place.id)}} class="graydark">
                         <div id="place-name-address">        
                             <h3 id="place-name-h">{{place.name}}</h3>
                             <small id="place-address">{{place.address}}</small>   
@@ -34,24 +34,21 @@
         </li>
     </ul>
 </div>
-
-
-
 <ul class="media-list" id="contentBody">
     <li sz-leaflet-create-map="map" class="text-center box-border padding-Y-big  margin-bottom-huge">
-        <a id="mapCont" href="#/places/{{ place.id }}/map" >
+        <a id="mapCont" href={{urlPlaceMap(place.id)}} >
             <div id="map" class="miniMap">
             </div>
         </a>
     </li>
     <li class="text-center box-border padding-Y-big  margin-bottom-huge">
         <div style="max-height:90px;overflow:hidden;" >
-            <a ng-repeat="message in feedPhoto.results " class="inline-block" href="#/places/{{ place.id }}/gallery " >
+            <a ng-repeat="message in feedPhoto.results " class="inline-block" href={{urlPlaceGallery(place.id)}} >
                 <img src="{{message.photo.thumbnail}}">
             </a>
         </div>
         <div class="margin-top-big">
-            <a href="#/places/{{ place.id }}/gallery ">
+            <a href={{urlPlaceGallery(place.id)}}>
                 <button class="btn  btn-large" ng-click="loadMore()">
                     <i class="icon-circle"></i>
                     <i class="icon-circle"></i>
@@ -63,8 +60,8 @@
     <li class="box-border margin-top-big margin-bottom-huge ">
         <ul  class="ul-box" >
             <li >
-                <div ng-repeat="message in feed.results "  class="  padding-big" ng-class="{'messageBox':!$last}">
-                    <sz-feed-message-box message='message' categories="categories" place="place"></sz-feed-message-box>
+                <div ng-repeat="message in feed.results "  class="  padding-big" ng-class="{'messageBox':!$last}" ng-init="url=urlMessage(message.id)">
+                    <sz-feed-message-box message='message' categories="categories" place="place"  url="url"></sz-feed-message-box>
                 </div>
             </li>
             <li  class="text-center media box-footer margin-bottom-big" >
