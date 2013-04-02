@@ -541,6 +541,7 @@ textarea:focus{
 
 
 
+
 .margin-top{margin-top:5px;}
 
 .margin-top-big{margin-top:10px;}
@@ -563,6 +564,8 @@ textarea:focus{
     margin-right:5px;
 }
 
+.margin-bottom-no{margin-bottom:0}
+.margin-top-no{margin-top:0}
 
 .text-center{text-align:center;}
 
@@ -578,6 +581,8 @@ textarea:focus{
     display:inline-block;
     cursor:pointer;
 }
+
+/* .pointer{cursor:pointer;} */
 
 #searchFiletrQuery{
     max-width:300px;

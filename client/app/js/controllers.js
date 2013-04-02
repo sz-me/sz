@@ -66,6 +66,68 @@ function MasterPageController($scope,$cookies, $http, $location, geolocation, ca
     $scope.includeMessageAdditionHeaderGet = function(){return 'partials/headers/message-addition-header.html';}
     $scope.includeGalleryInnerGet = function(){return 'partials/headers/gallery-inner.html';}
     $scope.includeMessagesAreaGet = function(){return 'partials/headers/messages-area.html';}
+    
+    
+    $scope.userSkills = {
+        'first':[
+            {'name':'Удача','description':'Влияет на частоту выпадения крита и на частоту выпадения эпикшмота ','value':{
+                'user':5,
+                'amadeus':7,
+                'futuri':7,
+                'united':7
+            }},
+            {'name':'Сила','description':'Влияет на minMP и на скорость убывания принадлежности ','value':{
+                'user':4,
+                'amadeus':7,
+                'futuri':7,
+                'united':7
+            }},
+            {'name':'Интеллект','description':'Влияет на стоимость заклинаний,тень и эффективность талантов ','value':{
+                'user':7,
+                'amadeus':7,
+                'futuri':7,
+                'united':7
+            }},
+            {'name':'Ловкость','description':'Влияет на maxMP, уклонение и меткость ','value':{
+                'user':6,
+                'amadeus':7,
+                'futuri':7,
+                'united':7
+            }}
+        ],
+        'second':[
+            {'name':'Сила сообщения','description':'Рендомно выбранное значение из промежутка между минимумом силы сообщения и максимумом силы сообщения.Минимальная сила сообщения складывается из меткости,силы слова и силы. Максимальная сила сообщения - минимум сообщения помноженный на какой-то коэфициент от ловкости и меткости ','value':{
+                'user':7,
+                'amadeus':7,
+                'futuri':7,
+                'united':7
+            }},
+            {'name':'Сила слова','description':'Коэффициент, зависящий от удаленности персонажа от места, в котрое он пишет сообщение. Чем дальше место — тем меньше силы слова ','value':{
+                'user':7,
+                'amadeus':7,
+                'futuri':7,
+                'united':7
+            }},
+            {'name':'Тень','description':'Время, втечении которого территория остается видимой после ухода из нее персонажа ','value':{
+                'user':7,
+                'amadeus':7,
+                'futuri':7,
+                'united':7
+            }},
+            {'name':'Меткость','description':'Влияет на силу слова. Чем больше меткость - тем больше расстояние, с которого можно писать сообщения','value':{
+                'user':7,
+                'amadeus':7,
+                'futuri':7,
+                'united':7
+            }},
+            {'name':'Уклонение','description':'Возможность свести на ноль силу сообщения или эффект от таланта другого игрока другого игрока, который пишет сообщение в замке персонажа ','value':{
+                'user':7,
+                'amadeus':7,
+                'futuri':7,
+                'united':7
+            }}
+        ]
+    }
 }
 
 MasterPageController.$inject = ['$scope','$cookies', '$http', '$location', 'geolocationService', 'categoryService', 'sessionService'];
@@ -124,6 +186,17 @@ function UserGalleryController($scope,placeService){
                     $scope.placeHeader = feed.place
                 });
     });
+}
+
+function UserSkillsController($scope){
+    $scope.userSkillsDescription = '';
+    $scope.setSkillDescription = function(skills){
+        $scope.userSkillsDescription = skills.description
+    }
+    $scope.userSkillsSecondDescription = '';
+    $scope.setSkillSecondDescription = function(skills){
+        $scope.userSkillsSecondDescription = skills.description
+    }
 }
 
 function NewsFeedController($routeParams, $location, $scope, placeService) {

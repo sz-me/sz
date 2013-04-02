@@ -1,3 +1,33 @@
 <div ng-include src='includeUserHeader'></div>
-
-Skills
+<ul class="media-list" id="contentBody" ng-controller="UserSkillsController">
+    <li class="media  box-border margin-bottom-huge " >
+        <ul class="nav nav-tabs nav-stacked margin-bottom-no">
+            <li ng-repeat="skill in userSkills.first" ng-click="setSkillDescription(skill)" ng-mouseover="setSkillDescription(skill)" >
+                <a class="graydark" style="cursor:pointer">
+                    <div >
+                        <span class="pull-right">{{skill.value.user}}</span>
+                        <span>{{skill.name}} </span>
+                    </div>        
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="media  box-border margin-bottom-huge padding-big" ng-show="userSkillsDescription" ng-click="userSkillsDescription=''" style="cursor:pointer">
+        {{userSkillsDescription}}
+    </li>
+    <li class="media  box-border margin-bottom-huge " >
+        <ul class="nav nav-tabs nav-stacked margin-bottom-no">
+            <li ng-repeat="skill in userSkills.second" ng-click="setSkillSecondDescription(skill)" ng-mouseover="setSkillSecondDescription(skill)" >
+                <a class="graydark" style="cursor:pointer">
+                    <div>
+                        <span class="pull-right">{{skill.value.user}}</span>
+                        <span>{{skill.name}} </span>
+                    </div>        
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="media  box-border margin-bottom-huge padding-big" ng-show="userSkillsSecondDescription" ng-click="userSkillsSecondDescription=''" style="cursor:pointer">
+        {{userSkillsSecondDescription}}
+    </li>
+</ul>
