@@ -1,6 +1,5 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from sz.core.forms import RegistrationForm
 from sz import settings
 
 admin.autodiscover()
@@ -14,7 +13,7 @@ urlpatterns = patterns('',
         }),
     url(r'^$', 'sz.core.views.index', name='client-index'),
     url(r'^api/', include('sz.api.urls'), name='api'),
-    url(r'^vj-detection-demo/', 'sz.vjdetection.views.index', name='vj-detection-demo'),
+    #url(r'^vj-detection-demo/', 'sz.vjdetection.views.index', name='vj-detection-demo'),
     #url(r'^accounts/register/$', 'registration.views.register',
     #    {
     #        'form_class': RegistrationForm,

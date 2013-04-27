@@ -1,9 +1,11 @@
-﻿from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _
-from . import forms
+﻿from django.contrib.auth.models import Group
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from imagekit.admin import AdminThumbnail
+
+from .forms import UserChangeForm, UserCreationForm
 from . import models
 from .services import morphology
-from imagekit.admin import AdminThumbnail
 
 
 categorization_service = morphology.CategorizationService(
@@ -61,40 +63,35 @@ class SmileAdmin(admin.ModelAdmin):
 admin.site.register(models.Smile, SmileAdmin)
 
 
-class UserAdmin(admin.ModelAdmin):
-    form = forms.UserChangeForm
-    add_form = forms.UserCreationForm
+class SzUserAdmin(UserAdmin):
+    # The forms to add and change user instances
+    form = UserChangeForm
+    add_form = UserCreationForm
+
+    # The fields to be used in displaying the User model.
+    # These override the definitions on the base UserAdmin
+    # that reference specific fields on auth.User.
+    list_display = ('email', 'style', 'is_admin')
+    list_filter = ('is_admin',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        (_('Personal info'), {'fields': (
-            'gender',
-            'date_of_birth'
-        )}),
-        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+        ('Personal info', {'fields': ('style',)}),
+        ('Permissions', {'fields': ('is_admin',)}),
+        ('Important dates', {'fields': ('last_login',)}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2')}
+            'fields': ('email', 'style', 'password1', 'password2')}
         ),
     )
-    list_display = ('email', 'last_login',)
+    search_fields = ('email',)
     ordering = ('email',)
+    filter_horizontal = ()
 
-    def get_form(self, request, obj=None, **kwargs):
-        """
-        Use special form during user creation
-        """
-        defaults = {}
-        if obj is None:
-            defaults.update({
-                'form': self.add_form,
-                'fields': admin.util.flatten_fieldsets(self.add_fieldsets),
-                })
-        defaults.update(kwargs)
-        return super(UserAdmin, self).get_form(request, obj, **defaults)
 
-admin.site.register(models.User, UserAdmin)
+admin.site.register(models.User, SzUserAdmin)
+admin.site.unregister(Group)
 
 '''
 from django.contrib.gis import admin as gis_admin

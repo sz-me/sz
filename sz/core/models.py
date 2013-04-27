@@ -3,10 +3,10 @@ import os
 import uuid
 from time import strftime
 from django.core import validators
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.gis.db import models
-from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 from imagekit import models as imagekit_models
 from imagekit import processors
 
@@ -144,17 +144,17 @@ class Stem(models.Model):
 
 
 class Style(models.Model):
-    name = models.CharField(max_length=32, verbose_name=u"название")
+    name = models.CharField(max_length=32, verbose_name=_('name'))
     description = models.CharField(
-        verbose_name=u"описание", max_length=256,
+        verbose_name=_('description'), max_length=256,
         null=True, blank=True)
 
     def __unicode__(self):
         return u"%s" % self.name
 
     class Meta:
-        verbose_name = u"стиль"
-        verbose_name_plural = u"стили"
+        verbose_name = _('style')
+        verbose_name_plural = _('styles')
 
 
 EMOTION_CHOICES = (
@@ -165,6 +165,36 @@ EMOTION_CHOICES = (
 )
 
 
+class UserManager(BaseUserManager):
+    def _create_user(self, email, password):
+        now = timezone.now()
+        user = self.model(
+            email=UserManager.normalize_email(email),
+            is_active=True, is_admin=False,
+            last_login=now, date_joined=now
+        )
+        user.set_password(password)
+        return user
+
+    def create_user(self, email, style, password=None):
+        if not style:
+            raise ValueError('Users must select a style')
+
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = self._create_user(email, password)
+        user.style = style
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password):
+        user = self._create_user(email, password)
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
+
+
 GENDER_CHOICES = (
     ('M', _('male')),
     ('F', _('female')),
@@ -172,13 +202,57 @@ GENDER_CHOICES = (
 
 
 class User(AbstractBaseUser):
-    email = models.CharField(_('email address'), max_length=30, unique=True, validators=[validators.EmailValidator()])
+    email = models.CharField(
+        _('email address'), max_length=72, unique=True,
+        db_index=True, validators=[validators.EmailValidator()]
+    )
+    style = models.ForeignKey(
+        Style, verbose_name=_('style'),
+        blank=True, null=True
+    )
+    date_of_birth = models.DateField(
+        _('birthday'), blank=True, null=True
+    )
+    gender = models.CharField(
+        _('gender'), max_length=1, blank=True,
+        null=True, choices=GENDER_CHOICES
+    )
+    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(
+        _('active'), default=True,
+        help_text=_(
+            'Designates whether this user should be treated as '
+            'active. Unselect this instead of deleting accounts.'
+        )
+    )
+    date_joined = models.DateTimeField(
+        _('date joined'), default=timezone.now
+    )
+
+    objects = UserManager()
+
     USERNAME_FIELD = 'email'
-    style = models.ForeignKey(Style, verbose_name=u"стиль")
-    date_of_birth = models.DateField(_('birthday'), blank=True, null=True)
-    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
-    gender = models.CharField(_('gender'), max_length=1, blank=True, null=False, choices=GENDER_CHOICES)
-    REQUIRED_FIELDS = ['style']
+
+    def get_full_name(self):
+        # The user is identified by their email address
+        return self.email
+
+    def get_short_name(self):
+        # The user is identified by their email address
+        return self.email
+
+    def __unicode__(self):
+        return self.email
+
+    def has_perm(self, perm, obj=None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
+
+    @property
+    def is_staff(self):
+        return self.is_admin
 
     class Meta:
         verbose_name = _('user')
@@ -186,7 +260,10 @@ class User(AbstractBaseUser):
 
 
 class Smile(models.Model):
-    emotion = models.CharField(max_length=16, verbose_name=u"Эмоция", choices=EMOTION_CHOICES)
+    emotion = models.CharField(
+        max_length=16, verbose_name=_('emotion'),
+        choices=EMOTION_CHOICES
+    )
     style = models.ForeignKey(Style, verbose_name=u"стиль", blank=True, null=True)
 
     def __unicode__(self):
@@ -208,7 +285,7 @@ class MessageBase(models.Model):
         max_length=1024, null=False,
         blank=True, verbose_name=u"сообщение")
 
-    user = models.ForeignKey(User, verbose_name=u"пользователь")
+    user = models.ForeignKey(User, verbose_name=_('user'))
 
     place = models.ForeignKey(Place, verbose_name=u"место")
 

@@ -5,8 +5,10 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-     ('Shmot Zhmot', 'shmotzhmot@outlook.com'),
+    ('Shmot Zhmot', 'shmotzhmot@outlook.com'),
 )
+
+AUTH_USER_MODEL = 'core.User'
 
 MANAGERS = ADMINS
 
@@ -127,10 +129,10 @@ INSTALLED_APPS = (
     'rest_framework',
     'sz.core',
     'sz.api',
-    'sz.vjdetection',
-    'registration',
+    #'sz.vjdetection',
+    #'registration',
     'imagekit',
-    'rest_framework.authtoken',
+    #'rest_framework.authtoken',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -203,6 +205,7 @@ DEFAULT_FROM_EMAIL = 'shmotzhmot@outlook.com'
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.request',
-    )
+)
 
 CLIENT_ROOT = os.path.join(SZ_ROOT, 'client')
+
