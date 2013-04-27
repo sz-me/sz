@@ -72,27 +72,27 @@ function MasterPageController($scope,$cookies, $http, $location, geolocation, ca
         'first':[
             {'name':'Удача','description':'Влияет на частоту выпадения крита и на частоту выпадения эпикшмота ','value':{
                 'user':5,
-                'amadeus':7,
-                'futuri':7,
-                'united':7
+                'amadeus':4,
+                'futuri':5,
+                'united':4
             }},
             {'name':'Сила','description':'Влияет на minMP и на скорость убывания принадлежности ','value':{
                 'user':4,
-                'amadeus':7,
-                'futuri':7,
+                'amadeus':3,
+                'futuri':4,
                 'united':7
             }},
             {'name':'Интеллект','description':'Влияет на стоимость заклинаний,тень и эффективность талантов ','value':{
                 'user':7,
                 'amadeus':7,
-                'futuri':7,
-                'united':7
+                'futuri':4,
+                'united':3
             }},
             {'name':'Ловкость','description':'Влияет на maxMP, уклонение и меткость ','value':{
                 'user':6,
-                'amadeus':7,
+                'amadeus':5,
                 'futuri':7,
-                'united':7
+                'united':5
             }}
         ],
         'second':[
@@ -143,6 +143,19 @@ function LoginController($scope) {
 
 
 function RegistrationController($scope){
+    $scope.showMenuTabFirst = true;
+    $scope.showMenuTabSecond = false;
+    $scope.showMenuTabTalanted = false;
+    
+    $scope.menutabactive = function(n){
+        $scope.showMenuTabFirst = false;
+        $scope.showMenuTabSecond = false;
+        $scope.showMenuTabTalanted = false;        
+        if(n==1){$scope.showMenuTabFirst = true;}
+        if(n==2){$scope.showMenuTabSecond = true;}
+        if(n==3){$scope.showMenuTabTalanted = true;}
+    }
+
     $scope.registration = function(){}
 }
 

@@ -306,7 +306,7 @@ angular.module('sz.client.directives', [])
 
         .directive('szCollapsibleMenu', function() {
             return function(scope, element, attrs) {
-                var maxH = 255
+                var maxH = 400
                 scope.$watch(attrs.szCollapsibleMenu, function(value) {
                     if (value)
                         $(element[0]).animate({maxHeight:0}, 200);

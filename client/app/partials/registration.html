@@ -1,32 +1,75 @@
 <form class="form-signin box-border padding-huge">
-    <h2 class="form-signin-heading text-right">Регистрация</h2>
-    <h5>Основные данные</h5>
-    <p>Все основные данные будут видны только вам (и нам) - все остальные пользователи их не увидят.</p>
-    <input type="text" class="input-block-level" placeholder="E-mail" ng-model="username">
-    <input type="password" class="input-block-level" placeholder="Пароль" ng-model="password">
-    <p>Пожалуйста, укажите свой пол - тогда мы, возможно, смогли бы порекомендовать вам что-нибудь стоящее.</p>
-    <ul class="text-center ul-box">
-        <li class="btn-group " data-toggle="buttons-radio" >
-            <button class="btn" type="radio" ng-click="gender='female'">Женский</button>
-            <button class="btn" type="radio" ng-click="gender='male'">Мужской</button>
-        </li>
+    <ul class="media-list" id="contentBody">
+	<h2 class="form-signin-heading text-right">Регистрация</h2>
+	<h5>Основные данные</h5>
+	<p>Все основные данные будут видны только вам (и нам) - все остальные пользователи их не увидят.</p>
+	<div class="text-left">
+	    <input type="text" class="input-large" placeholder="E-mail" ng-model="username"><br>
+	    <input type="password" class="input-large" placeholder="Пароль" ng-model="password">
+	</div>
+	<p>Пожалуйста, укажите свой пол - тогда мы, возможно, смогли бы порекомендовать вам что-нибудь стоящее.</p>
+	<ul class="text-center ul-box">
+	    <li class="btn-group " data-toggle="buttons-radio" >
+		<button class="btn" type="radio" ng-click="gender='female'">Женский</button>
+		<button class="btn" type="radio" ng-click="gender='male'">Мужской</button>
+	    </li>
+	</ul>
+	<h5>Выбор расы</h5>
+	<p>Раса определит характеристики вашего персонажа. Выбор расы - он один и на всю жизнь.</p>
+	<!--    <select ng-model="race">
+	    <option value="amadeus" >Амадеус</option>
+	    <option value="futuri" >Футури</option>
+	    <option value="???" >???</option>
+	</select>-->
+	<ul class="text-center ul-box">
+	    <li class="btn-group " data-toggle="buttons-radio" >
+		<button class="btn" type="radio" ng-click="race='amadeus'">Амадеус</button>
+		<button class="btn" type="radio" ng-click="race='futuri'">Футури</button>
+		<button class="btn" type="radio" ng-click="race='united'">Юнайтед</button>
+	    </li>
+	</ul>
+	<div ng-show="race" >
+<!-- 	    <p class="margin-top">Здесь описание расы</p> -->
+	    <p class='text-center margin-Y-big'>
+		<img src='img/blazon/{{race}}.png'>
+	    </p>
+	    <ul class="nav nav-tabs">
+		<li ng-click="menutabactive(1)" ng-class="{'active':showMenuTabFirst}"><a href="" data-toggle="tab">Первичные характеристики</a></li>
+		<li ng-click="menutabactive(2)" ng-class="{'active':showMenuTabSecond}"><a href="" data-toggle="tab">Вторичные характеристики</a></li>
+		<li ng-click="menutabactive(3)" ng-class="{'active':showMenuTabTalanted}"><a href="" data-toggle="tab">Таланты</a></li>
+	    </ul>
+	    <ul class="media-list"  ng-controller="UserSkillsController">
+		<li class="media " ng-show='showMenuTabFirst'>
+		    <dl class="dl-horizontal" ng-repeat="skill in userSkills.first" >
+			<dt style="margin-top:3px;">{{skill.name}}</dt>
+			<dd >
+			    <span style='vertical-align:30%'>{{skill.value[race]}}</span>
+			    <i class="icon-question-sign icon-2x myicon"  ng-click="setSkillDescription(skill)" ></i>
+			</dd>
+		    </dl>
+		    <p class="media " ng-show="userSkillsDescription">
+			{{userSkillsDescription}}
+		    </p>		 
+		</li>			
+		<li class="media" ng-show='showMenuTabSecond'>
+		    <dl class="dl-horizontal" ng-repeat="skill in userSkills.second">
+			<dt style="margin-top:3px;">{{skill.name}}</dt>
+			<dd >
+			    <span style='vertical-align:30%'>{{skill.value[race]}}</span>
+			    <i class="icon-question-sign icon-2x myicon"  ng-click="setSkillSecondDescription(skill)" ></i>
+			</dd>
+		    </dl>
+		    <p class="media" ng-show="userSkillsSecondDescription">
+			{{userSkillsSecondDescription}}
+		    </p>
+		</li>	
+		<li ng-show='showMenuTabTalanted'>
+		    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+		</li>
+	    </ul>
+	</div>
+	<div class="text-center margin-top-huge">
+	    <a class="btn btn-large btn-primary" ng-click="registration()" >Регистрация</a>
+	</div>
     </ul>
-    <h5>Выбор расы</h5>
-    <p>Раса определит характеристики вашего персонажа. Выбор расы - он один и на всю жизнь.</p>
-    <!--    <select ng-model="race">
-        <option value="amadeus" >Амадеус</option>
-        <option value="futuri" >Футури</option>
-        <option value="???" >???</option>
-    </select>-->
-    <ul class="text-center ul-box">
-        <li class="btn-group " data-toggle="buttons-radio" >
-            <button class="btn" type="radio" ng-click="race='amadeus'">Амадеус</button>
-            <button class="btn" type="radio" ng-click="race='futuri'">Футури</button>
-            <button class="btn" type="radio" ng-click="race='united'">Юнайтед</button>
-        </li>
-    </ul>
-    <p class="margin-top">Здесь описание расы</p>
-    <div class="text-center">
-        <a class="btn btn-large btn-primary" ng-click="registration()" >Регистрация</a>
-    </div>
 </form>
