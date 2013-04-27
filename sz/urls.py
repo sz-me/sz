@@ -14,7 +14,7 @@ urlpatterns = patterns('',
         }),
     url(r'^$', 'sz.core.views.index', name='client-index'),
     url(r'^api/', include('sz.api.urls'), name='api'),
-    url(r'^vj-detection-demo/', 'sz.vjdetection.views.index', name='vj-detection-demo'),
+    #url(r'^vj-detection-demo/', 'sz.vjdetection.views.index', name='vj-detection-demo'),
     #url(r'^accounts/register/$', 'registration.views.register',
     #    {
     #        'form_class': RegistrationForm,
