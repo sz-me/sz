@@ -3,8 +3,9 @@ from django.contrib import auth
 from django.contrib.auth import models as auth_models
 from django.middleware import csrf
 from rest_framework import permissions, status
-from rest_framework.authtoken import serializers as authtoken_serializers
-from sz.api import serializers, response as sz_api_response
+
+from sz.api.serializers import AuthRequestSerializer, AuthUserSerializer
+from sz.api.response import Response
 from sz.api.views import SzApiView
 
 class AuthLogin(SzApiView):
@@ -13,14 +14,14 @@ class AuthLogin(SzApiView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-        serializer = authtoken_serializers.AuthTokenSerializer(data=request.DATA)
+        serializer = AuthRequestSerializer(data=request.DATA)
         if serializer.is_valid():
             user = serializer.object['user']
             auth.login(request, user)
-            user_serializer = serializers.AuthUserSerializer(instance=user)
+            user_serializer = AuthUserSerializer(instance=user)
             csrf.get_token(request)
-            return sz_api_response.Response(user_serializer.data)
-        return sz_api_response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(user_serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AuthLogout(SzApiView):
@@ -31,8 +32,8 @@ class AuthLogout(SzApiView):
     def post(self, request):
         auth.logout(request)
         user = auth_models.AnonymousUser()
-        serializer = serializers.AuthUserSerializer(instance=user)
-        return sz_api_response.Response(serializer.data)
+        serializer = AuthUserSerializer(instance=user)
+        return Response(serializer.data)
 
 
 class AuthUser(SzApiView):
@@ -42,9 +43,9 @@ class AuthUser(SzApiView):
 
     def get(self, request, format=None):
         user = request.user
-        serializer = serializers.AuthUserSerializer(instance=user)
+        serializer = AuthUserSerializer(instance=user)
         csrf.get_token(request)
-        return sz_api_response.Response(serializer.data)
+        return Response(serializer.data)
 
 """
 class Authentication(SzApiView):
