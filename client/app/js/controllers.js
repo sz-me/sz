@@ -37,6 +37,97 @@ function MasterPageController($scope,$cookies, $http, $location, geolocation, ca
     $scope.toggleTopMenu = function(){
         $scope.isTopMenuCollapsed = !$scope.isTopMenuCollapsed;
     }
+    
+    
+    $scope.urlFeed = "#/newsfeed";
+    $scope.urlIntFeed = "#/newsfeed";
+    $scope.urlSearch = "#/search";
+    $scope.urlPlaceSelect = "#/places/select";
+    $scope.urlPlace = function(id){return "#/places/" +id+"/"};
+    $scope.urlPlaceAddMessage = function(id){return "#/places/"+id+"/messages/add"};
+    $scope.urlPlaceMap = function(id){return "#/places/"+id+"/map" };
+    $scope.urlPlaceGallery = function(id){return "#/places/"+id+"/gallery" };
+    $scope.urlMessage = function(id){return "#/messages/"+id}
+    $scope.urlUser = "#/user";
+    $scope.urlUserGallery = "#/user/gallery";
+//     $scope.urlUserMessages = "#/user/messages";
+    $scope.urlUserPlaces = "#/user/places";
+    $scope.urlUserSkills = "#/user/skills";
+    $scope.urlUserTalents = "#/user/talents";
+    $scope.urlUserSettings = "#/user/settings";
+    $scope.urlLogin = "#/login";
+    $scope.urlRegistration = "#/registration";
+    $scope.urlPassREcovery = "#"
+    
+    $scope.includeUserHeaderGet = function(){return 'partials/headers/user-header.html';}
+    $scope.includeSearchHeaderGet = function(){return 'partials/headers/search-filter.html';}
+    $scope.includePlaceHeaderGet = function(){return 'partials/headers/place-header.html';}
+    $scope.includeMessageBoxHeaderGet = function(){return 'partials/headers/message-box-header.html';}
+    $scope.includeMessageAdditionHeaderGet = function(){return 'partials/headers/message-addition-header.html';}
+    $scope.includeGalleryInnerGet = function(){return 'partials/headers/gallery-inner.html';}
+    $scope.includeMessagesAreaGet = function(){return 'partials/headers/messages-area.html';}
+    
+    
+    $scope.userSkills = {
+        'first':[
+            {'name':'Удача','description':'Влияет на частоту выпадения крита и на частоту выпадения эпикшмота ','value':{
+                'user':5,
+                'amadeus':4,
+                'futuri':5,
+                'united':4
+            }},
+            {'name':'Сила','description':'Влияет на minMP и на скорость убывания принадлежности ','value':{
+                'user':4,
+                'amadeus':3,
+                'futuri':4,
+                'united':7
+            }},
+            {'name':'Интеллект','description':'Влияет на стоимость заклинаний,тень и эффективность талантов ','value':{
+                'user':7,
+                'amadeus':7,
+                'futuri':4,
+                'united':3
+            }},
+            {'name':'Ловкость','description':'Влияет на maxMP, уклонение и меткость ','value':{
+                'user':6,
+                'amadeus':5,
+                'futuri':7,
+                'united':5
+            }}
+        ],
+        'second':[
+            {'name':'Сила сообщения','description':'Рендомно выбранное значение из промежутка между минимумом силы сообщения и максимумом силы сообщения.Минимальная сила сообщения складывается из меткости,силы слова и силы. Максимальная сила сообщения - минимум сообщения помноженный на какой-то коэфициент от ловкости и меткости ','value':{
+                'user':7,
+                'amadeus':7,
+                'futuri':7,
+                'united':7
+            }},
+            {'name':'Сила слова','description':'Коэффициент, зависящий от удаленности персонажа от места, в котрое он пишет сообщение. Чем дальше место — тем меньше силы слова ','value':{
+                'user':7,
+                'amadeus':7,
+                'futuri':7,
+                'united':7
+            }},
+            {'name':'Тень','description':'Время, втечении которого территория остается видимой после ухода из нее персонажа ','value':{
+                'user':7,
+                'amadeus':7,
+                'futuri':7,
+                'united':7
+            }},
+            {'name':'Меткость','description':'Влияет на силу слова. Чем больше меткость - тем больше расстояние, с которого можно писать сообщения','value':{
+                'user':7,
+                'amadeus':7,
+                'futuri':7,
+                'united':7
+            }},
+            {'name':'Уклонение','description':'Возможность свести на ноль силу сообщения или эффект от таланта другого игрока другого игрока, который пишет сообщение в замке персонажа ','value':{
+                'user':7,
+                'amadeus':7,
+                'futuri':7,
+                'united':7
+            }}
+        ]
+    }
 }
 
 MasterPageController.$inject = ['$scope','$cookies', '$http', '$location', 'geolocationService', 'categoryService', 'sessionService'];
@@ -52,14 +143,77 @@ function LoginController($scope) {
 
 
 function RegistrationController($scope){
+    $scope.showMenuTabFirst = true;
+    $scope.showMenuTabSecond = false;
+    $scope.showMenuTabTalanted = false;
+    
+    $scope.menutabactive = function(n){
+        $scope.showMenuTabFirst = false;
+        $scope.showMenuTabSecond = false;
+        $scope.showMenuTabTalanted = false;        
+        if(n==1){$scope.showMenuTabFirst = true;}
+        if(n==2){$scope.showMenuTabSecond = true;}
+        if(n==3){$scope.showMenuTabTalanted = true;}
+    }
+
     $scope.registration = function(){}
 }
 
-function UserController($scope){
-     $scope.showSiteHeader(false);
+function UserController($scope,placeService){
+    $scope.includeUserHeader = $scope.includeUserHeaderGet();
+    $scope.includeMessagesArea = $scope.includeMessagesAreaGet();
+    $scope.showSiteHeader(false);
+    $scope.test = 'test';
+    $scope.id='4c636f6f79d1e21e62cbd815';
+    $scope.$watch('coordinates', function(newValue, oldValue) {
+        if (angular.isDefined($scope.coordinates)){
+            var params = {
+                longitude: $scope.coordinates.longitude,
+                latitude: $scope.coordinates.latitude,
+                placeId: $scope.id
+            }
+            var newsfeed = placeService.$newsfeed(
+                params,
+                function(){
+                    $scope.feed = newsfeed.messages;
+                    $scope.message=$scope.feed.results[0]
+                    $scope.feedPhoto = newsfeed.photos;
+                });
+        }
+    });
+}
+
+function UserGalleryController($scope,placeService){
+    $scope.includeGalleryInner = $scope.includeGalleryInnerGet();
+    $scope.$watch('coordinates', function(newValue, oldValue) {
+        if (angular.isDefined($scope.coordinates))
+            var feed = placeService.$newsfeed({
+                    longitude: $scope.coordinates.longitude,
+                    latitude: $scope.coordinates.latitude,
+                    placeId: $scope.id,
+                    photo: true
+                },
+                function(){
+                    $scope.distance = feed.distance;
+                    $scope.feedPhoto=feed.messages;
+                    $scope.placeHeader = feed.place
+                });
+    });
+}
+
+function UserSkillsController($scope){
+    $scope.userSkillsDescription = '';
+    $scope.setSkillDescription = function(skills){
+        $scope.userSkillsDescription = skills.description
+    }
+    $scope.userSkillsSecondDescription = '';
+    $scope.setSkillSecondDescription = function(skills){
+        $scope.userSkillsSecondDescription = skills.description
+    }
 }
 
 function NewsFeedController($routeParams, $location, $scope, placeService) {
+    $scope.includeMessageBoxHeader = $scope.includeMessageBoxHeaderGet();
     $scope.category = '';
     $scope.radiusActive = 0
     $scope.$watch('coordinates', function(newValue, oldValue) {
@@ -134,6 +288,7 @@ function NewsFeedController($routeParams, $location, $scope, placeService) {
 
 
 function PlaceController($scope, $routeParams,placeService) {
+    $scope.includeMessagesArea = $scope.includeMessagesAreaGet();
     $scope.$watch('coordinates', function(newValue, oldValue) {
         if (angular.isDefined($scope.coordinates)){
             var params = {
@@ -178,6 +333,7 @@ function PlaceController($scope, $routeParams,placeService) {
 }
 
 function PlaceMapController($scope, $routeParams,placeService){
+    $scope.includePlaceHeader = $scope.includePlaceHeaderGet();
     $scope.$watch('coordinates', function(newValue, oldValue) {
         if (angular.isDefined($scope.coordinates)){
             var params = {
@@ -190,6 +346,7 @@ function PlaceMapController($scope, $routeParams,placeService){
                 function(){
                     $scope.place = newsfeed.place;
                     $scope.placeHeader = newsfeed.place;
+                    $scope.distance = newsfeed.distance;
                     $scope.map = true
                     $scope.myMarker = true;
                 });
@@ -198,6 +355,8 @@ function PlaceMapController($scope, $routeParams,placeService){
 }
 
 function GalleryController($scope, $routeParams, placeService){
+    $scope.includePlaceHeader = $scope.includePlaceHeaderGet();
+    $scope.includeGalleryInner = $scope.includeGalleryInnerGet();
     $scope.$watch('coordinates', function(newValue, oldValue) {
         if (angular.isDefined($scope.coordinates))
             var feed = placeService.$newsfeed({
@@ -235,6 +394,7 @@ function GalleryController($scope, $routeParams, placeService){
 }
 
 function MessageController($scope, $routeParams, messageService){
+    $scope.includePlaceHeader = $scope.includePlaceHeaderGet();
     var message = messageService.get({messageId:$routeParams.messageId},
         function(){
             $scope.message = message;
@@ -259,6 +419,8 @@ events.searchFilter.typing = 'searchFilterQueryIsBeingTyped';
 
 
 function SearchController($scope, $location, messageService,placeService){
+    $scope.includeSearchHeader = $scope.includeSearchHeaderGet();
+    $scope.includeMessageBoxHeader = $scope.includeMessageBoxHeaderGet();
     $scope.autoCompleteList = [
     {'name':'балетки','category':'shoes'},{'name':'бахилы','category':'shoes'},{'name':'башмак','category':'shoes'},{'name':'берцы','category':'shoes'},{'name':'болотники','category':'shoes'},{'name':'босоножки','category':'shoes'},{'name':'ботильоны','category':'shoes'},{'name':'ботинки','category':'shoes'},{'name':'ботинки','category':'shoes'},{'name':'ботфорты','category':'shoes'},{'name':'боты','category':'shoes'},{'name':'броги','category':'shoes'},{'name':'бродни','category':'shoes'},{'name':'бурки','category':'shoes'},{'name':'бутсы','category':'shoes'},{'name':'валенки','category':'shoes'},{'name':'вьетнамки','category':'shoes'},{'name':'галоши','category':'shoes'},{'name':'гриндерс','category':'shoes'},{'name':'гэта','category':'shoes'},{'name':'дезерты','category':'shoes'},{'name':'дерби','category':'shoes'},{'name':'джазовки','category':'shoes'},{'name':'доктор мартинс','category':'shoes'},{'name':'калоши','category':'shoes'},{'name':'кеды','category':'shoes'},{'name':'конверс','category':'shoes'},
 {'name':'кроссовки','category':'shoes'},{'name':'лодочки','category':'shoes'},{'name':'лоферы','category':'shoes'},{'name':'мартинсы','category':'shoes'},{'name':'мокасины','category':'shoes'},{'name':'монки','category':'shoes'},{'name':'мюли','category':'shoes'},{'name':'оксфорды','category':'shoes'},{'name':'пимы','category':'shoes'},{'name':'пинетки','category':'shoes'},{'name':'полуботинки','category':'shoes'},{'name':'полукеды','category':'shoes'},{'name':'пуанты','category':'shoes'},{'name':'сабо','category':'shoes'},{'name':'сандалии','category':'shoes'},{'name':'сапоги','category':'shoes'},{'name':'сланцы','category':'shoes'},{'name':'слипоны','category':'shoes'},{'name':'сникерсы','category':'shoes'},{'name':'таби','category':'shoes'},{'name':'тапки','category':'shoes'},{'name':'трикони','category':'shoes'},{'name':'туфли','category':'shoes'},{'name':'тэйлорс','category':'shoes'},{'name':'угги','category':'shoes'},{'name':'унты','category':'shoes'},{'name':'унты','category':'shoes'},{'name':'шлепанцы','category':'shoes'},{'name':'шлепки','category':'shoes'},{'name':'штиблеты','category':'shoes'},
@@ -409,6 +571,7 @@ function SearchFilterController($scope, $timeout, $routeParams){
 }
 
 function MessageEditorController($location, $scope, $routeParams, placeService, messagePreviewService) {
+    $scope.includeMessageAdditionHeader = $scope.includeMessageAdditionHeaderGet();
     if (angular.isDefined($routeParams.placeId))
         placeService.get({placeId: $routeParams.placeId}, function(resp){ $scope.placeHeader = resp; })
     if (angular.isDefined($routeParams.previewId))
@@ -417,12 +580,12 @@ function MessageEditorController($location, $scope, $routeParams, placeService, 
             $scope.photoUrl = response.photo.thumbnail;
             $scope.place = response.place;
         });
+    $scope.photo = null;
     $scope.inProgress = false;
     $scope.showPhoto = true;
- 
     $scope.removePhoto = function(){
         $scope.photo = null;
-//         $scope.showPhoto = false;
+//         $scope.showPhoto = false
     }
     $scope.send = function() {
         $scope.inProgress = true;
@@ -465,6 +628,7 @@ function MessageEditorController($location, $scope, $routeParams, placeService, 
 
 
 function MessagePublisherController($location, $scope, $routeParams, messagePreviewService) {
+    $scope.includeMessageAdditionHeader = $scope.includeMessageAdditionHeaderGet();
     $scope.inProgress = false;
     $scope.showPreviewTex = false;
     $scope.new_message_categories = [];
@@ -536,6 +700,7 @@ function MessagePublisherController($location, $scope, $routeParams, messagePrev
 
 
 function PlaceSelectionController($scope, $timeout, placeService){
+    $scope.includePlaceSelectHeader = $scope.includeSearchHeaderGet();
     $scope.showSiteHeader(false);
     $scope.isSearch = false;
     $scope.filter = { radius: 0, query: ''};

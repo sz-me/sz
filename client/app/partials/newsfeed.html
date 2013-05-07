@@ -23,7 +23,7 @@
 
 <ul class="media-list" id="contentBody">
 	<li ng-repeat="item in feed.results" class="media padding-bot-big box-border" ng-init="place=item.place" >
-            <span ng-include src="'partials/headers/message-box-header.html'"></span>
+            <span ng-include src='includeMessageBoxHeader'></span>
             <ul class="ul-box" >
                 <li class="padding-big">
                     <div ng-repeat="message in item.messages.results | limitTo:placeMessagesLimit"  class=" media" ng-class="{'messageBox':!$last}">

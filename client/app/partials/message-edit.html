@@ -1,4 +1,4 @@
-<div ng-include src="'partials/headers/message-addition-header.html'"></div>
+<div ng-include src='includeMessageAdditionHeader'></div>
 <ul class="media-list" id="contentBody">
     <li class="box-border padding-big">
         <ul class="noList text-center" >
@@ -15,8 +15,8 @@
                 </div>
                 <button class="btn btn-large btn-primary" ng-click="send()" ng-disabled="inProgress">Отправить</button>
             </li>
-            <li class="margin-top-big " ng-show="showPhoto">
-                <div style="height:30px;display:inline-block;max-width:100%">
+            <li class="margin-top-big " ng-show="showPhoto" >
+                <div style="height:30px;display:inline-block;max-width:100%" >
                     <button class="btn pull-right margin-left" ng-click="removePhoto()" ng-disabled="inProgress" >
                         <i class="icon-remove " ></i>
                     </button>

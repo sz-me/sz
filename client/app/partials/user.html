@@ -1,1 +1,66 @@
-<div ng-include src="'partials/headers/user-header.html'"></div>
+<div ng-include src='includeUserHeader'></div>
+<ul class="media-list" id="contentBody">
+    <li class="media  box-border text-right margin-bottom-huge" >
+<!--        <a  class="graydark" href={{urlUserMessages}}>            
+            <div class="messageBox padding-big">
+               Сообщений 2377 <i class="icon-comment-alt icon-2x" ></i> 
+            </div>
+        </a>-->
+        <ul class="nav nav-tabs nav-stacked margin-bottom-no">
+            <li >
+                <a  class="graydark " href={{urlUserPlaces}}>            
+                    <span >
+                        Замки<i class="icon-pushpin icon-2x" ></i> 
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="graydark" href={{urlUserSkills}}>            
+                    <span >
+                        Характеристики <i class="icon-dashboard icon-2x" ></i> 
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a  class="graydark" href={{urlUserTalents}}>            
+                    <span >
+                        Способности <i class="icon-star icon-2x" ></i> 
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a  class="graydark" href={{urlUserSettings}}>            
+                    <span >
+                        Настройки <i class="icon-cogs  icon-2x" ></i> 
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="text-center box-border padding-Y-big  margin-bottom-huge">
+        <ul class="noList">
+            <li style="max-height:90px;overflow:hidden;" >
+                <a ng-repeat="message in feedPhoto.results " class="inline-block" href={{urlUserGallery}}>
+                    <img src="{{message.photo.thumbnail}}">
+                </a>
+            </li>
+            <li class="margin-top-big">
+                <a href={{urlUserGallery}}>
+                    <button class="btn  btn-large" ng-click="loadMore()">
+                        <i class="icon-circle"></i>
+                        <i class="icon-circle"></i>
+                        <i class="icon-circle"></i>
+                    </button>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="box-border margin-top-big margin-bottom-huge "  ng-include src='includeMessagesArea' ></li>
+    <!--<li class="text-center box-border padding-Y-big  margin-bottom-huge">
+        <i class="icon-comment-alt icon-2x" ></i> 370 <br>
+        <i class="icon-picture icon-2x" ></i> 370 <br>
+        <i class="icon-home icon-2x" ></i> 75 <br>
+        <i class="icon-dashboard icon-2x" ></i><br>
+        <i class="icon-cogs icon-2x" ></i><br>
+    </li>-->
+</ul>

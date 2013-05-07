@@ -1,11 +1,11 @@
 
-<div ng-include src="'partials/headers/search-filter.html'"></div>
+<div ng-include src='includePlaceSelectHeader'></div>
 
 
 <ul class="media-list" id="contentBody">    
     <li>
         <div  ng-repeat="option in options" class="box-border margin-bottom-huge padding-huge">
-            <a style="color:#333" href="#/places/{{ option.place.id }}/messages/add" class="place-list-box">
+            <a style="color:#333" href={{urlPlaceAddMessage(option.place.id)}} class="place-list-box">
                 <div class="foursquare-icon">
                     <img ng-src="{{ option.place.foursquare_icon_prefix }}64{{ option.place.foursquare_icon_suffix }}">
                 </div>

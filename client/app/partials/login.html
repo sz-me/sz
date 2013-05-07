@@ -19,11 +19,11 @@
                 <input type="checkbox" value="remember-me"> Запомнить
             </label>
             <div class="margin-top-huge">
-                <a class="btn btn-large btn-primary" ng-click="login(username, password)" href="#">Войти</a>
-                <a class="btn btn-large btn-warning margin-left" href="#/registration">Новый</a>
+                <a class="btn btn-large btn-primary" ng-click="login(username, password)" href={{urlFeed}}>Войти</a>
+                <a class="btn btn-large btn-warning margin-left" href={{urlRegistration}}>Новый</a>
             </div>
             <div class="margin-top-huge">
-                <a >Забыли пароль?</a>
+                <a href={[urlPassREcovery}}>Забыли пароль?</a>
             </div>
         </form>
     </li>

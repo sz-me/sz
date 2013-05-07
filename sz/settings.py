@@ -129,8 +129,6 @@ INSTALLED_APPS = (
     'rest_framework',
     'sz.core',
     'sz.api',
-    #'sz.vjdetection',
-    #'registration',
     'imagekit',
     #'rest_framework.authtoken',
 )

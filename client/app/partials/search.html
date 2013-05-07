@@ -1,4 +1,4 @@
-<div ng-include src="'partials/headers/search-filter.html'"></div>
+<div ng-include src='includeSearchHeader'></div>
 <ul id="contentHeader" ng-show="showAutoComplete()">                             
     <li class="text-left " >
         <ul class="noList">
@@ -29,7 +29,7 @@
     <li>
         <ul class="noList" style="border-top:1px solid #888">
             <li class="liveSearchLi hover-no-dec" ng-repeat="item in searchPlaceList | limitTo:3" ng-class="{'messageBox':!$last}" >
-                <a class="graydark hover-no-dec" href="#/places/{{item.place.id}}" >
+                <a class="graydark hover-no-dec" href={{urlPlace(item.place.id)}}>
                     <div style="height:42px;">
                         <i class="icon-external-link icon-2x graydark pull-left " style="margin-top:7px;" ></i>
                         <div>
@@ -45,7 +45,7 @@
 
 <ul class="media-list"  id="contentBody" ng-show="showSearchResults">
     <li ng-repeat="item in searchFeed.results" class="media padding-bot-big box-border" ng-init="place=item.place">
-       <span ng-include src="'partials/headers/message-box-header.html'"></span>
+       <span ng-include src='includeMessageBoxHeader'></span>
         <ul class="ul-box" >
             <li class="padding-big">
                 <sz-news-feed-message-box message='item.message' categories="categories" place="item.place"></sz-news-feed-message-box>

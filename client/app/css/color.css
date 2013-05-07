@@ -183,12 +183,14 @@ textarea:focus{
     max-height:0;
     box-shadow:0 0 4px #AAA;
     background:#333;
-    padding:0 5px;;
+    padding:0 5px;
+    margin-bottom:0;
 /*     margin-top:-20px; */
 }
 
 #collapseMenu>ul{
     margin-top:5px;
+    margin-bottom:5px;
 }
 #collapseMenu>ul>li{border-bottom:1px solid #444}
 #collapseMenu>ul>li:last-child{border:none}
@@ -196,7 +198,7 @@ textarea:focus{
 #collapseMenu>ul>li>a:hover{color:#333;text-shadow:none}
 
 #collapseMenu>ul>li>a>div{
-    padding:7px 0;
+    padding:2px 0;
     padding-left:5px
 }
 
@@ -541,6 +543,7 @@ textarea:focus{
 
 
 
+
 .margin-top{margin-top:5px;}
 
 .margin-top-big{margin-top:10px;}
@@ -563,6 +566,8 @@ textarea:focus{
     margin-right:5px;
 }
 
+.margin-bottom-no{margin-bottom:0}
+.margin-top-no{margin-top:0}
 
 .text-center{text-align:center;}
 
@@ -578,6 +583,14 @@ textarea:focus{
     display:inline-block;
     cursor:pointer;
 }
+
+
+.myicon{
+    cursor:pointer;
+    
+}
+
+/* .pointer{cursor:pointer;} */
 
 #searchFiletrQuery{
     max-width:300px;
