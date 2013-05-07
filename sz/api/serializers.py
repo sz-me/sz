@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import AnonymousUser
+
 from rest_framework import serializers
 
 from sz.api import fields as sz_api_fields
@@ -15,7 +17,15 @@ class UserSerializer(serializers.ModelSerializer):
         exclude = ('password', 'groups', 'user_permissions',)
 
 
+class AuthUserEmail(serializers.EmailField):
+    def field_to_native(self, obj, field_name):
+        if isinstance(obj, AnonymousUser):
+            field_name = 'username'
+        return super(AuthUserEmail, self).field_to_native(obj, field_name)
+
+
 class AuthUserSerializer(serializers.ModelSerializer):
+    email = AuthUserEmail()
     is_anonymous = serializers.Field()
     is_authenticated = serializers.Field()
 
