@@ -208,3 +208,9 @@ TEMPLATE_CONTEXT_PROCESSORS += (
 
 CLIENT_ROOT = os.path.join(SZ_ROOT, 'client')
 
+try:
+    from passwords import *
+    set_databases(DATABASES)
+except ImportError:
+    pass
+
