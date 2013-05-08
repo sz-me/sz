@@ -1,6 +1,7 @@
-﻿from django.contrib.auth.models import Group
-from django.contrib import admin
+﻿from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Group
+from django.utils.translation import ugettext_lazy as _
 from imagekit.admin import AdminThumbnail
 
 from .forms import UserChangeForm, UserCreationForm
@@ -75,9 +76,9 @@ class SzUserAdmin(UserAdmin):
     list_filter = ('is_admin',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('style',)}),
-        ('Permissions', {'fields': ('is_admin',)}),
-        ('Important dates', {'fields': ('last_login',)}),
+        (_('Personal info'), {'fields': ('style',)}),
+        (_('Permissions'), {'fields': ('is_active', 'is_admin')}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
         (None, {
