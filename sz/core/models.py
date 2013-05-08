@@ -175,7 +175,7 @@ class UserManager(BaseUserManager):
         now = timezone.now()
         user = self.model(
             email=UserManager.normalize_email(email),
-            is_active=True, is_admin=False,
+            is_active=True, is_superuser=False,
             last_login=now, date_joined=now
         )
         user.set_password(password)
@@ -195,7 +195,7 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, password):
         user = self._create_user(email, password)
-        user.is_admin = True
+        user.is_superuser = True
         user.save(using=self._db)
         return user
 
@@ -222,7 +222,10 @@ class User(AbstractBaseUser):
         _('gender'), max_length=1, blank=True,
         null=True, choices=GENDER_CHOICES
     )
-    is_admin = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(
+        _('superuser status'), default=False,
+        help_text=_('Designates that this user has all permissions without '
+                    'explicitly assigning them.'))
     is_active = models.BooleanField(
         _('active'), default=True,
         help_text=_(
@@ -257,7 +260,7 @@ class User(AbstractBaseUser):
 
     @property
     def is_staff(self):
-        return self.is_admin
+        return self.is_superuser
 
     class Meta:
         verbose_name = _('user')

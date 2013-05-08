@@ -1,0 +1,17 @@
+[
+{
+    "pk": 1, 
+    "model": "core.user", 
+    "fields": {
+        "style": null, 
+        "gender": null, 
+        "is_active": true, 
+        "is_superuser": true, 
+        "date_of_birth": null, 
+        "last_login": "2013-05-07T05:00:44.060Z", 
+        "password": "pbkdf2_sha256$10000$fyDbdRpwuEB1$YAVYeAbG52J9/SaBj2uoDZ8J0oJqd9gI04FRuSZsWlM=", 
+        "email": "admin@shmotzhmot.me", 
+        "date_joined": "2013-05-06T23:41:31.011Z"
+    }
+}
+]

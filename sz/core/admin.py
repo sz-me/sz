@@ -72,12 +72,12 @@ class SzUserAdmin(UserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('email', 'style', 'is_admin')
-    list_filter = ('is_admin',)
+    list_display = ('email', 'style', 'is_superuser')
+    list_filter = ('is_superuser',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         (_('Personal info'), {'fields': ('style',)}),
-        (_('Permissions'), {'fields': ('is_active', 'is_admin')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_superuser')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
