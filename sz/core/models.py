@@ -38,6 +38,10 @@ class LowerCaseCharField(models.CharField):
         setattr(cls, self.name, ModifyingFieldDescriptor(self))
 
 
+from south.modelsinspector import add_introspection_rules
+add_introspection_rules([], ["^sz\.core\.models\.LowerCaseCharField"])
+
+
 # Entities
 LANGUAGE_CHOICES = (
     ('en', _('English')),

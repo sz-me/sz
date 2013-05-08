@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'django.contrib.gis',
+    'south',
     'rest_framework',
     'sz.core',
     'sz.api',
