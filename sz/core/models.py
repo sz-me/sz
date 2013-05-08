@@ -1,7 +1,8 @@
 ﻿# -*- coding: utf-8 -*-
 import os
 import uuid
-from time import strftime
+import time
+
 from django.core import validators
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.gis.db import models
@@ -9,6 +10,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from imagekit import models as imagekit_models
 from imagekit import processors
+from south.modelsinspector import add_introspection_rules
 
 
 class ModifyingFieldDescriptor(object):
@@ -38,7 +40,6 @@ class LowerCaseCharField(models.CharField):
         setattr(cls, self.name, ModifyingFieldDescriptor(self))
 
 
-from south.modelsinspector import add_introspection_rules
 add_introspection_rules([], ["^sz\.core\.models\.LowerCaseCharField"])
 
 
@@ -296,7 +297,7 @@ class MessageBase(models.Model):
     def get_photo_path(self, filename):
         ext = filename.split('.')[-1]
         filename = "%s.%s" % (uuid.uuid4(), ext)
-        directory = strftime('photos/%Y/%m/%d')
+        directory = time.strftime('photos/%Y/%m/%d')
         return os.path.join(directory, filename)
 
     photo = imagekit_models.ProcessedImageField(
