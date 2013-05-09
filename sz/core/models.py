@@ -1,8 +1,13 @@
 ﻿# -*- coding: utf-8 -*-
+import datetime
+import hashlib
 import os
+import random
+import re
 import uuid
 import time
 
+from django.db import transaction
 from django.core import validators
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.gis.db import models
@@ -11,6 +16,8 @@ from django.utils.translation import ugettext_lazy as _
 from imagekit import models as imagekit_models
 from imagekit import processors
 from south.modelsinspector import add_introspection_rules
+
+from sz import settings
 
 
 class ModifyingFieldDescriptor(object):
@@ -233,6 +240,12 @@ class User(AbstractBaseUser):
             'active. Unselect this instead of deleting accounts.'
         )
     )
+
+    is_verified = models.BooleanField(
+        _('verified'), default=False,
+        help_text=_('Designates whether this user confirmed his e-mail')
+    )
+
     date_joined = models.DateTimeField(
         _('date joined'), default=timezone.now
     )
@@ -267,20 +280,95 @@ class User(AbstractBaseUser):
         verbose_name_plural = _('users')
 
 
+CONFIRMATION_KEY_PATTERN = re.compile('^[a-f0-9]{32}$')
+
+
+class RegistrationManager(models.Manager):
+
+    def confirm_email(self, confirmation_key):
+        if CONFIRMATION_KEY_PATTERN.search(confirmation_key):
+            try:
+                profile = self.get(confirmation_key=confirmation_key)
+            except self.model.DoesNotExist:
+                return False
+            if not profile.confirmation_key_expired():
+                user = profile.user
+                user.is_verified = True
+                user.save()
+                profile.confirmation_key = self.model.CONFIRMED
+                profile.save()
+                return user
+        return False
+
+    def create_unverified_user(self, email, password, style):
+        new_user = User.objects.create_user(email, style, password)
+        new_user.is_verified = False
+        new_user.save()
+        self.create_profile(new_user)
+        return new_user
+
+    create_unverified_user = transaction.commit_on_success(create_unverified_user)
+
+    def create_profile(self, user):
+        salt = hashlib.md5(str(random.random())).hexdigest()[:5]
+        email = user.email
+        if isinstance(email, unicode):
+            email = email.encode('utf-8')
+        confirmation_key = hashlib.md5(salt + email).hexdigest()
+        return self.create(user=user, confirmation_key=confirmation_key)
+
+    def delete_expired_users(self):
+        for profile in self.all():
+            try:
+                if profile.confirmation_key_expired():
+                    user = profile.user
+                    if not user.is_verified:
+                        user.delete()
+                        profile.delete()
+            except User.DoesNotExist:
+                profile.delete()
+
+
+class RegistrationProfile(models.Model):
+    CONFIRMED = 'CONFIRMED'
+    user = models.ForeignKey(User, unique=True, verbose_name=_('user'))
+    confirmation_key = models.CharField(
+        _('email confirmation key'), max_length=32,
+        validators=[validators.RegexValidator(regex=CONFIRMATION_KEY_PATTERN)]
+    )
+    objects = RegistrationManager()
+
+    def confirmation_key_expired(self):
+        expiration_date = datetime.timedelta(
+            days=settings.ACCOUNT_CONFIRMATION_DAYS
+        )
+        return (
+            self.confirmation_key == self.CONFIRMED or
+            self.user.date_joined + expiration_date <= timezone.now()
+        )
+
+    confirmation_key_expired.boolean = True
+
+    class Meta:
+        verbose_name = _('registration profile')
+        verbose_name_plural = _('registration profiles')
+
+
 class Smile(models.Model):
     emotion = models.CharField(
         max_length=16, verbose_name=_('emotion'),
         choices=EMOTION_CHOICES
     )
-    style = models.ForeignKey(Style, verbose_name=u"стиль", blank=True, null=True)
+    style = models.ForeignKey(Style, verbose_name=_('style'),
+                              blank=True, null=True)
 
     def __unicode__(self):
         style_name = self.style and self.style.name or 'all'
         return u"%s_%s" % (self.emotion, style_name)
 
     class Meta:
-        verbose_name = u"смайл"
-        verbose_name_plural = u"смайлы"
+        verbose_name = _('smile')
+        verbose_name_plural = _('smiles')
 
 
 class MessageBase(models.Model):

@@ -194,7 +194,7 @@ GEONAMES_API_CONFIG = {
 DEFAULT_RADIUS = 300
 DEFAULT_PAGINATE_BY = 7
 
-ACCOUNT_ACTIVATION_DAYS = 7
+ACCOUNT_CONFIRMATION_DAYS = 7
 EMAIL_HOST = 'smtp.live.com'
 EMAIL_HOST_USER ='shmotzhmot@outlook.com'
 EMAIL_HOST_PASSWORD = 'hmot'
@@ -207,6 +207,8 @@ TEMPLATE_CONTEXT_PROCESSORS += (
 )
 
 CLIENT_ROOT = os.path.join(SZ_ROOT, 'client')
+
+SOUTH_TESTS_MIGRATE = False
 
 try:
     from passwords import *
