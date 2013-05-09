@@ -55,6 +55,7 @@ class PlaceMessagesResponseBuilder(FeedServiceResponseBuilder):
             messages, serialized_messages, 'place-detail-messages', (place.pk,))
         return serialized_messages
 
+import random
 
 class NewsFeedItemResponseBuilder(FeedServiceResponseBuilder):
     def __init__(self, photo_host_url="", request=None):
@@ -64,8 +65,10 @@ class NewsFeedItemResponseBuilder(FeedServiceResponseBuilder):
     def build(self, item):
         serialized_messages = self.messages_response_builder.build(item["place"], item["messages"])
         place_serializer = serializers.PlaceSerializer(instance=item["place"])
+        placedata = place_serializer.data
+        placedata['category'] = sorted(list(set(map(lambda x:random.randint(1,12),range(1,random.randint(2,10))))))
         serialized_item = dict(
-            place=place_serializer.data, azimuth=int(item["azimuth"]), distance=int(item["distance"]),
+            place=placedata, azimuth=int(item["azimuth"]), distance=int(item["distance"]),
             messages=serialized_messages)
         photos = item.get('photos', None)
         if photos is not None:
