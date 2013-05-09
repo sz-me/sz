@@ -1,7 +1,7 @@
-<ul  class="ul-box" >
+<ul  class="ul-box">
     <li >
         <div ng-repeat="message in feed.results "  class="  padding-big" ng-class="{'messageBox':!$last}" ng-init="url=urlMessage(message.id)">
-            <sz-feed-message-box message='message' categories="categories" place="place"  url="url"></sz-feed-message-box>
+            <sz-feed-message-box message='message' categories="categories" url="url" caturl="urlPlaceCategory" place="place.id"></sz-feed-message-box>
         </div>
     </li>
     <li  class="text-center media box-footer margin-bottom-big" >
@@ -11,4 +11,4 @@
             <i class="icon-circle"></i>
         </button>
     </li>
-</ul>
+ </ul> 

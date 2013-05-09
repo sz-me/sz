@@ -38,12 +38,13 @@ function MasterPageController($scope,$cookies, $http, $location, geolocation, ca
         $scope.isTopMenuCollapsed = !$scope.isTopMenuCollapsed;
     }
     
-    
     $scope.urlFeed = "#/newsfeed";
-    $scope.urlIntFeed = "#/newsfeed";
+    $scope.urlFeedCategory = function(id){return $scope.urlFeed+"?category="+id};
+//     $scope.urlIntFeed = "#/newsfeed";
     $scope.urlSearch = "#/search";
     $scope.urlPlaceSelect = "#/places/select";
     $scope.urlPlace = function(id){return "#/places/" +id+"/"};
+    $scope.urlPlaceCategory = function(id,category){return "#/places/" +id+"?category="+category};
     $scope.urlPlaceAddMessage = function(id){return "#/places/"+id+"/messages/add"};
     $scope.urlPlaceMap = function(id){return "#/places/"+id+"/map" };
     $scope.urlPlaceGallery = function(id){return "#/places/"+id+"/gallery" };
@@ -302,7 +303,8 @@ function PlaceController($scope, $routeParams,placeService) {
                     $scope.distance = newsfeed.distance;
                     $scope.feed = newsfeed.messages;
                     $scope.place = newsfeed.place;
-                    $scope.map = true
+		    $scope.place.category = $scope.place.category.map(function(k){return $scope.categories.filter(function(c){return c.id==k})[0]});
+                    $scope.map = true;
                     $scope.feedPhoto = newsfeed.photos;
                 });
         }

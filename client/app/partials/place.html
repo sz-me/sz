@@ -16,18 +16,9 @@
                 </li>
                 <li class="margin-top text-right">
                     <div class="circle-parent"  >
-                        <div class="catDiv" style="background:green">
-                            <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png" >
-                        </div>                                        
-                        <div class="catDiv" style="background:#7a43b6">
-                            <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_284_pants.png">
-                        </div>    
-                        <div class="catDiv" style="background:#ffc40d">
-                            <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_285_sweater.png">
-                        </div>    
-                        <div class="catDiv" style="background:#045fdb">
-                            <img class="media-object" style="margin-left:6px;margin-top:5px;" src="img/ico/white/glyphicons_283_t-shirt.png">
-                        </div>    
+                        <a class="catDiv" ng-repeat="cat in place.category" ng-class="cat.alias" href={{urlPlaceCategory(place.id,cat.id)}}>
+			    <i class="catDivI"></i>
+			</a>
                     </div>
                 </li>
             </ul>
