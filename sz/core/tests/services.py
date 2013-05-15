@@ -1,6 +1,11 @@
+import hashlib
+import random
+
 from django.test import TestCase
+
 from sz.core.services import parameters
 from sz.core.services import gis
+from sz.core.services.email import EmailService
 
 
 class CategorizationServiceMock:
@@ -85,3 +90,30 @@ class DecoratorsTest(TestCase):
             contentDecorator2.get_db_params(),
             {'category': None, 'photo': None, 'stems': []}
         )
+
+
+def send_mail_mock(subject, message, from_email, recipient_list):
+    return {
+        'subject': subject,
+        'message': message,
+    }
+
+
+class EmailServiceTest(TestCase):
+
+    def test_template_message(self):
+        service = EmailService()
+        service.send_mail = send_mail_mock
+        confirmation_key = hashlib.md5(str(random.random())).hexdigest()
+        site = 'shmotzhmot.me'
+        email = service.send_template_message(
+            'registration/confirmation_email_subject.txt',
+            'registration/confirmation_email_message.txt',
+            {
+                'confirmation_key': confirmation_key,
+                'site': site
+            },
+            None
+        )
+        self.assertIn(confirmation_key, email['message'])
+        self.assertIn(site, email['subject'])
