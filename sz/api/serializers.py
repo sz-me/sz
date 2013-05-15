@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import AnonymousUser
-
+from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 
 from sz.api import fields as sz_api_fields
@@ -123,3 +123,22 @@ class PlaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Place
         exclude = ('messages', 'date', 'position', 'photo')
+
+
+class RegistrationSerializer(serializers.Serializer):
+
+    email = serializers.EmailField(required=True)
+    style = serializers.ChoiceField(required=True, choices=[
+        (style.pk, style.name) for style in models.Style.objects.all()
+    ])
+    password1 = serializers.CharField(required=True)
+    password2 = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        attrs = super(RegistrationSerializer, self).validate(attrs)
+        password1 = attrs.get('password1')
+        password2 = attrs.get('password2')
+        if password1 != password2:
+            raise serializers.ValidationError(_("Passwords don\'t match"))
+        return attrs
+

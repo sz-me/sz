@@ -47,6 +47,18 @@ class MessageSerializerTest(TestCase):
         self.assertTrue(serializer.is_valid(), msg = serializer.errors)
 
 
+class RegistrationTest(TestCase):
+    def test_registration_serializer(self):
+        data = {
+            'email': 'email@i.am',
+            'style': 1,
+            'password1': 'pass1',
+            'password2': 'pass2'}
+        serializer = serializers.RegistrationSerializer(data=data)
+        self.assertFalse(serializer.is_valid())
+
+
+
 
 
 
