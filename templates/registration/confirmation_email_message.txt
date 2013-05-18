@@ -1,6 +1,6 @@
 Hello,
 
-Please follow this link to complete your registration on {{ site }}:
+Please follow this link to complete your registration on shmotzhmot.me:
 http://shmotzhmot.me/accounts/confirm/{{confirmation_key}}/
 
 You have {{ expiration_days }} days to complete it.

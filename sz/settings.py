@@ -196,7 +196,7 @@ DEFAULT_PAGINATE_BY = 7
 
 ACCOUNT_CONFIRMATION_DAYS = 7
 EMAIL_HOST = 'smtp.live.com'
-EMAIL_HOST_USER ='shmotzhmot@outlook.com'
+EMAIL_HOST_USER = 'shmotzhmot@outlook.com'
 EMAIL_HOST_PASSWORD = 'hmot'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'shmotzhmot@outlook.com'

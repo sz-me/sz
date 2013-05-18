@@ -10,8 +10,6 @@ from sz.core.models import User
 
 class EmailService:
 
-    send_mail = send_mail
-
     def send(self, subject, message, recipients,
              sender=DEFAULT_FROM_EMAIL):
         if not isinstance(recipients, Iterable):
@@ -19,8 +17,10 @@ class EmailService:
         email = lambda recipient: (
             recipient.email if isinstance(recipient, User) else recipient
         )
-        return  self.send_mail(
-            subject, message, sender,
+        return send_mail(
+            subject,
+            message,
+            sender,
             map(email, recipients)
         )
 
@@ -29,4 +29,4 @@ class EmailService:
         subject = render_to_string(subject_template, context)
         subject = ''.join(subject.splitlines())
         message = render_to_string(message_template, context)
-        return  self.send(subject, message, recipients, sender)
+        return self.send(subject, message, recipients, sender)

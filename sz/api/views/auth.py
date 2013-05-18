@@ -8,6 +8,7 @@ from sz.api.serializers import AuthRequestSerializer, AuthUserSerializer
 from sz.api.response import Response
 from sz.api.views import SzApiView
 
+
 class AuthLogin(SzApiView):
     """ Log a user in """
 

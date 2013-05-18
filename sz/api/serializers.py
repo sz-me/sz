@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import AnonymousUser
+from django.db import IntegrityError
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 
 from sz.api import fields as sz_api_fields
 from sz.core import models
-
+from sz.core.services.users import RegistrationService
 
 class UserSerializer(serializers.ModelSerializer):
     absolute_url = serializers.Field(source='get_absolute_url')
@@ -126,6 +127,7 @@ class PlaceSerializer(serializers.ModelSerializer):
 
 
 class RegistrationSerializer(serializers.Serializer):
+    registration_service = RegistrationService()
 
     email = serializers.EmailField(required=True)
     style = serializers.ChoiceField(required=True, choices=[
@@ -134,11 +136,26 @@ class RegistrationSerializer(serializers.Serializer):
     password1 = serializers.CharField(required=True)
     password2 = serializers.CharField(required=True)
 
+    def validate_email(self, attrs, source):
+        """
+        Check that the blog post is about Django.
+        """
+        email = attrs[source]
+        if models.User.objects.filter(email=email).count() > 0:
+            raise serializers.ValidationError(_("Email is already used"))
+        return attrs
+
     def validate(self, attrs):
         attrs = super(RegistrationSerializer, self).validate(attrs)
         password1 = attrs.get('password1')
         password2 = attrs.get('password2')
         if password1 != password2:
             raise serializers.ValidationError(_("Passwords don\'t match"))
-        return attrs
 
+        style = models.Style.objects.get(pk=attrs.get('style'))
+        user = self.registration_service.register(
+            attrs.get('email'),
+            style, password1
+        )
+        attrs['user'] = user
+        return attrs
