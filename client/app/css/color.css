@@ -356,6 +356,8 @@ textarea:focus{
 }
 
 .box-border{
+    margin:0;
+    list-style:none;
     background:white;
     border:1px solid #CCC;
     border-radius:5px;
@@ -543,7 +545,7 @@ textarea:focus{
 }
 
 
-
+.margin-text{margin-bottom:50px}
 
 .margin-top{margin-top:5px;}
 

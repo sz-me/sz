@@ -144,10 +144,11 @@ function LoginController($scope) {
 
 
 function RegistrationController($scope){
+    $scope.regSt1 = true;
+    $scope.regSt2 = false;
     $scope.showMenuTabFirst = true;
     $scope.showMenuTabSecond = false;
     $scope.showMenuTabTalanted = false;
-    
     $scope.menutabactive = function(n){
         $scope.showMenuTabFirst = false;
         $scope.showMenuTabSecond = false;
@@ -156,7 +157,6 @@ function RegistrationController($scope){
         if(n==2){$scope.showMenuTabSecond = true;}
         if(n==3){$scope.showMenuTabTalanted = true;}
     }
-
     $scope.registration = function(){}
 }
 
