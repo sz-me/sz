@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import AnonymousUser
-from django.db import IntegrityError
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 
 from sz.api import fields as sz_api_fields
 from sz.core import models
 from sz.core.services.users import RegistrationService
+
 
 class UserSerializer(serializers.ModelSerializer):
     absolute_url = serializers.Field(source='get_absolute_url')
@@ -25,14 +25,31 @@ class AuthUserEmail(serializers.EmailField):
         return super(AuthUserEmail, self).field_to_native(obj, field_name)
 
 
+class AuthUserIsVerified(serializers.BooleanField):
+    def field_to_native(self, obj, field_name):
+        if isinstance(obj, AnonymousUser):
+            return False
+        return super(
+            AuthUserIsVerified, self
+        ).field_to_native(
+            obj, field_name
+        )
+
+
 class AuthUserSerializer(serializers.ModelSerializer):
     email = AuthUserEmail()
     is_anonymous = serializers.Field()
     is_authenticated = serializers.Field()
+    is_verified = AuthUserIsVerified()
 
     class Meta:
         model = models.User
-        fields = ('email', 'is_anonymous', 'is_authenticated')
+        fields = (
+            'email',
+            'is_anonymous',
+            'is_authenticated',
+            'is_verified'
+        )
 
 
 class AuthenticationSerializer(serializers.Serializer):
