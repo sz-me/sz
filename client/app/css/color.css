@@ -356,6 +356,8 @@ textarea:focus{
 }
 
 .box-border{
+    margin:0;
+    list-style:none;
     background:white;
     border:1px solid #CCC;
     border-radius:5px;
@@ -391,7 +393,7 @@ textarea:focus{
     margin-top:5px;
     overflow: hidden;
     text-overflow:ellipsis;
-/*     min-height:50px; */
+    max-height:44px;
     
 /*     max-height:90px; */
 }
@@ -409,6 +411,7 @@ textarea:focus{
     cursor:pointer;
 /*     text-align:center; */
     overflow:hidden;
+    text-align:justify;
 }
 
 .catDiv:hover{box-shadow: 0 0 4px black;}
@@ -542,7 +545,7 @@ textarea:focus{
 }
 
 
-
+.margin-text{margin-bottom:50px}
 
 .margin-top{margin-top:5px;}
 

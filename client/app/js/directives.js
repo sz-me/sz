@@ -81,13 +81,13 @@ angular.module('sz.client.directives', [])
                     }
             }
         })
-                .directive('szNewsFeedMessageBox', function () {
+	.directive('szNewsFeedMessageBox', function () {
             return {
                 restrict: 'EA',
                 replace: true,
                 template:
                         '<div >'+   
-                            '<a href={{urlMessage(messageid)}} class="graydark">'+
+                            '<a href={{url}} class="graydark">'+
                                 '<time >'+
                                     '{{date}}'+
                                     ' {{time}}'+                               
@@ -97,15 +97,14 @@ angular.module('sz.client.directives', [])
                             '<strong class="margin-left">{{username}}</strong>'+
                             '<div >'+                               
                                 '<div ng-show="photo" id="photo" ng-style="{marginBottom:photoStyle}">'+
-                                    '<a href="#/messages/{{messageid}}" class="inline-block" id="photoA">'+
+                                    '<a href="{{url}}" class="inline-block" id="photoA">'+
                                         '<img class="media-object" ng-src={{photo}} id="photoFile" ng-style={marginTop:"-33%"}>'+
                                     '</a>'+
                                 '</div>'+
-                                '{{category}}'+
                                 '<div class="circle-parent" ng-show="message_categories" >'+
-                                    '<div class="catDiv" ng-repeat="cat in message_categories" ng-class="cat.alias">'+
+                                    '<a class="catDiv" ng-repeat="cat in message_categories" ng-class="cat.alias" href="{{caturl(cat.id)}}">'+
                                         '<i class="catDivI"></i>'+
-                                    '</div>'+ 
+                                    '</a>'+ 
                                 '</div>'+
                                 
                                
@@ -125,10 +124,13 @@ angular.module('sz.client.directives', [])
                 scope: {
                     message:'=',
                     categories:'=',
-                    place:'='
+                    place:'=',
+		    url:'=',
+		    caturl:'='
                 },
                 link: function (scope, element, attrs) {
-//                     alert(scope.categories)
+// 			scope.urlFeedCategory = function(id){scope.$emit('urlFeedCategory',id)}
+		    
                         var msg = scope.message;
                         var datetime = msg.date.split('T');
                         scope.date = datetime[0];
@@ -209,9 +211,9 @@ angular.module('sz.client.directives', [])
                             '</a>'+
                             '<div >'+                                
                                 '<div class="circle-parent" ng-show="message_categories">'+
-                                    '<div class="catDiv" ng-repeat="cat in message_categories" ng-class="cat.alias">'+
+                                    '<a class="catDiv" ng-repeat="cat in message_categories" ng-class="cat.alias" href="{{caturl(place,cat.id)}}">'+
                                         '<i class="catDivI"></i>'+
-                                    '</div>'+
+                                    '</a>'+
                                 '</div>'+
                                 '<span class="badge " >8</span>'+
                                 '<strong class="margin-left">{{username}}</strong>'+
@@ -238,8 +240,9 @@ angular.module('sz.client.directives', [])
                 scope: {
                     message:'=',
                     categories:'=',
-                    place:'=',
-                    url:'='
+                    url:'=',
+		    caturl:'=',
+		    place:'='
                 },
                 link: function (scope, element, attrs) {
                         var msg = scope.message;
@@ -325,7 +328,7 @@ angular.module('sz.client.directives', [])
                 function createMap(){
                     var latitude = scope.place.latitude;
                     var longitude =  scope.place.longitude;
-                    var map = L.map('map').setView([latitude, longitude], 16);
+                    var map = L.map('map').setView([latitude, longitude], 14);
 
                     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
