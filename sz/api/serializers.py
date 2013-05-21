@@ -6,7 +6,6 @@ from rest_framework import serializers
 
 from sz.api import fields as sz_api_fields
 from sz.core import models
-from sz.core.services.users import RegistrationService
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -144,7 +143,6 @@ class PlaceSerializer(serializers.ModelSerializer):
 
 
 class RegistrationSerializer(serializers.Serializer):
-    registration_service = RegistrationService()
 
     email = serializers.EmailField(required=True)
     style = serializers.ChoiceField(required=True, choices=[
@@ -170,9 +168,8 @@ class RegistrationSerializer(serializers.Serializer):
             raise serializers.ValidationError(_("Passwords don\'t match"))
 
         style = models.Style.objects.get(pk=attrs.get('style'))
-        user = self.registration_service.register(
-            attrs.get('email'),
-            style, password1
+        user = models.RegistrationProfile.objects.create_unverified_user(
+            attrs.get('email'), password1, style
         )
         attrs['user'] = user
         return attrs

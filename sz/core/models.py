@@ -315,7 +315,10 @@ class RegistrationManager(models.Manager):
         if isinstance(email, unicode):
             email = email.encode('utf-8')
         confirmation_key = hashlib.md5(salt + email).hexdigest()
-        return self.create(user=user, confirmation_key=confirmation_key)
+        return self.create(
+            user=user, confirmation_key=confirmation_key,
+            is_sending_email_required=True
+        )
 
     def delete_expired_users(self):
         for profile in self.all():
@@ -335,6 +338,12 @@ class RegistrationProfile(models.Model):
     confirmation_key = models.CharField(
         _('email confirmation key'), max_length=32,
         validators=[validators.RegexValidator(regex=CONFIRMATION_KEY_PATTERN)]
+    )
+    is_sending_email_required = models.BooleanField(
+        default=True,
+        help_text=_(
+            'Designates whether to send email'
+        )
     )
     objects = RegistrationManager()
 

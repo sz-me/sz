@@ -1,14 +1,7 @@
-import hashlib
-import random
-
 from django.test import TestCase
 
-from sz.settings import DEFAULT_FROM_EMAIL
-from sz.core.models import Style, User
 from sz.core.services import parameters
 from sz.core.services import gis
-from sz.core.services.email import EmailService
-from sz.core.services.users import RegistrationService
 
 
 class CategorizationServiceMock:
