@@ -85,8 +85,8 @@ class Category(models.Model):
         return u"%s" % self.name
 
     class Meta:
-        verbose_name = u"категория"
-        verbose_name_plural = u"категории"
+        verbose_name = _('category')
+        verbose_name_plural = _('categories')
 
 
 class Place(models.Model):
@@ -133,8 +133,8 @@ class Place(models.Model):
         return u"%s" % self.name + (self.address and (u", %s" % self.address) or u"")
 
     class Meta:
-        verbose_name = u"место"
-        verbose_name_plural = u"места"
+        verbose_name = _('place')
+        verbose_name_plural = _('places')
         ordering = ("name",)
 
 
@@ -427,8 +427,8 @@ class MessageBase(models.Model):
 
     class Meta:
         abstract = True
-        verbose_name = u"сообщение"
-        verbose_name_plural = u"сообщения"
+        verbose_name = _('message')
+        verbose_name_plural = _('messages')
 
     def __unicode__(self):
         return u"%s" % self.text
