@@ -90,3 +90,19 @@ szServices.factory('sessionService', function($resource){
     });
 });
 
+szServices.factory('registrationService', function($http,$resource){
+    var registr = function(user, success, error){
+        $http.post('../../api/registration', user, {
+            headers: { 'Content-Type': false },
+            transformRequest: angular.identity,
+            params: {format: 'json'}
+        }).success(success).error(error);
+    }
+    
+    var resource = $resource('../../api/registration', {
+        query: { method:'GET', params:{}, isArray:false },
+    });
+    
+    resource.registr = registr;
+    return resource;
+});

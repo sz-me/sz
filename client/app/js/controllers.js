@@ -143,7 +143,7 @@ function LoginController($scope) {
 }
 
 
-function RegistrationController($scope){
+function RegistrationController($scope,registrationService){
     $scope.regSt1 = true;
     $scope.regSt2 = false;
     $scope.showMenuTabFirst = true;
@@ -157,7 +157,24 @@ function RegistrationController($scope){
         if(n==2){$scope.showMenuTabSecond = true;}
         if(n==3){$scope.showMenuTabTalanted = true;}
     }
-    $scope.registration = function(){}
+    $scope.registration = function(){
+        $scope.inProgress = true;
+        var user = new FormData();
+        user.append( 'email', $scope.user.email);
+        user.append( 'style', 2);
+        user.append( 'password1', $scope.user.password);
+        user.append( 'password2', $scope.user.password2);
+        
+        registrationService.registr(user,
+            function(response){
+                $scope.inProgress = false;
+                $scope.response = response;
+                $scope.registrationError = response
+            },
+            function(error){alert(angular.toJson(error, true));});        
+        
+        $scope.inProgress = false;
+    }
 }
 
 function UserController($scope,placeService){
