@@ -29,56 +29,31 @@
 		    <button class="btn" type="radio" ng-click="user.gender='female'">Женский</button>
 		    <button class="btn" type="radio" ng-click="user.gender='male'">Мужской</button>
 		</li>
-	    </ul>
+	    </ul>	
 	    <h5>Выбор расы</h5>
 	    <p>Раса определит характеристики вашего персонажа. Выбор расы - он один и на всю жизнь.</p>
 	    <ul class="text-center ul-box">
 		<li class="btn-group " data-toggle="buttons-radio" >
-		    <button class="btn" type="radio" ng-click="user.race='amadeus'">Амадеус</button>
-		    <button class="btn" type="radio" ng-click="user.race='futuri'">Футури</button>
-		    <button class="btn" type="radio" ng-click="user.race='united'">Юнайтед</button>
+		    <button class="btn" type="button" ng-click="user.race='amadeus'">Амадеус</button>
+		    <button class="btn" type="button" ng-click="user.race='futuri'">Футури</button>
+		    <button class="btn" type="button" ng-click="user.race='united'">Юнайтед</button>
 		</li>
 	    </ul>
-	    <div ng-show="user.race" >
-		<p class='text-center margin-Y-big'>
-		    <img src='img/blazon/{{user.race}}.png'>
-		</p>
-		<ul class="nav nav-tabs">
-		    <li ng-click="menutabactive(1)" ng-class="{'active':showMenuTabFirst}"><a href="" data-toggle="tab">Первичные характеристики</a></li>
-		    <li ng-click="menutabactive(2)" ng-class="{'active':showMenuTabSecond}"><a href="" data-toggle="tab">Вторичные характеристики</a></li>
-		    <li ng-click="menutabactive(3)" ng-class="{'active':showMenuTabTalanted}"><a href="" data-toggle="tab">Таланты</a></li>
-		</ul>
-		<ul class="media-list"  ng-controller="UserSkillsController">
-		    <li class="media " ng-show='showMenuTabFirst'>
-			<dl class="dl-horizontal" ng-repeat="skill in userSkills.first" >
-			    <dt style="margin-top:3px;">{{skill.name}}</dt>
-			    <dd >
-				<span style='vertical-align:30%'>{{skill.value[user.race]}}</span>
-				<i class="icon-question-sign icon-2x myicon"  ng-click="setSkillDescription(skill)" ></i>
-			    </dd>
-			</dl>
-			<p class="media " ng-show="userSkillsDescription">
-			    {{userSkillsDescription}}
-			</p>		 
-		    </li>			
-		    <li class="media" ng-show='showMenuTabSecond'>
-			<dl class="dl-horizontal" ng-repeat="skill in userSkills.second">
-			    <dt style="margin-top:3px;">{{skill.name}}</dt>
-			    <dd >
-				<span style='vertical-align:30%'>{{skill.value[user.race]}}</span>
-				<i class="icon-question-sign icon-2x myicon"  ng-click="setSkillSecondDescription(skill)" ></i>
-			    </dd>
-			</dl>
-			<p class="media" ng-show="userSkillsSecondDescription">
-			    {{userSkillsSecondDescription}}
-			</p>
-		    </li>	
-		    <li ng-show='showMenuTabTalanted'>
-			<p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+	    <ul ng-show="user.race" class="ul-box text-center">
+			<li class='margin-Y-big'>
+			    <img src='img/blazon/{{user.race}}.png'>
+			</li>	
+			<li>
+				<div class="progress" style="display:inline-block;width:250px;margin-bottom:5px">
+			    	<div class="bar" ng-style="progressBlue">L</div>
+				    <div class="bar bar-success" ng-style="progressGreen">S</div>
+				    <div class="bar bar-warning" ng-style="progressYellow">I</div>
+				    <div class="bar bar-danger" ng-style="progressRed">A</div>
+			    </div>	
 		    </li>
-		</ul>
-	    </div>
-	    <div>{{user}}</div>
+		    <li><a href="">Подробнее о расах</a></li>
+	    </ul>
+	    
 	    <h5 class="text-error" >{{registrationError}}</h5>
 	    <div class="text-center margin-top-huge">
 		<a class="btn btn-large btn-primary" ng-click="registration()" >Регистрация</a>

@@ -144,19 +144,48 @@ function LoginController($scope) {
 
 
 function RegistrationController($scope,registrationService){
+    $scope.skills = {
+        'amadeus':{
+            'L':4,
+            'S':3,
+            'I':7,
+            'A':6
+        },
+        'futuri':{
+            'L':5,
+            'S':4,
+            'I':4,
+            'A':7
+        },
+        'united':{
+            'L':4,
+            'S':8,
+            'I':3,
+            'A':5
+        }
+    }
     $scope.regSt1 = true;
     $scope.regSt2 = false;
-    $scope.showMenuTabFirst = true;
-    $scope.showMenuTabSecond = false;
-    $scope.showMenuTabTalanted = false;
-    $scope.menutabactive = function(n){
-        $scope.showMenuTabFirst = false;
-        $scope.showMenuTabSecond = false;
-        $scope.showMenuTabTalanted = false;        
-        if(n==1){$scope.showMenuTabFirst = true;}
-        if(n==2){$scope.showMenuTabSecond = true;}
-        if(n==3){$scope.showMenuTabTalanted = true;}
-    }
+
+    $scope.user = {'race':''}
+
+    var scoreMax = 0    
+    $.each($scope.skills,function(index,race){
+        var i = 0
+        $.each(race,function(s,value){i+=value})
+        if(i>scoreMax){scoreMax=i}        
+    });
+
+    var getProc = function(s){return Math.ceil($scope.skills[$scope.user.race][s]*100/scoreMax)}
+
+    $scope.$watch('user.race',function(){
+        if($scope.user.race){      
+            $scope.progressBlue = {width:getProc('L')+'%'};
+            $scope.progressGreen = {width:getProc('S')+'%'};
+            $scope.progressYellow = {width:getProc('I')+'%'};
+            $scope.progressRed = {width:getProc('A')+'%'};
+        }
+    })
     $scope.registration = function(){
         $scope.inProgress = true;
         var user = new FormData();

@@ -66,6 +66,11 @@ angular.module('sz.client.directives', [])
                             
             }
         })
+        .directive('szToogleBtn',function(){
+            return function(scope, elm, attr){
+                a=1
+            }
+        })
         .directive('szScrollingToTop',function(){
             return {
                 restrict:'EA',
@@ -227,7 +232,7 @@ angular.module('sz.client.directives', [])
                                 '</a>'+
                             '</div>'+
                            '<div  style="text-align:center;margin:5px 0;" >'+
-                                '<span>'+
+                                '<span class="btn-group ">'+
                                     '<button class="btn" data-toggle="button"  id="btnText" ng-show="!hasText()" ng-click="showMessageTextFull()" >'+
                                         '<i class="icon-2x" ng-class="btnTextClass"></i>'+
                                     '</button>'+
