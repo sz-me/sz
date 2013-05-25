@@ -11,8 +11,9 @@ urlpatterns = patterns('',
     url(r'^client/(?P<path>.*)$', 'django.views.static.serve', {
         'document_root': settings.CLIENT_ROOT,
         }),
-    url(r'^$', 'sz.core.views.index', name='client-index'),
-    url(r'^api/', include('sz.api.urls'), name='api'),
+    url(r'^/?$', 'sz.core.views.index', name='client-index'),
+    url(r'^confirm/(?P<confirmation_key>.*)/?$', 'sz.core.views.confirm', name='registration-confirm'),
+    url(r'^api/?', include('sz.api.urls'), name='api'),
     #url(r'^vj-detection-demo/', 'sz.vjdetection.views.index', name='vj-detection-demo'),
     #url(r'^accounts/register/$', 'registration.views.register',
     #    {

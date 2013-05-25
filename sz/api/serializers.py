@@ -164,6 +164,8 @@ class RegistrationSerializer(serializers.Serializer):
         attrs = super(RegistrationSerializer, self).validate(attrs)
         password1 = attrs.get('password1')
         password2 = attrs.get('password2')
+        if not password1:
+            raise serializers.ValidationError(_("Password is required"))
         if password1 != password2:
             raise serializers.ValidationError(_("Passwords don\'t match"))
 
