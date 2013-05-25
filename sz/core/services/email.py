@@ -58,7 +58,8 @@ class ConfirmationEmailService:
         for profile in profiles_for_sending:
             try:
                 self.send_confirmation_email(profile.user)
-                profile.is_sending_email_required=False
+                profile.is_sending_email_required = False
+                profile.save()
             except Exception as exception:
                 #TODO: Пишем в лог, что всё плохо
                 print(

@@ -94,6 +94,16 @@ class SzUserAdmin(UserAdmin):
 admin.site.register(models.User, SzUserAdmin)
 admin.site.unregister(Group)
 
+
+class RegistrationProfileAdmin(admin.ModelAdmin):
+    list_display = (
+        'user', 'confirmation_key',
+        'is_sending_email_required',
+        'confirmation_key_expired'
+    )
+
+admin.site.register(models.RegistrationProfile, RegistrationProfileAdmin)
+
 '''
 from django.contrib.gis import admin as gis_admin
 class PlaceAdmin(gis_admin.OSMGeoAdmin):
