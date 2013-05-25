@@ -144,32 +144,14 @@ function LoginController($scope) {
 
 
 function RegistrationController($scope,registrationService){
-    $scope.skills = {
-        'amadeus':{
-            'L':4,
-            'S':3,
-            'I':7,
-            'A':6
-        },
-        'futuri':{
-            'L':5,
-            'S':4,
-            'I':4,
-            'A':7
-        },
-        'united':{
-            'L':4,
-            'S':8,
-            'I':3,
-            'A':5
-        }
-    }
+    $scope.inProgress = false;
+    /*$scope.skills = {'amadeus':{'L':4, 'S':3, 'I':7, 'A':6 }, 'futuri':{'L':5, 'S':4, 'I':4, 'A':7 }, 'united':{'L':4, 'S':8, 'I':3, 'A':5 } }*/
     $scope.regSt1 = true;
     $scope.regSt2 = false;
 
-    $scope.user = {'race':''}
+    /*$scope.user = {'race':''}*/
 
-    var scoreMax = 0    
+    /*var scoreMax = 0    
     $.each($scope.skills,function(index,race){
         var i = 0
         $.each(race,function(s,value){i+=value})
@@ -185,24 +167,38 @@ function RegistrationController($scope,registrationService){
             $scope.progressYellow = {width:getProc('I')+'%'};
             $scope.progressRed = {width:getProc('A')+'%'};
         }
-    })
+    })*/
+    $scope.user = {}
     $scope.registration = function(){
-        $scope.inProgress = true;
-        var user = new FormData();
-        user.append( 'email', $scope.user.email);
-        user.append( 'style', 2);
-        user.append( 'password1', $scope.user.password);
-        user.append( 'password2', $scope.user.password2);
+        if($scope.user.race && $scope.user.email && $scope.user.password && $scope.user.password2){
+            $scope.inProgress = true;
+            var user = new FormData();
+            user.append( 'email', $scope.user.email);
+            user.append( 'style', 2);
+            user.append( 'password1', $scope.user.password);
+            user.append( 'password2', $scope.user.password2);
+            
+            registrationService.registr(user,
+                function(response){
+                    $scope.inProgress = false;
+                    $scope.regSt1 = false;
+                },
+                function(error){
+                    $scope.inProgress = false;
+                    $scope.registrationError = error.data});
+            } 
+        else{
+            $scope.registrationError = new Array;
+            if(!$scope.user.race){$scope.registrationError.push("Укажите расу")}
+            if(!$scope.user.email){$scope.registrationError.push("Укажите email")}
+            if($scope.user.email && $scope.user.email.length>72){$scope.registrationError.push("email слишком длинный")}
+            if(!$scope.user.password){$scope.registrationError.push("Укажите пароль")}
+            if($scope.user.password && $scope.user.password.length<3){$scope.registrationError.push("Пароль слишком короткий")}
+            if($scope.user.password && $scope.user.password.length>128){$scope.registrationError.push("Пароль слишком длинный")}
+            if(!$scope.user.password2){$scope.registrationError.push("Повторите пароль")}
+            if($scope.user.password2!=$scope.user.password){$scope.registrationError.push("Пароли не совпадают")}
+        }             
         
-        registrationService.registr(user,
-            function(response){
-                $scope.inProgress = false;
-                $scope.response = response;
-                $scope.registrationError = response
-            },
-            function(error){alert(angular.toJson(error, true));});        
-        
-        $scope.inProgress = false;
     }
 }
 

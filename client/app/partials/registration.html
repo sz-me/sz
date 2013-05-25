@@ -6,19 +6,22 @@
 	    <p>Все основные данные будут видны только вам (и нам) - все остальные пользователи их не увидят.</p>
 	    <div class="text-left" >
 		<form name="general">
-		    <input type="email" class="input-large" placeholder="E-mail" name="email" ng-model="user.email" ng-minlength="3" ng-maxlength="72" required>
+		    <input type="email" class="input-large" placeholder="E-mail" name="email" 
+		    ng-model="user.email" ng-minlength="3" ng-maxlength="72" required  ng-disable="inProgress">
 		    <span class="text-error" ng-show="general.email.$error.minlength">
 		    Too short!</span>
 		    <span class="text-error" ng-show="general.email.$error.maxlength">
 		    Too long!</span>
 		    <br>
-		    <input type="password" class="input-large" placeholder="Пароль" name="p" ng-model="user.password" ng-minlength="3" ng-maxlength="128" required>
+		    <input type="password" class="input-large" placeholder="Пароль" name="p" 
+		    ng-model="user.password" ng-minlength="3" ng-maxlength="128" required  ng-disable="inProgress">
 		    <span class="text-error" ng-show="general.p.$error.minlength">
 		    Too short!</span>
 		    <span class="text-error" ng-show="general.p.$error.maxlength">
 		    Too long!</span>
 		    <br>
-		    <input type="password" class="input-large" placeholder="Пароль еще раз" name="p2" ng-model="user.password2" ng-minlength="3" ng-maxlength="128" required >
+		    <input type="password" class="input-large" placeholder="Пароль еще раз" name="p2" 
+		    ng-model="user.password2" ng-minlength="3" ng-maxlength="128" required  ng-disable="inProgress">
 		    <span class="text-error" ng-show="user.password!=user.password2">passwords not match</span>
 		    <br>
 		</form>
@@ -26,17 +29,17 @@
 	    <p>Пожалуйста, укажите свой пол - тогда мы, возможно, смогли бы порекомендовать вам что-нибудь стоящее.</p>
 	    <ul class="text-center ul-box">
 		<li class="btn-group " data-toggle="buttons-radio" >
-		    <button class="btn" type="radio" ng-click="user.gender='female'">Женский</button>
-		    <button class="btn" type="radio" ng-click="user.gender='male'">Мужской</button>
+		    <button class="btn" type="radio" ng-click="user.gender='female'" ng-disable="inProgress">Женский</button>
+		    <button class="btn" type="radio" ng-click="user.gender='male'"  ng-disable="inProgress">Мужской</button>
 		</li>
 	    </ul>	
 	    <h5>Выбор расы</h5>
 	    <p>Раса определит характеристики вашего персонажа. Выбор расы - он один и на всю жизнь.</p>
 	    <ul class="text-center ul-box">
 		<li class="btn-group " data-toggle="buttons-radio" >
-		    <button class="btn" type="button" ng-click="user.race='amadeus'">Амадеус</button>
-		    <button class="btn" type="button" ng-click="user.race='futuri'">Футури</button>
-		    <button class="btn" type="button" ng-click="user.race='united'">Юнайтед</button>
+		    <button class="btn" type="button" ng-click="user.race='amadeus'" ng-disable="inProgress">Амадеус</button>
+		    <button class="btn" type="button" ng-click="user.race='futuri'" ng-disable="inProgress">Футури</button>
+		    <button class="btn" type="button" ng-click="user.race='united'" ng-disable="inProgress">Юнайтед</button>
 		</li>
 	    </ul>
 	    <ul ng-show="user.race" class="ul-box text-center">
@@ -44,23 +47,22 @@
 			    <img src='img/blazon/{{user.race}}.png'>
 			</li>	
 			<li>
-				<div class="progress" style="display:inline-block;width:250px;margin-bottom:5px">
+	<!-- 			<div class="progress" style="display:inline-block;width:250px;margin-bottom:5px">
 			    	<div class="bar" ng-style="progressBlue">L</div>
 				    <div class="bar bar-success" ng-style="progressGreen">S</div>
 				    <div class="bar bar-warning" ng-style="progressYellow">I</div>
 				    <div class="bar bar-danger" ng-style="progressRed">A</div>
 			    </div>	
 		    </li>
-		    <li><a href="">Подробнее о расах</a></li>
+		    <li><a href="">Подробнее о расах</a></li> -->
 	    </ul>
-	    
-	    <h5 class="text-error" >{{registrationError}}</h5>
+	    <h5 ng-repeat="error in registrationError" class="text-error" >{{error}}</h5>
 	    <div class="text-center margin-top-huge">
 		<a class="btn btn-large btn-primary" ng-click="registration()" >Регистрация</a>
 	    </div>
 	</ul>
     </li>
-    <li ng-show="regSt2">
-	<p>На указанный вами email отправлено письмо со ссылкой. Для завершения регистрации необходима пройти по этой ссылке</p>
+    <li ng-show="!regSt1">
+	<p>На указанный вами email отправлено письмо со ссылкой. Для завершения регистрации необходимо пройти по этой ссылке</p>
     </li>
 </li>
