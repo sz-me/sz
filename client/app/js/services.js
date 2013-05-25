@@ -98,11 +98,19 @@ szServices.factory('registrationService', function($http,$resource){
             params: {format: 'json'}
         }).success(success).error(error);
     }
+
+    var confirmation = function(confirmationemail, success, error){
+        $http.post('../../api/registration/confirmation', user, {
+            headers: { 'Content-Type': false },
+            transformRequest: angular.identity,
+            params: {format: 'json'}
+        }).success(success).error(error);
+    }
     
     var resource = $resource('../../api/registration', {
         query: { method:'GET', params:{}, isArray:false },
-    });
-    
+    });    
     resource.registr = registr;
+    resource.confirmation = confirmation;
     return resource;
 });

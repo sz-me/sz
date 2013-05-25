@@ -142,12 +142,33 @@ function LoginController($scope) {
     }
 }
 
+function ConfirmationController($scope,registrationService){
+    $scope.sendProgress = false;
+    $scope.confirmation = function(email){
+        del($scope.confirmationResponse)
+        del($scope.confirmationError)
+        $scope.sendProgress = true;
+        var confirmationemail = new FormData();
+        confirmationemail.append( 'email', email);
+        registrationService.confirmation(confirmationemail,
+        function(response){
+            $scope.inProgress = false;
+            $scope.confirmationResponse = "Письмо отправленно";
+        },
+        function(error){
+            $scope.inProgress = false;
+            $scope.confirmationError = error.data});
+        } 
+
+        $scope.sendProgress = false;
+    }
+}
+
 
 function RegistrationController($scope,registrationService){
     $scope.inProgress = false;
     /*$scope.skills = {'amadeus':{'L':4, 'S':3, 'I':7, 'A':6 }, 'futuri':{'L':5, 'S':4, 'I':4, 'A':7 }, 'united':{'L':4, 'S':8, 'I':3, 'A':5 } }*/
-    $scope.regSt1 = true;
-    $scope.regSt2 = false;
+    $scope.regSt1 = false;
 
     /*$scope.user = {'race':''}*/
 
