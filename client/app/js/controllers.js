@@ -145,8 +145,8 @@ function LoginController($scope) {
 function ConfirmationController($scope,registrationService){
     $scope.sendProgress = false;
     $scope.confirmation = function(email){
-        del($scope.confirmationResponse)
-        del($scope.confirmationError)
+        delete $scope.confirmationResponse
+        delete $scope.confirmationError
         $scope.sendProgress = true;
         var confirmationemail = new FormData();
         confirmationemail.append( 'email', email);
@@ -158,8 +158,6 @@ function ConfirmationController($scope,registrationService){
         function(error){
             $scope.inProgress = false;
             $scope.confirmationError = error.data});
-        } 
-
         $scope.sendProgress = false;
     }
 }

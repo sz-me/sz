@@ -100,7 +100,7 @@ szServices.factory('registrationService', function($http,$resource){
     }
 
     var confirmation = function(confirmationemail, success, error){
-        $http.post('../../api/registration/confirmation', user, {
+        $http.post('../../api/registration/resending-key', confirmationemail, {
             headers: { 'Content-Type': false },
             transformRequest: angular.identity,
             params: {format: 'json'}
