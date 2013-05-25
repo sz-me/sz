@@ -56,4 +56,6 @@ class ApiRoot(SzApiView):
             'messages-previews': reverse('message-preview-list', request=request),
             'messages-search': reverse('message-search', request=request),
             'registration': reverse('registration', request=request),
+            'registration-resending-key': reverse('registration-resending-key', request=request),
         })
+

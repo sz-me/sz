@@ -28,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^auth/logout/?$', auth.AuthLogout.as_view(), name='auth-logout'),
     url(r'^auth/user/?$', auth.AuthUser.as_view(), name='auth-user'),
     url(r'^registration/?$', registration.Registration.as_view(), name='registration'),
+    url(r'^registration/resending-key/?$', registration.RegistrationResendingKey.as_view(), name='registration-resending-key'),
     #url(r'^authentication$', views.Authentication.as_view(), name='token-auth-authenticate'),
 )
 

@@ -175,3 +175,17 @@ class RegistrationSerializer(serializers.Serializer):
         )
         attrs['user'] = user
         return attrs
+
+
+class ResendingConfirmationKeySerializer(serializers.Serializer):
+
+    email = serializers.EmailField(required=True)
+
+    def validate(self, attrs):
+        attrs = super(
+            ResendingConfirmationKeySerializer, 
+            self
+        ).validate(attrs)
+        email = attrs.get('email')
+        models.RegistrationProfile.objects.send_key(email)
+        return attrs

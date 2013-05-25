@@ -307,6 +307,15 @@ class RegistrationManager(models.Manager):
         self.create_profile(new_user)
         return new_user
 
+    def send_key(self, email):
+        try:
+            profile = self.get(user__email=email)
+        except self.model.DoesNotExist:
+            return False
+        profile.is_sending_email_required = True
+        profile.save()
+        return email
+
     create_unverified_user = transaction.commit_on_success(create_unverified_user)
 
     def create_profile(self, user):
