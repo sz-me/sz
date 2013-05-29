@@ -14,7 +14,7 @@
 		    Too long!</span>
 		    <br>
 		    <input type="password" class="input-large" placeholder="Пароль" name="p" 
-		    ng-model="user.password" ng-minlength="3" ng-maxlength="128" required  ng-disabled="inProgress">
+		    ng-model="user.password1" ng-minlength="3" ng-maxlength="128" required  ng-disabled="inProgress">
 		    <span class="text-error" ng-show="general.p.$error.minlength">
 		    Too short!</span>
 		    <span class="text-error" ng-show="general.p.$error.maxlength">
@@ -22,7 +22,7 @@
 		    <br>
 		    <input type="password" class="input-large" placeholder="Пароль еще раз" name="p2" 
 		    ng-model="user.password2" ng-minlength="3" ng-maxlength="128" required  ng-disabled="inProgress">
-		    <span class="text-error" ng-show="user.password!=user.password2">passwords not match</span>
+		    <span class="text-error" ng-show="user.password1!=user.password2">passwords not match</span>
 		    <br>
 		</form>
 	    </div>
@@ -71,4 +71,4 @@
 			<p ng-repeat="error in confirmationError" class="text-error" >{{error}}</p>
 		 </div>
     </li>
-</li>
+</ul>

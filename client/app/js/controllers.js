@@ -142,7 +142,7 @@ function LoginController($scope) {
     }
 }
 
-function ConfirmationController($scope,registrationService){
+function ConfirmationController($scope,userService){
     $scope.sendProgress = false;
     $scope.confirmation = function(email){
         delete $scope.confirmationResponse
@@ -150,7 +150,7 @@ function ConfirmationController($scope,registrationService){
         $scope.sendProgress = true;
         var confirmationemail = new FormData();
         confirmationemail.append( 'email', email);
-        registrationService.confirmation(confirmationemail,
+        userService.resend_activation_key(confirmationemail,
         function(response){
             $scope.inProgress = false;
             $scope.confirmationResponse = "Письмо отправленно";
@@ -163,10 +163,10 @@ function ConfirmationController($scope,registrationService){
 }
 
 
-function RegistrationController($scope,registrationService){
+function RegistrationController($scope, userService){
     $scope.inProgress = false;
     /*$scope.skills = {'amadeus':{'L':4, 'S':3, 'I':7, 'A':6 }, 'futuri':{'L':5, 'S':4, 'I':4, 'A':7 }, 'united':{'L':4, 'S':8, 'I':3, 'A':5 } }*/
-    $scope.regSt1 = false;
+    $scope.regSt1 = true;
 
     /*$scope.user = {'race':''}*/
 
@@ -189,15 +189,10 @@ function RegistrationController($scope,registrationService){
     })*/
     $scope.user = {}
     $scope.registration = function(){
-        if($scope.user.race && $scope.user.email && $scope.user.password && $scope.user.password2){
+        if($scope.user.race && $scope.user.email && $scope.user.password1 && $scope.user.password2){
             $scope.inProgress = true;
-            var user = new FormData();
-            user.append( 'email', $scope.user.email);
-            user.append( 'style', 2);
-            user.append( 'password1', $scope.user.password);
-            user.append( 'password2', $scope.user.password2);
-            
-            registrationService.registr(user,
+            $scope.user.style=1;
+            userService.register($scope.user,
                 function(response){
                     $scope.inProgress = false;
                     $scope.regSt1 = false;
@@ -211,11 +206,11 @@ function RegistrationController($scope,registrationService){
             if(!$scope.user.race){$scope.registrationError.push("Укажите расу")}
             if(!$scope.user.email){$scope.registrationError.push("Укажите email")}
             if($scope.user.email && $scope.user.email.length>72){$scope.registrationError.push("email слишком длинный")}
-            if(!$scope.user.password){$scope.registrationError.push("Укажите пароль")}
-            if($scope.user.password && $scope.user.password.length<3){$scope.registrationError.push("Пароль слишком короткий")}
-            if($scope.user.password && $scope.user.password.length>128){$scope.registrationError.push("Пароль слишком длинный")}
+            if(!$scope.user.password1){$scope.registrationError.push("Укажите пароль")}
+            if($scope.user.password1 && $scope.user.password1.length<3){$scope.registrationError.push("Пароль слишком короткий")}
+            if($scope.user.password1 && $scope.user.password1.length>128){$scope.registrationError.push("Пароль слишком длинный")}
             if(!$scope.user.password2){$scope.registrationError.push("Повторите пароль")}
-            if($scope.user.password2!=$scope.user.password){$scope.registrationError.push("Пароли не совпадают")}
+            if($scope.user.password2!=$scope.user.password1){$scope.registrationError.push("Пароли не совпадают")}
         }             
         
     }

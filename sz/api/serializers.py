@@ -47,7 +47,6 @@ class AuthUserSerializer(serializers.ModelSerializer):
             'email',
             'is_anonymous',
             'is_authenticated',
-            'is_verified'
         )
 
 
@@ -150,6 +149,7 @@ class RegistrationSerializer(serializers.Serializer):
     ])
     password1 = serializers.CharField(required=True)
     password2 = serializers.CharField(required=True)
+    gender = serializers.CharField(required=False)
 
     def validate_email(self, attrs, source):
         """
@@ -167,12 +167,17 @@ class RegistrationSerializer(serializers.Serializer):
         if not password1:
             raise serializers.ValidationError(_("Password is required"))
         if password1 != password2:
-            raise serializers.ValidationError(_("Passwords don\'t match"))
+            raise serializers.ValidationError(_("Passwords don't match"))
 
         style = models.Style.objects.get(pk=attrs.get('style'))
-        user = models.RegistrationProfile.objects.create_unverified_user(
+        user = models.RegistrationProfile.objects.create_inactive_user(
             attrs.get('email'), password1, style
         )
+        # TODO: save gender field
+        # if attrs.get('gender'):
+        #     user.gender = attrs.get('gender')
+        #     user.save()
+
         attrs['user'] = user
         return attrs
 

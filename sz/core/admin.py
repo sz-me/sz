@@ -97,9 +97,9 @@ admin.site.unregister(Group)
 
 class RegistrationProfileAdmin(admin.ModelAdmin):
     list_display = (
-        'user', 'confirmation_key',
+        'user', 'activation_key',
         'is_sending_email_required',
-        'confirmation_key_expired'
+        'activation_key_expired'
     )
 
 admin.site.register(models.RegistrationProfile, RegistrationProfileAdmin)

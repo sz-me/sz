@@ -30,23 +30,21 @@ class MessageTest(TestCase):
 class RegistrationTest(TestCase):
     def test_verify(self):
         email = 'test@test.com'
-        user = RegistrationProfile.objects.create_unverified_user(
+        user = RegistrationProfile.objects.create_inactive_user(
             email,
             'password',
             Style.objects.get(pk=1)
         )
         self.assertEqual(user.email, email)
-        self.assertFalse(user.is_verified)
+        self.assertFalse(user.is_active)
         self.assertTrue(RegistrationProfile.objects.filter(
             user=user).exists())
         profile = user.registrationprofile_set.all()[0]
-        RegistrationProfile.objects.confirm_email(
-            profile.confirmation_key
-        )
+        RegistrationProfile.objects.activate(profile.activation_key)
         user = User.objects.get(id=user.id)
-        self.assertTrue(user.is_verified)
+        self.assertTrue(user.is_active)
         profile = user.registrationprofile_set.all()[0]
         self.assertEqual(
-            profile.confirmation_key,
+            profile.activation_key,
             profile.CONFIRMED
         )

@@ -182,7 +182,7 @@ class UserManager(BaseUserManager):
         now = timezone.now()
         user = self.model(
             email=UserManager.normalize_email(email),
-            is_active=True, is_superuser=False,
+            is_active=False, is_superuser=False,
             last_login=now, date_joined=now
         )
         user.set_password(password)
@@ -203,6 +203,7 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password):
         user = self._create_user(email, password)
         user.is_superuser = True
+        user.is_active = True
         user.save(using=self._db)
         return user
 
@@ -241,11 +242,6 @@ class User(AbstractBaseUser):
         )
     )
 
-    is_verified = models.BooleanField(
-        _('verified'), default=False,
-        help_text=_('Designates whether this user confirmed his e-mail')
-    )
-
     date_joined = models.DateTimeField(
         _('date joined'), default=timezone.now
     )
@@ -280,29 +276,29 @@ class User(AbstractBaseUser):
         verbose_name_plural = _('users')
 
 
-CONFIRMATION_KEY_PATTERN = re.compile('^[a-f0-9]{32}$')
+ACTIVATION_KEY_PATTERN = re.compile('^[a-f0-9]{32}$')
 
 
 class RegistrationManager(models.Manager):
 
-    def confirm_email(self, confirmation_key):
-        if CONFIRMATION_KEY_PATTERN.search(confirmation_key):
+    def activate(self, activation_key):
+        if ACTIVATION_KEY_PATTERN.search(activation_key):
             try:
-                profile = self.get(confirmation_key=confirmation_key)
+                profile = self.get(activation_key=activation_key)
             except self.model.DoesNotExist:
                 return False
-            if not profile.confirmation_key_expired():
+            if not profile.activation_key_expired():
                 user = profile.user
-                user.is_verified = True
+                user.is_active = True
                 user.save()
-                profile.confirmation_key = self.model.CONFIRMED
+                profile.activation_key = self.model.CONFIRMED
                 profile.save()
                 return user
         return False
 
-    def create_unverified_user(self, email, password, style):
+    def create_inactive_user(self, email, password, style):
         new_user = User.objects.create_user(email, style, password)
-        new_user.is_verified = False
+        new_user.is_active = False
         new_user.save()
         self.create_profile(new_user)
         return new_user
@@ -316,25 +312,25 @@ class RegistrationManager(models.Manager):
         profile.save()
         return email
 
-    create_unverified_user = transaction.commit_on_success(create_unverified_user)
+    create_inactive_user = transaction.commit_on_success(create_inactive_user)
 
     def create_profile(self, user):
         salt = hashlib.md5(str(random.random())).hexdigest()[:5]
         email = user.email
         if isinstance(email, unicode):
             email = email.encode('utf-8')
-        confirmation_key = hashlib.md5(salt + email).hexdigest()
+        activation_key = hashlib.md5(salt + email).hexdigest()
         return self.create(
-            user=user, confirmation_key=confirmation_key,
+            user=user, activation_key=activation_key,
             is_sending_email_required=True
         )
 
     def delete_expired_users(self):
         for profile in self.all():
             try:
-                if profile.confirmation_key_expired():
+                if profile.activation_key_expired():
                     user = profile.user
-                    if not user.is_verified:
+                    if not user.is_active:
                         user.delete()
                         profile.delete()
             except User.DoesNotExist:
@@ -344,28 +340,29 @@ class RegistrationManager(models.Manager):
 class RegistrationProfile(models.Model):
     CONFIRMED = 'CONFIRMED'
     user = models.ForeignKey(User, unique=True, verbose_name=_('user'))
-    confirmation_key = models.CharField(
+    activation_key = models.CharField(
         _('email confirmation key'), max_length=32,
-        validators=[validators.RegexValidator(regex=CONFIRMATION_KEY_PATTERN)]
+        validators=[validators.RegexValidator(regex=ACTIVATION_KEY_PATTERN)]
     )
     is_sending_email_required = models.BooleanField(
         default=True,
         help_text=_(
             'Designates whether to send email'
-        )
+        ),
+        db_index=True
     )
     objects = RegistrationManager()
 
-    def confirmation_key_expired(self):
+    def activation_key_expired(self):
         expiration_date = datetime.timedelta(
             days=settings.ACCOUNT_CONFIRMATION_DAYS
         )
         return (
-            self.confirmation_key == self.CONFIRMED or
+            self.activation_key == self.CONFIRMED or
             self.user.date_joined + expiration_date <= timezone.now()
         )
 
-    confirmation_key_expired.boolean = True
+    activation_key_expired.boolean = True
 
     class Meta:
         verbose_name = _('registration profile')
@@ -464,5 +461,3 @@ class CensorBox(models.Model):
     x = models.FloatField()
     y = models.FloatField()
     r = models.FloatField()
-
-

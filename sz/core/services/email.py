@@ -47,7 +47,7 @@ class ConfirmationEmailService:
         self.email_service.send_template_message(
             self.confirmation_email_subject_template,
             self.confirmation_email_message_template,
-            dict(confirmation_key=profile.confirmation_key),
+            dict(activation_key=profile.activation_key),
             [user]
         )
 

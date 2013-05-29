@@ -55,7 +55,8 @@ class ApiRoot(SzApiView):
             'current-user': reverse('auth-user', request=request),
             'messages-previews': reverse('message-preview-list', request=request),
             'messages-search': reverse('message-search', request=request),
-            'registration': reverse('registration', request=request),
-            'registration-resending-key': reverse('registration-resending-key', request=request),
+            'users-registration': reverse('users-registration', request=request),
+            'users-resending-activation-key': reverse('users-resending-activation-key', request=request),
+            'users-profile': reverse('users-profile', request=request),
         })
 

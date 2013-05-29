@@ -90,27 +90,28 @@ szServices.factory('sessionService', function($resource){
     });
 });
 
-szServices.factory('registrationService', function($http,$resource){
-    var registr = function(user, success, error){
-        $http.post('../../api/registration', user, {
-            headers: { 'Content-Type': false },
-            transformRequest: angular.identity,
-            params: {format: 'json'}
-        }).success(success).error(error);
-    }
-
-    var confirmation = function(confirmationemail, success, error){
-        $http.post('../../api/registration/resending-key', confirmationemail, {
-            headers: { 'Content-Type': false },
-            transformRequest: angular.identity,
-            params: {format: 'json'}
-        }).success(success).error(error);
-    }
-    
-    var resource = $resource('../../api/registration', {
-        query: { method:'GET', params:{}, isArray:false },
-    });    
-    resource.registr = registr;
-    resource.confirmation = confirmation;
-    return resource;
+szServices.factory('userService', function($http,$resource){
+    return $resource('../../api/users/:action', {}, {
+        register: {
+            method: 'POST',
+            params: {
+                action:'register'
+            },
+            isArray: false
+        },
+        resend_activation_key: {
+            method:'POST',
+            params: {
+                action: 'resend-activation-key'
+            },
+            isArray:false
+        },
+        profile: {
+            method: 'GET',
+            params: {
+                action: 'profile'
+            },
+            isArray: false
+        }
+    });
 });

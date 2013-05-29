@@ -7,11 +7,9 @@ from .models import RegistrationProfile
 def index(request):
     return redirect('/client/app/index.html')
 
-def confirm(request, confirmation_key):
-    if RegistrationProfile.objects.confirm_email(
-        confirmation_key
-    ):
+def activate(request, activation_key):
+    if RegistrationProfile.objects.activate(activation_key):
         return redirect('sz.core.views.index')
     else:
         return HttpResponse("Yosick is upset. "
-        					"Bad confirmation key :'(")
+                            "Bad activation key :'(")
