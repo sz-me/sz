@@ -71,8 +71,8 @@ class AuthRequestSerializer(serializers.Serializer):
         if email and password:
             user = authenticate(username=email, password=password)
             if user:
-                if not user.is_active:
-                    raise serializers.ValidationError('User account is disabled.')
+                #if not user.is_active:
+                #    raise serializers.ValidationError('User account is disabled.')
                 attrs['user'] = user
                 return attrs
             else:

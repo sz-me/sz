@@ -7,6 +7,7 @@ from rest_framework import permissions, status
 from sz.api.serializers import AuthRequestSerializer, AuthUserSerializer
 from sz.api.response import Response
 from sz.api.views import SzApiView
+from sz.api.status import HTTP_423_LOCKED
 
 
 class AuthLogin(SzApiView):
@@ -18,6 +19,8 @@ class AuthLogin(SzApiView):
         serializer = AuthRequestSerializer(data=request.DATA)
         if serializer.is_valid():
             user = serializer.object['user']
+            if not user.is_active:
+                return Response('Account is not active', HTTP_423_LOCKED)
             auth.login(request, user)
             user_serializer = AuthUserSerializer(instance=user)
             csrf.get_token(request)
