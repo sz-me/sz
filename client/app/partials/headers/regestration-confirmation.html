@@ -1,0 +1,7 @@
+<div ng-controller="ConfirmationController">
+	<p>На указанный вами email отправлено письмо со ссылкой. Для завершения регистрации необходимо пройти по этой ссылке</p>
+	<button type="button" class="btn btn-large btn-primary" data-loading-text="Sending..." 
+	 ng-click="confirmation(user.email)" ng-disabled="sendProgress">Отправить еще раз</button>
+	<p>{{confirmationResponse}}</p>
+	<p ng-repeat="error in confirmationError" class="text-error" >{{error}}</p>
+</div>

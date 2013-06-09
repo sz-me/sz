@@ -1,74 +1,65 @@
 <ul class="box-border padding-huge" style="padding-bottom:100px;">
     <li ng-show='regSt1'>
-	<ul class="media-list" id="contentBody">
-	    <h2 class="form-signin-heading text-right">Регистрация</h2>
-	    <h5>Основные данные</h5>
-	    <p>Все основные данные будут видны только вам (и нам) - все остальные пользователи их не увидят.</p>
-	    <div class="text-left" >
-		<form name="general">
-		    <input type="email" class="input-large" placeholder="E-mail" name="email" 
-		    ng-model="user.email" ng-minlength="3" ng-maxlength="72" required  ng-disabled="inProgress">
-		    <span class="text-error" ng-show="general.email.$error.minlength">
-		    Too short!</span>
-		    <span class="text-error" ng-show="general.email.$error.maxlength">
-		    Too long!</span>
-		    <br>
-		    <input type="password" class="input-large" placeholder="Пароль" name="p" 
-		    ng-model="user.password1" ng-minlength="3" ng-maxlength="128" required  ng-disabled="inProgress">
-		    <span class="text-error" ng-show="general.p.$error.minlength">
-		    Too short!</span>
-		    <span class="text-error" ng-show="general.p.$error.maxlength">
-		    Too long!</span>
-		    <br>
-		    <input type="password" class="input-large" placeholder="Пароль еще раз" name="p2" 
-		    ng-model="user.password2" ng-minlength="3" ng-maxlength="128" required  ng-disabled="inProgress">
-		    <span class="text-error" ng-show="user.password1!=user.password2">passwords not match</span>
-		    <br>
-		</form>
-	    </div>
-	    <p>Пожалуйста, укажите свой пол - тогда мы, возможно, смогли бы порекомендовать вам что-нибудь стоящее.</p>
-	    <ul class="text-center ul-box">
-		<li class="btn-group " data-toggle="buttons-radio" >
-		    <button class="btn" type="radio" ng-click="user.gender='female'" ng-disabled="inProgress">Женский</button>
-		    <button class="btn" type="radio" ng-click="user.gender='male'"  ng-disabled="inProgress">Мужской</button>
-		</li>
-	    </ul>	
-	    <h5>Выбор расы</h5>
-	    <p>Раса определит характеристики вашего персонажа. Выбор расы - он один и на всю жизнь.</p>
-	    <ul class="text-center ul-box">
-		<li class="btn-group " data-toggle="buttons-radio" >
-		    <button class="btn" type="button" ng-click="user.race='amadeus'" ng-disabled="inProgress">Амадеус</button>
-		    <button class="btn" type="button" ng-click="user.race='futuri'" ng-disabled="inProgress">Футури</button>
-		    <button class="btn" type="button" ng-click="user.race='united'" ng-disabled="inProgress">Юнайтед</button>
-		</li>
-	    </ul>
-	    <ul ng-show="user.race" class="ul-box text-center">
-			<li class='margin-Y-big'>
-			    <img src='img/blazon/{{user.race}}.png'>
+		<ul class="media-list" id="contentBody">
+			<h2 class="form-signin-heading text-right">Регистрация</h2>
+			<li>
+				<ul class="noList">
+					<h5>Основные данные</h5>		    
+				    <li class="text-left" >
+				    	<p>Все основные данные будут видны только вам (и нам) - все остальные пользователи их не увидят.</p>
+						<form name="general">
+						    <input type="email" class="input-large" placeholder="E-mail" name="email" 
+						    ng-model="user.email" ng-minlength="3" ng-maxlength="72" required  ng-disabled="inProgress">
+						    <span class="text-error" ng-show="general.email.$error.minlength">
+						    Too short!</span>
+						    <span class="text-error" ng-show="general.email.$error.maxlength">
+						    Too long!</span>
+						    <br>
+						    <input type="password" class="input-large" placeholder="Пароль" name="p" 
+						    ng-model="user.password1" ng-minlength="3" ng-maxlength="128" required  ng-disabled="inProgress">
+						    <span class="text-error" ng-show="general.p.$error.minlength">
+						    Too short!</span>
+						    <span class="text-error" ng-show="general.p.$error.maxlength">
+						    Too long!</span>
+						    <br>
+						    <input type="password" class="input-large" placeholder="Пароль еще раз" name="p2" 
+						    ng-model="user.password2" ng-minlength="3" ng-maxlength="128" required  ng-disabled="inProgress">
+						    <span class="text-error" ng-show="user.password1!=user.password2">passwords not match</span>
+						    <br>
+						</form>
+				    </li>
+				    <li>
+				    	<p>Пожалуйста, укажите свой пол - тогда мы, возможно, смогли бы порекомендовать вам что-нибудь стоящее.</p>
+				    	<ul class="text-center ul-box">
+							<li class="btn-group " data-toggle="buttons-radio" >
+							    <button class="btn" type="radio" ng-click="user.gender='female'" ng-disabled="inProgress">Женский</button>
+							    <button class="btn" type="radio" ng-click="user.gender='male'"  ng-disabled="inProgress">Мужской</button>
+							</li>
+					    </ul>	
+				    </li>		    
+				</ul>
 			</li>	
 			<li>
-	<!-- 			<div class="progress" style="display:inline-block;width:250px;margin-bottom:5px">
-			    	<div class="bar" ng-style="progressBlue">L</div>
-				    <div class="bar bar-success" ng-style="progressGreen">S</div>
-				    <div class="bar bar-warning" ng-style="progressYellow">I</div>
-				    <div class="bar bar-danger" ng-style="progressRed">A</div>
-			    </div>	
-		    </li>
-		    <li><a href="">Подробнее о расах</a></li> -->
-	    </ul>
-	    <h5 ng-repeat="error in registrationError" class="text-error" >{{error}}</h5>
-	    <div class="text-center margin-top-huge">
-		<button type="button" class="btn btn-large btn-primary" ng-click="registration()" >Регистрация</button>
-	    </div>
-	</ul>
+				<ul class="noList">
+					<h5>Выбор расы</h5>
+				    <p>Раса определит характеристики вашего персонажа. Выбор расы - он один и на всю жизнь.</p>
+				    <ul class="text-center ul-box">
+						<li class="btn-group " data-toggle="buttons-radio" >
+						    <button class="btn" type="button" ng-click="user.race='amadeus'" ng-disabled="inProgress">Амадеус</button>
+						    <button class="btn" type="button" ng-click="user.race='futuri'" ng-disabled="inProgress">Футури</button>
+						    <button class="btn" type="button" ng-click="user.race='united'" ng-disabled="inProgress">Юнайтед</button>
+						</li>
+						<li ng-show="user.race" class="text-center margin-Y-big">
+						    <img src='img/blazon/{{user.race}}.png'>
+					    </li>
+				    </ul>	    
+				    <h5 ng-repeat="error in registrationError" class="text-error" >{{error}}</h5>
+				    <div class="text-center margin-top-huge">
+						<button type="button" class="btn btn-large btn-primary" ng-click="registration()" >Регистрация</button>
+				    </div>
+				</ul>
+			</li>
+		</ul>
     </li>
-    <li ng-show="!regSt1" class="margin-huge">
-		<div ng-controller="ConfirmationController">
-			<p>На указанный вами email отправлено письмо со ссылкой. Для завершения регистрации необходимо пройти по этой ссылке</p>
-			<button type="button" class="btn btn-large btn-primary" data-loading-text="Sending..." 
-			 ng-click="confirmation('beebikun@gmail.com')" ng-disabled="sendProgress">Отправить еще раз</button>
-			<p>{{confirmationResponse}}</p>
-			<p ng-repeat="error in confirmationError" class="text-error" >{{error}}</p>
-		 </div>
-    </li>
+    <li ng-show="!regSt1" class="margin-huge" ng-include src='includeRegConfirmation'></li>
 </ul>

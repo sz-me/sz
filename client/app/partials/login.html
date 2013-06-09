@@ -1,11 +1,7 @@
 <div>
     <ul id="contentHeader">
         <li class="contentHeader-inner">
-            <ul class="noList">
-                <li>
-                    <h2 class="form-signin-heading text-right">Вход</h2>
-                </li>
-            </ul>
+            <h2 class="form-signin-heading text-right">Вход</h2>
         </li>
     </ul>
 </div>
@@ -13,13 +9,14 @@
 <ul class="media-list "  id="contentBody">
     <li class="box-border padding-huge margin-top-huge">
         <form class="form-signin ">
+            <div ng-include src='includeRegConfirmation' ng-show="showResendBut"></div>
             <input type="text" class="input-block-level" placeholder="Логин" ng-model="username">
             <input type="password" class="input-block-level" placeholder="Пароль" ng-model="password">
             <label class="checkbox margin-Y-big">
                 <input type="checkbox" value="remember-me"> Запомнить
             </label>
             <div class="margin-top-huge">
-                <a class="btn btn-large btn-primary" ng-click="login(username, password)" href={{urlFeed}}>Войти</a>
+                <div class="btn btn-large btn-primary" ng-click="login(username, password)">Войти</div>
                 <a class="btn btn-large btn-warning margin-left" href={{urlRegistration}}>Новый</a>
             </div>
             <div class="margin-top-huge">

@@ -67,6 +67,7 @@ function MasterPageController($scope,$cookies, $http, $location, geolocation, ca
     $scope.includeMessageAdditionHeaderGet = function(){return 'partials/headers/message-addition-header.html';}
     $scope.includeGalleryInnerGet = function(){return 'partials/headers/gallery-inner.html';}
     $scope.includeMessagesAreaGet = function(){return 'partials/headers/messages-area.html';}
+    $scope.includeRegConfirmationGet = function(){return 'partials/headers/regestration-confirmation.html';}
     
     
     $scope.userSkills = {
@@ -135,10 +136,26 @@ MasterPageController.$inject = ['$scope','$cookies', '$http', '$location', 'geol
 
 
 function LoginController($scope) {
+    $scope.includeRegConfirmation = $scope.includeRegConfirmationGet()
+    $scope.loginAlert = '';
+    $scope.showResendBut = false;
     $scope.login = function(email, password){
         $scope.session.email = email;
         $scope.session.password = password;
-        $scope.session = $scope.session.$login();
+        var session = $scope.session.$login(
+            function(response){$scope.session = session},
+            function(error){
+                if(error.data.meta.code==400){
+                    $scope.loginAlert = [];
+                    $.each(error.data.data,function(key,val){$scope.loginAlert.push(val[0])})
+                }
+                else{
+                    $scope.user = {"email":email}
+                    $scope.showResendBut = true;
+                }
+            }
+        );
+
     }
 }
 
@@ -147,6 +164,7 @@ function ConfirmationController($scope,userService){
     $scope.confirmation = function(email){
         delete $scope.confirmationResponse
         delete $scope.confirmationError
+        alert(email)
         $scope.sendProgress = true;
         var confirmationemail = new FormData();
         confirmationemail.append( 'email', email);
@@ -164,29 +182,10 @@ function ConfirmationController($scope,userService){
 
 
 function RegistrationController($scope, userService){
+    $scope.includeRegConfirmation = $scope.includeRegConfirmationGet()
     $scope.inProgress = false;
     /*$scope.skills = {'amadeus':{'L':4, 'S':3, 'I':7, 'A':6 }, 'futuri':{'L':5, 'S':4, 'I':4, 'A':7 }, 'united':{'L':4, 'S':8, 'I':3, 'A':5 } }*/
     $scope.regSt1 = true;
-
-    /*$scope.user = {'race':''}*/
-
-    /*var scoreMax = 0    
-    $.each($scope.skills,function(index,race){
-        var i = 0
-        $.each(race,function(s,value){i+=value})
-        if(i>scoreMax){scoreMax=i}        
-    });
-
-    var getProc = function(s){return Math.ceil($scope.skills[$scope.user.race][s]*100/scoreMax)}
-
-    $scope.$watch('user.race',function(){
-        if($scope.user.race){      
-            $scope.progressBlue = {width:getProc('L')+'%'};
-            $scope.progressGreen = {width:getProc('S')+'%'};
-            $scope.progressYellow = {width:getProc('I')+'%'};
-            $scope.progressRed = {width:getProc('A')+'%'};
-        }
-    })*/
     $scope.user = {}
     $scope.registration = function(){
         if($scope.user.race && $scope.user.email && $scope.user.password1 && $scope.user.password2){
@@ -220,7 +219,6 @@ function UserController($scope,placeService){
     $scope.includeUserHeader = $scope.includeUserHeaderGet();
     $scope.includeMessagesArea = $scope.includeMessagesAreaGet();
     $scope.showSiteHeader(false);
-    $scope.test = 'test';
     $scope.id='4c636f6f79d1e21e62cbd815';
     $scope.$watch('coordinates', function(newValue, oldValue) {
         if (angular.isDefined($scope.coordinates)){
