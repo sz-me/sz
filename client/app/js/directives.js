@@ -30,42 +30,7 @@ var detectDirection = function(raw, params, delta) {
 
 
 angular.module('sz.client.directives', [])
-	.directive('szChangeScrollToUp', function() {
-            return function(scope, elm, attr){
-                var raw = elm[0];
-                var params = {
-                        direction: 1,
-                        top: raw.getBoundingClientRect().top,
-                        changePoint: raw.getBoundingClientRect().top
-                };
-                var delta = 1;
-                angular.element(window).scroll(function(){
-                    var dir = detectDirection(raw, params, delta);
-                    if (dir == 1)
-                            scope.$apply(attr.szChangeScrollToUp);
-                    
-                })
-                            
-            }
-	})
-        .directive('szChangeScrollToDown', function() {
-            return function(scope, elm, attr){
-                var raw = elm[0];
-                var params = {
-                        direction: 1,
-                        top: raw.getBoundingClientRect().top,
-                        changePoint: raw.getBoundingClientRect().top
-                };
-                var delta = 1;
-                angular.element(window).scroll(function(){
-                    var dir = detectDirection(raw, params, delta);
-                    if (dir == -1)
-                            scope.$apply(attr.szChangeScrollToDown);
-                    
-                })
-                            
-            }
-        })
+
         .directive('szToogleBtn',function(){
             return function(scope, elm, attr){
                 a=1

@@ -26,9 +26,6 @@ function MasterPageController($scope,$cookies, $http, $location, geolocation, ca
     categoryService.query({}, function(categories) { $scope.categories = categories; });
 
     $scope.showContent = true;
-    $scope.showMenuPanel = true;
-    $scope.showBotMenuPanel = true;
-    $scope.scrollToTop = {top:false};
 
     $scope.changeScrollToUp = function(){$scope.showBotMenuPanel = true;};
     $scope.changeScrollToDown = function(){$scope.showBotMenuPanel = false;};
@@ -135,7 +132,7 @@ function MasterPageController($scope,$cookies, $http, $location, geolocation, ca
 MasterPageController.$inject = ['$scope','$cookies', '$http', '$location', 'geolocationService', 'categoryService', 'sessionService'];
 
 
-function LoginController($scope) {
+function LoginController($scope,$location) {
     $scope.includeRegConfirmation = $scope.includeRegConfirmationGet()
     $scope.loginAlert = '';
     $scope.showResendBut = false;
@@ -143,11 +140,13 @@ function LoginController($scope) {
         $scope.session.email = email;
         $scope.session.password = password;
         var session = $scope.session.$login(
-            function(response){$scope.session = session},
+            function(response){                
+                $scope.session = session
+                $location.path('/newsfeed')
+            },
             function(error){
                 if(error.data.meta.code==400){
-                    $scope.loginAlert = [];
-                    $.each(error.data.data,function(key,val){$scope.loginAlert.push(val[0])})
+                    $.each(error.data.data,function(key,val){$scope.loginAlert = val[0]})
                 }
                 else{
                     $scope.user = {"email":email}

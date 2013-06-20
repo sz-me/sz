@@ -10,6 +10,7 @@
     <li class="box-border padding-huge margin-top-huge">
         <form class="form-signin ">
             <div ng-include src='includeRegConfirmation' ng-show="showResendBut"></div>
+            <div class="text-error" ng-show="loginAlert">{{loginAlert}}</div>
             <input type="text" class="input-block-level" placeholder="Логин" ng-model="username">
             <input type="password" class="input-block-level" placeholder="Пароль" ng-model="password">
             <label class="checkbox margin-Y-big">
