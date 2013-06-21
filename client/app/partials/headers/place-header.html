@@ -1,19 +1,20 @@
-<div>
-    <ul id="contentHeader">
-        <li class="contentHeader-inner">
-            <ul class="noList">
-                <li >
-                    <div id="place-add-btn">
-                        <a class="btn btn-large  btn-primary" type="button" href={{urlPlaceAddMessage(placeHeader.id)}} ><i class="icon-plus icon-2x" ></i></a>
-                    </div>
-                    <a href={{urlPlace(placeHeader.id)}} class="graydark">
-                        <div id="place-name-address">        
-                            <h3 id="place-name-h">{{placeHeader.name}}</h3>
-                            <small id="place-address">{{placeHeader.address}}</small>   
-                        </div> 
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
+
+<div class="navbar navbar-static-top navbar-inverse">
+    <div class="navbar-inner">
+        <div class="container " style="height:49px;text-align:center;" >
+            <span class="pull-left">
+                <a type="button" class="btn btn-navbar " style="margin-top:2px;" href={{urlFeed}}>
+                    <i class="icon-home icon-2x" ></i>
+                </a>
+            </span>
+            <div style="display:inline-block;margin-left:-58px">
+                <ul class="nav nav-pills" style="margin:0;margin-top:-5px">
+                    <li >
+                        <a href={{urlPlace(placeHeader.id)}} style="padding:0"><h3>{{placeHeader.name}}</h3></a>                        
+                    </li>
+                </ul>
+            </div> 
+        </div>
+    </div>
 </div>
+    

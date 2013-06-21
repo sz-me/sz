@@ -1,13 +1,8 @@
-<div>
-    <ul id="contentHeader">
-        <li class="contentHeader-inner">
-            <h2 class="form-signin-heading text-right">Вход</h2>
-        </li>
-    </ul>
-</div>
 
-<ul class="media-list "  id="contentBody">
-    <li class="box-border padding-huge margin-top-huge">
+
+<ul class="unstyled padding-huge "  id="contentBody">
+    <li><h2 class="form-signin-heading text-right">Вход</h2></li>
+    <li >
         <form class="form-signin ">
             <div ng-include src='includeRegConfirmation' ng-show="showResendBut"></div>
             <div class="text-error" ng-show="loginAlert">{{loginAlert}}</div>

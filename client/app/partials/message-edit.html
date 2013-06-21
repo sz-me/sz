@@ -1,23 +1,23 @@
-<div ng-include src='includeMessageAdditionHeader'></div>
+<div ng-include src='includePlaceHeader'></div>
 <ul class="media-list" id="contentBody">
     <li class="box-border padding-big">
         <ul class="noList text-center" >
-            <li>
+            <li>                
                 <textarea name='text'
                 id="messageText"
                 placeholder="Напишите пару строк или прикрепите изображение, а лучше и то, и другое"
-                ng-model="text" ng-init="text=''" ng-disabled="inProgress" sz-auto-resize-text-area="text"></textarea>
+                ng-model="text" ng-init="text=''" ng-disabled="inProgress" sz-auto-resize-text-area="text" style="width:90%"></textarea>                
             </li>
             <li class="margin-top-big text-left">
                 <div class="fileform">
-                    <i class="icon-camera icon-2x" style="margin:9px;"></i>
-                    <input type="file" name="photo" sz-file-model="photo" ng-init="photo=null" ng-disabled="inProgress" id="message-edit-photo"/>
+                    <div style="display:inline-block;padding-top:9px"><i class="icon-camera icon-2x" ></i></div>
+                    <input type="file" name="photo" sz-file-model="photo" ng-init="photo=null" ng-disabled="inProgress" id="message-edit-photo" style="padding-top:50px"/>
                 </div>
                 <button class="btn btn-large btn-primary" ng-click="send()" ng-disabled="inProgress">Отправить</button>
             </li>
-            <li class="margin-top-big " ng-show="showPhoto" >
+            <li class="margin-top-big "  >
                 <div style="height:30px;display:inline-block;max-width:100%" >
-                    <button class="btn pull-right margin-left" ng-click="removePhoto()" ng-disabled="inProgress" >
+                    <button class="btn pull-right margin-left" ng-click="remove()" ng-disabled="inProgress" >
                         <i class="icon-remove " ></i>
                     </button>
                     <div id="photoPrevHeder">

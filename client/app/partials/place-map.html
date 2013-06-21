@@ -1,9 +1,10 @@
 <div ng-include src='includePlaceHeader'></div>
-<ul class="media-list" id="contentBody">
-    <li class="text-center box-border padding-Y-big  margin-bottom-huge" sz-leaflet-create-map="map">
-        <div class="margin-X text-right">
-            <big>{{distance}} м</big>
-        </div>
+<ul class="unstyled" id="contentBody" >
+	<li id="place-name-address">
+		<h5 style="margin:0">{{placeHeader.address}}</h4>
+    	<small>{{distance}} м</small> 	    				    
+	</li>	
+	<li class="text-center box-border padding-Y-big  margin-bottom-huge" sz-leaflet-create-map="map">        
         <div id="map" class="maxMap margin-top">
         </div>
     </li>

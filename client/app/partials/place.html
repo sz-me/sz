@@ -1,31 +1,19 @@
-
-<div>
-    <ul id="contentHeader">
-        <li class="contentHeader-inner">
-            <ul class="noList">
-                <li>
-                    <div id="place-add-btn">
-                        <a class="btn btn-large  btn-primary" type="button" href={{urlPlaceAddMessage(place.id)}} ><i class="icon-plus icon-2x" ></i></a>
-                    </div>
-                    <a href={{urlPlace(place.id)}} class="graydark">
-                        <div id="place-name-address">        
-                            <h3 id="place-name-h">{{place.name}}</h3>
-                            <small id="place-address">{{place.address}}</small>   
-                        </div> 
+<div ng-include src='includePlaceHeader'></div>
+<ul  class="unstyled"  id="contentBody">
+    <li>
+        <div style="padding-bottom:30px">
+            <div class="pull-left">
+                <a class="btn btn-large btn-primary" type="button" href={{urlPlaceAddMessage(place.id)}} ><i class="icon-plus icon-2x" ></i></a>
+            </div>
+            <div class="text-right" style="padding-top:1px" >
+                 <div class="circle-parent" >
+                    <a class="catDiv" ng-repeat="cat in place.category" ng-class="cat.alias" href={{urlPlaceCategory(place.id,cat.id)}}>
+                        <i class="catDivI"></i>
                     </a>
-                </li>
-                <li class="margin-top text-right">
-                    <div class="circle-parent"  >
-                        <a class="catDiv" ng-repeat="cat in place.category" ng-class="cat.alias" href={{urlPlaceCategory(place.id,cat.id)}}>
-			    <i class="catDivI"></i>
-			</a>
-                    </div>
-                </li>
-            </ul>
-        </li>
-    </ul>
-</div>
-<ul class="media-list" id="contentBody">
+                </div>
+            </div>
+        </div>
+    </li>
     <li sz-leaflet-create-map="map" class="text-center box-border padding-Y-big  margin-bottom-huge">
         <a id="mapCont" href={{urlPlaceMap(place.id)}} >
             <div id="map" class="miniMap">

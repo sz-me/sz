@@ -45,14 +45,14 @@ input[type="file"]{
     cursor: pointer;
 }
 
-.fileform{
+.fileform{    
     height: 44px;
     width: 53px;
     display:inline-block;
     cursor: pointer;   
     overflow: hidden;
     position: relative;
-    text-align: left;
+    text-align: center;
     vertical-align: middle;
     
     color: #333333;
@@ -79,6 +79,8 @@ input[type="file"]{
     border-radius: 6px;
 }
 
+
+
 .fileform:hover{
     background-color: #e6e6e6;
     *background-color: #d9d9d9;
@@ -91,8 +93,9 @@ input[type="file"]{
     transition: background-position 0.1s linear;
 }
 
+
 textarea{  
-    width:90%;
+  /*  width:100%;*/
     max-width:700px;
     text-align:justify;
     text-decoration:none;
@@ -294,17 +297,12 @@ textarea:focus{
 
 #place-name-address{
     text-align:right;
-    margin-bottom:20px;
-    min-height:62px;
+    min-height:45px;
 }
 
 #place-name-h{
     margin-bottom:0;
     margin-top:0px;
-}
-
-#place-address{
-    line-height:10px;
 }
 
 #message-photo,#photoPrev{

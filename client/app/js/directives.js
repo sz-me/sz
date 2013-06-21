@@ -323,8 +323,9 @@ angular.module('sz.client.directives', [])
         })
     .directive('szFileModel', function() {
         return function(scope, element, attrs) {
-            scope.$watch(attrs.szFileModel, function() {
+            scope.$watch(attrs.szFileModel, function() {                
                 angular.element(element[0]).bind('change', function(){
+                    alert(1)
                     if (angular.isUndefined(element[0].files))
                     {throw new Error("This browser does not support HTML5 File API.");}
                     if (element[0].files.length == 1){

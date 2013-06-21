@@ -65,68 +65,7 @@ function MasterPageController($scope,$cookies, $http, $location, geolocation, ca
     $scope.includeGalleryInnerGet = function(){return 'partials/headers/gallery-inner.html';}
     $scope.includeMessagesAreaGet = function(){return 'partials/headers/messages-area.html';}
     $scope.includeRegConfirmationGet = function(){return 'partials/headers/regestration-confirmation.html';}
-    
-    
-    $scope.userSkills = {
-        'first':[
-            {'name':'Удача','description':'Влияет на частоту выпадения крита и на частоту выпадения эпикшмота ','value':{
-                'user':5,
-                'amadeus':4,
-                'futuri':5,
-                'united':4
-            }},
-            {'name':'Сила','description':'Влияет на minMP и на скорость убывания принадлежности ','value':{
-                'user':4,
-                'amadeus':3,
-                'futuri':4,
-                'united':7
-            }},
-            {'name':'Интеллект','description':'Влияет на стоимость заклинаний,тень и эффективность талантов ','value':{
-                'user':7,
-                'amadeus':7,
-                'futuri':4,
-                'united':3
-            }},
-            {'name':'Ловкость','description':'Влияет на maxMP, уклонение и меткость ','value':{
-                'user':6,
-                'amadeus':5,
-                'futuri':7,
-                'united':5
-            }}
-        ],
-        'second':[
-            {'name':'Сила сообщения','description':'Рендомно выбранное значение из промежутка между минимумом силы сообщения и максимумом силы сообщения.Минимальная сила сообщения складывается из меткости,силы слова и силы. Максимальная сила сообщения - минимум сообщения помноженный на какой-то коэфициент от ловкости и меткости ','value':{
-                'user':7,
-                'amadeus':7,
-                'futuri':7,
-                'united':7
-            }},
-            {'name':'Сила слова','description':'Коэффициент, зависящий от удаленности персонажа от места, в котрое он пишет сообщение. Чем дальше место — тем меньше силы слова ','value':{
-                'user':7,
-                'amadeus':7,
-                'futuri':7,
-                'united':7
-            }},
-            {'name':'Тень','description':'Время, втечении которого территория остается видимой после ухода из нее персонажа ','value':{
-                'user':7,
-                'amadeus':7,
-                'futuri':7,
-                'united':7
-            }},
-            {'name':'Меткость','description':'Влияет на силу слова. Чем больше меткость - тем больше расстояние, с которого можно писать сообщения','value':{
-                'user':7,
-                'amadeus':7,
-                'futuri':7,
-                'united':7
-            }},
-            {'name':'Уклонение','description':'Возможность свести на ноль силу сообщения или эффект от таланта другого игрока другого игрока, который пишет сообщение в замке персонажа ','value':{
-                'user':7,
-                'amadeus':7,
-                'futuri':7,
-                'united':7
-            }}
-        ]
-    }
+
 }
 
 MasterPageController.$inject = ['$scope','$cookies', '$http', '$location', 'geolocationService', 'categoryService', 'sessionService'];
@@ -163,11 +102,8 @@ function ConfirmationController($scope,userService){
     $scope.confirmation = function(email){
         delete $scope.confirmationResponse
         delete $scope.confirmationError
-        alert(email)
         $scope.sendProgress = true;
-        var confirmationemail = new FormData();
-        confirmationemail.append( 'email', email);
-        userService.resend_activation_key(confirmationemail,
+        userService.resend_activation_key({'email': email},
         function(response){
             $scope.inProgress = false;
             $scope.confirmationResponse = "Письмо отправленно";
@@ -186,10 +122,11 @@ function RegistrationController($scope, userService){
     /*$scope.skills = {'amadeus':{'L':4, 'S':3, 'I':7, 'A':6 }, 'futuri':{'L':5, 'S':4, 'I':4, 'A':7 }, 'united':{'L':4, 'S':8, 'I':3, 'A':5 } }*/
     $scope.regSt1 = true;
     $scope.user = {}
+    var race = {'futuri':1,'amadeus':2, 'united':3}
     $scope.registration = function(){
         if($scope.user.race && $scope.user.email && $scope.user.password1 && $scope.user.password2){
             $scope.inProgress = true;
-            $scope.user.style=1;
+            $scope.user.style=race[user.race];
             userService.register($scope.user,
                 function(response){
                     $scope.inProgress = false;
@@ -342,6 +279,8 @@ function NewsFeedController($routeParams, $location, $scope, placeService) {
 
 
 function PlaceController($scope, $routeParams,placeService) {
+    $scope.includePlaceHeader = $scope.includePlaceHeaderGet();
+    $scope.showSiteHeader(false);
     $scope.includeMessagesArea = $scope.includeMessagesAreaGet();
     $scope.$watch('coordinates', function(newValue, oldValue) {
         if (angular.isDefined($scope.coordinates)){
@@ -356,6 +295,7 @@ function PlaceController($scope, $routeParams,placeService) {
                     $scope.distance = newsfeed.distance;
                     $scope.feed = newsfeed.messages;
                     $scope.place = newsfeed.place;
+                    $scope.placeHeader = {'name':newsfeed.place.name,'id':newsfeed.place.id}
 		    $scope.place.category = $scope.place.category.map(function(k){return $scope.categories.filter(function(c){return c.id==k})[0]});
                     $scope.map = true;
                     $scope.feedPhoto = newsfeed.photos;
@@ -389,6 +329,7 @@ function PlaceController($scope, $routeParams,placeService) {
 
 function PlaceMapController($scope, $routeParams,placeService){
     $scope.includePlaceHeader = $scope.includePlaceHeaderGet();
+    $scope.showSiteHeader(false);
     $scope.$watch('coordinates', function(newValue, oldValue) {
         if (angular.isDefined($scope.coordinates)){
             var params = {
@@ -411,6 +352,7 @@ function PlaceMapController($scope, $routeParams,placeService){
 
 function GalleryController($scope, $routeParams, placeService){
     $scope.includePlaceHeader = $scope.includePlaceHeaderGet();
+    $scope.showSiteHeader(false);
     $scope.includeGalleryInner = $scope.includeGalleryInnerGet();
     $scope.$watch('coordinates', function(newValue, oldValue) {
         if (angular.isDefined($scope.coordinates))
@@ -450,6 +392,7 @@ function GalleryController($scope, $routeParams, placeService){
 
 function MessageController($scope, $routeParams, messageService){
     $scope.includePlaceHeader = $scope.includePlaceHeaderGet();
+    $scope.showSiteHeader(false);
     var message = messageService.get({messageId:$routeParams.messageId},
         function(){
             $scope.message = message;
@@ -628,21 +571,21 @@ function SearchFilterController($scope, $timeout, $routeParams){
 }
 
 function MessageEditorController($location, $scope, $routeParams, placeService, messagePreviewService) {
-    $scope.includeMessageAdditionHeader = $scope.includeMessageAdditionHeaderGet();
+    $scope.includePlaceHeader = $scope.includePlaceHeaderGet();
+    $scope.showSiteHeader(false);
     if (angular.isDefined($routeParams.placeId))
         placeService.get({placeId: $routeParams.placeId}, function(resp){ $scope.placeHeader = resp; })
     if (angular.isDefined($routeParams.previewId))
         messagePreviewService.get({previewId: $routeParams.previewId}, function(response){
             $scope.text = response.text;
             $scope.photoUrl = response.photo.thumbnail;
-            $scope.place = response.place;
+            $scope.placeHeader = response.place;
         });
     $scope.photo = null;
     $scope.inProgress = false;
     $scope.showPhoto = true;
-    $scope.removePhoto = function(){
-        $scope.photo = null;
-//         $scope.showPhoto = false
+    $scope.remove = function(){
+        $scope.photo = null
     }
     $scope.send = function() {
         $scope.inProgress = true;
@@ -685,7 +628,8 @@ function MessageEditorController($location, $scope, $routeParams, placeService, 
 
 
 function MessagePublisherController($location, $scope, $routeParams, messagePreviewService) {
-    $scope.includeMessageAdditionHeader = $scope.includeMessageAdditionHeaderGet();
+    $scope.includePlaceHeader = $scope.includePlaceHeaderGet();
+    $scope.showSiteHeader(false);
     $scope.inProgress = false;
     $scope.showPreviewTex = false;
     $scope.new_message_categories = [];
