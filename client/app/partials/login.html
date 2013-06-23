@@ -1,23 +1,29 @@
+<!-- 
 
-
-<ul class="unstyled padding-huge "  id="contentBody">
-    <li><h2 class="form-signin-heading text-right">Вход</h2></li>
+<ul class="unstyled padding-huge"  id="contentBody">
+    <li><h2 class="form-signin-heading text-right"></h2></li>
     <li >
-        <form class="form-signin ">
-            <div ng-include src='includeRegConfirmation' ng-show="showResendBut"></div>
-            <div class="text-error" ng-show="loginAlert">{{loginAlert}}</div>
-            <input type="text" class="input-block-level" placeholder="Логин" ng-model="username">
-            <input type="password" class="input-block-level" placeholder="Пароль" ng-model="password">
-            <label class="checkbox margin-Y-big">
-                <input type="checkbox" value="remember-me"> Запомнить
-            </label>
-            <div class="margin-top-huge">
-                <div class="btn btn-large btn-primary" ng-click="login(username, password)">Войти</div>
-                <a class="btn btn-large btn-warning margin-left" href={{urlRegistration}}>Новый</a>
-            </div>
-            <div class="margin-top-huge">
-                <a href={[urlPassREcovery}}>Забыли пароль?</a>
-            </div>
-        </form>
+        
+    </li>
+</ul> -->
+<ul class="unstyled padding-huge" >
+    <li class="media-list" id="contentBody">
+            <h2 class="form-signin-heading text-right">Вход</h2>
+            <form class="form-signin ">
+                <div ng-include src='includeRegConfirmation' ng-show="showResendBut"></div>
+                <div class="text-error" ng-show="loginAlert">{{loginAlert}}</div>
+                <input type="text" class="input-block-level" placeholder="Логин" ng-model="username">
+                <input type="password" class="input-block-level" placeholder="Пароль" ng-model="password">
+                <label class="checkbox margin-Y-big">
+                    <input type="checkbox" value="remember-me"> Запомнить
+                </label>
+                <div class="margin-top-huge">
+                    <div class="btn btn-large btn-primary" ng-click="login(username, password)">Войти</div>
+                    <a class="btn btn-large btn-warning margin-left" href={{urlRegistration}}>Новый</a>
+                </div>
+                <div class="margin-top-huge">
+                    <a href={[urlPassREcovery}}>Забыли пароль?</a>
+                </div>
+            </form>
     </li>
 </ul>

@@ -63,6 +63,11 @@
 			<div>Поиск</div>
 		    </a>
 		</li>
+        <li ng-show="session.is_authenticated">
+            <a href={{urlPlaceSelect}}>
+            <div>Написать</div>
+            </a>
+        </li>
 		<li ng-show="session.is_authenticated">
 		    <a href={{urlUser}}>
 			<div>{{session.email}}</div>

@@ -11,16 +11,16 @@
             <li class="margin-top-big text-left">
                 <div class="fileform">
                     <div style="display:inline-block;padding-top:9px"><i class="icon-camera icon-2x" ></i></div>
-                    <input type="file" name="photo" sz-file-model="photo" ng-init="photo=null" ng-disabled="inProgress" id="message-edit-photo" style="padding-top:50px"/>
+                    <input type="file" name="photo" sz-file-model="photo" ng-disabled="inProgress" id="message-edit-photo" style="padding-top:50px" />
                 </div>
                 <button class="btn btn-large btn-primary" ng-click="send()" ng-disabled="inProgress">Отправить</button>
             </li>
-            <li class="margin-top-big "  >
-                <div style="height:30px;display:inline-block;max-width:100%" >
-                    <button class="btn pull-right margin-left" ng-click="remove()" ng-disabled="inProgress" >
-                        <i class="icon-remove " ></i>
-                    </button>
-                    <div id="photoPrevHeder">
+            <li class="margin-top-big" id="photoBigCont" style="display:none" >
+                <div style="height:30px;display:inline-block;" >
+                        <button class="btn pull-left" ng-click="remove()" ng-disabled="inProgress">
+                            <i class="icon-remove " ></i>
+                        </button>
+                    <div  style="display:inline-block;max-width:150px;padding-top:5px;margin-left:5px" class="overflow-hidden">
                         <span id="photoPrevName"></span>
                     </div>
                 </div>

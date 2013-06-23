@@ -2,7 +2,7 @@
 <ul  class="unstyled"  id="contentBody">
     <li>
         <div style="padding-bottom:30px">
-            <div class="pull-left">
+            <div class="pull-left" ng-show="session.is_authenticated">
                 <a class="btn btn-large btn-primary" type="button" href={{urlPlaceAddMessage(place.id)}} ><i class="icon-plus icon-2x" ></i></a>
             </div>
             <div class="text-right" style="padding-top:1px" >

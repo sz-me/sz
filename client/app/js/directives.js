@@ -323,35 +323,46 @@ angular.module('sz.client.directives', [])
         })
     .directive('szFileModel', function() {
         return function(scope, element, attrs) {
-            scope.$watch(attrs.szFileModel, function() {                
+            var $photoNameCont = $("#photoPrevName");
+            var $photoCont = document.getElementById('photoPrev');
+            var $photoBigCont = $('#photoBigCont')
+            scope.$watch(attrs.szFileModel, function() {
                 angular.element(element[0]).bind('change', function(){
-                    alert(1)
                     if (angular.isUndefined(element[0].files))
                     {throw new Error("This browser does not support HTML5 File API.");}
                     if (element[0].files.length == 1){
                         scope[attrs.szFileModel] = element[0].files[0]
                         var photo = element[0].files[0];
-                        var $photoNameCont = $("#photoPrevName");
                         var photoName = photo.name;
                         $photoNameCont.text(photoName)
                         if (photo.type.match('image.*')) {
                             var reader = new FileReader();
                             reader.onload = (function(theFile) {
                                 return function(e) {
-                                    var photoCont = document.getElementById('photoPrev');
-                                    photoCont.innerHTML = ['<img  src="', e.target.result,
+                                    $photoCont.innerHTML = ['<img  src="', e.target.result,
                                                         '" title="', escape(photoName), '"/>'].join('');
                                 };                                
                             })(photo);      
                             reader.readAsDataURL(photo);
-                        }
-                        else{
-                            photoNameCont.innerHTML = ['Недопустимый формат'].join('');
-                        }
-                    }
-                });
+                            $photoBigCont.show()
 
+                        }
+                        else{photoNameCont.innerHTML = ['Недопустимый формат'].join('');}
+                    }
+                });            
             });
+            scope.$watch('photo.name',function(){
+                if(scope.photo.name){
+                    $photoNameCont.text('')
+                    $photoCont.innerHTML = [].join('');
+                    scope.photo = {'name':''}
+                    $photoBigCont.hide()
+                }
+            })
         }
-    });
+    })
+    /*.directive('szRemovePhoto',function(){
+        return function(scope, element, attrs) {
+    })*/
+;
         

@@ -581,11 +581,16 @@ function MessageEditorController($location, $scope, $routeParams, placeService, 
             $scope.photoUrl = response.photo.thumbnail;
             $scope.placeHeader = response.place;
         });
-    $scope.photo = null;
+    $scope.photo = {'name':''};
+/*    $scope.$watch('photo.name',function(){
+        alert($scope.photo.name)
+    })*/
+  
     $scope.inProgress = false;
     $scope.showPhoto = true;
     $scope.remove = function(){
-        $scope.photo = null
+        $scope.photo=$scope.photo
+        
     }
     $scope.send = function() {
         $scope.inProgress = true;
@@ -593,9 +598,7 @@ function MessageEditorController($location, $scope, $routeParams, placeService, 
         
         message.append( 'place', $routeParams.placeId);
         message.append( 'text', $scope.text);
-//         if($scope.photo){
-            message.append( 'photo', $scope.photo);
-//         }
+        if($scope.photo.name){message.append( 'photo', $scope.photo);}
         message.append( 'smile', 1);
 
         var redirectToPublish = function(previewId){

@@ -238,6 +238,7 @@ textarea:focus{
 
 .foursquare-icon{
     float:left;
+    /*display: inline-block;*/
     margin-right:10px;
     width:64px;
     height:64px;
@@ -515,7 +516,7 @@ textarea:focus{
 
 .padding-left-big{padding-left:10px;}
 
-/* .padding-bot{padding-bottom:5px;} */
+ .padding-bot{padding-bottom:5px;} 
 
 .padding-bot-big{padding-bottom:10px;}
 .padding-bot-huge{padding-bottom:20px;}
@@ -625,9 +626,16 @@ body{text-align:center;}
 
 #navSearch,#contentBody,#contentHeader{
     display:inline-block;
-    width:100%;
+    width:100%;   
     max-width:800px;
 }
+
+#navSearch{ 
+    margin-left: -60px;
+    margin-top:8px;
+}
+
+
 
 #contentBody{
     margin-top:20px;
