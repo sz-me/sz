@@ -63,8 +63,8 @@ angular.module('sz.client.directives', [])
                                     ' {{time}}'+                               
                                 '</time>'+
                             '</a>'+
-                            '<span class="badge margin-top-big" >8</span>'+
-                            '<strong class="margin-left">{{username}}</strong>'+
+               /*             '<span class="badge margin-top-big" >8</span>'+
+                            '<strong class="margin-left">{{username}}</strong>'+*/
                             '<div >'+                               
                                 '<div ng-show="photo" id="photo" ng-style="{marginBottom:photoStyle}">'+
                                     '<a href="{{url}}" class="inline-block" id="photoA">'+
@@ -106,7 +106,7 @@ angular.module('sz.client.directives', [])
                         scope.date = datetime[0];
                         var time = datetime[1].split('.')[0];
                         scope.time = time.slice(0,time.length-3)
-                        scope.username = 'Генерал Плюшкин';
+                        /*scope.username = 'Генерал Плюшкин';*/
                         scope.text = msg.text;
                         if(msg.photo){
                             scope.photo = msg.photo.full;
@@ -179,14 +179,14 @@ angular.module('sz.client.directives', [])
                                     ' {{time}}'+                               
                                 '</time>'+
                             '</a>'+
-                            '<div >'+                                
+                            '<div class="text-right" >'+                                
                                 '<div class="circle-parent" ng-show="message_categories">'+
                                     '<a class="catDiv" ng-repeat="cat in message_categories" ng-class="cat.alias" href="{{caturl(place,cat.id)}}">'+
                                         '<i class="catDivI"></i>'+
                                     '</a>'+
                                 '</div>'+
-                                '<span class="badge " >8</span>'+
-                                '<strong class="margin-left">{{username}}</strong>'+
+                       /*         '<span class="badge " >8</span>'+
+                                '<strong class="margin-left">{{username}}</strong>'+*/
                             '</div>'+       
                             '<p class="max-h" id="text">'+
                                 '{{text}}'+
@@ -220,7 +220,7 @@ angular.module('sz.client.directives', [])
                         scope.date = datetime[0];
                         var time = datetime[1].split('.')[0];
                         scope.time = time.slice(0,time.length-3)
-                        scope.username = 'Генерал Плюшкин';
+                        /*scope.username = 'Генерал Плюшкин';*/
                         scope.text = msg.text;
                         if(msg.photo){scope.photo = msg.photo.reduced;scope.messageid=msg.id}
                         scope.message_categories = []

@@ -289,6 +289,14 @@ function PlaceController($scope, $routeParams,placeService) {
                 latitude: $scope.coordinates.latitude,
                 placeId: $routeParams.placeId
             }
+            if($routeParams.category>0){
+                params.category = $routeParams.category
+             /*   $.each($scope.categories,function(index,cat){
+                    if(cat.id==params.category){
+                        $scope.category = cat;
+                    }
+                })*/
+            }
             var newsfeed = placeService.$newsfeed(
                 params,
                 function(){
@@ -296,7 +304,7 @@ function PlaceController($scope, $routeParams,placeService) {
                     $scope.feed = newsfeed.messages;
                     $scope.place = newsfeed.place;
                     $scope.placeHeader = {'name':newsfeed.place.name,'id':newsfeed.place.id}
-		    $scope.place.category = $scope.place.category.map(function(k){return $scope.categories.filter(function(c){return c.id==k})[0]});
+                    $scope.place.category = $scope.place.category.map(function(k){return $scope.categories.filter(function(c){return c.id==k})[0]});
                     $scope.map = true;
                     $scope.feedPhoto = newsfeed.photos;
                 });

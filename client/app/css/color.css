@@ -399,6 +399,7 @@ textarea:focus{
 
 .catDiv{
 /*     float:left; */
+  
     margin-top:4px;
     margin-right:6px;
     display:inline-block;
@@ -406,14 +407,18 @@ textarea:focus{
     height:35px;
     border-radius:25px;
     border:2px solid white;
-    box-shadow: 0 0 4px #666;
+    box-shadow: 0 0 4px #888;
     cursor:pointer;
 /*     text-align:center; */
     overflow:hidden;
     text-align:justify;
+     box-shadow: 0 0 4px black;
 }
 
-.catDiv:hover{box-shadow: 0 0 4px black;}
+.catDiv:hover,.catDivActive{
+    box-shadow: 0 0 4px black;
+    opacity: 1;
+}
 .catDivI{
 /*     vertical-align:-30%; */
     display: inline-block;
